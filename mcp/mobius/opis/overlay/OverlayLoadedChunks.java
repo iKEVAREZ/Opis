@@ -4,10 +4,12 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import cpw.mods.fml.common.network.PacketDispatcher;
 import net.minecraft.world.ChunkCoordIntPair;
 import mapwriter.api.IMwChunkOverlay;
 import mapwriter.api.IMwDataProvider;
 import mapwriter.map.MapView;
+import mcp.mobius.opis.network.Packet0x02RequestChunkStatus;
 
 public class OverlayLoadedChunks implements IMwDataProvider {
 
@@ -41,7 +43,11 @@ public class OverlayLoadedChunks implements IMwDataProvider {
 		
 	}	
 	
-	public static HashMap<ChunkCoordIntPair, Boolean> chunks = new HashMap<ChunkCoordIntPair, Boolean>();
+	public static OverlayLoadedChunks instance = new OverlayLoadedChunks();
+	private OverlayLoadedChunks(){};
+	
+	
+	public HashMap<ChunkCoordIntPair, Boolean> chunks = new HashMap<ChunkCoordIntPair, Boolean>();
 	
 	@Override
 	public ArrayList<IMwChunkOverlay> getChunksOverlay(int dim, double centerX,	double centerZ, double minX, double minZ, double maxX, double maxZ) {
@@ -73,6 +79,7 @@ public class OverlayLoadedChunks implements IMwDataProvider {
 
 	@Override
 	public void onDimensionChanged(int dimension, MapView mapview) {
+		PacketDispatcher.sendPacketToServer(Packet0x02RequestChunkStatus.create(dimension));
 	}
 
 	@Override
@@ -83,4 +90,8 @@ public class OverlayLoadedChunks implements IMwDataProvider {
 	public void onZoomChanged(int level, MapView mapview) {
 	}
 
+	@Override
+	public void onOverlayActivated(MapView mapview) {
+		PacketDispatcher.sendPacketToServer(Packet0x02RequestChunkStatus.create(mapview.getDimension()));
+	}
 }

@@ -7,6 +7,6 @@ public class ProxyClient extends ProxyServer {
 	
 	@Override
 	public void init(){
-		MwAPI.registerDataProvider("Loaded chunks", new OverlayLoadedChunks());
+		MwAPI.registerDataProvider("Loaded chunks", OverlayLoadedChunks.instance);
 	}
 }

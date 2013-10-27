@@ -58,7 +58,7 @@ public class CommandChunkDump extends CommandBase {
 	@Override
     public boolean canCommandSenderUseCommand(ICommandSender par1ICommandSender)
     {
-        return true;
+        return false;
     }	
 	
 }

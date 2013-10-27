@@ -6,6 +6,8 @@ import mcp.mobius.opis.commands.CommandChunkDump;
 import mcp.mobius.opis.network.OpisConnectionHandler;
 import mcp.mobius.opis.network.OpisPacketHandler;
 import mcp.mobius.opis.proxy.ProxyServer;
+import mcp.mobius.opis.server.OpisPlayerTracker;
+import mcp.mobius.opis.server.OpisServerTickHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -16,6 +18,9 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.network.NetworkMod;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.TickRegistry;
+import cpw.mods.fml.relauncher.Side;
 
 @Mod(modid="Opis", name="Opis", version="0.0.1")
 @NetworkMod(channels={"Opis"},clientSideRequired=true, serverSideRequired=true, connectionHandler=OpisConnectionHandler.class, packetHandler=OpisPacketHandler.class)
@@ -34,7 +39,9 @@ public class modOpis {
 	public void preInit(FMLPreInitializationEvent event) {}	
 	
 	@EventHandler
-	public void load(FMLInitializationEvent event) {}
+	public void load(FMLInitializationEvent event) {
+		TickRegistry.registerTickHandler(new OpisServerTickHandler(), Side.SERVER);		
+	}
 	
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
@@ -44,5 +51,6 @@ public class modOpis {
 	@EventHandler
 	public void serverStarting(FMLServerStartingEvent event){
 		event.registerServerCommand(new CommandChunkDump());
+		GameRegistry.registerPlayerTracker(new OpisPlayerTracker());
 	}	
 }
