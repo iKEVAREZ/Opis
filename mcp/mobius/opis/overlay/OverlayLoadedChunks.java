@@ -10,6 +10,7 @@ import mapwriter.api.IMwChunkOverlay;
 import mapwriter.api.IMwDataProvider;
 import mapwriter.map.MapView;
 import mcp.mobius.opis.network.Packet0x02RequestChunkStatus;
+import mcp.mobius.opis.network.Packet0x03UnregisterPlayer;
 
 public class OverlayLoadedChunks implements IMwDataProvider {
 
@@ -93,5 +94,10 @@ public class OverlayLoadedChunks implements IMwDataProvider {
 	@Override
 	public void onOverlayActivated(MapView mapview) {
 		PacketDispatcher.sendPacketToServer(Packet0x02RequestChunkStatus.create(mapview.getDimension()));
+	}
+
+	@Override
+	public void onOverlayDeactivated(MapView mapview) {
+		PacketDispatcher.sendPacketToServer(Packet0x03UnregisterPlayer.create());
 	}
 }

@@ -37,6 +37,11 @@ public class OpisPacketHandler implements IPacketHandler {
 				modOpis.proxy.playerDimension.put(player, castedPacket.dimension);
 				PacketDispatcher.sendPacketToPlayer(Packet0x01ChunkStatus.create(ChunkData.getLoadedChunks(castedPacket.dimension)), player);
 			}
+		
+			else if (header == 0x03){
+				modOpis.proxy.playerOverlayStatus.remove(player);
+				modOpis.proxy.playerDimension.remove(player);
+			}
 			
         }
 	}
