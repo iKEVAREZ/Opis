@@ -10,6 +10,14 @@ import net.minecraftforge.common.DimensionManager;
 public class ChunkData {
 	
 	public static HashMap<ChunkCoordIntPair, Boolean> chunks = new HashMap<ChunkCoordIntPair, Boolean>();
+
+	public static HashMap<Integer, HashMap<ChunkCoordIntPair, Boolean>> getAllLoadedChunks(){
+		HashMap<Integer, HashMap<ChunkCoordIntPair, Boolean>> chunkStatus = new HashMap<Integer, HashMap<ChunkCoordIntPair, Boolean>>();
+		for (int dim : DimensionManager.getIDs())
+			chunkStatus.put(dim, ChunkData.getLoadedChunks(dim));
+		
+		return chunkStatus;
+	}
 	
 	public static HashMap<ChunkCoordIntPair, Boolean> getLoadedChunks(int dimension){
 		HashMap<ChunkCoordIntPair, Boolean> chunkStatus = new HashMap<ChunkCoordIntPair, Boolean>();
