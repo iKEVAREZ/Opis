@@ -8,12 +8,12 @@ import java.io.IOException;
 
 import net.minecraft.network.packet.Packet250CustomPayload;
 
-public class Packet0x02RequestChunkStatus {
+public class Packet_ReqChunksInDim {
 
 	public byte header;
 	public int  dimension;
 	
-	public Packet0x02RequestChunkStatus(Packet250CustomPayload packet) {
+	public Packet_ReqChunksInDim(Packet250CustomPayload packet) {
 		DataInputStream inputStream = new DataInputStream(new ByteArrayInputStream(packet.data));
 		
 		try{
@@ -28,7 +28,7 @@ public class Packet0x02RequestChunkStatus {
 		DataOutputStream outputStream = new DataOutputStream(bos);
 
 		try{
-			outputStream.writeByte(0x02);
+			outputStream.writeByte(Packets.REQ_CHUNKS_IN_DIM);
 			outputStream.writeInt(dimension);
 		}catch(IOException e){}
 		

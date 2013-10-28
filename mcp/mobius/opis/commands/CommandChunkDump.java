@@ -8,7 +8,7 @@ import java.util.logging.Level;
 import com.google.common.collect.ImmutableSetMultimap;
 
 import mcp.mobius.opis.modOpis;
-import mcp.mobius.opis.network.Packet0x01ChunkStatus;
+import mcp.mobius.opis.network.Packet_LoadedChunks;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.world.ChunkCoordIntPair;
@@ -46,7 +46,7 @@ public class CommandChunkDump extends CommandBase {
 			}
 		}
 		
-		((EntityPlayerMP)icommandsender).playerNetServerHandler.sendPacketToPlayer(Packet0x01ChunkStatus.create(chunkStatus));
+		((EntityPlayerMP)icommandsender).playerNetServerHandler.sendPacketToPlayer(Packet_LoadedChunks.create(chunkStatus));
 	}
 
 	@Override

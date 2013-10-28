@@ -9,8 +9,9 @@ import net.minecraft.world.ChunkCoordIntPair;
 import mapwriter.api.IMwChunkOverlay;
 import mapwriter.api.IMwDataProvider;
 import mapwriter.map.MapView;
-import mcp.mobius.opis.network.Packet0x02RequestChunkStatus;
-import mcp.mobius.opis.network.Packet0x03UnregisterPlayer;
+import mcp.mobius.opis.data.ChunkData;
+import mcp.mobius.opis.network.Packet_ReqChunksInDim;
+import mcp.mobius.opis.network.Packet_UnregisterPlayer;
 
 public class OverlayLoadedChunks implements IMwDataProvider {
 
@@ -44,17 +45,14 @@ public class OverlayLoadedChunks implements IMwDataProvider {
 		
 	}	
 	
-	public static OverlayLoadedChunks instance = new OverlayLoadedChunks();
-	private OverlayLoadedChunks(){};
-	
-	
-	public HashMap<ChunkCoordIntPair, Boolean> chunks = new HashMap<ChunkCoordIntPair, Boolean>();
+	//public static OverlayLoadedChunks instance = new OverlayLoadedChunks();
+	//private OverlayLoadedChunks(){};
 	
 	@Override
 	public ArrayList<IMwChunkOverlay> getChunksOverlay(int dim, double centerX,	double centerZ, double minX, double minZ, double maxX, double maxZ) {
 		ArrayList<IMwChunkOverlay> overlays = new ArrayList<IMwChunkOverlay>();
-		for (ChunkCoordIntPair chunk : chunks.keySet())
-			overlays.add(new ChunkOverlay(chunk.chunkXPos, chunk.chunkZPos, chunks.get(chunk)));
+		for (ChunkCoordIntPair chunk : ChunkData.chunks.keySet())
+			overlays.add(new ChunkOverlay(chunk.chunkXPos, chunk.chunkZPos, ChunkData.chunks.get(chunk)));
 		return overlays;
 	}
 
@@ -64,8 +62,8 @@ public class OverlayLoadedChunks implements IMwDataProvider {
 		int zChunk = bZ >> 4;
 		ChunkCoordIntPair chunkCoord = new ChunkCoordIntPair(xChunk, zChunk);
 		
-		if (chunks.containsKey(chunkCoord)){
-			if (chunks.get(chunkCoord))
+		if (ChunkData.chunks.containsKey(chunkCoord)){
+			if (ChunkData.chunks.get(chunkCoord))
 				return ", Force loaded";
 			else
 				return ", Player loaded";
@@ -80,7 +78,7 @@ public class OverlayLoadedChunks implements IMwDataProvider {
 
 	@Override
 	public void onDimensionChanged(int dimension, MapView mapview) {
-		PacketDispatcher.sendPacketToServer(Packet0x02RequestChunkStatus.create(dimension));
+		PacketDispatcher.sendPacketToServer(Packet_ReqChunksInDim.create(dimension));
 	}
 
 	@Override
@@ -93,11 +91,11 @@ public class OverlayLoadedChunks implements IMwDataProvider {
 
 	@Override
 	public void onOverlayActivated(MapView mapview) {
-		PacketDispatcher.sendPacketToServer(Packet0x02RequestChunkStatus.create(mapview.getDimension()));
+		PacketDispatcher.sendPacketToServer(Packet_ReqChunksInDim.create(mapview.getDimension()));
 	}
 
 	@Override
 	public void onOverlayDeactivated(MapView mapview) {
-		PacketDispatcher.sendPacketToServer(Packet0x03UnregisterPlayer.create());
+		PacketDispatcher.sendPacketToServer(Packet_UnregisterPlayer.create());
 	}
 }

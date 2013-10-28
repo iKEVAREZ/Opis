@@ -10,12 +10,12 @@ import java.util.HashMap;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.world.ChunkCoordIntPair;
 
-public class Packet0x01ChunkStatus {
+public class Packet_LoadedChunks {
 
 	public byte header;
 	public HashMap<ChunkCoordIntPair, Boolean> chunkStatus = new HashMap<ChunkCoordIntPair, Boolean>();
 	
-	public Packet0x01ChunkStatus(Packet250CustomPayload packet) {
+	public Packet_LoadedChunks(Packet250CustomPayload packet) {
 		DataInputStream inputStream = new DataInputStream(new ByteArrayInputStream(packet.data));
 		this.chunkStatus.clear();
 		
@@ -37,7 +37,7 @@ public class Packet0x01ChunkStatus {
 		DataOutputStream outputStream = new DataOutputStream(bos);
 
 		try{
-			outputStream.writeByte(0x01);
+			outputStream.writeByte(Packets.LOADED_CHUNKS);
 			outputStream.writeInt(chunks.size());
 			for (ChunkCoordIntPair chunk : chunks.keySet()){
 				outputStream.writeInt(chunk.chunkXPos);

@@ -8,11 +8,11 @@ import java.io.IOException;
 
 import net.minecraft.network.packet.Packet250CustomPayload;
 
-public class Packet0x03UnregisterPlayer {
+public class Packet_UnregisterPlayer {
 
 	public byte header;
 	
-	public Packet0x03UnregisterPlayer(Packet250CustomPayload packet) {
+	public Packet_UnregisterPlayer(Packet250CustomPayload packet) {
 		DataInputStream inputStream = new DataInputStream(new ByteArrayInputStream(packet.data));
 		
 		try{
@@ -26,7 +26,7 @@ public class Packet0x03UnregisterPlayer {
 		DataOutputStream outputStream = new DataOutputStream(bos);
 
 		try{
-			outputStream.writeByte(0x03);
+			outputStream.writeByte(Packets.UNREGISTER_USER);
 		}catch(IOException e){}
 		
 		packet.channel = "Opis";

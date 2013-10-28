@@ -6,7 +6,7 @@ import java.util.logging.Level;
 import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.constants.OverlayStatus;
 import mcp.mobius.opis.data.ChunkData;
-import mcp.mobius.opis.network.Packet0x01ChunkStatus;
+import mcp.mobius.opis.network.Packet_LoadedChunks;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.TickType;
 import cpw.mods.fml.common.network.PacketDispatcher;
@@ -44,7 +44,7 @@ public class OpisServerTickHandler implements ITickHandler {
 	private void updatePlayers(){
 		for (Player player : modOpis.proxy.playerOverlayStatus.keySet())
 			if (modOpis.proxy.playerOverlayStatus.get(player) == OverlayStatus.CHUNKSTATUS)
-				PacketDispatcher.sendPacketToPlayer( Packet0x01ChunkStatus.create(ChunkData.getLoadedChunks(modOpis.proxy.playerDimension.get(player))), player);
+				PacketDispatcher.sendPacketToPlayer( Packet_LoadedChunks.create(ChunkData.getLoadedChunks(modOpis.proxy.playerDimension.get(player))), player);
 	}
 	
 }

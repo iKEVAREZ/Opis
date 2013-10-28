@@ -26,22 +26,27 @@ public class OpisPacketHandler implements IPacketHandler {
 	public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player player) {
         if (packet.channel.equals("Opis")) {
 			byte header = this.getHeader(packet);
-			if (header == 0x01){
-				Packet0x01ChunkStatus castedPacket = new Packet0x01ChunkStatus(packet);
-				OverlayLoadedChunks.instance.chunks = castedPacket.chunkStatus;
+			if (header == Packets.LOADED_CHUNKS){
+				Packet_LoadedChunks castedPacket = new Packet_LoadedChunks(packet);
+				ChunkData.chunks = castedPacket.chunkStatus;
 			}
 			
-			else if (header == 0x02){
-				Packet0x02RequestChunkStatus castedPacket = new Packet0x02RequestChunkStatus(packet);
+			else if (header == Packets.REQ_CHUNKS_IN_DIM){
+				Packet_ReqChunksInDim castedPacket = new Packet_ReqChunksInDim(packet);
 				modOpis.proxy.playerOverlayStatus.put(player, OverlayStatus.CHUNKSTATUS);
 				modOpis.proxy.playerDimension.put(player, castedPacket.dimension);
-				PacketDispatcher.sendPacketToPlayer(Packet0x01ChunkStatus.create(ChunkData.getLoadedChunks(castedPacket.dimension)), player);
+				PacketDispatcher.sendPacketToPlayer(Packet_LoadedChunks.create(ChunkData.getLoadedChunks(castedPacket.dimension)), player);
 			}
 		
-			else if (header == 0x03){
+			else if (header == Packets.UNREGISTER_USER){
+				Packet_UnregisterPlayer castedPacket = new Packet_UnregisterPlayer(packet);
 				modOpis.proxy.playerOverlayStatus.remove(player);
 				modOpis.proxy.playerDimension.remove(player);
 			}
+
+			else if (header == Packets.REQ_CHUNKS_ALL){
+				Packet_ReqChunksAll castedPacket = new Packet_ReqChunksAll(packet);
+			}			
 			
         }
 	}

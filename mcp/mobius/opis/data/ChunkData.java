@@ -8,6 +8,9 @@ import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
 
 public class ChunkData {
+	
+	public static HashMap<ChunkCoordIntPair, Boolean> chunks = new HashMap<ChunkCoordIntPair, Boolean>();
+	
 	public static HashMap<ChunkCoordIntPair, Boolean> getLoadedChunks(int dimension){
 		HashMap<ChunkCoordIntPair, Boolean> chunkStatus = new HashMap<ChunkCoordIntPair, Boolean>();
 		WorldServer world = DimensionManager.getWorld(dimension);
