@@ -3,6 +3,7 @@ package mcp.mobius.opis.overlay;
 import java.awt.Point;
 import java.util.ArrayList;
 
+import net.minecraft.util.MathHelper;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import mapwriter.api.IMwChunkOverlay;
 import mapwriter.api.IMwDataProvider;
@@ -19,19 +20,33 @@ public class OverlayMeanTime implements IMwDataProvider {
 		Point coord;
 		int nentities;
 		double time;
+		double minTime;
+		double maxTime;
+		boolean selected;
 		
-		public ChunkOverlay(int x, int z, int nentities, double time){
-			this.coord = new Point(x, z);
+		public ChunkOverlay(int x, int z, int nentities, double time, double mintime, double maxtime, boolean selected){
+			this.coord     = new Point(x, z);
 			this.nentities = nentities;
-			this.time = time;
+			this.time      = time;
+			this.minTime   = mintime;
+			this.maxTime   = maxtime;
+			this.selected  = selected;
 		}
 		
 		@Override
 		public Point getCoordinates() {	return this.coord; }
 
 		@Override
-		public int getColor() {	return 0x5000ff00; }
-
+		public int getColor() {
+			//System.out.printf("%s\n", this.maxTime);
+			double scaledTime = this.time / this.maxTime;
+			int    red        = MathHelper.ceiling_double_int(scaledTime * 255.0);
+			int    blue       = 255 - MathHelper.ceiling_double_int(scaledTime * 255.0);
+			//System.out.printf("%s\n", red);
+			
+			return (200 << 24) + (red << 16) + (blue); 
+		}
+		
 		@Override
 		public float getFilling() {	return 1.0f; }
 
@@ -42,15 +57,30 @@ public class OverlayMeanTime implements IMwDataProvider {
 		public float getBorderWidth() { return 0.5f; }
 
 		@Override
-		public int getBorderColor() { return 0xff000000; }
+		public int getBorderColor() { return this.selected ? 0xffffffff : 0xff000000; }
 		
 	}		
+	
+	CoordinatesChunk selectedChunk = null;
 	
 	@Override
 	public ArrayList<IMwChunkOverlay> getChunksOverlay(int dim, double centerX,	double centerZ, double minX, double minZ, double maxX, double maxZ) {
 		ArrayList<IMwChunkOverlay> overlays = new ArrayList<IMwChunkOverlay>();
-		for (CoordinatesChunk chunk : ChunksData.chunkMeanTime.keySet())
-			overlays.add(new ChunkOverlay(chunk.chunkX, chunk.chunkZ, ChunksData.chunkMeanTime.get(chunk).nentities, ChunksData.chunkMeanTime.get(chunk).updateTime));
+		
+		double minTime = 9999;
+		double maxTime = 0;
+
+		for (CoordinatesChunk chunk : ChunksData.chunkMeanTime.keySet()){
+			minTime = Math.min(minTime, ChunksData.chunkMeanTime.get(chunk).updateTime);
+			maxTime = Math.max(maxTime, ChunksData.chunkMeanTime.get(chunk).updateTime);
+		}
+		
+		for (CoordinatesChunk chunk : ChunksData.chunkMeanTime.keySet()){
+			if (this.selectedChunk != null)
+				overlays.add(new ChunkOverlay(chunk.chunkX, chunk.chunkZ, ChunksData.chunkMeanTime.get(chunk).nentities, ChunksData.chunkMeanTime.get(chunk).updateTime, minTime, maxTime, chunk.equals(this.selectedChunk)));
+			else
+				overlays.add(new ChunkOverlay(chunk.chunkX, chunk.chunkZ, ChunksData.chunkMeanTime.get(chunk).nentities, ChunksData.chunkMeanTime.get(chunk).updateTime, minTime, maxTime, false));
+		}
 		return overlays;
 	}
 
@@ -68,6 +98,20 @@ public class OverlayMeanTime implements IMwDataProvider {
 
 	@Override
 	public void onMiddleClick(int dim, int bX, int bZ, MapView mapview) {
+		int xChunk = bX >> 4;
+		int zChunk = bZ >> 4;		
+		CoordinatesChunk clickedChunk = new CoordinatesChunk(dim, xChunk, zChunk); 
+		
+		if (ChunksData.chunkMeanTime.containsKey(clickedChunk)){
+			if (this.selectedChunk == null)
+				this.selectedChunk = clickedChunk;
+			else if (this.selectedChunk.equals(clickedChunk))
+				this.selectedChunk = null;
+			else
+				this.selectedChunk = clickedChunk;
+		} else {
+			this.selectedChunk = null;
+		}
 	}
 
 	@Override
