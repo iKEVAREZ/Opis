@@ -1,0 +1,73 @@
+package mcp.mobius.opis.data;
+
+import net.minecraft.tileentity.TileEntity;
+
+public final class CoordinatesBlock {
+	public final int dim, x, y, z;
+	public final int chunkX, chunkZ;
+	//public boolean isChunk;
+	
+	public CoordinatesBlock(int dim, int x, int y, int z){
+		this.dim = dim;
+		this.x = x; 
+		this.y = y; 
+		this.z = z;
+		this.chunkX = x >> 4;
+		this.chunkZ = z >> 4;
+		//this.isChunk = false;
+	}
+
+	public CoordinatesBlock(CoordinatesChunk coord){
+		this.dim = coord.dim;
+		this.chunkX = coord.chunkX;
+		this.chunkZ = coord.chunkZ;
+		
+		this.x = coord.x; 
+		this.y = coord.y; 
+		this.z = coord.z;
+	}	
+	
+	/*
+	public CoordinatesBlock(int dim, int chunkX, int chunkZ){
+		this.dim = dim;
+		this.chunkX = chunkX;
+		this.chunkZ = chunkZ;
+		this.x = chunkX << 4; 
+		this.y = 0; 
+		this.z = chunkZ << 4;		
+		this.isChunk = true;
+	}
+	*/	
+	
+	public CoordinatesBlock(TileEntity te){
+		this.dim = te.getWorldObj().provider.dimensionId;
+		this.x   = te.xCoord; 
+		this.y   = te.yCoord; 
+		this.z   = te.zCoord;
+		this.chunkX = x >> 4;
+		this.chunkZ = z >> 4;
+		//this.isChunk = false;
+	}	
+	
+	public String toString(){
+		//if (this.isChunk)
+		//	return String.format("[%6d %6d %6d]", this.dim, this.chunkX, this.chunkZ);
+		//else
+			return String.format("[%6d %6d %6d %6d]", this.dim, this.x, this.y, this.z);
+	}	
+	
+	public boolean equals(Object o)  {
+		CoordinatesBlock c = (CoordinatesBlock)o;
+		//if (this.isChunk)
+		//	return (this.dim == c.dim) && (this.chunkX == c.chunkX) && (this.chunkZ == c.chunkZ);
+		//else
+			return (this.dim == c.dim) && (this.x == c.x) && (this.y == c.y) && (this.z == c.z);
+	};
+	
+	public int hashCode() {
+		//if (this.isChunk)
+		//	return String.format("%s %s %s", this.dim, this.chunkX, this.chunkZ).hashCode();
+		//else
+			return String.format("%s %s %s %s", this.dim, this.x, this.y, this.z).hashCode();
+	};	
+}

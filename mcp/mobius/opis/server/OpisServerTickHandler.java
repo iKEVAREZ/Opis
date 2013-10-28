@@ -4,9 +4,11 @@ import java.util.EnumSet;
 import java.util.logging.Level;
 
 import mcp.mobius.opis.modOpis;
-import mcp.mobius.opis.constants.OverlayStatus;
-import mcp.mobius.opis.data.ChunkData;
+import mcp.mobius.opis.data.ChunksData;
+import mcp.mobius.opis.data.TileEntitiesData;
 import mcp.mobius.opis.network.Packet_LoadedChunks;
+import mcp.mobius.opis.network.Packet_MeanTime;
+import mcp.mobius.opis.overlay.OverlayStatus;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.TickType;
 import cpw.mods.fml.common.network.PacketDispatcher;
@@ -42,9 +44,12 @@ public class OpisServerTickHandler implements ITickHandler {
 	}
 
 	private void updatePlayers(){
-		for (Player player : modOpis.proxy.playerOverlayStatus.keySet())
+		for (Player player : modOpis.proxy.playerOverlayStatus.keySet()){
 			if (modOpis.proxy.playerOverlayStatus.get(player) == OverlayStatus.CHUNKSTATUS)
-				PacketDispatcher.sendPacketToPlayer( Packet_LoadedChunks.create(ChunkData.getLoadedChunks(modOpis.proxy.playerDimension.get(player))), player);
+				PacketDispatcher.sendPacketToPlayer( Packet_LoadedChunks.create(ChunksData.getLoadedChunks(modOpis.proxy.playerDimension.get(player))), player);
+			if (modOpis.proxy.playerOverlayStatus.get(player) == OverlayStatus.MEANTIME)
+				PacketDispatcher.sendPacketToPlayer( Packet_MeanTime.create(TileEntitiesData.getTimes(modOpis.proxy.playerDimension.get(player)), modOpis.proxy.playerDimension.get(player)), player);
+		}
 	}
 	
 }
