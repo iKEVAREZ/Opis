@@ -61,6 +61,10 @@ public class OpisPacketHandler implements IPacketHandler {
 				ChunksData.chunkMeanTime = castedPacket.chunkStatus;
 			}
 			
+			else if (header == Packets.REQ_TES_IN_CHUNK){
+				Packet_ReqTEsInChunk castedPacket = new Packet_ReqTEsInChunk(packet);
+			}
+			
         }
 	}
 
