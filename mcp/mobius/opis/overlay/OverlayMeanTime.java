@@ -228,7 +228,7 @@ public class OverlayMeanTime implements IMwDataProvider {
 		
 		table.setGeometry(new WidgetGeometry(0.0,0.0,100.0,100.0,CType.RELXY, CType.RELXY, WAlign.LEFT, WAlign.TOP));
 	    table.setColumnsAlign(WAlign.CENTER, WAlign.CENTER, WAlign.CENTER)
-		     .setColumnsTitle("Type", "Pos", "Update Time")
+		     .setColumnsTitle("\u00a7a\u00a7oType", "\u00a7a\u00a7oPos", "\u00a7a\u00a7oUpdate Time")
 			 .setColumnsWidth(50,25,25)
 			 .setRowColors(0xff808080, 0xff505050);
 

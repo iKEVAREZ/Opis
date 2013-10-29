@@ -2,18 +2,57 @@ package mcp.mobius.opis.overlay;
 
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.HashSet;
+
 import cpw.mods.fml.common.network.PacketDispatcher;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.world.ChunkCoordIntPair;
 import mapwriter.api.IMwChunkOverlay;
 import mapwriter.api.IMwDataProvider;
 import mapwriter.map.MapView;
 import mapwriter.map.mapmode.MapMode;
 import mcp.mobius.opis.data.ChunksData;
+import mcp.mobius.opis.data.CoordinatesChunk;
+import mcp.mobius.opis.data.TicketData;
+import mcp.mobius.opis.gui.events.MouseEvent;
+import mcp.mobius.opis.gui.interfaces.CType;
+import mcp.mobius.opis.gui.interfaces.IWidget;
+import mcp.mobius.opis.gui.interfaces.WAlign;
+import mcp.mobius.opis.gui.widgets.LayoutBase;
+import mcp.mobius.opis.gui.widgets.LayoutCanvas;
+import mcp.mobius.opis.gui.widgets.ViewTable;
+import mcp.mobius.opis.gui.widgets.WidgetGeometry;
 import mcp.mobius.opis.network.Packet_ReqChunksInDim;
+import mcp.mobius.opis.network.Packet_ReqTickets;
 import mcp.mobius.opis.network.Packet_UnregisterPlayer;
 
 public class OverlayLoadedChunks implements IMwDataProvider {
 
+	public class TicketTable extends ViewTable{
+		MapView mapView;
+		MapMode mapMode;
+		
+		public TicketTable(IWidget parent) { 	
+			super(parent);
+		}
+		
+		public void setMap(MapView mapView, MapMode mapMode){
+		    this.mapView = mapView;
+			this.mapMode = mapMode;			
+		}
+		
+		@Override
+		public void onMouseClick(MouseEvent event){
+			Row row = this.getRow(event.x, event.y);
+			if (row != null){
+				CoordinatesChunk coord = ((TicketData)row.getObject()).coord;
+				this.mapView.setDimension(coord.dim);
+				this.mapView.setViewCentre(coord.x, coord.z);
+			}
+		}
+	}	
+	
 	public class ChunkOverlay implements IMwChunkOverlay{
 
 		Point coord;
@@ -46,6 +85,19 @@ public class OverlayLoadedChunks implements IMwDataProvider {
 	
 	//public static OverlayLoadedChunks instance = new OverlayLoadedChunks();
 	//private OverlayLoadedChunks(){};
+	
+	CoordinatesChunk selectedChunk = null;
+	private static OverlayLoadedChunks _instance;
+	public boolean    showList = false;
+	public LayoutCanvas canvas = null;
+	
+	private OverlayLoadedChunks(){}
+	
+	public static OverlayLoadedChunks instance(){
+		if(_instance == null)
+			_instance = new OverlayLoadedChunks();			
+		return _instance;
+	}	
 	
 	@Override
 	public ArrayList<IMwChunkOverlay> getChunksOverlay(int dim, double centerX,	double centerZ, double minX, double minZ, double maxX, double maxZ) {
@@ -90,23 +142,64 @@ public class OverlayLoadedChunks implements IMwDataProvider {
 
 	@Override
 	public void onOverlayActivated(MapView mapview) {
+		this.selectedChunk = null;		
 		PacketDispatcher.sendPacketToServer(Packet_ReqChunksInDim.create(mapview.getDimension()));
+		PacketDispatcher.sendPacketToServer(Packet_ReqTickets.create());		
 	}
 
 	@Override
 	public void onOverlayDeactivated(MapView mapview) {
+		this.showList = false;
+		this.selectedChunk = null;		
 		PacketDispatcher.sendPacketToServer(Packet_UnregisterPlayer.create());
 	}
 
 	@Override
 	public void onDraw(MapView mapview, MapMode mapmode) {
-		// TODO Auto-generated method stub
+		if (this.canvas == null)
+			this.canvas = new LayoutCanvas();
 		
+		if (mapmode.marginLeft != 0){
+			this.canvas.hide();
+			return;
+		}
+		
+		if (!this.showList)
+			this.canvas.hide();
+		else{
+			this.canvas.show();		
+			this.canvas.draw();
+		}
 	}
 
+	@SideOnly(Side.CLIENT)
+	public void setupTable(HashSet<TicketData> tickets){
+		LayoutBase layout = (LayoutBase)this.canvas.addWidget("Table", new LayoutBase(null));
+		layout.setGeometry(new WidgetGeometry(100.0,0.0,300.0,100.0,CType.RELXY, CType.REL_Y, WAlign.RIGHT, WAlign.TOP));
+		layout.setBackgroundColors(0x90000000, 0x90000000);
+		
+		TicketTable  table  = (TicketTable)layout.addWidget("Table_", new TicketTable(null));
+		
+		table.setGeometry(new WidgetGeometry(0.0,0.0,100.0,100.0,CType.RELXY, CType.RELXY, WAlign.LEFT, WAlign.TOP));
+	    table.setColumnsAlign(WAlign.CENTER, WAlign.CENTER, WAlign.CENTER)
+		     .setColumnsTitle("\u00a7a\u00a7oPos", "\u00a7a\u00a7oMod", "\u00a7a\u00a7oChunks")
+			 .setColumnsWidth(50,25,25)
+			 .setRowColors(0xff808080, 0xff505050);
+
+		
+		for (TicketData data : tickets)
+			table.addRow(data, String.format("[%s %s %s]", data.coord.dim, data.coord.chunkX, data.coord.chunkZ), "\u00a79\u00a7o" + data.modID, String.valueOf(data.nchunks));
+
+		this.showList = true;
+	}	
+	
 	@Override
 	public boolean onMouseInput(MapView mapview, MapMode mapmode) {
-		// TODO Auto-generated method stub
+		if (this.canvas.shouldRender() && ((LayoutCanvas)this.canvas).hasWidgetAtCursor()){
+			((TicketTable)this.canvas.getWidget("Table").getWidget("Table_")).setMap(mapview, mapmode);
+			this.canvas.handleMouseInput();
+			return true;
+		}
 		return false;
 	}
 }

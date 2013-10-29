@@ -1,16 +1,24 @@
 package mcp.mobius.opis.data;
 
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Set;
 
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.common.ForgeChunkManager.Ticket;
 
 public class ChunksData {
 	
-	public static HashMap<ChunkCoordIntPair, Boolean> chunksLoad    = new HashMap<ChunkCoordIntPair, Boolean>();
+
+	
+	public static HashMap<ChunkCoordIntPair, Boolean>       chunksLoad    = new HashMap<ChunkCoordIntPair, Boolean>();
 	public static HashMap<CoordinatesChunk, ChunkStatsData> chunkMeanTime = new HashMap<CoordinatesChunk, ChunkStatsData>();
+	public static ArrayList<TicketData> tickets = new ArrayList<TicketData>();
 
 	public static HashMap<Integer, HashMap<ChunkCoordIntPair, Boolean>> getAllLoadedChunks(){
 		HashMap<Integer, HashMap<ChunkCoordIntPair, Boolean>> chunkStatus = new HashMap<Integer, HashMap<ChunkCoordIntPair, Boolean>>();
@@ -34,5 +42,14 @@ public class ChunksData {
 		}
 		
 		return chunkStatus;
+	}
+
+	public static HashSet<TicketData> getTickets(){
+		HashSet<TicketData> tickets = new HashSet<TicketData>();
+		for (int dim : DimensionManager.getIDs())
+			for (Ticket ticket : DimensionManager.getWorld(dim).getPersistentChunks().values())
+				tickets.add(new TicketData(ticket));
+		
+		return tickets;
 	}
 }

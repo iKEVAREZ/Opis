@@ -3,9 +3,12 @@ package mcp.mobius.opis.network;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
+
 import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.data.ChunksData;
+import mcp.mobius.opis.data.TicketData;
 import mcp.mobius.opis.data.TileEntitiesData;
+import mcp.mobius.opis.overlay.OverlayLoadedChunks;
 import mcp.mobius.opis.overlay.OverlayMeanTime;
 import mcp.mobius.opis.overlay.OverlayStatus;
 import net.minecraft.network.INetworkManager;
@@ -35,6 +38,11 @@ public class OpisPacketHandler implements IPacketHandler {
 			else if (header == Packets.TILEENTITIES_LIST){
 				Packet_TileEntitiesList castedPacket = new Packet_TileEntitiesList(packet);
 				OverlayMeanTime.instance().setupTable(castedPacket.entities);
+			}
+
+			else if (header == Packets.TICKETS){
+				Packet_Tickets castedPacket = new Packet_Tickets(packet);
+				OverlayLoadedChunks.instance().setupTable(castedPacket.tickets);
 			}			
 			
 			// SERVER RECEIVED PACKETS
@@ -65,6 +73,11 @@ public class OpisPacketHandler implements IPacketHandler {
 			else if (header == Packets.REQ_TES_IN_CHUNK){
 				Packet_ReqTEsInChunk castedPacket = new Packet_ReqTEsInChunk(packet);
 				PacketDispatcher.sendPacketToPlayer(Packet_TileEntitiesList.create(TileEntitiesData.getInChunk(castedPacket.chunk)), player);
+			}
+			
+			else if (header == Packets.REQ_TICKETS){
+				Packet_ReqTickets castedPacket = new Packet_ReqTickets(packet);
+				PacketDispatcher.sendPacketToPlayer(Packet_Tickets.create(ChunksData.getTickets()), player);
 			}
 			
         }
