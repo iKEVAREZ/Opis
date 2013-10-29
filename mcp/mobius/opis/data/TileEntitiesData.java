@@ -1,5 +1,6 @@
 package mcp.mobius.opis.data;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import net.minecraft.tileentity.TileEntity;
@@ -17,14 +18,13 @@ public class TileEntitiesData {
 		
 		if (!(references.containsKey(coord))){
 			references.put(coord, te.getClass());
-			stats.put(coord, new TileEntityStatsData());
+			stats.put(coord, new TileEntityStatsData(coord, te.getClass().getName()));
 		}
 			
 		stats.get(coord).addMeasure(timing);
 	}
 	
 	public static HashMap<CoordinatesChunk, ChunkStatsData> getTimes(int dim){
-		
 		HashMap<CoordinatesChunk, ChunkStatsData> chunks = new HashMap<CoordinatesChunk, ChunkStatsData>();
 		
 		for (CoordinatesBlock coord : TileEntitiesData.stats.keySet()){
@@ -36,12 +36,19 @@ public class TileEntitiesData {
 				
 				chunks.get(coordC).nentities  += 1;
 				chunks.get(coordC).updateTime += stats.get(coord).getGeometricMean();
-			
 			}
 		}
-		
 		return chunks;
 	}
 	
-	
+	public static ArrayList<TileEntityStatsData> getInChunk(CoordinatesChunk coord){
+		ArrayList<TileEntityStatsData> returnList = new ArrayList<TileEntityStatsData>();
+		
+		for (CoordinatesBlock tecoord : TileEntitiesData.stats.keySet()){
+			if (coord.equals(new CoordinatesChunk(tecoord)))
+				returnList.add(TileEntitiesData.stats.get(tecoord));
+		}
+		
+		return returnList;
+	}
 }

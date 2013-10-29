@@ -1,8 +1,12 @@
 package mcp.mobius.opis.data;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+
 import net.minecraft.tileentity.TileEntity;
 
-public final class CoordinatesBlock {
+public final class CoordinatesBlock implements ISerializable {
 	public final int dim, x, y, z;
 	public final int chunkX, chunkZ;
 	//public boolean isChunk;
@@ -69,5 +73,19 @@ public final class CoordinatesBlock {
 		//	return String.format("%s %s %s", this.dim, this.chunkX, this.chunkZ).hashCode();
 		//else
 			return String.format("%s %s %s %s", this.dim, this.x, this.y, this.z).hashCode();
-	};	
+	}
+
+	@Override
+	public void writeToStream(DataOutputStream stream) throws IOException {
+		stream.writeInt(this.dim);
+		stream.writeInt(this.x);
+		stream.writeInt(this.y);
+		stream.writeInt(this.z);
+	}
+
+	public static CoordinatesBlock readFromStream(DataInputStream stream) throws IOException {
+		return new CoordinatesBlock(stream.readInt(), stream.readInt(), stream.readInt(), stream.readInt());
+	}
+	
+	
 }

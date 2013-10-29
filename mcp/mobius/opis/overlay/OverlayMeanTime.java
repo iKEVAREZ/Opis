@@ -11,6 +11,7 @@ import mapwriter.map.MapView;
 import mcp.mobius.opis.data.ChunksData;
 import mcp.mobius.opis.data.CoordinatesChunk;
 import mcp.mobius.opis.network.Packet_ReqMeanTimeInDim;
+import mcp.mobius.opis.network.Packet_ReqTEsInChunk;
 import mcp.mobius.opis.network.Packet_UnregisterPlayer;
 
 public class OverlayMeanTime implements IMwDataProvider {
@@ -112,6 +113,10 @@ public class OverlayMeanTime implements IMwDataProvider {
 		} else {
 			this.selectedChunk = null;
 		}
+		
+		if (this.selectedChunk != null)
+			PacketDispatcher.sendPacketToServer(Packet_ReqTEsInChunk.create(this.selectedChunk));
+
 	}
 
 	@Override

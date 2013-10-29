@@ -7,7 +7,7 @@ public class ChunkStatsData {
 	public ChunkStatsData(){}
 	
 	public ChunkStatsData(int nentities, double updateTime){
-		this.nentities = nentities;
+		this.nentities  = nentities;
 		this.updateTime = updateTime;
 	}
 }
