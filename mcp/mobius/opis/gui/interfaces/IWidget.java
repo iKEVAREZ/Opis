@@ -41,6 +41,7 @@ public interface IWidget {
 	IWidget getWidget(String name);
 	IWidget delWidget(String name);	
 	IWidget getWidgetAtCoordinates(double posX, double posY);
+	IWidget getWidgetAtLayer(double posX, double posY, int layer);	
 	
 	boolean isWidgetAtCoordinates(double posx, double posy);
 	

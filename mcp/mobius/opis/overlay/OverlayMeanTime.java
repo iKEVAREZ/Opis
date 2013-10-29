@@ -15,8 +15,10 @@ import mapwriter.api.IMwDataProvider;
 import mapwriter.map.MapView;
 import mapwriter.map.mapmode.MapMode;
 import mcp.mobius.opis.data.ChunksData;
+import mcp.mobius.opis.data.CoordinatesBlock;
 import mcp.mobius.opis.data.CoordinatesChunk;
 import mcp.mobius.opis.data.TileEntityStatsData;
+import mcp.mobius.opis.gui.events.MouseEvent;
 import mcp.mobius.opis.gui.interfaces.CType;
 import mcp.mobius.opis.gui.interfaces.IWidget;
 import mcp.mobius.opis.gui.interfaces.WAlign;
@@ -30,6 +32,29 @@ import mcp.mobius.opis.network.Packet_UnregisterPlayer;
 
 public class OverlayMeanTime implements IMwDataProvider {
 
+	public class EntitiesTable extends ViewTable{
+		MapView mapView;
+		MapMode mapMode;
+		
+		public EntitiesTable(IWidget parent) { 	
+			super(parent);
+		}
+		
+		public void setMap(MapView mapView, MapMode mapMode){
+		    this.mapView = mapView;
+			this.mapMode = mapMode;			
+		}
+		
+		@Override
+		public void onMouseClick(MouseEvent event){
+			Row row = this.getRow(event.x, event.y);
+			if (row != null){
+				CoordinatesBlock coord = ((TileEntityStatsData)row.getObject()).getCoordinates();
+				this.mapView.setViewCentre(coord.x, coord.z);
+			}
+		}
+	}
+	
 	public class ChunkOverlay implements IMwChunkOverlay{
 
 		Point coord;
@@ -199,7 +224,7 @@ public class OverlayMeanTime implements IMwDataProvider {
 		layout.setGeometry(new WidgetGeometry(100.0,0.0,300.0,100.0,CType.RELXY, CType.REL_Y, WAlign.RIGHT, WAlign.TOP));
 		layout.setBackgroundColors(0x90000000, 0x90000000);
 		
-		ViewTable  table  = (ViewTable)layout.addWidget("Table_", new ViewTable(null));
+		EntitiesTable  table  = (EntitiesTable)layout.addWidget("Table_", new EntitiesTable(null));
 		
 		table.setGeometry(new WidgetGeometry(0.0,0.0,100.0,100.0,CType.RELXY, CType.RELXY, WAlign.LEFT, WAlign.TOP));
 	    table.setColumnsAlign(WAlign.CENTER, WAlign.CENTER, WAlign.CENTER)
@@ -213,12 +238,13 @@ public class OverlayMeanTime implements IMwDataProvider {
 			table.addRow(data, name[name.length - 1], String.format("[ %s %s %s ]", data.getCoordinates().x, data.getCoordinates().y, data.getCoordinates().z),  String.format("%.5f ms",data.getGeometricMean()/1000.0));
 		}
 
-		this.showList = true;		
+		this.showList = true;
 	}
 
 	@Override
 	public boolean onMouseInput(MapView mapview, MapMode mapmode) {
 		if (this.canvas.shouldRender() && ((LayoutCanvas)this.canvas).hasWidgetAtCursor()){
+			((EntitiesTable)this.canvas.getWidget("Table").getWidget("Table_")).setMap(mapview, mapmode);
 			this.canvas.handleMouseInput();
 			return true;
 		}

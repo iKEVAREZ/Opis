@@ -100,6 +100,29 @@ public abstract class WidgetBase implements IWidget {
 	}
 
 	@Override
+	public IWidget getWidgetAtLayer(double posX, double posY, int layer){
+		if (layer == 0) return this;
+		
+		int depth = 0;
+		return this._getWidgetAtLayer(posX, posY, layer, depth + 1);
+	}
+
+	private IWidget _getWidgetAtLayer(double posX, double posY, int layer, int depth){
+		for (IWidget widget : this.widgets.values()){
+			if ((posX >=  widget.getPos().getX()) && 
+					(posX <=  widget.getPos().getX() + widget.getSize().getX()) &&
+					(posY >=  widget.getPos().getY()) &&
+					(posY <=  widget.getPos().getY() + widget.getSize().getY())){
+				if (depth == layer)
+					return widget;
+				else
+					return ((WidgetBase)widget)._getWidgetAtLayer(posX, posY, layer, depth + 1);			
+			}
+		}
+		return null;
+	}
+	
+	@Override
 	public IWidget getWidgetAtCoordinates(double posX, double posY){
 		for (IWidget widget : new ReverseIterator<IWidget>(this.widgets.values()))
 			if ((posX >=  widget.getPos().getX()) && 

@@ -223,4 +223,9 @@ public class ViewTable extends WidgetBase{
 		
 		return this;
 	}
+	
+	public Row getRow(double x, double y){
+		return (Row)this.getWidgetAtLayer(x, y, 4);
+	}
+	
 }
