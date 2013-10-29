@@ -3,21 +3,13 @@ package mcp.mobius.opis.network;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Set;
-import java.util.logging.Level;
-
 import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.data.ChunksData;
 import mcp.mobius.opis.data.TileEntitiesData;
-import mcp.mobius.opis.data.TileEntityStatsData;
-import mcp.mobius.opis.overlay.OverlayLoadedChunks;
+import mcp.mobius.opis.overlay.OverlayMeanTime;
 import mcp.mobius.opis.overlay.OverlayStatus;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet250CustomPayload;
-import net.minecraft.world.ChunkCoordIntPair;
-import net.minecraft.world.WorldServer;
-import net.minecraftforge.common.DimensionManager;
 import cpw.mods.fml.common.network.IPacketHandler;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
@@ -42,10 +34,7 @@ public class OpisPacketHandler implements IPacketHandler {
 
 			else if (header == Packets.TILEENTITIES_LIST){
 				Packet_TileEntitiesList castedPacket = new Packet_TileEntitiesList(packet);
-				/*
-				for (TileEntityStatsData data : castedPacket.entities)
-					System.out.printf("%s %.5f ms\n", data.getType(), data.getGeometricMean() / 1000.0);
-				 */
+				OverlayMeanTime.instance().setupTable(castedPacket.entities);
 			}			
 			
 			// SERVER RECEIVED PACKETS

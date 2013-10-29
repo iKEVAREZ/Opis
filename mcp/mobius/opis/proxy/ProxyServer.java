@@ -3,8 +3,6 @@ package mcp.mobius.opis.proxy;
 import java.util.HashMap;
 
 import cpw.mods.fml.common.network.Player;
-import mcp.mobius.mobiuscore.profiler.ProfilerRegistrar;
-import mcp.mobius.opis.data.ProfilerTileEntities;
 import mcp.mobius.opis.overlay.OverlayStatus;
 
 public class ProxyServer {

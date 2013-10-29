@@ -5,12 +5,21 @@ import java.util.ArrayList;
 
 import net.minecraft.util.MathHelper;
 import cpw.mods.fml.common.network.PacketDispatcher;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import mapwriter.api.IMwChunkOverlay;
 import mapwriter.api.IMwDataProvider;
 import mapwriter.map.MapView;
 import mapwriter.map.mapmode.MapMode;
 import mcp.mobius.opis.data.ChunksData;
 import mcp.mobius.opis.data.CoordinatesChunk;
+import mcp.mobius.opis.data.TileEntityStatsData;
+import mcp.mobius.opis.gui.interfaces.CType;
+import mcp.mobius.opis.gui.interfaces.WAlign;
+import mcp.mobius.opis.gui.widgets.LayoutBase;
+import mcp.mobius.opis.gui.widgets.LayoutCanvas;
+import mcp.mobius.opis.gui.widgets.ViewTable;
+import mcp.mobius.opis.gui.widgets.WidgetGeometry;
 import mcp.mobius.opis.network.Packet_ReqMeanTimeInDim;
 import mcp.mobius.opis.network.Packet_ReqTEsInChunk;
 import mcp.mobius.opis.network.Packet_UnregisterPlayer;
@@ -64,6 +73,19 @@ public class OverlayMeanTime implements IMwDataProvider {
 	}		
 	
 	CoordinatesChunk selectedChunk = null;
+	private static OverlayMeanTime _instance;
+	public boolean    showList = false;
+	public LayoutCanvas canvas = null;
+	
+	private OverlayMeanTime(){
+
+	}
+	
+	public static OverlayMeanTime instance(){
+		if(_instance == null)
+			_instance = new OverlayMeanTime();			
+		return _instance;
+	}
 	
 	@Override
 	public ArrayList<IMwChunkOverlay> getChunksOverlay(int dim, double centerX,	double centerZ, double minX, double minZ, double maxX, double maxZ) {
@@ -100,6 +122,8 @@ public class OverlayMeanTime implements IMwDataProvider {
 
 	@Override
 	public void onMiddleClick(int dim, int bX, int bZ, MapView mapview) {
+		this.showList = false;
+		
 		int xChunk = bX >> 4;
 		int zChunk = bZ >> 4;		
 		CoordinatesChunk clickedChunk = new CoordinatesChunk(dim, xChunk, zChunk); 
@@ -140,13 +164,48 @@ public class OverlayMeanTime implements IMwDataProvider {
 
 	@Override
 	public void onOverlayDeactivated(MapView mapview) {
+		this.showList = false;
 		PacketDispatcher.sendPacketToServer(Packet_UnregisterPlayer.create());		
 	}
 
 	@Override
 	public void onDraw(MapView mapview, MapMode mapmode) {
-		// TODO Auto-generated method stub
+		if (this.canvas == null)
+			this.canvas = new LayoutCanvas();
 		
+		if (mapmode.marginLeft != 0){
+			this.canvas.hide();
+			return;
+		}
+		
+		if (!this.showList)
+			this.canvas.hide();
+		else{
+			this.canvas.show();		
+			this.canvas.draw();
+		}
+		
+	}
+	
+	@SideOnly(Side.CLIENT)
+	public void setupTable(ArrayList<TileEntityStatsData> entities){
+		LayoutBase layout = (LayoutBase)this.canvas.addWidget("Table", new LayoutBase(null));
+		layout.setGeometry(new WidgetGeometry(100.0,0.0,300.0,100.0,CType.RELXY, CType.REL_Y, WAlign.RIGHT, WAlign.TOP));
+		
+		ViewTable  table  = (ViewTable)layout.addWidget("Table_", new ViewTable(null));
+		
+		table.setGeometry(new WidgetGeometry(0.0,0.0,100.0,100.0,CType.RELXY, CType.RELXY, WAlign.LEFT, WAlign.TOP));
+	    table.setColumnsAlign(WAlign.CENTER, WAlign.CENTER, WAlign.CENTER)
+		     .setColumnsTitle("Type", "Pos", "Update Time")
+			 .setColumnsWidth(50,25,25);
+
+		
+		for (TileEntityStatsData data : entities){
+			String[] name = data.getType().split("\\.");
+			table.addRow(name[name.length - 1], String.format("[ %s %s %s ]", data.getCoordinates().x, data.getCoordinates().y, data.getCoordinates().z),  String.format("%.5f ms",data.getGeometricMean()/1000.0));
+		}
+
+		this.showList = true;		
 	}
 
 }

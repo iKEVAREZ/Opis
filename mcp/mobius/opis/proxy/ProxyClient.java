@@ -10,6 +10,6 @@ public class ProxyClient extends ProxyServer {
 	public void init(){
 		//MwAPI.registerDataProvider("Loaded chunks", OverlayLoadedChunks.instance);
 		MwAPI.registerDataProvider("Loaded chunks", new OverlayLoadedChunks());
-		MwAPI.registerDataProvider("Mean time", new OverlayMeanTime());
+		MwAPI.registerDataProvider("Mean time", OverlayMeanTime.instance());
 	}
 }

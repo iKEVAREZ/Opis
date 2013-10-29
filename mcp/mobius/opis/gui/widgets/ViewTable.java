@@ -46,8 +46,8 @@ public class ViewTable extends WidgetBase{
 		String[] texts;
 		WAlign[] aligns;
 		boolean  init = false;
-		int bgcolor1 = 0x50505050;
-		int bgcolor2 = 0x50505050;
+		int bgcolor1 = 0xff505050;
+		int bgcolor2 = 0xff505050;
 		
 		
 		public Row(IWidget parent){
@@ -189,7 +189,7 @@ public class ViewTable extends WidgetBase{
 		newRow.setColumnsText(strings);
 		newRow.setColumnsAlign(this.aligns);
 		if(this.nrows % 2 == 1)
-			newRow.setColors(0x50808080, 0x50808080);
+			newRow.setColors(0xff808080, 0xff808080);
 		newRow.setGeometry(new WidgetGeometry(0.0, 16*this.nrows, 100.0, 16, CType.REL_X, CType.REL_X, WAlign.LEFT, WAlign.TOP));
 		
 		tableLayout.addWidget(String.format("Row_%03d", this.nrows), newRow);

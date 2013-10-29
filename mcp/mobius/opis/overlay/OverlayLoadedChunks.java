@@ -2,8 +2,6 @@ package mcp.mobius.opis.overlay;
 
 import java.awt.Point;
 import java.util.ArrayList;
-import java.util.HashMap;
-
 import cpw.mods.fml.common.network.PacketDispatcher;
 import net.minecraft.world.ChunkCoordIntPair;
 import mapwriter.api.IMwChunkOverlay;

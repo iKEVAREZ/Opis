@@ -1,8 +1,6 @@
 package mcp.mobius.opis.server;
 
 import java.util.EnumSet;
-import java.util.logging.Level;
-
 import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.data.ChunksData;
 import mcp.mobius.opis.data.TileEntitiesData;

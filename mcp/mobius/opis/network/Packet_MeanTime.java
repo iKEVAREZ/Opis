@@ -10,7 +10,6 @@ import java.util.HashMap;
 import mcp.mobius.opis.data.ChunkStatsData;
 import mcp.mobius.opis.data.CoordinatesChunk;
 import net.minecraft.network.packet.Packet250CustomPayload;
-import net.minecraft.world.ChunkCoordIntPair;
 
 public class Packet_MeanTime {
 
