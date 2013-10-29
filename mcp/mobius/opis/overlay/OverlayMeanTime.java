@@ -3,6 +3,9 @@ package mcp.mobius.opis.overlay;
 import java.awt.Point;
 import java.util.ArrayList;
 
+import org.lwjgl.input.Mouse;
+
+import net.minecraft.client.Minecraft;
 import net.minecraft.util.MathHelper;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
@@ -15,6 +18,7 @@ import mcp.mobius.opis.data.ChunksData;
 import mcp.mobius.opis.data.CoordinatesChunk;
 import mcp.mobius.opis.data.TileEntityStatsData;
 import mcp.mobius.opis.gui.interfaces.CType;
+import mcp.mobius.opis.gui.interfaces.IWidget;
 import mcp.mobius.opis.gui.interfaces.WAlign;
 import mcp.mobius.opis.gui.widgets.LayoutBase;
 import mcp.mobius.opis.gui.widgets.LayoutCanvas;
@@ -159,12 +163,14 @@ public class OverlayMeanTime implements IMwDataProvider {
 
 	@Override
 	public void onOverlayActivated(MapView mapview) {
+		this.selectedChunk = null;
 		PacketDispatcher.sendPacketToServer(Packet_ReqMeanTimeInDim.create(mapview.getDimension()));			
 	}
 
 	@Override
 	public void onOverlayDeactivated(MapView mapview) {
 		this.showList = false;
+		this.selectedChunk = null;
 		PacketDispatcher.sendPacketToServer(Packet_UnregisterPlayer.create());		
 	}
 
@@ -191,6 +197,7 @@ public class OverlayMeanTime implements IMwDataProvider {
 	public void setupTable(ArrayList<TileEntityStatsData> entities){
 		LayoutBase layout = (LayoutBase)this.canvas.addWidget("Table", new LayoutBase(null));
 		layout.setGeometry(new WidgetGeometry(100.0,0.0,300.0,100.0,CType.RELXY, CType.REL_Y, WAlign.RIGHT, WAlign.TOP));
+		layout.setBackgroundColors(0x90000000, 0x90000000);
 		
 		ViewTable  table  = (ViewTable)layout.addWidget("Table_", new ViewTable(null));
 		
@@ -207,6 +214,20 @@ public class OverlayMeanTime implements IMwDataProvider {
 		}
 
 		this.showList = true;		
+	}
+
+	@Override
+	public boolean onMouseInput() {
+		if (this.canvas.shouldRender()){
+			double x = (double)Mouse.getEventX() * (double)this.canvas.getSize().getX() / (double)Minecraft.getMinecraft().displayWidth;
+			double y = (double)this.canvas.getSize().getY() - (double)Mouse.getEventY() * (double)this.canvas.getSize().getY() / (double)Minecraft.getMinecraft().displayHeight - 1.0;			
+			IWidget widget = this.canvas.getWidgetAtCoordinates(x, y);
+			if (widget != null && !widget.equals(this.canvas)){
+				this.canvas.handleMouseInput();
+				return true;
+			}
+		}
+		return false;
 	}
 
 }

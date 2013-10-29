@@ -103,4 +103,10 @@ public class OverlayLoadedChunks implements IMwDataProvider {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public boolean onMouseInput() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }
