@@ -9,6 +9,7 @@ import net.minecraft.world.ChunkCoordIntPair;
 import mapwriter.api.IMwChunkOverlay;
 import mapwriter.api.IMwDataProvider;
 import mapwriter.map.MapView;
+import mapwriter.map.mapmode.MapMode;
 import mcp.mobius.opis.data.ChunksData;
 import mcp.mobius.opis.network.Packet_ReqChunksInDim;
 import mcp.mobius.opis.network.Packet_UnregisterPlayer;
@@ -97,5 +98,11 @@ public class OverlayLoadedChunks implements IMwDataProvider {
 	@Override
 	public void onOverlayDeactivated(MapView mapview) {
 		PacketDispatcher.sendPacketToServer(Packet_UnregisterPlayer.create());
+	}
+
+	@Override
+	public void onDraw(MapView mapview, MapMode mapmode) {
+		// TODO Auto-generated method stub
+		
 	}
 }

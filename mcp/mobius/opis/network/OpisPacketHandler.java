@@ -42,8 +42,10 @@ public class OpisPacketHandler implements IPacketHandler {
 
 			else if (header == Packets.TILEENTITIES_LIST){
 				Packet_TileEntitiesList castedPacket = new Packet_TileEntitiesList(packet);
+				/*
 				for (TileEntityStatsData data : castedPacket.entities)
 					System.out.printf("%s %.5f ms\n", data.getType(), data.getGeometricMean() / 1000.0);
+				 */
 			}			
 			
 			// SERVER RECEIVED PACKETS
