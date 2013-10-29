@@ -129,6 +129,8 @@ public class ViewTable extends WidgetBase{
 	String[] texts;
 	WAlign[] aligns;
 	boolean  init = false;		
+	int rowColorOdd  = 0x50505050;
+	int rowColorEven = 0x50808080;
 	
 	public ViewTable(IWidget parent){
 		super(parent);
@@ -151,6 +153,12 @@ public class ViewTable extends WidgetBase{
 		
 		this.widths = widths;
 		((Row)this.getWidget("Titles")).setColumnsWidth(widths);
+		return this;
+	}
+	
+	public ViewTable setRowColors(int even, int odd){
+		this.rowColorEven = even;
+		this.rowColorOdd  = odd;
 		return this;
 	}
 	
@@ -189,7 +197,9 @@ public class ViewTable extends WidgetBase{
 		newRow.setColumnsText(strings);
 		newRow.setColumnsAlign(this.aligns);
 		if(this.nrows % 2 == 1)
-			newRow.setColors(0xff808080, 0xff808080);
+			newRow.setColors(this.rowColorOdd, this.rowColorOdd);
+		else
+			newRow.setColors(this.rowColorEven, this.rowColorEven);
 		newRow.setGeometry(new WidgetGeometry(0.0, 16*this.nrows, 100.0, 16, CType.REL_X, CType.REL_X, WAlign.LEFT, WAlign.TOP));
 		
 		tableLayout.addWidget(String.format("Row_%03d", this.nrows), newRow);
