@@ -217,15 +217,10 @@ public class OverlayMeanTime implements IMwDataProvider {
 	}
 
 	@Override
-	public boolean onMouseInput() {
-		if (this.canvas.shouldRender()){
-			double x = (double)Mouse.getEventX() * (double)this.canvas.getSize().getX() / (double)Minecraft.getMinecraft().displayWidth;
-			double y = (double)this.canvas.getSize().getY() - (double)Mouse.getEventY() * (double)this.canvas.getSize().getY() / (double)Minecraft.getMinecraft().displayHeight - 1.0;			
-			IWidget widget = this.canvas.getWidgetAtCoordinates(x, y);
-			if (widget != null && !widget.equals(this.canvas)){
-				this.canvas.handleMouseInput();
-				return true;
-			}
+	public boolean onMouseInput(MapView mapview, MapMode mapmode) {
+		if (this.canvas.shouldRender() && ((LayoutCanvas)this.canvas).hasWidgetAtCursor()){
+			this.canvas.handleMouseInput();
+			return true;
 		}
 		return false;
 	}

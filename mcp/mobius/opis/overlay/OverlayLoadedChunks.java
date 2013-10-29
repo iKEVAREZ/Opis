@@ -105,7 +105,7 @@ public class OverlayLoadedChunks implements IMwDataProvider {
 	}
 
 	@Override
-	public boolean onMouseInput() {
+	public boolean onMouseInput(MapView mapview, MapMode mapmode) {
 		// TODO Auto-generated method stub
 		return false;
 	}

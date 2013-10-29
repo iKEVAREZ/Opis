@@ -119,4 +119,14 @@ public class LayoutCanvas extends LayoutBase{
     	else
     		super.onMouseDrag(event);
     }
+    
+    public boolean hasWidgetAtCursor(){
+		double x = (double)Mouse.getEventX() * (double)this.getSize().getX() / (double)this.mc.displayWidth;
+		double y = (double)this.getSize().getY() - (double)Mouse.getEventY() * (double)this.getSize().getY() / (double)this.mc.displayHeight - 1.0;			
+		IWidget widget = this.getWidgetAtCoordinates(x, y);
+		if (widget != null && !widget.equals(this)){
+			return true;
+		}
+		return false;
+    }
 }
