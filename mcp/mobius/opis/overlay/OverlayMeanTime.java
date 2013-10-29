@@ -203,7 +203,7 @@ public class OverlayMeanTime implements IMwDataProvider {
 		
 		for (TileEntityStatsData data : entities){
 			String[] name = data.getType().split("\\.");
-			table.addRow(name[name.length - 1], String.format("[ %s %s %s ]", data.getCoordinates().x, data.getCoordinates().y, data.getCoordinates().z),  String.format("%.5f ms",data.getGeometricMean()/1000.0));
+			table.addRow(data, name[name.length - 1], String.format("[ %s %s %s ]", data.getCoordinates().x, data.getCoordinates().y, data.getCoordinates().z),  String.format("%.5f ms",data.getGeometricMean()/1000.0));
 		}
 
 		this.showList = true;		

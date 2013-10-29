@@ -48,7 +48,7 @@ public class ViewTable extends WidgetBase{
 		boolean  init = false;
 		int bgcolor1 = 0xff505050;
 		int bgcolor2 = 0xff505050;
-		
+		Object obj;
 		
 		public Row(IWidget parent){
 			super(parent);
@@ -56,6 +56,15 @@ public class ViewTable extends WidgetBase{
 			this.addWidget("Background", new LayoutBase(null)).setGeometry(new WidgetGeometry(50.0, 50.0, 100.0, 100.0, CType.RELXY, CType.RELXY, WAlign.CENTER, WAlign.CENTER));
 			((LayoutBase)this.getWidget("Background")).setBackgroundColors(this.bgcolor1, this.bgcolor2);
 			
+		}
+		
+		public Row attachObject(Object obj){
+			this.obj = obj;
+			return this;
+		}
+
+		public Object getObject(){
+			return this.obj;
 		}
 		
 		public Row setColumnsWidth(double... widths){
@@ -189,6 +198,11 @@ public class ViewTable extends WidgetBase{
 	}			
 	
 	public ViewTable addRow(String...strings ){
+		this.addRow(null, strings);
+		return this;
+	}
+		
+	public ViewTable addRow(Object obj, String...strings){		
 		IWidget tableLayout = ((ViewportScrollable)(this.getWidget("Viewport"))).getAttachedWidget();
 		tableLayout.setSize(100.0, (this.nrows + 1) * 16);
 		
@@ -201,6 +215,7 @@ public class ViewTable extends WidgetBase{
 		else
 			newRow.setColors(this.rowColorEven, this.rowColorEven);
 		newRow.setGeometry(new WidgetGeometry(0.0, 16*this.nrows, 100.0, 16, CType.REL_X, CType.REL_X, WAlign.LEFT, WAlign.TOP));
+		newRow.attachObject(obj);
 		
 		tableLayout.addWidget(String.format("Row_%03d", this.nrows), newRow);
 		
