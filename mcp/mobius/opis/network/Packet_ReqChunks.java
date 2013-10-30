@@ -13,6 +13,7 @@ import mcp.mobius.opis.data.holders.CoordinatesChunk;
 public class Packet_ReqChunks {
 
 	public byte header;
+	public int dim;
 	public ArrayList<CoordinatesChunk> chunks = new ArrayList<CoordinatesChunk>();
 	
 	public Packet_ReqChunks(Packet250CustomPayload packet) {
@@ -20,6 +21,7 @@ public class Packet_ReqChunks {
 		
 		try{
 			this.header    = inputStream.readByte();
+			this.dim       = inputStream.readInt();
 			int nchunks    = inputStream.readInt();
 			for (int i = 0; i < nchunks; i++)
 				chunks.add(CoordinatesChunk.readFromStream(inputStream));
@@ -27,13 +29,14 @@ public class Packet_ReqChunks {
 		} catch (IOException e){}				
 	}
 
-	public static Packet250CustomPayload create(ArrayList<CoordinatesChunk> chunks){
+	public static Packet250CustomPayload create(int dim, ArrayList<CoordinatesChunk> chunks){
 		Packet250CustomPayload packet = new Packet250CustomPayload();
 		ByteArrayOutputStream bos     = new ByteArrayOutputStream(1);
 		DataOutputStream outputStream = new DataOutputStream(bos);
 
 		try{
 			outputStream.writeByte(Packets.REQ_CHUNKS);
+			outputStream.writeInt(dim);
 			outputStream.writeInt(chunks.size());
 			for(CoordinatesChunk coord : chunks)
 				coord.writeToStream(outputStream);

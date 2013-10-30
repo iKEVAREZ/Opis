@@ -5,6 +5,7 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import mapwriter.Mw;
 import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.data.ChunkManager;
 import mcp.mobius.opis.data.TileEntityManager;
@@ -16,6 +17,8 @@ import mcp.mobius.opis.overlay.OverlayStatus;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.network.packet.Packet56MapChunks;
+import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.DimensionManager;
 import cpw.mods.fml.common.network.IPacketHandler;
 import cpw.mods.fml.common.network.PacketDispatcher;
@@ -48,6 +51,11 @@ public class OpisPacketHandler implements IPacketHandler {
 				Packet_Tickets castedPacket = new Packet_Tickets(packet);
 				OverlayLoadedChunks.instance().setupTable(castedPacket.tickets);
 			}			
+
+			else if (header == Packets.CHUNKS){
+				Packet_Chunks castedPacket = new Packet_Chunks(packet);
+				Mw.instance.chunkManager.forceChunks(castedPacket.chunks);
+			}						
 			
 			// SERVER RECEIVED PACKETS
 			else if (header == Packets.UNREGISTER_USER){
@@ -82,12 +90,16 @@ public class OpisPacketHandler implements IPacketHandler {
 			
 			else if (header == Packets.REQ_CHUNKS){
 				Packet_ReqChunks castedPacket = new Packet_ReqChunks(packet);
-				ArrayList list = new ArrayList();
-				for (CoordinatesChunk chunk : castedPacket.chunks)
-					list.add(DimensionManager.getWorld(chunk.dim).getChunkFromChunkCoords(chunk.chunkX, chunk.chunkZ));
+				ArrayList<Chunk> list = new ArrayList();
+				World world = DimensionManager.getWorld(castedPacket.dim);
 				
-				if (!list.isEmpty())
-					PacketDispatcher.sendPacketToPlayer(new Packet56MapChunks(list), player);
+				if (world != null){
+					for (CoordinatesChunk chunk : castedPacket.chunks)
+						list.add(world.getChunkFromChunkCoords(chunk.chunkX, chunk.chunkZ));
+					
+					if (!list.isEmpty())
+						PacketDispatcher.sendPacketToPlayer( Packet_Chunks.create(castedPacket.dim, !world.provider.hasNoSky, list), player);
+				}
 			}
 			
         }

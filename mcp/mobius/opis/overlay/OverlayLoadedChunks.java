@@ -126,11 +126,22 @@ public class OverlayLoadedChunks implements IMwDataProvider {
 
 	@Override
 	public void onMiddleClick(int dim, int bX, int bZ, MapView mapview) {
+		int chunkX = bX >> 4;
+		int chunkZ = bZ >> 4;
+		
 		ArrayList<CoordinatesChunk> chunks = new ArrayList<CoordinatesChunk>();
-		for (int x = -5; x <= 5; x++)
-			for (int z = -5; z <= 5; z++)
-				chunks.add(new CoordinatesChunk(dim, x, z));
-		PacketDispatcher.sendPacketToServer(Packet_ReqChunks.create(chunks));		
+		for (int x = -5; x <= 5; x++){
+			for (int z = -5; z <= 5; z++){
+				chunks.add(new CoordinatesChunk(dim, chunkX + x, chunkZ + z));
+				if (chunks.size() >= 4){
+					PacketDispatcher.sendPacketToServer(Packet_ReqChunks.create(dim, chunks));
+					chunks.clear();
+				}
+			}
+		}
+		
+		if (chunks.size() > 0)
+			PacketDispatcher.sendPacketToServer(Packet_ReqChunks.create(dim, chunks));			
 	}
 
 	@Override
