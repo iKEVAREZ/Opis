@@ -19,16 +19,24 @@ public class EntityManager {
 		if (coord.y > 0){
 			for (int xoffset = 0; xoffset <= maxOffset; xoffset++){
 				for (int zoffset = 0; zoffset <= maxOffset; zoffset++){
-					if (world.isAirBlock(coord.x + xoffset, coord.y, coord.z + zoffset) && world.isAirBlock(coord.x + xoffset, coord.y + 1, coord.z + zoffset))
+					if ( world.isAirBlock(coord.x + xoffset, coord.y,     coord.z + zoffset) && 
+					     world.isAirBlock(coord.x + xoffset, coord.y + 1, coord.z + zoffset) &&
+					    !world.isAirBlock(coord.x + xoffset, coord.y - 1, coord.z + zoffset))
 						return new CoordinatesBlock(coord.dim, coord.x + xoffset, coord.y, coord.z + zoffset);
 					
-					if (world.isAirBlock(coord.x - xoffset, coord.y, coord.z + zoffset) && world.isAirBlock(coord.x - xoffset, coord.y + 1, coord.z + zoffset))				
+					if (world.isAirBlock(coord.x - xoffset, coord.y,     coord.z + zoffset) && 
+					    world.isAirBlock(coord.x - xoffset, coord.y + 1, coord.z + zoffset) &&
+					   !world.isAirBlock(coord.x - xoffset, coord.y - 1, coord.z + zoffset))				
 						return new CoordinatesBlock(coord.dim, coord.x - xoffset, coord.y, coord.z + zoffset);
 					
-					if (world.isAirBlock(coord.x + xoffset, coord.y, coord.z - zoffset) && world.isAirBlock(coord.x + xoffset, coord.y + 1, coord.z - zoffset))
+					if (world.isAirBlock(coord.x + xoffset, coord.y,     coord.z - zoffset) && 
+						world.isAirBlock(coord.x + xoffset, coord.y + 1, coord.z - zoffset) &&
+					   !world.isAirBlock(coord.x + xoffset, coord.y - 1, coord.z - zoffset))
 						return new CoordinatesBlock(coord.dim, coord.x + xoffset, coord.y, coord.z - zoffset);
 					
-					if (world.isAirBlock(coord.x - xoffset, coord.y, coord.z - zoffset) && world.isAirBlock(coord.x - xoffset, coord.y + 1, coord.z - zoffset))
+					if (world.isAirBlock(coord.x - xoffset, coord.y,     coord.z - zoffset) && 
+						world.isAirBlock(coord.x - xoffset, coord.y + 1, coord.z - zoffset) &&
+					   !world.isAirBlock(coord.x - xoffset, coord.y - 1, coord.z - zoffset))
 						return new CoordinatesBlock(coord.dim, coord.x - xoffset, coord.y, coord.z - zoffset);				
 				}
 			}
@@ -63,7 +71,8 @@ public class EntityManager {
 		//System.out.printf("%s %s\n", coord, getTeleportTarget(coord));
 		CoordinatesBlock target = EntityManager.getTeleportTarget(coord);
 		if (target == null) return false;
-		if (player.worldObj.provider.dimensionId != coord.dim) return false;
+		if (player.worldObj.provider.dimensionId != coord.dim) 
+			player.travelToDimension(coord.dim);
 		
 		player.setPositionAndUpdate(target.x + 0.5, target.y, target.z + 0.5);
 		
