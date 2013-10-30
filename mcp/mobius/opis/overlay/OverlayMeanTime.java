@@ -14,10 +14,10 @@ import mapwriter.api.IMwChunkOverlay;
 import mapwriter.api.IMwDataProvider;
 import mapwriter.map.MapView;
 import mapwriter.map.mapmode.MapMode;
-import mcp.mobius.opis.data.ChunksData;
-import mcp.mobius.opis.data.CoordinatesBlock;
-import mcp.mobius.opis.data.CoordinatesChunk;
-import mcp.mobius.opis.data.TileEntityStatsData;
+import mcp.mobius.opis.data.ChunkManager;
+import mcp.mobius.opis.data.holders.CoordinatesBlock;
+import mcp.mobius.opis.data.holders.CoordinatesChunk;
+import mcp.mobius.opis.data.holders.TileEntityStats;
 import mcp.mobius.opis.gui.events.MouseEvent;
 import mcp.mobius.opis.gui.interfaces.CType;
 import mcp.mobius.opis.gui.interfaces.IWidget;
@@ -26,6 +26,7 @@ import mcp.mobius.opis.gui.widgets.LayoutBase;
 import mcp.mobius.opis.gui.widgets.LayoutCanvas;
 import mcp.mobius.opis.gui.widgets.ViewTable;
 import mcp.mobius.opis.gui.widgets.WidgetGeometry;
+import mcp.mobius.opis.network.Packet_ReqChunks;
 import mcp.mobius.opis.network.Packet_ReqMeanTimeInDim;
 import mcp.mobius.opis.network.Packet_ReqTEsInChunk;
 import mcp.mobius.opis.network.Packet_UnregisterPlayer;
@@ -49,7 +50,7 @@ public class OverlayMeanTime implements IMwDataProvider {
 		public void onMouseClick(MouseEvent event){
 			Row row = this.getRow(event.x, event.y);
 			if (row != null){
-				CoordinatesBlock coord = ((TileEntityStatsData)row.getObject()).getCoordinates();
+				CoordinatesBlock coord = ((TileEntityStats)row.getObject()).getCoordinates();
 				this.mapView.setViewCentre(coord.x, coord.z);
 			}
 		}
@@ -123,16 +124,16 @@ public class OverlayMeanTime implements IMwDataProvider {
 		double minTime = 9999;
 		double maxTime = 0;
 
-		for (CoordinatesChunk chunk : ChunksData.chunkMeanTime.keySet()){
-			minTime = Math.min(minTime, ChunksData.chunkMeanTime.get(chunk).updateTime);
-			maxTime = Math.max(maxTime, ChunksData.chunkMeanTime.get(chunk).updateTime);
+		for (CoordinatesChunk chunk : ChunkManager.chunkMeanTime.keySet()){
+			minTime = Math.min(minTime, ChunkManager.chunkMeanTime.get(chunk).updateTime);
+			maxTime = Math.max(maxTime, ChunkManager.chunkMeanTime.get(chunk).updateTime);
 		}
 		
-		for (CoordinatesChunk chunk : ChunksData.chunkMeanTime.keySet()){
+		for (CoordinatesChunk chunk : ChunkManager.chunkMeanTime.keySet()){
 			if (this.selectedChunk != null)
-				overlays.add(new ChunkOverlay(chunk.chunkX, chunk.chunkZ, ChunksData.chunkMeanTime.get(chunk).nentities, ChunksData.chunkMeanTime.get(chunk).updateTime, minTime, maxTime, chunk.equals(this.selectedChunk)));
+				overlays.add(new ChunkOverlay(chunk.chunkX, chunk.chunkZ, ChunkManager.chunkMeanTime.get(chunk).nentities, ChunkManager.chunkMeanTime.get(chunk).updateTime, minTime, maxTime, chunk.equals(this.selectedChunk)));
 			else
-				overlays.add(new ChunkOverlay(chunk.chunkX, chunk.chunkZ, ChunksData.chunkMeanTime.get(chunk).nentities, ChunksData.chunkMeanTime.get(chunk).updateTime, minTime, maxTime, false));
+				overlays.add(new ChunkOverlay(chunk.chunkX, chunk.chunkZ, ChunkManager.chunkMeanTime.get(chunk).nentities, ChunkManager.chunkMeanTime.get(chunk).updateTime, minTime, maxTime, false));
 		}
 		return overlays;
 	}
@@ -143,8 +144,8 @@ public class OverlayMeanTime implements IMwDataProvider {
 		int zChunk = bZ >> 4;
 		CoordinatesChunk chunkCoord = new CoordinatesChunk(dim, xChunk, zChunk);
 		
-		if (ChunksData.chunkMeanTime.containsKey(chunkCoord))
-			return String.format(", %.5f ms", ChunksData.chunkMeanTime.get(chunkCoord).updateTime/1000.0);
+		if (ChunkManager.chunkMeanTime.containsKey(chunkCoord))
+			return String.format(", %.5f ms", ChunkManager.chunkMeanTime.get(chunkCoord).updateTime/1000.0);
 		else
 			return "";
 	}
@@ -157,7 +158,7 @@ public class OverlayMeanTime implements IMwDataProvider {
 		int zChunk = bZ >> 4;		
 		CoordinatesChunk clickedChunk = new CoordinatesChunk(dim, xChunk, zChunk); 
 		
-		if (ChunksData.chunkMeanTime.containsKey(clickedChunk)){
+		if (ChunkManager.chunkMeanTime.containsKey(clickedChunk)){
 			if (this.selectedChunk == null)
 				this.selectedChunk = clickedChunk;
 			else if (this.selectedChunk.equals(clickedChunk))
@@ -170,6 +171,12 @@ public class OverlayMeanTime implements IMwDataProvider {
 		
 		if (this.selectedChunk != null)
 			PacketDispatcher.sendPacketToServer(Packet_ReqTEsInChunk.create(this.selectedChunk));
+		
+		//ArrayList<CoordinatesChunk> chunks = new ArrayList<CoordinatesChunk>();
+		//for (int x = -5; x <= 5; x++)
+		//	for (int z = -5; z <= 5; z++)
+		//		chunks.add(new CoordinatesChunk(dim, x, z));
+		//PacketDispatcher.sendPacketToServer(Packet_ReqChunks.create(chunks));
 
 	}
 
@@ -219,7 +226,7 @@ public class OverlayMeanTime implements IMwDataProvider {
 	}
 	
 	@SideOnly(Side.CLIENT)
-	public void setupTable(ArrayList<TileEntityStatsData> entities){
+	public void setupTable(ArrayList<TileEntityStats> entities){
 		LayoutBase layout = (LayoutBase)this.canvas.addWidget("Table", new LayoutBase(null));
 		layout.setGeometry(new WidgetGeometry(100.0,0.0,300.0,100.0,CType.RELXY, CType.REL_Y, WAlign.RIGHT, WAlign.TOP));
 		layout.setBackgroundColors(0x90000000, 0x90000000);
@@ -233,7 +240,7 @@ public class OverlayMeanTime implements IMwDataProvider {
 			 .setRowColors(0xff808080, 0xff505050);
 
 		
-		for (TileEntityStatsData data : entities){
+		for (TileEntityStats data : entities){
 			String[] name = data.getType().split("\\.");
 			table.addRow(data, name[name.length - 1], String.format("[ %s %s %s ]", data.getCoordinates().x, data.getCoordinates().y, data.getCoordinates().z),  String.format("%.5f ms",data.getGeometricMean()/1000.0));
 		}
@@ -243,7 +250,7 @@ public class OverlayMeanTime implements IMwDataProvider {
 
 	@Override
 	public boolean onMouseInput(MapView mapview, MapMode mapmode) {
-		if (this.canvas.shouldRender() && ((LayoutCanvas)this.canvas).hasWidgetAtCursor()){
+		if (this.canvas != null && this.canvas.shouldRender() && ((LayoutCanvas)this.canvas).hasWidgetAtCursor()){
 			((EntitiesTable)this.canvas.getWidget("Table").getWidget("Table_")).setMap(mapview, mapmode);
 			this.canvas.handleMouseInput();
 			return true;

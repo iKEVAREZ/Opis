@@ -7,14 +7,14 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 
-import mcp.mobius.opis.data.ChunkStatsData;
-import mcp.mobius.opis.data.CoordinatesChunk;
+import mcp.mobius.opis.data.holders.ChunkStats;
+import mcp.mobius.opis.data.holders.CoordinatesChunk;
 import net.minecraft.network.packet.Packet250CustomPayload;
 
 public class Packet_MeanTime {
 
 	public byte header;
-	public HashMap<CoordinatesChunk, ChunkStatsData> chunkStatus = new HashMap<CoordinatesChunk, ChunkStatsData>();
+	public HashMap<CoordinatesChunk, ChunkStats> chunkStatus = new HashMap<CoordinatesChunk, ChunkStats>();
 	
 	public Packet_MeanTime(Packet250CustomPayload packet) {
 		DataInputStream inputStream = new DataInputStream(new ByteArrayInputStream(packet.data));
@@ -26,14 +26,14 @@ public class Packet_MeanTime {
 			int nchunks  = inputStream.readInt();
 			
 			for (int i = 0; i <= nchunks; i++){
-				this.chunkStatus.put(new CoordinatesChunk(dim, inputStream.readInt(), inputStream.readInt()), new ChunkStatsData(inputStream.readInt(), inputStream.readDouble()));
+				this.chunkStatus.put(new CoordinatesChunk(dim, inputStream.readInt(), inputStream.readInt()), new ChunkStats(inputStream.readInt(), inputStream.readDouble()));
 			}
 				
 			
 		} catch (IOException e){}				
 	}
 
-	public static Packet250CustomPayload create(HashMap<CoordinatesChunk, ChunkStatsData> chunks, int dim){
+	public static Packet250CustomPayload create(HashMap<CoordinatesChunk, ChunkStats> chunks, int dim){
 		Packet250CustomPayload packet = new Packet250CustomPayload();
 		ByteArrayOutputStream bos     = new ByteArrayOutputStream(1);
 		DataOutputStream outputStream = new DataOutputStream(bos);

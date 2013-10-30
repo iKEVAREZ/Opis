@@ -5,7 +5,7 @@ public class Packets {
 	
 	public static byte LOADED_CHUNKS       = 0x01;	// S => C
 	public static byte REQ_CHUNKS_IN_DIM   = 0x02;	// C => S
-	public static byte REQ_CHUNKS_ALL      = 0x03;	// C => S //Not used right now
+	public static byte REQ_CHUNKS          = 0x03;	// C => S //Not used right now
 	public static byte REQ_TICKETS         = 0x04;	// C => S
 	public static byte TICKETS             = 0x05;	// S => C
 	

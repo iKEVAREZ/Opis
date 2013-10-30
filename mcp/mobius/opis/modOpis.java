@@ -4,7 +4,7 @@ import java.util.logging.Logger;
 
 import mcp.mobius.mobiuscore.profiler.ProfilerRegistrar;
 import mcp.mobius.opis.commands.CommandChunkDump;
-import mcp.mobius.opis.data.ProfilerTileEntities;
+import mcp.mobius.opis.data.TileEntityProfiler;
 import mcp.mobius.opis.network.OpisConnectionHandler;
 import mcp.mobius.opis.network.OpisPacketHandler;
 import mcp.mobius.opis.proxy.ProxyServer;
@@ -54,6 +54,6 @@ public class modOpis {
 	public void serverStarting(FMLServerStartingEvent event){
 		event.registerServerCommand(new CommandChunkDump());
 		GameRegistry.registerPlayerTracker(new OpisPlayerTracker());
-		ProfilerRegistrar.registerTileEntityProfiler(new ProfilerTileEntities());		
+		ProfilerRegistrar.registerTileEntityProfiler(new TileEntityProfiler());		
 	}	
 }

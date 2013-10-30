@@ -3,7 +3,7 @@ package mcp.mobius.opis.data;
 import net.minecraft.tileentity.TileEntity;
 import mcp.mobius.mobiuscore.profiler.IProfilerTileEntity;
 
-public class ProfilerTileEntities implements IProfilerTileEntity {
+public class TileEntityProfiler implements IProfilerTileEntity {
 
 	public class Clock{
 		public long startTime = 0;
@@ -38,7 +38,7 @@ public class ProfilerTileEntities implements IProfilerTileEntity {
 			throw new RuntimeException(String.format("Mismatched entities during the profiling ! %s %s", te, this.currentEntity));
 		
 
-		TileEntitiesData.addTileEntity(te, this.clock.timeDelta);
+		TileEntityManager.addTileEntity(te, this.clock.timeDelta);
 		this.currentEntity = null;
 	}
 

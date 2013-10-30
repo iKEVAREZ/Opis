@@ -1,4 +1,4 @@
-package mcp.mobius.opis.data;
+package mcp.mobius.opis.data.holders;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -8,7 +8,7 @@ import net.minecraft.network.packet.Packet;
 
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 
-public class TileEntityStatsData implements ISerializable {
+public class TileEntityStats implements ISerializable {
 
 	private DescriptiveStatistics stats = new DescriptiveStatistics(250);	
 	private CoordinatesBlock coord;
@@ -16,7 +16,7 @@ public class TileEntityStatsData implements ISerializable {
 	private Double geomMean = null;
 	
 	
-	public TileEntityStatsData(CoordinatesBlock coord, String teclass){
+	public TileEntityStats(CoordinatesBlock coord, String teclass){
 		this.coord     = coord;
 		this.classname = teclass;
 	}
@@ -55,10 +55,10 @@ public class TileEntityStatsData implements ISerializable {
 		stream.writeDouble(this.getGeometricMean());
 	}
 
-	public static  TileEntityStatsData readFromStream(DataInputStream stream) throws IOException {
+	public static  TileEntityStats readFromStream(DataInputStream stream) throws IOException {
 		CoordinatesBlock coord   = CoordinatesBlock.readFromStream(stream);
 		String classname         = Packet.readString(stream, 255);
-		TileEntityStatsData stat = new TileEntityStatsData(coord, classname);
+		TileEntityStats stat = new TileEntityStats(coord, classname);
 		stat.setGeometricMean(stream.readDouble());
 		return stat;
 	}

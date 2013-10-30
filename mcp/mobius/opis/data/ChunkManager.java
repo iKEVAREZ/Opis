@@ -7,23 +7,26 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
+import mcp.mobius.opis.data.holders.ChunkStats;
+import mcp.mobius.opis.data.holders.CoordinatesChunk;
+import mcp.mobius.opis.data.holders.TicketData;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.ForgeChunkManager.Ticket;
 
-public class ChunksData {
+public class ChunkManager {
 	
 
 	
 	public static HashMap<ChunkCoordIntPair, Boolean>       chunksLoad    = new HashMap<ChunkCoordIntPair, Boolean>();
-	public static HashMap<CoordinatesChunk, ChunkStatsData> chunkMeanTime = new HashMap<CoordinatesChunk, ChunkStatsData>();
+	public static HashMap<CoordinatesChunk, ChunkStats> chunkMeanTime = new HashMap<CoordinatesChunk, ChunkStats>();
 	public static ArrayList<TicketData> tickets = new ArrayList<TicketData>();
 
 	public static HashMap<Integer, HashMap<ChunkCoordIntPair, Boolean>> getAllLoadedChunks(){
 		HashMap<Integer, HashMap<ChunkCoordIntPair, Boolean>> chunkStatus = new HashMap<Integer, HashMap<ChunkCoordIntPair, Boolean>>();
 		for (int dim : DimensionManager.getIDs())
-			chunkStatus.put(dim, ChunksData.getLoadedChunks(dim));
+			chunkStatus.put(dim, ChunkManager.getLoadedChunks(dim));
 		
 		return chunkStatus;
 	}

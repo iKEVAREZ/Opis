@@ -7,7 +7,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.HashSet;
 
-import mcp.mobius.opis.data.TicketData;
+import mcp.mobius.opis.data.holders.TicketData;
 import net.minecraft.network.packet.Packet250CustomPayload;
 
 public class Packet_Tickets {

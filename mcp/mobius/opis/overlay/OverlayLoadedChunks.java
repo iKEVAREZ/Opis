@@ -12,9 +12,9 @@ import mapwriter.api.IMwChunkOverlay;
 import mapwriter.api.IMwDataProvider;
 import mapwriter.map.MapView;
 import mapwriter.map.mapmode.MapMode;
-import mcp.mobius.opis.data.ChunksData;
-import mcp.mobius.opis.data.CoordinatesChunk;
-import mcp.mobius.opis.data.TicketData;
+import mcp.mobius.opis.data.ChunkManager;
+import mcp.mobius.opis.data.holders.CoordinatesChunk;
+import mcp.mobius.opis.data.holders.TicketData;
 import mcp.mobius.opis.gui.events.MouseEvent;
 import mcp.mobius.opis.gui.interfaces.CType;
 import mcp.mobius.opis.gui.interfaces.IWidget;
@@ -23,6 +23,7 @@ import mcp.mobius.opis.gui.widgets.LayoutBase;
 import mcp.mobius.opis.gui.widgets.LayoutCanvas;
 import mcp.mobius.opis.gui.widgets.ViewTable;
 import mcp.mobius.opis.gui.widgets.WidgetGeometry;
+import mcp.mobius.opis.network.Packet_ReqChunks;
 import mcp.mobius.opis.network.Packet_ReqChunksInDim;
 import mcp.mobius.opis.network.Packet_ReqTickets;
 import mcp.mobius.opis.network.Packet_UnregisterPlayer;
@@ -102,8 +103,8 @@ public class OverlayLoadedChunks implements IMwDataProvider {
 	@Override
 	public ArrayList<IMwChunkOverlay> getChunksOverlay(int dim, double centerX,	double centerZ, double minX, double minZ, double maxX, double maxZ) {
 		ArrayList<IMwChunkOverlay> overlays = new ArrayList<IMwChunkOverlay>();
-		for (ChunkCoordIntPair chunk : ChunksData.chunksLoad.keySet())
-			overlays.add(new ChunkOverlay(chunk.chunkXPos, chunk.chunkZPos, ChunksData.chunksLoad.get(chunk)));
+		for (ChunkCoordIntPair chunk : ChunkManager.chunksLoad.keySet())
+			overlays.add(new ChunkOverlay(chunk.chunkXPos, chunk.chunkZPos, ChunkManager.chunksLoad.get(chunk)));
 		return overlays;
 	}
 
@@ -113,8 +114,8 @@ public class OverlayLoadedChunks implements IMwDataProvider {
 		int zChunk = bZ >> 4;
 		ChunkCoordIntPair chunkCoord = new ChunkCoordIntPair(xChunk, zChunk);
 		
-		if (ChunksData.chunksLoad.containsKey(chunkCoord)){
-			if (ChunksData.chunksLoad.get(chunkCoord))
+		if (ChunkManager.chunksLoad.containsKey(chunkCoord)){
+			if (ChunkManager.chunksLoad.get(chunkCoord))
 				return ", Force loaded";
 			else
 				return ", Player loaded";
@@ -125,6 +126,11 @@ public class OverlayLoadedChunks implements IMwDataProvider {
 
 	@Override
 	public void onMiddleClick(int dim, int bX, int bZ, MapView mapview) {
+		ArrayList<CoordinatesChunk> chunks = new ArrayList<CoordinatesChunk>();
+		for (int x = -5; x <= 5; x++)
+			for (int z = -5; z <= 5; z++)
+				chunks.add(new CoordinatesChunk(dim, x, z));
+		PacketDispatcher.sendPacketToServer(Packet_ReqChunks.create(chunks));		
 	}
 
 	@Override
@@ -195,7 +201,7 @@ public class OverlayLoadedChunks implements IMwDataProvider {
 	
 	@Override
 	public boolean onMouseInput(MapView mapview, MapMode mapmode) {
-		if (this.canvas.shouldRender() && ((LayoutCanvas)this.canvas).hasWidgetAtCursor()){
+		if (this.canvas != null && this.canvas.shouldRender() && ((LayoutCanvas)this.canvas).hasWidgetAtCursor()){
 			((TicketTable)this.canvas.getWidget("Table").getWidget("Table_")).setMap(mapview, mapmode);
 			this.canvas.handleMouseInput();
 			return true;

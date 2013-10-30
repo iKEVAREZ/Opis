@@ -1,4 +1,4 @@
-package mcp.mobius.opis.data;
+package mcp.mobius.opis.data.holders;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;

@@ -6,7 +6,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import mcp.mobius.opis.data.CoordinatesChunk;
+import mcp.mobius.opis.data.holders.CoordinatesChunk;
 import net.minecraft.network.packet.Packet250CustomPayload;
 
 public class Packet_ReqTEsInChunk {

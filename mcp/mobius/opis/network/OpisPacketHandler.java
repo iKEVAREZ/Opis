@@ -3,16 +3,20 @@ package mcp.mobius.opis.network;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import mcp.mobius.opis.modOpis;
-import mcp.mobius.opis.data.ChunksData;
-import mcp.mobius.opis.data.TicketData;
-import mcp.mobius.opis.data.TileEntitiesData;
+import mcp.mobius.opis.data.ChunkManager;
+import mcp.mobius.opis.data.TileEntityManager;
+import mcp.mobius.opis.data.holders.CoordinatesChunk;
+import mcp.mobius.opis.data.holders.TicketData;
 import mcp.mobius.opis.overlay.OverlayLoadedChunks;
 import mcp.mobius.opis.overlay.OverlayMeanTime;
 import mcp.mobius.opis.overlay.OverlayStatus;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet250CustomPayload;
+import net.minecraft.network.packet.Packet56MapChunks;
+import net.minecraftforge.common.DimensionManager;
 import cpw.mods.fml.common.network.IPacketHandler;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
@@ -27,12 +31,12 @@ public class OpisPacketHandler implements IPacketHandler {
 			// CLIENT RECEIVED PACKETS
 			if (header == Packets.LOADED_CHUNKS){
 				Packet_LoadedChunks castedPacket = new Packet_LoadedChunks(packet);
-				ChunksData.chunksLoad = castedPacket.chunkStatus;
+				ChunkManager.chunksLoad = castedPacket.chunkStatus;
 			}
 
 			else if (header == Packets.MEANTIME){
 				Packet_MeanTime castedPacket = new Packet_MeanTime(packet);
-				ChunksData.chunkMeanTime = castedPacket.chunkStatus;
+				ChunkManager.chunkMeanTime = castedPacket.chunkStatus;
 			}			
 
 			else if (header == Packets.TILEENTITIES_LIST){
@@ -56,28 +60,34 @@ public class OpisPacketHandler implements IPacketHandler {
 				Packet_ReqChunksInDim castedPacket = new Packet_ReqChunksInDim(packet);
 				modOpis.proxy.playerOverlayStatus.put(player, OverlayStatus.CHUNKSTATUS);
 				modOpis.proxy.playerDimension.put(player, castedPacket.dimension);
-				PacketDispatcher.sendPacketToPlayer(Packet_LoadedChunks.create(ChunksData.getLoadedChunks(castedPacket.dimension)), player);
+				PacketDispatcher.sendPacketToPlayer(Packet_LoadedChunks.create(ChunkManager.getLoadedChunks(castedPacket.dimension)), player);
 			}
 		
-			else if (header == Packets.REQ_CHUNKS_ALL){
-				Packet_ReqChunksAll castedPacket = new Packet_ReqChunksAll(packet);
-			}			
-			
 			else if (header == Packets.REQ_MEANTIME_IN_DIM){
 				Packet_ReqMeanTimeInDim castedPacket = new Packet_ReqMeanTimeInDim(packet);
 				modOpis.proxy.playerOverlayStatus.put(player, OverlayStatus.MEANTIME);
 				modOpis.proxy.playerDimension.put(player, castedPacket.dimension);
-				PacketDispatcher.sendPacketToPlayer(Packet_MeanTime.create(TileEntitiesData.getTimes(castedPacket.dimension), castedPacket.dimension), player);
+				PacketDispatcher.sendPacketToPlayer(Packet_MeanTime.create(TileEntityManager.getTimes(castedPacket.dimension), castedPacket.dimension), player);
 			}		
 			
 			else if (header == Packets.REQ_TES_IN_CHUNK){
 				Packet_ReqTEsInChunk castedPacket = new Packet_ReqTEsInChunk(packet);
-				PacketDispatcher.sendPacketToPlayer(Packet_TileEntitiesList.create(TileEntitiesData.getInChunk(castedPacket.chunk)), player);
+				PacketDispatcher.sendPacketToPlayer(Packet_TileEntitiesList.create(TileEntityManager.getInChunk(castedPacket.chunk)), player);
 			}
 			
 			else if (header == Packets.REQ_TICKETS){
 				Packet_ReqTickets castedPacket = new Packet_ReqTickets(packet);
-				PacketDispatcher.sendPacketToPlayer(Packet_Tickets.create(ChunksData.getTickets()), player);
+				PacketDispatcher.sendPacketToPlayer(Packet_Tickets.create(ChunkManager.getTickets()), player);
+			}
+			
+			else if (header == Packets.REQ_CHUNKS){
+				Packet_ReqChunks castedPacket = new Packet_ReqChunks(packet);
+				ArrayList list = new ArrayList();
+				for (CoordinatesChunk chunk : castedPacket.chunks)
+					list.add(DimensionManager.getWorld(chunk.dim).getChunkFromChunkCoords(chunk.chunkX, chunk.chunkZ));
+				
+				if (!list.isEmpty())
+					PacketDispatcher.sendPacketToPlayer(new Packet56MapChunks(list), player);
 			}
 			
         }
