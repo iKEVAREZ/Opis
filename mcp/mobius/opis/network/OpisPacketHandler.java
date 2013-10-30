@@ -8,12 +8,14 @@ import java.util.ArrayList;
 import mapwriter.Mw;
 import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.data.ChunkManager;
+import mcp.mobius.opis.data.EntityManager;
 import mcp.mobius.opis.data.TileEntityManager;
 import mcp.mobius.opis.data.holders.CoordinatesChunk;
 import mcp.mobius.opis.data.holders.TicketData;
 import mcp.mobius.opis.overlay.OverlayLoadedChunks;
 import mcp.mobius.opis.overlay.OverlayMeanTime;
 import mcp.mobius.opis.overlay.OverlayStatus;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.network.packet.Packet56MapChunks;
@@ -100,6 +102,11 @@ public class OpisPacketHandler implements IPacketHandler {
 					if (!list.isEmpty())
 						PacketDispatcher.sendPacketToPlayer( Packet_Chunks.create(castedPacket.dim, !world.provider.hasNoSky, list), player);
 				}
+			}
+			
+			else if (header == Packets.REQ_TELEPORT){
+				Packet_ReqTeleport castedPacket = new Packet_ReqTeleport(packet);
+				EntityManager.teleportPlayer(castedPacket.coord, (EntityPlayerMP)player);
 			}
 			
         }

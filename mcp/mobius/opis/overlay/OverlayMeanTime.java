@@ -29,6 +29,7 @@ import mcp.mobius.opis.gui.widgets.WidgetGeometry;
 import mcp.mobius.opis.network.Packet_ReqChunks;
 import mcp.mobius.opis.network.Packet_ReqMeanTimeInDim;
 import mcp.mobius.opis.network.Packet_ReqTEsInChunk;
+import mcp.mobius.opis.network.Packet_ReqTeleport;
 import mcp.mobius.opis.network.Packet_UnregisterPlayer;
 
 public class OverlayMeanTime implements IMwDataProvider {
@@ -51,7 +52,11 @@ public class OverlayMeanTime implements IMwDataProvider {
 			Row row = this.getRow(event.x, event.y);
 			if (row != null){
 				CoordinatesBlock coord = ((TileEntityStats)row.getObject()).getCoordinates();
-				this.mapView.setViewCentre(coord.x, coord.z);
+				
+				if (this.mapView.getX() != coord.x || this.mapView.getZ() != coord.z)
+					this.mapView.setViewCentre(coord.x, coord.z);
+				else
+					PacketDispatcher.sendPacketToServer(Packet_ReqTeleport.create(coord));
 			}
 		}
 	}
