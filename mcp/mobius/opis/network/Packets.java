@@ -8,6 +8,7 @@ public class Packets {
 	public static byte REQ_CHUNKS          = 0x03;	// C => S //Not used right now
 	public static byte REQ_TICKETS         = 0x04;	// C => S
 	public static byte TICKETS             = 0x05;	// S => C
+	public static byte CHUNKS              = 0x06;	// S => C	
 	
 	public static byte MEANTIME            = 0x10;	// S => C
 	public static byte REQ_MEANTIME_IN_DIM = 0x11;	// C => S
