@@ -1,6 +1,7 @@
 package mcp.mobius.opis.data;
 
 import cpw.mods.fml.common.network.Player;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
@@ -15,20 +16,44 @@ public class EntityManager {
 		int maxOffset       = 16;
 		boolean targetFound = false;
 		
-		for (int xoffset = 0; xoffset <= maxOffset; xoffset++){
-			for (int zoffset = 0; zoffset <= maxOffset; zoffset++){
-				if (world.isAirBlock(coord.x + xoffset, coord.y, coord.z + zoffset) && world.isAirBlock(coord.x + xoffset, coord.y + 1, coord.z + zoffset))
-					return new CoordinatesBlock(coord.dim, coord.x + xoffset, coord.y, coord.z + zoffset);
-				
-				if (world.isAirBlock(coord.x - xoffset, coord.y, coord.z + zoffset) && world.isAirBlock(coord.x - xoffset, coord.y + 1, coord.z + zoffset))				
-					return new CoordinatesBlock(coord.dim, coord.x - xoffset, coord.y, coord.z + zoffset);
-				
-				if (world.isAirBlock(coord.x + xoffset, coord.y, coord.z - zoffset) && world.isAirBlock(coord.x + xoffset, coord.y + 1, coord.z - zoffset))
-					return new CoordinatesBlock(coord.dim, coord.x + xoffset, coord.y, coord.z - zoffset);
-				
-				if (world.isAirBlock(coord.x - xoffset, coord.y, coord.z - zoffset) && world.isAirBlock(coord.x - xoffset, coord.y + 1, coord.z - zoffset))
-					return new CoordinatesBlock(coord.dim, coord.x - xoffset, coord.y, coord.z - zoffset);				
+		if (coord.y > 0){
+			for (int xoffset = 0; xoffset <= maxOffset; xoffset++){
+				for (int zoffset = 0; zoffset <= maxOffset; zoffset++){
+					if (world.isAirBlock(coord.x + xoffset, coord.y, coord.z + zoffset) && world.isAirBlock(coord.x + xoffset, coord.y + 1, coord.z + zoffset))
+						return new CoordinatesBlock(coord.dim, coord.x + xoffset, coord.y, coord.z + zoffset);
+					
+					if (world.isAirBlock(coord.x - xoffset, coord.y, coord.z + zoffset) && world.isAirBlock(coord.x - xoffset, coord.y + 1, coord.z + zoffset))				
+						return new CoordinatesBlock(coord.dim, coord.x - xoffset, coord.y, coord.z + zoffset);
+					
+					if (world.isAirBlock(coord.x + xoffset, coord.y, coord.z - zoffset) && world.isAirBlock(coord.x + xoffset, coord.y + 1, coord.z - zoffset))
+						return new CoordinatesBlock(coord.dim, coord.x + xoffset, coord.y, coord.z - zoffset);
+					
+					if (world.isAirBlock(coord.x - xoffset, coord.y, coord.z - zoffset) && world.isAirBlock(coord.x - xoffset, coord.y + 1, coord.z - zoffset))
+						return new CoordinatesBlock(coord.dim, coord.x - xoffset, coord.y, coord.z - zoffset);				
+				}
 			}
+		} else {
+			int y = 256;
+			while (world.isAirBlock(coord.x, y, coord.z) ||
+				   world.getBlockId(coord.x, y, coord.z) == Block.vine.blockID
+				  )
+				y--;
+	
+			for (int xoffset = 0; xoffset <= maxOffset; xoffset++){
+				for (int zoffset = 0; zoffset <= maxOffset; zoffset++){
+					if (world.isAirBlock(coord.x + xoffset, y, coord.z + zoffset) && world.isAirBlock(coord.x + xoffset, y + 1, coord.z + zoffset))
+						return new CoordinatesBlock(coord.dim, coord.x + xoffset, y, coord.z + zoffset);
+					
+					if (world.isAirBlock(coord.x - xoffset, y, coord.z + zoffset) && world.isAirBlock(coord.x - xoffset, y + 1, coord.z + zoffset))				
+						return new CoordinatesBlock(coord.dim, coord.x - xoffset, y, coord.z + zoffset);
+					
+					if (world.isAirBlock(coord.x + xoffset, y, coord.z - zoffset) && world.isAirBlock(coord.x + xoffset, y + 1, coord.z - zoffset))
+						return new CoordinatesBlock(coord.dim, coord.x + xoffset, y, coord.z - zoffset);
+					
+					if (world.isAirBlock(coord.x - xoffset, y, coord.z - zoffset) && world.isAirBlock(coord.x - xoffset, y + 1, coord.z - zoffset))
+						return new CoordinatesBlock(coord.dim, coord.x - xoffset, y, coord.z - zoffset);				
+				}
+			}	
 		}
 		
 		return null;

@@ -13,6 +13,7 @@ import mapwriter.api.IMwDataProvider;
 import mapwriter.map.MapView;
 import mapwriter.map.mapmode.MapMode;
 import mcp.mobius.opis.data.ChunkManager;
+import mcp.mobius.opis.data.holders.CoordinatesBlock;
 import mcp.mobius.opis.data.holders.CoordinatesChunk;
 import mcp.mobius.opis.data.holders.TicketData;
 import mcp.mobius.opis.gui.events.MouseEvent;
@@ -25,6 +26,7 @@ import mcp.mobius.opis.gui.widgets.ViewTable;
 import mcp.mobius.opis.gui.widgets.WidgetGeometry;
 import mcp.mobius.opis.network.Packet_ReqChunks;
 import mcp.mobius.opis.network.Packet_ReqChunksInDim;
+import mcp.mobius.opis.network.Packet_ReqTeleport;
 import mcp.mobius.opis.network.Packet_ReqTickets;
 import mcp.mobius.opis.network.Packet_UnregisterPlayer;
 
@@ -48,8 +50,13 @@ public class OverlayLoadedChunks implements IMwDataProvider {
 			Row row = this.getRow(event.x, event.y);
 			if (row != null){
 				CoordinatesChunk coord = ((TicketData)row.getObject()).coord;
-				this.mapView.setDimension(coord.dim);
-				this.mapView.setViewCentre(coord.x, coord.z);
+				
+				if (this.mapView.getX() != coord.x || this.mapView.getZ() != coord.z || this.mapView.getDimension() != coord.dim){
+					this.mapView.setDimension(coord.dim);
+					this.mapView.setViewCentre(coord.x, coord.z);
+				} else {
+					PacketDispatcher.sendPacketToServer(Packet_ReqTeleport.create(new CoordinatesBlock(coord)));
+				}
 			}
 		}
 	}	
@@ -141,7 +148,7 @@ public class OverlayLoadedChunks implements IMwDataProvider {
 		}
 		
 		if (chunks.size() > 0)
-			PacketDispatcher.sendPacketToServer(Packet_ReqChunks.create(dim, chunks));			
+			PacketDispatcher.sendPacketToServer(Packet_ReqChunks.create(dim, chunks));
 	}
 
 	@Override
