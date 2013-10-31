@@ -6,10 +6,14 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.zip.ZipInputStream;
+import java.util.zip.ZipOutputStream;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import mapwriter.region.MwChunk;
+import mcp.mobius.opis.modOpis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.network.packet.Packet56MapChunks;
@@ -55,19 +59,21 @@ public class Packet_Chunks {
 		Packet56MapChunks chunkPacket = new Packet56MapChunks(chunks);
 		
 		try{
-
 			outputStream.writeByte(Packets.CHUNKS);
 			outputStream.writeInt(dim);
 			outputStream.writeBoolean(hasNoSky);
-			chunkPacket.writePacketData(outputStream);
-			
+			 chunkPacket.writePacketData(outputStream);
 		}catch(IOException e){}
 		
 		packet.channel = "Opis";
 		packet.data    = bos.toByteArray();
 		packet.length  = bos.size();		
 		
-		//System.out.printf("Size : %s\n", packet.length);
+        if (packet.length > 32767){
+            //throw new IllegalArgumentException(String.format("Payload may not be larger than 32k : %s", packet.length));
+        	modOpis.log.log(Level.WARNING, String.format("Payload may not be larger than 32k : %s", packet.length));
+        	return null;
+        }
 		
 		return packet;
 	}		
@@ -156,8 +162,8 @@ public class Packet_Chunks {
 			for (ExtendedBlockStorage storage : storageArrays) {
 				if (storage != null) {
 					int y = (storage.getYLocation() >> 4) & 0xf;
-					lsbArray[y] = storage.getBlockLSBArray();
-					msbArray[y] = (storage.getBlockMSBArray() != null) ? storage.getBlockMSBArray().data : null;
+					lsbArray[y]  =  storage.getBlockLSBArray();
+					msbArray[y]  = (storage.getBlockMSBArray() != null) ? storage.getBlockMSBArray().data : null;
 					metaArray[y] = (storage.getMetadataArray() != null) ? storage.getMetadataArray().data : null;
 				}
 			}

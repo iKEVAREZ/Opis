@@ -57,7 +57,7 @@ public class OpisPacketHandler implements IPacketHandler {
 			else if (header == Packets.CHUNKS){
 				Packet_Chunks castedPacket = new Packet_Chunks(packet);
 				Mw.instance.chunkManager.forceChunks(castedPacket.chunks);
-			}						
+			}
 			
 			// SERVER RECEIVED PACKETS
 			else if (header == Packets.UNREGISTER_USER){
@@ -101,6 +101,7 @@ public class OpisPacketHandler implements IPacketHandler {
 					
 					if (!list.isEmpty())
 						PacketDispatcher.sendPacketToPlayer( Packet_Chunks.create(castedPacket.dim, !world.provider.hasNoSky, list), player);
+						//PacketDispatcher.sendPacketToPlayer( new Packet56MapChunks(list), player);
 				}
 			}
 			

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import org.lwjgl.input.Mouse;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.util.MathHelper;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
@@ -37,9 +38,11 @@ public class OverlayMeanTime implements IMwDataProvider {
 	public class EntitiesTable extends ViewTable{
 		MapView mapView;
 		MapMode mapMode;
+		OverlayMeanTime overlay;		
 		
-		public EntitiesTable(IWidget parent) { 	
+		public EntitiesTable(IWidget parent, OverlayMeanTime overlay) { 	
 			super(parent);
+			this.overlay = overlay;			
 		}
 		
 		public void setMap(MapView mapView, MapMode mapMode){
@@ -53,8 +56,12 @@ public class OverlayMeanTime implements IMwDataProvider {
 			if (row != null){
 				CoordinatesBlock coord = ((TileEntityStats)row.getObject()).getCoordinates();
 				
-				if (this.mapView.getX() != coord.x || this.mapView.getZ() != coord.z)
+				if (this.mapView.getX() != coord.x || this.mapView.getZ() != coord.z){
 					this.mapView.setViewCentre(coord.x, coord.z);
+					this.overlay.requestChunkUpdate(this.mapView.getDimension(), 
+							MathHelper.ceiling_double_int(this.mapView.getX()) >> 4, 
+							MathHelper.ceiling_double_int(this.mapView.getZ()) >> 4);
+				}
 				else
 					PacketDispatcher.sendPacketToServer(Packet_ReqTeleport.create(coord));
 			}
@@ -236,7 +243,7 @@ public class OverlayMeanTime implements IMwDataProvider {
 		layout.setGeometry(new WidgetGeometry(100.0,0.0,300.0,100.0,CType.RELXY, CType.REL_Y, WAlign.RIGHT, WAlign.TOP));
 		layout.setBackgroundColors(0x90000000, 0x90000000);
 		
-		EntitiesTable  table  = (EntitiesTable)layout.addWidget("Table_", new EntitiesTable(null));
+		EntitiesTable  table  = (EntitiesTable)layout.addWidget("Table_", new EntitiesTable(null, this));
 		
 		table.setGeometry(new WidgetGeometry(0.0,0.0,100.0,100.0,CType.RELXY, CType.RELXY, WAlign.LEFT, WAlign.TOP));
 	    table.setColumnsAlign(WAlign.CENTER, WAlign.CENTER, WAlign.CENTER)
@@ -263,4 +270,23 @@ public class OverlayMeanTime implements IMwDataProvider {
 		return false;
 	}
 
+	private void requestChunkUpdate(int dim, int chunkX, int chunkZ){
+		ArrayList<CoordinatesChunk> chunks = new ArrayList<CoordinatesChunk>();
+
+		for (int x = -5; x <= 5; x++){
+			for (int z = -5; z <= 5; z++){
+				chunks.add(new CoordinatesChunk(dim, chunkX + x, chunkZ + z));
+				if (chunks.size() >= 1){
+					Packet250CustomPayload packet = Packet_ReqChunks.create(dim, chunks);
+					if (packet != null)
+						PacketDispatcher.sendPacketToServer(packet);
+					chunks.clear();
+				}
+			}
+		}
+
+		if (chunks.size() > 0)
+			PacketDispatcher.sendPacketToServer(Packet_ReqChunks.create(dim, chunks));				
+	}	
+	
 }

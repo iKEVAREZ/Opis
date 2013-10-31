@@ -5,6 +5,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.ChunkCoordIntPair;
 
 public final class CoordinatesChunk implements ISerializable {
 	public final int dim, x, y, z;
@@ -54,6 +55,10 @@ public final class CoordinatesChunk implements ISerializable {
 		return String.format("%s %s %s", this.dim, this.chunkX, this.chunkZ).hashCode();
 	}
 
+	public ChunkCoordIntPair toChunkCoordIntPair(){
+		return new ChunkCoordIntPair(this.chunkX, this.chunkZ);
+	}
+	
 	@Override
 	public void writeToStream(DataOutputStream stream) throws IOException {
 		stream.writeInt(this.dim);

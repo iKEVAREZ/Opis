@@ -25,7 +25,7 @@ import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
 
 @Mod(modid="Opis", name="Opis", version="0.0.1")
-@NetworkMod(channels={"Opis"},clientSideRequired=true, serverSideRequired=true, connectionHandler=OpisConnectionHandler.class, packetHandler=OpisPacketHandler.class)
+@NetworkMod(channels={"Opis", "Opis_Chunk"},clientSideRequired=true, serverSideRequired=true, connectionHandler=OpisConnectionHandler.class, packetHandler=OpisPacketHandler.class)
 
 public class modOpis {
 

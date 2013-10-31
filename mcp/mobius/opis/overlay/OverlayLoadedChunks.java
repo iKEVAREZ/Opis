@@ -3,11 +3,15 @@ package mcp.mobius.opis.overlay;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Set;
 
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.network.packet.Packet250CustomPayload;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.ChunkCoordIntPair;
+import mapwriter.Mw;
 import mapwriter.api.IMwChunkOverlay;
 import mapwriter.api.IMwDataProvider;
 import mapwriter.map.MapView;
@@ -35,9 +39,11 @@ public class OverlayLoadedChunks implements IMwDataProvider {
 	public class TicketTable extends ViewTable{
 		MapView mapView;
 		MapMode mapMode;
+		OverlayLoadedChunks overlay;
 		
-		public TicketTable(IWidget parent) { 	
+		public TicketTable(IWidget parent, OverlayLoadedChunks overlay) { 	
 			super(parent);
+			this.overlay = overlay;
 		}
 		
 		public void setMap(MapView mapView, MapMode mapMode){
@@ -54,6 +60,9 @@ public class OverlayLoadedChunks implements IMwDataProvider {
 				if (this.mapView.getX() != coord.x || this.mapView.getZ() != coord.z || this.mapView.getDimension() != coord.dim){
 					this.mapView.setDimension(coord.dim);
 					this.mapView.setViewCentre(coord.x, coord.z);
+					this.overlay.requestChunkUpdate(this.mapView.getDimension(), 
+							MathHelper.ceiling_double_int(this.mapView.getX()) >> 4, 
+							MathHelper.ceiling_double_int(this.mapView.getZ()) >> 4);
 				} else {
 					PacketDispatcher.sendPacketToServer(Packet_ReqTeleport.create(new CoordinatesBlock(coord)));
 				}
@@ -135,22 +144,44 @@ public class OverlayLoadedChunks implements IMwDataProvider {
 	public void onMiddleClick(int dim, int bX, int bZ, MapView mapview) {
 		int chunkX = bX >> 4;
 		int chunkZ = bZ >> 4;
-		
+		this.requestChunkUpdate(dim, chunkX, chunkZ);
+	}
+
+	private void requestChunkUpdate(int dim, int chunkX, int chunkZ){
 		ArrayList<CoordinatesChunk> chunks = new ArrayList<CoordinatesChunk>();
+		//HashSet<ChunkCoordIntPair> chunkCoords = new HashSet<ChunkCoordIntPair>(); 
+
 		for (int x = -5; x <= 5; x++){
 			for (int z = -5; z <= 5; z++){
 				chunks.add(new CoordinatesChunk(dim, chunkX + x, chunkZ + z));
-				if (chunks.size() >= 4){
-					PacketDispatcher.sendPacketToServer(Packet_ReqChunks.create(dim, chunks));
+				if (chunks.size() >= 1){
+					Packet250CustomPayload packet = Packet_ReqChunks.create(dim, chunks);
+					if (packet != null)
+						PacketDispatcher.sendPacketToServer(packet);
 					chunks.clear();
 				}
 			}
 		}
+
+		/*
+		for (int x = -5; x <= 5; x++){
+			for (int z = -5; z <= 5; z++){
+				CoordinatesChunk coord = new CoordinatesChunk(dim, chunkX + x, chunkZ + z); 
+				chunks.add(coord);
+				chunkCoords.add(coord.toChunkCoordIntPair());
+			}
+		}
+		
+		if (chunks.size() > 0){
+			Mw.instance.chunkManager.addForcedChunks(chunkCoords);
+			PacketDispatcher.sendPacketToServer(Packet_ReqChunks.create(dim, chunks));
+		}
+		*/
 		
 		if (chunks.size() > 0)
-			PacketDispatcher.sendPacketToServer(Packet_ReqChunks.create(dim, chunks));
+			PacketDispatcher.sendPacketToServer(Packet_ReqChunks.create(dim, chunks));				
 	}
-
+	
 	@Override
 	public void onDimensionChanged(int dimension, MapView mapview) {
 		PacketDispatcher.sendPacketToServer(Packet_ReqChunksInDim.create(dimension));
@@ -202,7 +233,7 @@ public class OverlayLoadedChunks implements IMwDataProvider {
 		layout.setGeometry(new WidgetGeometry(100.0,0.0,300.0,100.0,CType.RELXY, CType.REL_Y, WAlign.RIGHT, WAlign.TOP));
 		layout.setBackgroundColors(0x90000000, 0x90000000);
 		
-		TicketTable  table  = (TicketTable)layout.addWidget("Table_", new TicketTable(null));
+		TicketTable  table  = (TicketTable)layout.addWidget("Table_", new TicketTable(null, this));
 		
 		table.setGeometry(new WidgetGeometry(0.0,0.0,100.0,100.0,CType.RELXY, CType.RELXY, WAlign.LEFT, WAlign.TOP));
 	    table.setColumnsAlign(WAlign.CENTER, WAlign.CENTER, WAlign.CENTER)
