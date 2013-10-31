@@ -10,7 +10,7 @@ import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 
 public class TileEntityStats implements ISerializable {
 
-	private DescriptiveStatistics stats = new DescriptiveStatistics(250);	
+	private DescriptiveStatistics stats = new DescriptiveStatistics(100);	
 	private CoordinatesBlock coord;
 	private String classname;
 	private Double geomMean = null;
