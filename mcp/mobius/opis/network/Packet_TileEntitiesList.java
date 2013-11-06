@@ -6,6 +6,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import mcp.mobius.opis.data.holders.TileEntityStats;
 import net.minecraft.network.packet.Packet250CustomPayload;
@@ -31,6 +32,8 @@ public class Packet_TileEntitiesList {
 		ByteArrayOutputStream bos     = new ByteArrayOutputStream(1);
 		DataOutputStream outputStream = new DataOutputStream(bos);
 
+		Collections.sort(stats);
+		
 		try{
 			outputStream.writeByte(Packets.TILEENTITIES_LIST);
 			outputStream.writeInt(stats.size());

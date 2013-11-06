@@ -5,6 +5,7 @@ import java.util.logging.Logger;
 import mcp.mobius.mobiuscore.profiler.ProfilerRegistrar;
 import mcp.mobius.opis.commands.CommandChunkDump;
 import mcp.mobius.opis.data.TileEntityProfiler;
+import mcp.mobius.opis.gui.font.TrueTypeFont;
 import mcp.mobius.opis.network.OpisConnectionHandler;
 import mcp.mobius.opis.network.OpisPacketHandler;
 import mcp.mobius.opis.proxy.ProxyServer;
@@ -36,6 +37,8 @@ public class modOpis {
 
 	@SidedProxy(clientSide="mcp.mobius.opis.proxy.ProxyClient", serverSide="mcp.mobius.opis.proxy.ProxyClient")
 	public static ProxyServer proxy;		
+	
+	public static TrueTypeFont fontMC12, fontMC24;
 	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {}	

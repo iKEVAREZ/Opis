@@ -5,31 +5,39 @@ import mcp.mobius.opis.gui.interfaces.CType;
 import mcp.mobius.opis.gui.interfaces.IWidget;
 import mcp.mobius.opis.gui.interfaces.WAlign;
 
+import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.Point;
 
 public class ViewTable extends WidgetBase{
 
 	public class Cell extends WidgetBase{
-		public Cell(IWidget parent, String text, WAlign align){
+		float    fontSize = 1.0f;
+		
+		public Cell(IWidget parent, String text, WAlign align, float fontSize){
 			super(parent);
+			
+			this.fontSize = fontSize;
 			
 			//this.addWidget("Crop", new LayoutCropping(null)).setGeometry(new WidgetGeometry(50.0, 50.0, 90.0, 100.0, CType.RELXY, CType.RELXY, WAlign.CENTER, WAlign.CENTER));
 			
 			switch(align){
 			case CENTER:
 				//this.getWidget("Crop").addWidget("Text", new LabelFixedFont(null, text))
-				this.addWidget("Text", new LabelFixedFont(null, text))
-				    .setGeometry(new WidgetGeometry(50.0, 50.0, 100.0, 100.0, CType.RELXY, CType.RELXY, WAlign.CENTER, WAlign.CENTER));				
+				this.addWidget("Text", new LabelScalable(null, text))
+				    .setGeometry(new WidgetGeometry(50.0, 50.0, 100.0, 100.0, CType.RELXY, CType.RELXY, WAlign.CENTER, WAlign.CENTER));
+				((LabelScalable)this.getWidget("Text")).setScale(this.fontSize);
 				break;
 			case LEFT:
 				//this.getWidget("Crop").addWidget("Text", new LabelFixedFont(null, text))
-				this.addWidget("Text", new LabelFixedFont(null, text))
-				    .setGeometry(new WidgetGeometry(5.0, 50.0, 95.0, 100.0,  CType.RELXY, CType.RELXY, WAlign.LEFT,   WAlign.CENTER));				
+				this.addWidget("Text", new LabelScalable(null, text))
+				    .setGeometry(new WidgetGeometry(5.0, 50.0, 95.0, 100.0,  CType.RELXY, CType.RELXY, WAlign.LEFT,   WAlign.CENTER));
+				((LabelScalable)this.getWidget("Text")).setScale(this.fontSize);				
 				break;
 			case RIGHT: 
 				//this.getWidget("Crop").addWidget("Text", new LabelFixedFont(null, text))
-				this.addWidget("Text", new LabelFixedFont(null, text))
-				    .setGeometry(new WidgetGeometry(5.0, 50.0, 95.0, 100.0,  CType.RELXY, CType.RELXY, WAlign.RIGHT,  WAlign.CENTER));				
+				this.addWidget("Text", new LabelScalable(null, text))
+				    .setGeometry(new WidgetGeometry(5.0, 50.0, 95.0, 100.0,  CType.RELXY, CType.RELXY, WAlign.RIGHT,  WAlign.CENTER));
+				((LabelScalable)this.getWidget("Text")).setScale(this.fontSize);				
 				break;
 			default:
 				throw new UIException(String.format("Unexpected align value : %s", align));
@@ -37,7 +45,13 @@ public class ViewTable extends WidgetBase{
 		}
 		
 		@Override
-		public void draw(Point pos){}		
+		public void draw(Point pos){}
+		
+
+		public void setFontSize(float size){
+			this.fontSize = size;
+		}			
+		
 	}
 
 	public class Row extends WidgetBase{
@@ -45,13 +59,16 @@ public class ViewTable extends WidgetBase{
 		double[] widths;
 		String[] texts;
 		WAlign[] aligns;
+		float    fontSize = 1.0f;
 		boolean  init = false;
 		int bgcolor1 = 0xff505050;
 		int bgcolor2 = 0xff505050;
 		Object obj;
 		
-		public Row(IWidget parent){
+		public Row(IWidget parent, float fontSize){
 			super(parent);
+
+			this.fontSize = fontSize;
 			
 			this.addWidget("Background", new LayoutBase(null)).setGeometry(new WidgetGeometry(50.0, 50.0, 100.0, 100.0, CType.RELXY, CType.RELXY, WAlign.CENTER, WAlign.CENTER));
 			((LayoutBase)this.getWidget("Background")).setBackgroundColors(this.bgcolor1, this.bgcolor2);
@@ -66,6 +83,10 @@ public class ViewTable extends WidgetBase{
 		public Object getObject(){
 			return this.obj;
 		}
+		
+		public void setFontSize(float size){
+			this.fontSize = size;
+		}		
 		
 		public Row setColumnsWidth(double... widths){
 			if (this.ncolumns == -1)
@@ -117,14 +138,13 @@ public class ViewTable extends WidgetBase{
 				double currentOffset = 0.0;
 				for (int i = 0; i < this.ncolumns; i++){
 					if (!this.widgets.containsKey(String.format("Cell_%02d", i))){
-						Cell cell = (Cell)(this.addWidget(String.format("Cell_%02d", i), new Cell(null, this.texts[i], this.aligns[i])));
+						Cell cell = (Cell)(this.addWidget(String.format("Cell_%02d", i), new Cell(null, this.texts[i], this.aligns[i], this.fontSize)));
 						cell.setGeometry(new WidgetGeometry(currentOffset, 50.0, this.widths[i], 100.0, CType.RELXY, CType.RELXY, WAlign.LEFT, WAlign.CENTER));
 						currentOffset += this.widths[i];
 					}
 				}
 				init = true;
 			}
-			
 			super.draw();
 		}
 		
@@ -137,13 +157,14 @@ public class ViewTable extends WidgetBase{
 	double[] widths;
 	String[] texts;
 	WAlign[] aligns;
+	float    fontSize = 1.0f;
 	boolean  init = false;		
 	int rowColorOdd  = 0x50505050;
 	int rowColorEven = 0x50808080;
 	
 	public ViewTable(IWidget parent){
 		super(parent);
-		this.addWidget("Titles",   new Row(null)).setGeometry(new WidgetGeometry(0.0, 0.0, 100.0, 16.0, CType.REL_X, CType.REL_X, WAlign.LEFT, WAlign.TOP));
+		this.addWidget("Titles",   new Row(null, this.fontSize)).setGeometry(new WidgetGeometry(0.0, 0.0, 100.0, 16.0, CType.REL_X, CType.REL_X, WAlign.LEFT, WAlign.TOP));
 		((Row)this.getWidget("Titles")).setColors(0x00000000, 0x00000000);
 		this.addWidget("Viewport", new ViewportScrollable(null)).setGeometry(new WidgetGeometry(0.0, 16.0, 100.0, 90.0, CType.REL_X, CType.RELXY, WAlign.LEFT, WAlign.TOP));
 		((ViewportScrollable)(this.getWidget("Viewport"))).attachWidget(new LayoutBase(null)).setGeometry(new WidgetGeometry(0.0, 0.0, 100.0, 0.0, CType.RELXY, CType.REL_X, WAlign.LEFT, WAlign.TOP));
@@ -206,7 +227,7 @@ public class ViewTable extends WidgetBase{
 		IWidget tableLayout = ((ViewportScrollable)(this.getWidget("Viewport"))).getAttachedWidget();
 		tableLayout.setSize(100.0, (this.nrows + 1) * 16);
 		
-		Row newRow = (Row)new Row(null);
+		Row newRow = (Row)new Row(null, this.fontSize);
 		newRow.setColumnsWidth(this.widths);
 		newRow.setColumnsText(strings);
 		newRow.setColumnsAlign(this.aligns);
@@ -226,6 +247,10 @@ public class ViewTable extends WidgetBase{
 	
 	public Row getRow(double x, double y){
 		return (Row)this.getWidgetAtLayer(x, y, 4);
+	}
+	
+	public void setFontSize(float size){
+		this.fontSize = size;
 	}
 	
 }

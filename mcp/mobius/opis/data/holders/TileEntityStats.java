@@ -8,7 +8,7 @@ import net.minecraft.network.packet.Packet;
 
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 
-public class TileEntityStats implements ISerializable {
+public class TileEntityStats implements ISerializable, Comparable {
 
 	private DescriptiveStatistics stats = new DescriptiveStatistics(100);	
 	private CoordinatesBlock coord;
@@ -61,5 +61,15 @@ public class TileEntityStats implements ISerializable {
 		TileEntityStats stat = new TileEntityStats(coord, classname);
 		stat.setGeometricMean(stream.readDouble());
 		return stat;
+	}
+
+	@Override
+	public int compareTo(Object arg0) {
+		double value = ((TileEntityStats)arg0).getGeometricMean() - this.getGeometricMean();
+		if (value > 0)
+			return 1;
+		if (value < 0)
+			return -1;
+		return 0;
 	}
 }

@@ -62,8 +62,10 @@ public class OverlayMeanTime implements IMwDataProvider {
 							MathHelper.ceiling_double_int(this.mapView.getX()) >> 4, 
 							MathHelper.ceiling_double_int(this.mapView.getZ()) >> 4);
 				}
-				else
+				else{
 					PacketDispatcher.sendPacketToServer(Packet_ReqTeleport.create(coord));
+					Minecraft.getMinecraft().setIngameFocus();
+				}
 			}
 		}
 	}
@@ -240,8 +242,9 @@ public class OverlayMeanTime implements IMwDataProvider {
 	@SideOnly(Side.CLIENT)
 	public void setupTable(ArrayList<TileEntityStats> entities){
 		LayoutBase layout = (LayoutBase)this.canvas.addWidget("Table", new LayoutBase(null));
-		layout.setGeometry(new WidgetGeometry(100.0,0.0,300.0,100.0,CType.RELXY, CType.REL_Y, WAlign.RIGHT, WAlign.TOP));
-		layout.setBackgroundColors(0x90000000, 0x90000000);
+		//layout.setGeometry(new WidgetGeometry(100.0,0.0,300.0,100.0,CType.RELXY, CType.REL_Y, WAlign.RIGHT, WAlign.TOP));
+		layout.setGeometry(new WidgetGeometry(100.0,0.0,30.0,100.0,CType.RELXY, CType.RELXY, WAlign.RIGHT, WAlign.TOP));		
+		layout.setBackgroundColors(0x90202020, 0x90202020);
 		
 		EntitiesTable  table  = (EntitiesTable)layout.addWidget("Table_", new EntitiesTable(null, this));
 		
@@ -249,7 +252,8 @@ public class OverlayMeanTime implements IMwDataProvider {
 	    table.setColumnsAlign(WAlign.CENTER, WAlign.CENTER, WAlign.CENTER)
 		     .setColumnsTitle("\u00a7a\u00a7oType", "\u00a7a\u00a7oPos", "\u00a7a\u00a7oUpdate Time")
 			 .setColumnsWidth(50,25,25)
-			 .setRowColors(0xff808080, 0xff505050);
+			 .setRowColors(0xff808080, 0xff505050)
+			 .setFontSize(0.75f);
 
 		
 		for (TileEntityStats data : entities){

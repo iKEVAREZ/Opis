@@ -7,6 +7,7 @@ import mcp.mobius.opis.data.holders.ChunkStats;
 import mcp.mobius.opis.data.holders.CoordinatesBlock;
 import mcp.mobius.opis.data.holders.CoordinatesChunk;
 import mcp.mobius.opis.data.holders.TileEntityStats;
+import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 
 public class TileEntityManager {
@@ -15,6 +16,17 @@ public class TileEntityManager {
 
 	public static void addTileEntity(TileEntity te, long timing){
 		CoordinatesBlock coord = new CoordinatesBlock(te);
+		
+		String teName;
+		/*
+		try{
+			teName = te.blockType.getLocalizedName();
+		} catch (Exception e){
+			teName = te.getClass().getName();
+		}
+		*/
+		teName = te.getClass().getName();
+		
 		if (references.containsKey(coord) && references.get(coord) != te.getClass()){
 			references.remove(coord);
 			stats.remove(coord);
@@ -22,7 +34,7 @@ public class TileEntityManager {
 		
 		if (!(references.containsKey(coord))){
 			references.put(coord, te.getClass());
-			stats.put(coord, new TileEntityStats(coord, te.getClass().getName()));
+			stats.put(coord, new TileEntityStats(coord, teName));
 		}
 			
 		stats.get(coord).addMeasure(timing);

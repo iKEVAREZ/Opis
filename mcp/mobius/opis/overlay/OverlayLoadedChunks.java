@@ -8,6 +8,7 @@ import java.util.Set;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.Minecraft;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.ChunkCoordIntPair;
@@ -65,6 +66,7 @@ public class OverlayLoadedChunks implements IMwDataProvider {
 							MathHelper.ceiling_double_int(this.mapView.getZ()) >> 4);
 				} else {
 					PacketDispatcher.sendPacketToServer(Packet_ReqTeleport.create(new CoordinatesBlock(coord)));
+					Minecraft.getMinecraft().setIngameFocus();
 				}
 			}
 		}
@@ -230,8 +232,9 @@ public class OverlayLoadedChunks implements IMwDataProvider {
 	@SideOnly(Side.CLIENT)
 	public void setupTable(HashSet<TicketData> tickets){
 		LayoutBase layout = (LayoutBase)this.canvas.addWidget("Table", new LayoutBase(null));
-		layout.setGeometry(new WidgetGeometry(100.0,0.0,300.0,100.0,CType.RELXY, CType.REL_Y, WAlign.RIGHT, WAlign.TOP));
-		layout.setBackgroundColors(0x90000000, 0x90000000);
+		//layout.setGeometry(new WidgetGeometry(100.0,0.0,300.0,100.0,CType.RELXY, CType.REL_Y, WAlign.RIGHT, WAlign.TOP));
+		layout.setGeometry(new WidgetGeometry(100.0,0.0,30.0,100.0,CType.RELXY, CType.RELXY, WAlign.RIGHT, WAlign.TOP));
+		layout.setBackgroundColors(0x90202020, 0x90202020);
 		
 		TicketTable  table  = (TicketTable)layout.addWidget("Table_", new TicketTable(null, this));
 		
@@ -239,7 +242,8 @@ public class OverlayLoadedChunks implements IMwDataProvider {
 	    table.setColumnsAlign(WAlign.CENTER, WAlign.CENTER, WAlign.CENTER)
 		     .setColumnsTitle("\u00a7a\u00a7oPos", "\u00a7a\u00a7oMod", "\u00a7a\u00a7oChunks")
 			 .setColumnsWidth(50,25,25)
-			 .setRowColors(0xff808080, 0xff505050);
+			 .setRowColors(0xff808080, 0xff505050)
+			 .setFontSize(0.75f);			 
 
 		
 		for (TicketData data : tickets)
