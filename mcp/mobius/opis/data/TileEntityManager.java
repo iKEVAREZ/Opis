@@ -1,6 +1,7 @@
 package mcp.mobius.opis.data;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 import mcp.mobius.opis.data.holders.ChunkStats;
@@ -85,5 +86,29 @@ public class TileEntityManager {
 		}
 		
 		return returnList;
+	}
+	
+	public static ArrayList<TileEntityStats> getTopEntities(int quantity){
+		ArrayList<TileEntityStats> sortedEntities = new ArrayList(TileEntityManager.stats.values());
+		ArrayList<TileEntityStats> topEntities    = new ArrayList<TileEntityStats>();
+		Collections.sort(sortedEntities);
+		
+		
+		for (int i = 0; i < Math.min(quantity, sortedEntities.size()); i++){
+			TileEntityStats testats = sortedEntities.get(i);
+
+			World world = DimensionManager.getWorld(testats.getCoordinates().dim);
+	        Block mouseoverBlock = Block.blocksList[world.getBlockId(testats.getCoordinates().x, testats.getCoordinates().y, testats.getCoordinates().z)];
+	        
+	        try{
+	        	ItemStack pick = new ItemStack(mouseoverBlock, 1, world.getBlockMetadata(testats.getCoordinates().x, testats.getCoordinates().y, testats.getCoordinates().z));
+	        	testats.setType(pick.getDisplayName());
+	        }catch (Exception e){}			
+			
+			topEntities.add(testats);
+		}
+		
+		return topEntities;
+		
 	}
 }

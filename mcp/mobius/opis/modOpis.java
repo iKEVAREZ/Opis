@@ -7,6 +7,7 @@ import mcp.mobius.opis.commands.CommandChunkDump;
 import mcp.mobius.opis.commands.CommandFrequency;
 import mcp.mobius.opis.commands.CommandStart;
 import mcp.mobius.opis.commands.CommandStop;
+import mcp.mobius.opis.commands.CommandTileEntitiesList;
 import mcp.mobius.opis.data.TileEntityProfiler;
 import mcp.mobius.opis.network.OpisConnectionHandler;
 import mcp.mobius.opis.network.OpisPacketHandler;
@@ -58,10 +59,11 @@ public class modOpis {
 	
 	@EventHandler
 	public void serverStarting(FMLServerStartingEvent event){
-		event.registerServerCommand(new CommandChunkDump());
+		//event.registerServerCommand(new CommandChunkDump());
 		event.registerServerCommand(new CommandFrequency());
 		event.registerServerCommand(new CommandStart());
 		event.registerServerCommand(new CommandStop());		
+		event.registerServerCommand(new CommandTileEntitiesList());
 		
 		GameRegistry.registerPlayerTracker(new OpisPlayerTracker());
 		ProfilerRegistrar.registerTileEntityProfiler(new TileEntityProfiler());		

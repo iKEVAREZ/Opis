@@ -44,11 +44,16 @@ public class OpisPacketHandler implements IPacketHandler {
 				ChunkManager.chunkMeanTime = castedPacket.chunkStatus;
 			}			
 
-			else if (header == Packets.TILEENTITIES_LIST){
-				Packet_TileEntitiesList castedPacket = new Packet_TileEntitiesList(packet);
+			else if (header == Packets.TILEENTITIES_CHUNKLIST){
+				Packet_TileEntitiesChunkList castedPacket = new Packet_TileEntitiesChunkList(packet);
 				OverlayMeanTime.instance().setupTable(castedPacket.entities);
 			}
 
+			else if (header == Packets.TILEENTITIES_TOPLIST){
+				Packet_TileEntitiesTopList castedPacket = new Packet_TileEntitiesTopList(packet);
+				modOpis.proxy.displayTileEntityList(castedPacket.entities);
+			}			
+			
 			else if (header == Packets.TICKETS){
 				Packet_Tickets castedPacket = new Packet_Tickets(packet);
 				OverlayLoadedChunks.instance().setupTable(castedPacket.tickets);
@@ -82,7 +87,7 @@ public class OpisPacketHandler implements IPacketHandler {
 			
 			else if (header == Packets.REQ_TES_IN_CHUNK){
 				Packet_ReqTEsInChunk castedPacket = new Packet_ReqTEsInChunk(packet);
-				PacketDispatcher.sendPacketToPlayer(Packet_TileEntitiesList.create(TileEntityManager.getInChunk(castedPacket.chunk)), player);
+				PacketDispatcher.sendPacketToPlayer(Packet_TileEntitiesChunkList.create(TileEntityManager.getInChunk(castedPacket.chunk)), player);
 			}
 			
 			else if (header == Packets.REQ_TICKETS){

@@ -77,4 +77,8 @@ public class TileEntityStats implements ISerializable, Comparable {
 			return -1;
 		return 0;
 	}
+	
+	public String toString(){
+		return String.format("%s %s %s", this.name, this.coord, this.getGeometricMean());
+	}
 }

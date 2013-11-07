@@ -11,12 +11,12 @@ import java.util.Collections;
 import mcp.mobius.opis.data.holders.TileEntityStats;
 import net.minecraft.network.packet.Packet250CustomPayload;
 
-public class Packet_TileEntitiesList {
+public class Packet_TileEntitiesChunkList {
 
 	public byte header;
 	ArrayList<TileEntityStats> entities = new ArrayList<TileEntityStats>(); 
 	
-	public Packet_TileEntitiesList(Packet250CustomPayload packet) {
+	public Packet_TileEntitiesChunkList(Packet250CustomPayload packet) {
 		DataInputStream inputStream = new DataInputStream(new ByteArrayInputStream(packet.data));
 		
 		try{
@@ -35,7 +35,7 @@ public class Packet_TileEntitiesList {
 		Collections.sort(stats);
 		
 		try{
-			outputStream.writeByte(Packets.TILEENTITIES_LIST);
+			outputStream.writeByte(Packets.TILEENTITIES_CHUNKLIST);
 			outputStream.writeInt(stats.size());
 			for (TileEntityStats data : stats)
 				data.writeToStream(outputStream);

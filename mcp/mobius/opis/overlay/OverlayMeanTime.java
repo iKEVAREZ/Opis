@@ -169,9 +169,9 @@ public class OverlayMeanTime implements IMwDataProvider {
 	public void onMiddleClick(int dim, int bX, int bZ, MapView mapview) {
 		this.showList = false;
 		
-		int xChunk = bX >> 4;
-		int zChunk = bZ >> 4;		
-		CoordinatesChunk clickedChunk = new CoordinatesChunk(dim, xChunk, zChunk); 
+		int chunkX = bX >> 4;
+		int chunkZ = bZ >> 4;		
+		CoordinatesChunk clickedChunk = new CoordinatesChunk(dim, chunkX, chunkZ); 
 		
 		if (ChunkManager.chunkMeanTime.containsKey(clickedChunk)){
 			if (this.selectedChunk == null)
@@ -195,6 +195,13 @@ public class OverlayMeanTime implements IMwDataProvider {
 
 	}
 
+	public void setSelectedChunk(int dim, int chunkX, int chunkZ){
+		this.selectedChunk = new CoordinatesChunk(dim, chunkX, chunkZ);
+		
+		if (this.selectedChunk != null)
+			PacketDispatcher.sendPacketToServer(Packet_ReqTEsInChunk.create(this.selectedChunk));		
+	}
+	
 	@Override
 	public void onDimensionChanged(int dimension, MapView mapview) {
 		PacketDispatcher.sendPacketToServer(Packet_ReqMeanTimeInDim.create(dimension));		

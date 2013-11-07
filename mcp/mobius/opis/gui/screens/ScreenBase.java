@@ -4,6 +4,8 @@ import java.util.HashMap;
 
 import org.lwjgl.input.Mouse;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import mcp.mobius.opis.gui.interfaces.IWidget;
 import mcp.mobius.opis.gui.widgets.LayoutCanvas;
 import net.minecraft.client.Minecraft;
@@ -62,6 +64,7 @@ public abstract class ScreenBase extends GuiScreen{
 
 	// Used to easily display a UI without having to mess with mc handle.
 	public void display(){
+		this.parent = this.mc.currentScreen;
 		this.mc.displayGuiScreen(this);
 	}
 	

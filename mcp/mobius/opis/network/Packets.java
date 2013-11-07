@@ -15,7 +15,8 @@ public class Packets {
 	public static byte REQ_MEANTIME_ALL    = 0x12;	// C => S //Not used right now
 
 	public static byte REQ_TES_IN_CHUNK    = 0x20;  // C => S
-	public static byte TILEENTITIES_LIST   = 0x21;  // S => C
+	public static byte TILEENTITIES_CHUNKLIST = 0x21;  // S => C
+	public static byte TILEENTITIES_TOPLIST   = 0x22;  // S => C	
 	
 	public static byte REQ_TELEPORT        = 0x30;  // C => S	
 
