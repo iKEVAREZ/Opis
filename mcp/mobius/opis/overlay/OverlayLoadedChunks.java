@@ -27,8 +27,9 @@ import mcp.mobius.opis.gui.interfaces.IWidget;
 import mcp.mobius.opis.gui.interfaces.WAlign;
 import mcp.mobius.opis.gui.widgets.LayoutBase;
 import mcp.mobius.opis.gui.widgets.LayoutCanvas;
-import mcp.mobius.opis.gui.widgets.ViewTable;
 import mcp.mobius.opis.gui.widgets.WidgetGeometry;
+import mcp.mobius.opis.gui.widgets.tableview.TableRow;
+import mcp.mobius.opis.gui.widgets.tableview.ViewTable;
 import mcp.mobius.opis.network.Packet_ReqChunks;
 import mcp.mobius.opis.network.Packet_ReqChunksInDim;
 import mcp.mobius.opis.network.Packet_ReqTeleport;
@@ -54,7 +55,7 @@ public class OverlayLoadedChunks implements IMwDataProvider {
 		
 		@Override
 		public void onMouseClick(MouseEvent event){
-			Row row = this.getRow(event.x, event.y);
+			TableRow row = this.getRow(event.x, event.y);
 			if (row != null){
 				CoordinatesChunk coord = ((TicketData)row.getObject()).coord;
 				
@@ -240,14 +241,16 @@ public class OverlayLoadedChunks implements IMwDataProvider {
 		
 		table.setGeometry(new WidgetGeometry(0.0,0.0,100.0,100.0,CType.RELXY, CType.RELXY, WAlign.LEFT, WAlign.TOP));
 	    table.setColumnsAlign(WAlign.CENTER, WAlign.CENTER, WAlign.CENTER)
-		     .setColumnsTitle("\u00a7a\u00a7oPos", "\u00a7a\u00a7oMod", "\u00a7a\u00a7oChunks")
+		     //.setColumnsTitle("\u00a7a\u00a7oPos", "\u00a7a\u00a7oMod", "\u00a7a\u00a7oChunks")
+	    	 .setColumnsTitle("Pos", "Mod", "Chunks")
 			 .setColumnsWidth(50,25,25)
 			 .setRowColors(0xff808080, 0xff505050)
-			 .setFontSize(0.75f);			 
+			 .setFontSize(1.0f);			 
 
 		
 		for (TicketData data : tickets)
-			table.addRow(data, String.format("[%s %s %s]", data.coord.dim, data.coord.chunkX, data.coord.chunkZ), "\u00a79\u00a7o" + data.modID, String.valueOf(data.nchunks));
+			//table.addRow(data, String.format("[%s %s %s]", data.coord.dim, data.coord.chunkX, data.coord.chunkZ), "\u00a79\u00a7o" + data.modID, String.valueOf(data.nchunks));
+			table.addRow(data, String.format("[%s %s %s]", data.coord.dim, data.coord.chunkX, data.coord.chunkZ), data.modID, String.valueOf(data.nchunks));
 
 		this.showList = true;
 	}	

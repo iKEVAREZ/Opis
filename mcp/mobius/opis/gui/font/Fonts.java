@@ -5,7 +5,8 @@ import java.awt.FontFormatException;
 import java.awt.geom.AffineTransform;
 import java.io.IOException;
 
-
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 
@@ -52,25 +53,34 @@ public class Fonts{
 		fontArial      = loadSystemFont("Arial", 24, false);
 		fontArialSmall = loadSystemFont("Arial", 16, false);
 	}
-	
+
 	public static TrueTypeFont loadSystemFont(String name, float defSize, boolean antialias){
+		return loadSystemFont(name, defSize, antialias, Font.TRUETYPE_FONT);
+		
+	}
+	
+	public static TrueTypeFont loadSystemFont(String name, float defSize, boolean antialias, int type){
 		Font font;
 		TrueTypeFont out = null;
 		try {
-			font = new Font(name, Font.TRUETYPE_FONT, (int)defSize);
+			font = new Font(name, type, (int)defSize);
 			font = font.deriveFont(defSize);
 			out = new TrueTypeFont(font, antialias);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return out;
+	}	
+
+	public static TrueTypeFont createFont(ResourceLocation res, float defSize, boolean antialias){
+		return createFont(res, defSize, antialias, Font.TRUETYPE_FONT);
 	}
 	
-	public static TrueTypeFont createFont(ResourceLocation res, float defSize, boolean antialias){
+	public static TrueTypeFont createFont(ResourceLocation res, float defSize, boolean antialias, int type){
 		Font font;
 		TrueTypeFont out = null;
 		try {
-			font = Font.createFont(Font.TRUETYPE_FONT, Minecraft.getMinecraft().getResourceManager().getResource(res).getInputStream());
+			font = Font.createFont(type, Minecraft.getMinecraft().getResourceManager().getResource(res).getInputStream());
 			font = font.deriveFont(defSize);
 			out = new TrueTypeFont(font, antialias);
 		} catch (Exception e) {

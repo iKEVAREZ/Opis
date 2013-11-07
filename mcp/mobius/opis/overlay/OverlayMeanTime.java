@@ -25,8 +25,9 @@ import mcp.mobius.opis.gui.interfaces.IWidget;
 import mcp.mobius.opis.gui.interfaces.WAlign;
 import mcp.mobius.opis.gui.widgets.LayoutBase;
 import mcp.mobius.opis.gui.widgets.LayoutCanvas;
-import mcp.mobius.opis.gui.widgets.ViewTable;
 import mcp.mobius.opis.gui.widgets.WidgetGeometry;
+import mcp.mobius.opis.gui.widgets.tableview.TableRow;
+import mcp.mobius.opis.gui.widgets.tableview.ViewTable;
 import mcp.mobius.opis.network.Packet_ReqChunks;
 import mcp.mobius.opis.network.Packet_ReqMeanTimeInDim;
 import mcp.mobius.opis.network.Packet_ReqTEsInChunk;
@@ -52,7 +53,7 @@ public class OverlayMeanTime implements IMwDataProvider {
 		
 		@Override
 		public void onMouseClick(MouseEvent event){
-			Row row = this.getRow(event.x, event.y);
+			TableRow row = this.getRow(event.x, event.y);
 			if (row != null){
 				CoordinatesBlock coord = ((TileEntityStats)row.getObject()).getCoordinates();
 				
@@ -250,10 +251,11 @@ public class OverlayMeanTime implements IMwDataProvider {
 		
 		table.setGeometry(new WidgetGeometry(0.0,0.0,100.0,100.0,CType.RELXY, CType.RELXY, WAlign.LEFT, WAlign.TOP));
 	    table.setColumnsAlign(WAlign.CENTER, WAlign.CENTER, WAlign.CENTER)
-		     .setColumnsTitle("\u00a7a\u00a7oType", "\u00a7a\u00a7oPos", "\u00a7a\u00a7oUpdate Time")
+		     //.setColumnsTitle("\u00a7a\u00a7oType", "\u00a7a\u00a7oPos", "\u00a7a\u00a7oUpdate Time")
+	    	 .setColumnsTitle("Type", "Pos", "Update Time")
 			 .setColumnsWidth(50,25,25)
 			 .setRowColors(0xff808080, 0xff505050)
-			 .setFontSize(0.75f);
+			 .setFontSize(1.0f);
 
 		
 		for (TileEntityStats data : entities){

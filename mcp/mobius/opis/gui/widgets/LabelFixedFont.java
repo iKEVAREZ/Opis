@@ -41,7 +41,7 @@ public class LabelFixedFont extends WidgetBase {
 		this.color = color;
 	}
 	
-	private void updateGeometry(){
+	protected void updateGeometry(){
 		if (this.geom == null)
 			this.geom = new WidgetGeometry(0,0,50,50, CType.ABSXY, CType.ABSXY);
 		
