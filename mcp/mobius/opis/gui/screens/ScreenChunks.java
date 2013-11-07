@@ -2,11 +2,13 @@ package mcp.mobius.opis.gui.screens;
 
 import java.util.ArrayList;
 
+import net.minecraft.client.gui.GuiScreen;
 import mapwriter.Mw;
 import mapwriter.api.MwAPI;
 import mapwriter.gui.MwGui;
+import mcp.mobius.opis.data.holders.ChunkStats;
 import mcp.mobius.opis.data.holders.CoordinatesBlock;
-import mcp.mobius.opis.data.holders.TileEntityStats;
+import mcp.mobius.opis.data.holders.CoordinatesChunk;
 import mcp.mobius.opis.gui.events.MouseEvent;
 import mcp.mobius.opis.gui.interfaces.CType;
 import mcp.mobius.opis.gui.interfaces.IWidget;
@@ -15,13 +17,11 @@ import mcp.mobius.opis.gui.widgets.WidgetGeometry;
 import mcp.mobius.opis.gui.widgets.tableview.TableRow;
 import mcp.mobius.opis.gui.widgets.tableview.ViewTable;
 import mcp.mobius.opis.overlay.OverlayMeanTime;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiScreen;
 
-public class ScreenTileEntity extends ScreenBase {
-	
-	public class EntitiesTable extends ViewTable{
-		public EntitiesTable(IWidget parent) { 	
+public class ScreenChunks extends ScreenBase {
+
+	public class ChunksTable extends ViewTable{
+		public ChunksTable(IWidget parent) { 	
 			super(parent);
 		}
 		
@@ -29,8 +29,8 @@ public class ScreenTileEntity extends ScreenBase {
 		public void onMouseClick(MouseEvent event){
 			TableRow row = this.getRow(event.x, event.y);
 			if (row != null){
-				CoordinatesBlock coord = ((TileEntityStats)row.getObject()).getCoordinates();
-				OverlayMeanTime.instance().setSelectedChunk(coord.dim, coord.x >> 4, coord.z >> 4);
+				CoordinatesChunk coord = ((ChunkStats)row.getObject()).coord;
+				OverlayMeanTime.instance().setSelectedChunk(coord.dim, coord.chunkX, coord.chunkZ);
 				MwAPI.setCurrentDataProvider(OverlayMeanTime.instance());
 				this.mc.displayGuiScreen(new MwGui(Mw.instance, coord.dim, coord.x, coord.z));
 			}
@@ -39,29 +39,29 @@ public class ScreenTileEntity extends ScreenBase {
 	
 	
 	
-	public ScreenTileEntity(GuiScreen parent, ArrayList<TileEntityStats> tes) {
+	public ScreenChunks(GuiScreen parent, ArrayList<ChunkStats> chunks) {
 		super(parent);
 		
-		EntitiesTable table = (EntitiesTable)this.getRoot().addWidget("Table", new EntitiesTable(null));
+		ChunksTable table = (ChunksTable)this.getRoot().addWidget("Table", new ChunksTable(null));
 
 		table.setGeometry(new WidgetGeometry(50.0, 50.0, 80.0, 80.0,CType.RELXY, CType.RELXY, WAlign.CENTER, WAlign.CENTER));
 		
 	    table.setColumnsAlign(WAlign.CENTER, WAlign.CENTER, WAlign.CENTER, WAlign.CENTER)
 		     //.setColumnsTitle("\u00a7a\u00a7oType", "\u00a7a\u00a7oPos", "\u00a7a\u00a7oUpdate Time")
-	    	 .setColumnsTitle("Type", "Dim", "Pos", "Update Time")
+	    	 .setColumnsTitle("Dim", "Pos", "N Ents", "Update Time")
 			 .setColumnsWidth(40, 20, 20, 20)
 			 .setRowColors(0xff808080, 0xff505050)
 			 .setFontSize(1.0f);		
 
-		for (TileEntityStats data : tes){
-			String[] name = data.getType().split("\\.");
+		for (ChunkStats data : chunks){
 			table.addRow(data, 
-					     name[name.length - 1], 
-					     String.format("%3d", data.getCoordinates().dim),
-					     String.format("[ %4d %4d %4d ]", 	data.getCoordinates().x, data.getCoordinates().y, data.getCoordinates().z),  
-					     String.format("%.5f ms",data.getGeometricMean()/1000.0));
+				     	 String.format("%3d", data.coord.dim),
+					     String.format("[ %4d %4d ]", 	data.coord.chunkX, data.coord.chunkZ),
+					     String.format("%d", data.nentities),
+					     String.format("%.5f ms",data.updateTime/1000.0));
 		}	    
 	    
 	}
+		
 	
 }

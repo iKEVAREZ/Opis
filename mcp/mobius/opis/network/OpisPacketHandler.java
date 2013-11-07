@@ -64,6 +64,11 @@ public class OpisPacketHandler implements IPacketHandler {
 				Mw.instance.chunkManager.forceChunks(castedPacket.chunks);
 			}
 			
+			else if (header == Packets.CHUNKS_TOPLIST){
+				Packet_ChunkTopList castedPacket = new Packet_ChunkTopList(packet);
+				modOpis.proxy.displayChunkList(castedPacket.chunks);
+			}			
+			
 			// SERVER RECEIVED PACKETS
 			else if (header == Packets.UNREGISTER_USER){
 				Packet_UnregisterPlayer castedPacket = new Packet_UnregisterPlayer(packet);

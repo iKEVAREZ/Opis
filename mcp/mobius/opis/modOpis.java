@@ -4,7 +4,7 @@ import java.util.logging.Logger;
 
 import mcp.mobius.mobiuscore.profiler.ProfilerRegistrar;
 import mcp.mobius.opis.commands.CommandChunkDump;
-import mcp.mobius.opis.commands.CommandChunks;
+import mcp.mobius.opis.commands.CommandChunkList;
 import mcp.mobius.opis.commands.CommandFrequency;
 import mcp.mobius.opis.commands.CommandStart;
 import mcp.mobius.opis.commands.CommandStop;
@@ -60,7 +60,7 @@ public class modOpis {
 	
 	@EventHandler
 	public void serverStarting(FMLServerStartingEvent event){
-		event.registerServerCommand(new CommandChunks());
+		event.registerServerCommand(new CommandChunkList());
 		event.registerServerCommand(new CommandFrequency());
 		event.registerServerCommand(new CommandStart());
 		event.registerServerCommand(new CommandStop());		

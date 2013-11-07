@@ -4,10 +4,12 @@ import java.util.ArrayList;
 
 import mcp.mobius.opis.data.ChunkManager;
 import mcp.mobius.opis.data.holders.ChunkStats;
+import mcp.mobius.opis.network.Packet_ChunkTopList;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.entity.player.EntityPlayerMP;
 
-public class CommandChunks extends CommandBase {
+public class CommandChunkList extends CommandBase {
 
 	@Override
 	public String getCommandName() {
@@ -30,10 +32,14 @@ public class CommandChunks extends CommandBase {
 				chunks = ChunkManager.getTopChunks(Integer.valueOf(astring.length));	
 			}catch (Exception e){return;}
 		
+		/*
 		System.out.printf("== ==\n");
 		for (ChunkStats stat : chunks){
 			System.out.printf("%s\n", stat);
 		}
+		*/
+		
+		((EntityPlayerMP)icommandsender).playerNetServerHandler.sendPacketToPlayer(Packet_ChunkTopList.create(chunks));		
 		
 	}
 
