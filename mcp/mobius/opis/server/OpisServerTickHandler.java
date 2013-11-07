@@ -15,7 +15,8 @@ import cpw.mods.fml.common.network.Player;
 
 public class OpisServerTickHandler implements ITickHandler {
 
-	int tickCounter = 0;
+	public static long profilerUpdateTickCounter = 0;	
+	public static long clientUpdateTickCounter = 0;
 	
 	@Override
 	public void tickStart(EnumSet<TickType> type, Object... tickData) {
@@ -24,11 +25,13 @@ public class OpisServerTickHandler implements ITickHandler {
 	@Override
 	public void tickEnd(EnumSet<TickType> type, Object... tickData) {
 		if(type.contains(TickType.WORLD)){
-			tickCounter += 1;
-			if (tickCounter % 100 == 0){
+			clientUpdateTickCounter++;
+			if (clientUpdateTickCounter % 100 == 0){
 				updatePlayers();
-				tickCounter = 0;
+				clientUpdateTickCounter = 0;
 			}
+			
+			profilerUpdateTickCounter++;
 		}		
 	}
 

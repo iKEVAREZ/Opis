@@ -4,6 +4,7 @@ import java.util.logging.Logger;
 
 import mcp.mobius.mobiuscore.profiler.ProfilerRegistrar;
 import mcp.mobius.opis.commands.CommandChunkDump;
+import mcp.mobius.opis.commands.CommandFrequency;
 import mcp.mobius.opis.data.TileEntityProfiler;
 import mcp.mobius.opis.network.OpisConnectionHandler;
 import mcp.mobius.opis.network.OpisPacketHandler;
@@ -36,6 +37,9 @@ public class modOpis {
 
 	@SidedProxy(clientSide="mcp.mobius.opis.proxy.ProxyClient", serverSide="mcp.mobius.opis.proxy.ProxyServer")
 	public static ProxyServer proxy;		
+
+	public static int profilerDelay   = 1;
+	public static boolean profilerRun = false; 
 	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {}	
@@ -53,6 +57,7 @@ public class modOpis {
 	@EventHandler
 	public void serverStarting(FMLServerStartingEvent event){
 		event.registerServerCommand(new CommandChunkDump());
+		event.registerServerCommand(new CommandFrequency());
 		GameRegistry.registerPlayerTracker(new OpisPlayerTracker());
 		ProfilerRegistrar.registerTileEntityProfiler(new TileEntityProfiler());		
 	}	

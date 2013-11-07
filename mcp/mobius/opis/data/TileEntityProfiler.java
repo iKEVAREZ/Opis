@@ -2,6 +2,8 @@ package mcp.mobius.opis.data;
 
 import net.minecraft.tileentity.TileEntity;
 import mcp.mobius.mobiuscore.profiler.IProfilerTileEntity;
+import mcp.mobius.opis.modOpis;
+import mcp.mobius.opis.server.OpisServerTickHandler;
 
 public class TileEntityProfiler implements IProfilerTileEntity {
 
@@ -23,6 +25,8 @@ public class TileEntityProfiler implements IProfilerTileEntity {
 
 	@Override
 	public void Start(TileEntity te) {
+		if ((!modOpis.profilerRun) || (OpisServerTickHandler.profilerUpdateTickCounter % modOpis.profilerDelay != 0)) return;
+		
 		if (te.worldObj.isRemote) return;
 		
 		this.currentEntity = te;
@@ -31,6 +35,8 @@ public class TileEntityProfiler implements IProfilerTileEntity {
 
 	@Override
 	public void Stop(TileEntity te) {
+		if ((!modOpis.profilerRun) || (OpisServerTickHandler.profilerUpdateTickCounter % modOpis.profilerDelay != 0)) return;		
+		
 		this.clock.stop();
 		if (te.worldObj.isRemote) return;
 		
