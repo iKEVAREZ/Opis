@@ -8,7 +8,12 @@ import mcp.mobius.opis.data.holders.CoordinatesBlock;
 import mcp.mobius.opis.data.holders.CoordinatesChunk;
 import mcp.mobius.opis.data.holders.TileEntityStats;
 import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.Vec3;
+import net.minecraft.world.World;
+import net.minecraftforge.common.DimensionManager;
 
 public class TileEntityManager {
 	public static HashMap<CoordinatesBlock, Class> references = new HashMap<CoordinatesBlock, Class>();
@@ -18,13 +23,16 @@ public class TileEntityManager {
 		CoordinatesBlock coord = new CoordinatesBlock(te);
 		
 		String teName;
+
 		/*
 		try{
 			teName = te.blockType.getLocalizedName();
 		} catch (Exception e){
+			System.out.printf("%s\n", e);
 			teName = te.getClass().getName();
 		}
 		*/
+		
 		teName = te.getClass().getName();
 		
 		if (references.containsKey(coord) && references.get(coord) != te.getClass()){
@@ -61,8 +69,19 @@ public class TileEntityManager {
 		ArrayList<TileEntityStats> returnList = new ArrayList<TileEntityStats>();
 		
 		for (CoordinatesBlock tecoord : TileEntityManager.stats.keySet()){
-			if (coord.equals(new CoordinatesChunk(tecoord)))
-				returnList.add(TileEntityManager.stats.get(tecoord));
+			if (coord.equals(new CoordinatesChunk(tecoord))){
+		        TileEntityStats testats = TileEntityManager.stats.get(tecoord);
+				
+				World world = DimensionManager.getWorld(tecoord.dim);
+		        Block mouseoverBlock = Block.blocksList[world.getBlockId(tecoord.x, tecoord.y, tecoord.z)];
+		        
+		        try{
+		        	ItemStack pick = new ItemStack(mouseoverBlock, 1, world.getBlockMetadata(tecoord.x, tecoord.y, tecoord.z));
+		        	testats.setType(pick.getDisplayName());
+		        }catch (Exception e){}
+		        
+				returnList.add(testats);
+			}
 		}
 		
 		return returnList;

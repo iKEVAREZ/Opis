@@ -12,13 +12,13 @@ public class TileEntityStats implements ISerializable, Comparable {
 
 	private DescriptiveStatistics stats = new DescriptiveStatistics(100);	
 	private CoordinatesBlock coord;
-	private String classname;
+	private String name;
 	private Double geomMean = null;
 	
 	
 	public TileEntityStats(CoordinatesBlock coord, String teclass){
-		this.coord     = coord;
-		this.classname = teclass;
+		this.coord = coord;
+		this.name  = teclass;
 	}
 	
 	public void addMeasure(long timing){
@@ -45,13 +45,18 @@ public class TileEntityStats implements ISerializable, Comparable {
 	}
 	
 	public String getType(){
-		return this.classname;
+		return this.name;
 	}
+	
+	public void setType(String name){
+		this.name = name;
+	}
+	
 
 	@Override
 	public   void writeToStream(DataOutputStream stream) throws IOException{
 		this.coord.writeToStream(stream);
-		Packet.writeString(this.classname, stream);
+		Packet.writeString(this.name, stream);
 		stream.writeDouble(this.getGeometricMean());
 	}
 
