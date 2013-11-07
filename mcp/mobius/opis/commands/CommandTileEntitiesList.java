@@ -32,13 +32,6 @@ public class CommandTileEntitiesList extends CommandBase {
 				tes = TileEntityManager.getTopEntities(Integer.valueOf(astring[0]));
 			} catch (Exception e) {return;}
 		}
-
-		/*
-		System.out.printf("=== ===\n");
-		
-		for (TileEntityStats stat : tes)
-			System.out.printf("%s\n", stat);
-		*/
 		
 		((EntityPlayerMP)icommandsender).playerNetServerHandler.sendPacketToPlayer(Packet_TileEntitiesTopList.create(tes));
 		

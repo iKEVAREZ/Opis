@@ -3,6 +3,7 @@ package mcp.mobius.opis.data;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -10,6 +11,7 @@ import java.util.Set;
 import mcp.mobius.opis.data.holders.ChunkStats;
 import mcp.mobius.opis.data.holders.CoordinatesChunk;
 import mcp.mobius.opis.data.holders.TicketData;
+import mcp.mobius.opis.data.holders.TileEntityStats;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
@@ -55,4 +57,31 @@ public class ChunkManager {
 		
 		return tickets;
 	}
+	
+	public static ArrayList<ChunkStats> getChunksUpdateTime(){
+		HashMap<CoordinatesChunk, ChunkStats> chunks = new HashMap<CoordinatesChunk, ChunkStats>();
+		
+		for (TileEntityStats stat : TileEntityManager.stats.values()){
+			if (!chunks.containsKey(stat.getChunk()))
+				chunks.put(stat.getChunk(), new ChunkStats(stat.getChunk(), 0, 0));
+			
+			chunks.get(stat.getChunk()).nentities += 1;
+			chunks.get(stat.getChunk()).updateTime += stat.getGeometricMean();
+		}
+		
+		ArrayList<ChunkStats> chunksUpdate = new ArrayList<ChunkStats>(chunks.values());
+		return chunksUpdate;
+	}
+	
+	public static ArrayList<ChunkStats> getTopChunks(int quantity){
+		ArrayList<ChunkStats> chunks  = ChunkManager.getChunksUpdateTime();
+		ArrayList<ChunkStats> outList = new ArrayList<ChunkStats>();
+		Collections.sort(chunks);
+		
+		for (int i = 0; i < Math.min(quantity, chunks.size()); i++)
+			outList.add(chunks.get(i));
+		
+		return outList;
+	}
+	
 }
