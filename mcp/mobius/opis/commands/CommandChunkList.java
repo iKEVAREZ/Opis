@@ -13,7 +13,7 @@ public class CommandChunkList extends CommandBase {
 
 	@Override
 	public String getCommandName() {
-		return "opis_chunks";
+		return "opis_chunk";
 	}
 
 	@Override
