@@ -29,10 +29,10 @@ public class ScreenTileEntity extends ScreenBase {
 		public void onMouseClick(MouseEvent event){
 			TableRow row = this.getRow(event.x, event.y);
 			if (row != null){
-				//CoordinatesBlock coord = ((TileEntityStats)row.getObject()).getCoordinates();
-				//OverlayMeanTime.instance().setSelectedChunk(coord.dim, coord.x >> 4, coord.z >> 4);
-				//MwAPI.setCurrentDataProvider(OverlayMeanTime.instance());
-				//this.mc.displayGuiScreen(new MwGui(Mw.instance, coord.dim, coord.x, coord.z));
+				CoordinatesBlock coord = ((TileEntityStats)row.getObject()).getCoordinates();
+				OverlayMeanTime.instance().setSelectedChunk(coord.dim, coord.x >> 4, coord.z >> 4);
+				MwAPI.setCurrentDataProvider(OverlayMeanTime.instance());
+				this.mc.displayGuiScreen(new MwGui(Mw.instance, coord.dim, coord.x, coord.z));
 			}
 		}
 	}	
