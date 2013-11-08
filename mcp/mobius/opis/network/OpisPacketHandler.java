@@ -19,6 +19,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.network.packet.Packet56MapChunks;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.DimensionManager;
@@ -85,39 +86,49 @@ public class OpisPacketHandler implements IPacketHandler {
 		
 			else if (header == Packets.REQ_MEANTIME_IN_DIM){
 				Packet_ReqMeanTimeInDim castedPacket = new Packet_ReqMeanTimeInDim(packet);
-				modOpis.proxy.playerOverlayStatus.put(player, OverlayStatus.MEANTIME);
-				modOpis.proxy.playerDimension.put(player, castedPacket.dimension);
-				PacketDispatcher.sendPacketToPlayer(Packet_MeanTime.create(TileEntityManager.getTimes(castedPacket.dimension), castedPacket.dimension), player);
+				if (this.isOp(player)){
+					modOpis.proxy.playerOverlayStatus.put(player, OverlayStatus.MEANTIME);
+					modOpis.proxy.playerDimension.put(player, castedPacket.dimension);
+					PacketDispatcher.sendPacketToPlayer(Packet_MeanTime.create(TileEntityManager.getTimes(castedPacket.dimension), castedPacket.dimension), player);
+				}
 			}		
 			
 			else if (header == Packets.REQ_TES_IN_CHUNK){
 				Packet_ReqTEsInChunk castedPacket = new Packet_ReqTEsInChunk(packet);
-				PacketDispatcher.sendPacketToPlayer(Packet_TileEntitiesChunkList.create(TileEntityManager.getInChunk(castedPacket.chunk)), player);
+				if (this.isOp(player)){				
+					PacketDispatcher.sendPacketToPlayer(Packet_TileEntitiesChunkList.create(TileEntityManager.getInChunk(castedPacket.chunk)), player);
+				}
 			}
 			
 			else if (header == Packets.REQ_TICKETS){
 				Packet_ReqTickets castedPacket = new Packet_ReqTickets(packet);
-				PacketDispatcher.sendPacketToPlayer(Packet_Tickets.create(ChunkManager.getTickets()), player);
+				if (this.isOp(player)){
+					PacketDispatcher.sendPacketToPlayer(Packet_Tickets.create(ChunkManager.getTickets()), player);
+				}
 			}
 			
 			else if (header == Packets.REQ_CHUNKS){
 				Packet_ReqChunks castedPacket = new Packet_ReqChunks(packet);
-				ArrayList<Chunk> list = new ArrayList();
-				World world = DimensionManager.getWorld(castedPacket.dim);
-				
-				if (world != null){
-					for (CoordinatesChunk chunk : castedPacket.chunks)
-						list.add(world.getChunkFromChunkCoords(chunk.chunkX, chunk.chunkZ));
+				if (this.isOp(player)){				
+					ArrayList<Chunk> list = new ArrayList();
+					World world = DimensionManager.getWorld(castedPacket.dim);
 					
-					if (!list.isEmpty())
-						PacketDispatcher.sendPacketToPlayer( Packet_Chunks.create(castedPacket.dim, !world.provider.hasNoSky, list), player);
-						//PacketDispatcher.sendPacketToPlayer( new Packet56MapChunks(list), player);
+					if (world != null){
+						for (CoordinatesChunk chunk : castedPacket.chunks)
+							list.add(world.getChunkFromChunkCoords(chunk.chunkX, chunk.chunkZ));
+						
+						if (!list.isEmpty())
+							PacketDispatcher.sendPacketToPlayer( Packet_Chunks.create(castedPacket.dim, !world.provider.hasNoSky, list), player);
+							//PacketDispatcher.sendPacketToPlayer( new Packet56MapChunks(list), player);
+					}
 				}
 			}
 			
 			else if (header == Packets.REQ_TELEPORT){
 				Packet_ReqTeleport castedPacket = new Packet_ReqTeleport(packet);
-				EntityManager.teleportPlayer(castedPacket.coord, (EntityPlayerMP)player);
+				if (this.isOp(player)){		
+					EntityManager.teleportPlayer(castedPacket.coord, (EntityPlayerMP)player);
+				}
 			}
 			
         }
@@ -131,5 +142,9 @@ public class OpisPacketHandler implements IPacketHandler {
 			return -1;
 		}
 	}        
+	
+	public boolean isOp(Player player){
+		return MinecraftServer.getServer().getConfigurationManager().isPlayerOpped(((EntityPlayerMP)player).username);
+	}
         
 }

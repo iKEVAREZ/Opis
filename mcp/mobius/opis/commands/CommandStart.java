@@ -3,6 +3,8 @@ package mcp.mobius.opis.commands;
 import mcp.mobius.opis.modOpis;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.server.MinecraftServer;
 
 public class CommandStart extends CommandBase {
 
@@ -19,18 +21,19 @@ public class CommandStart extends CommandBase {
 	@Override
 	public void processCommand(ICommandSender icommandsender, String[] astring) {
 		modOpis.profilerRun = true;
+		notifyAdmins(icommandsender, "Opis started.", new Object[] {});		
 	}
 
 	@Override
     public int getRequiredPermissionLevel()
     {
-        return 0;
+        return 3;
     }	
 
 	@Override
-    public boolean canCommandSenderUseCommand(ICommandSender par1ICommandSender)
+    public boolean canCommandSenderUseCommand(ICommandSender sender)
     {
-        return true;
+        return MinecraftServer.getServer().getConfigurationManager().isPlayerOpped(((EntityPlayerMP)sender).username);
     }	
 	
 }

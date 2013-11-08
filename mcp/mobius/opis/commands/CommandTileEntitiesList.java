@@ -8,6 +8,7 @@ import mcp.mobius.opis.network.Packet_TileEntitiesTopList;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.server.MinecraftServer;
 
 public class CommandTileEntitiesList extends CommandBase {
 
@@ -40,13 +41,13 @@ public class CommandTileEntitiesList extends CommandBase {
 	@Override
     public int getRequiredPermissionLevel()
     {
-        return 0;
+        return 3;
     }	
 
 	@Override
-    public boolean canCommandSenderUseCommand(ICommandSender par1ICommandSender)
+    public boolean canCommandSenderUseCommand(ICommandSender sender)
     {
-        return true;
-    }		
+        return MinecraftServer.getServer().getConfigurationManager().isPlayerOpped(((EntityPlayerMP)sender).username);
+    }			
 	
 }
