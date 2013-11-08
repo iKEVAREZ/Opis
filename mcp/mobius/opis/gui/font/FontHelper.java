@@ -1,5 +1,8 @@
 package mcp.mobius.opis.gui.font;
 
+import java.nio.FloatBuffer;
+
+import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.Minecraft;
@@ -8,7 +11,11 @@ import net.minecraft.client.gui.ScaledResolution;
  
 
 
+
+
+
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.util.vector.Matrix4f;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -28,11 +35,17 @@ public class FontHelper {
 		if(sr.getScaleFactor() == 1){
 			amt = 2;
 		}
+		
+		FloatBuffer matrixData = BufferUtils.createFloatBuffer(16);
+		GL11.glGetFloat(GL11.GL_MODELVIEW_MATRIX, matrixData);
+		Matrix4f matrix = new Matrix4f();
+		matrix.load(matrixData);
+		
 		FontHelper.set2DMode();
 		y = mc.displayHeight-(y*sr.getScaleFactor())-(((font.getLineHeight()/amt)));
 		GL11.glEnable(GL11.GL_BLEND);
 		
-		font.drawString(x*sr.getScaleFactor(), y, s, scaleX/amt, scaleY/amt, rgba);	
+		font.drawString(x*sr.getScaleFactor(), y - matrix.m31*sr.getScaleFactor(), s, scaleX/amt, scaleY/amt, rgba);	
 		GL11.glDisable(GL11.GL_BLEND);
 		FontHelper.set3DMode();
 	}

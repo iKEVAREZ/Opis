@@ -1,5 +1,6 @@
 package mcp.mobius.opis.gui.widgets;
 
+import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.Point;
 
 import mcp.mobius.opis.gui.font.FontHelper;

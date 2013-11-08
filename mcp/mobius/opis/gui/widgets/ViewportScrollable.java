@@ -113,6 +113,8 @@ public class ViewportScrollable extends WidgetBase {
 		return this;
 	}
 	
+	public int getOffset(){ return this.yOffset; };
+	
 	@Override
 	public void draw(Point pos) {}
 	

@@ -35,6 +35,8 @@ public class LayoutCropping extends LayoutBase {
 		GL11.glScissor(this.getPos().getX()*this.rez.getScaleFactor(), (this.rez.getScaledHeight() - (this.getPos().getY() + this.getSize().getY())) * this.rez.getScaleFactor(), this.getSize().getX()*this.rez.getScaleFactor(), this.getSize().getY()*this.rez.getScaleFactor());
 		//GL11.glScissor(this.getPos().getX()*this.rez.getScaleFactor(), this.getPos().getY()*this.rez.getScaleFactor(), this.getSize().getX()*this.rez.getScaleFactor(), this.getSize().getY()*this.rez.getScaleFactor());
 		
+		//this.setPos(this.getLeft() - xOffset, this.getTop() - yOffset);
+		
 		GL11.glTranslatef(xOffset, yOffset, 0.0f);
 		
 		/*
@@ -55,7 +57,9 @@ public class LayoutCropping extends LayoutBase {
 		for (IWidget widget: this.renderQueue_HIGH.values())
 			if (widget.shouldRender())
 				widget.draw();				
-				
+
+		//this.setPos(this.getLeft() + xOffset, this.getTop() + yOffset);		
+		
 
 		GL11.glDisable(GL11.GL_SCISSOR_TEST);
 		

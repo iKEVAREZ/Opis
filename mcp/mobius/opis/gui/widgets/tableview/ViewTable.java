@@ -111,7 +111,11 @@ public class ViewTable extends WidgetBase{
 	}
 	
 	public TableRow getRow(double x, double y){
-		return (TableRow)this.getWidgetAtLayer(x, y, 4);
+		ViewportScrollable viewport = (ViewportScrollable)this.getWidget("Viewport");
+		IWidget layout = viewport.getAttachedWidget();
+		TableRow row   = (TableRow)layout.getWidgetAtLayer(x, y - viewport.getOffset(), 1);
+
+		return row;
 	}
 	
 	public void setFontSize(float size){
