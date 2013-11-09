@@ -2,7 +2,10 @@ package mcp.mobius.opis;
 
 import java.util.logging.Logger;
 
+import net.minecraftforge.common.MinecraftForge;
 import mcp.mobius.mobiuscore.profiler.ProfilerRegistrar;
+import mcp.mobius.opis.client.OpisClientEventHandler;
+import mcp.mobius.opis.client.OpisClientTickHandler;
 import mcp.mobius.opis.commands.CommandChunkDump;
 import mcp.mobius.opis.commands.CommandChunkList;
 import mcp.mobius.opis.commands.CommandFrequency;
@@ -10,6 +13,7 @@ import mcp.mobius.opis.commands.CommandStart;
 import mcp.mobius.opis.commands.CommandStop;
 import mcp.mobius.opis.commands.CommandTileEntitiesList;
 import mcp.mobius.opis.data.TileEntityProfiler;
+import mcp.mobius.opis.data.holders.CoordinatesBlock;
 import mcp.mobius.opis.network.OpisConnectionHandler;
 import mcp.mobius.opis.network.OpisPacketHandler;
 import mcp.mobius.opis.proxy.ProxyServer;
@@ -29,8 +33,8 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
 
-@Mod(modid="Opis", name="Opis", version="0.0.1")
-@NetworkMod(channels={"Opis", "Opis_Chunk"},clientSideRequired=true, serverSideRequired=true, connectionHandler=OpisConnectionHandler.class, packetHandler=OpisPacketHandler.class)
+@Mod(modid="Opis", name="Opis", version="1.0.1_alpha")
+@NetworkMod(channels={"Opis", "Opis_Chunk"},clientSideRequired=false, serverSideRequired=false, connectionHandler=OpisConnectionHandler.class, packetHandler=OpisPacketHandler.class)
 
 public class modOpis {
 
@@ -45,12 +49,17 @@ public class modOpis {
 	public static int profilerDelay   = 1;
 	public static boolean profilerRun = false; 
 	
+	public static CoordinatesBlock selectedBlock = null;
+	
 	@EventHandler
-	public void preInit(FMLPreInitializationEvent event) {}	
+	public void preInit(FMLPreInitializationEvent event) {
+		MinecraftForge.EVENT_BUS.register(new OpisClientEventHandler());
+	}	
 	
 	@EventHandler
 	public void load(FMLInitializationEvent event) {
-		TickRegistry.registerTickHandler(new OpisServerTickHandler(), Side.SERVER);		
+		TickRegistry.registerTickHandler(new OpisServerTickHandler(), Side.SERVER);
+		//TickRegistry.registerTickHandler(new OpisClientTickHandler(), Side.CLIENT);			
 	}
 	
 	@EventHandler

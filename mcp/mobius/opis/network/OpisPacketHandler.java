@@ -117,9 +117,12 @@ public class OpisPacketHandler implements IPacketHandler {
 						for (CoordinatesChunk chunk : castedPacket.chunks)
 							list.add(world.getChunkFromChunkCoords(chunk.chunkX, chunk.chunkZ));
 						
-						if (!list.isEmpty())
-							PacketDispatcher.sendPacketToPlayer( Packet_Chunks.create(castedPacket.dim, !world.provider.hasNoSky, list), player);
+						if (!list.isEmpty()){
+							Packet250CustomPayload chunkPacket = Packet_Chunks.create(castedPacket.dim, !world.provider.hasNoSky, list);
+							if (chunkPacket != null)
+								PacketDispatcher.sendPacketToPlayer( chunkPacket, player);
 							//PacketDispatcher.sendPacketToPlayer( new Packet56MapChunks(list), player);
+						}
 					}
 				}
 			}

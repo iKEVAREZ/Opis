@@ -6,15 +6,18 @@ import java.util.ArrayList;
 import org.lwjgl.input.Mouse;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.util.MathHelper;
 import cpw.mods.fml.common.network.PacketDispatcher;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import mapwriter.api.IMwChunkOverlay;
 import mapwriter.api.IMwDataProvider;
 import mapwriter.map.MapView;
 import mapwriter.map.mapmode.MapMode;
+import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.data.ChunkManager;
 import mcp.mobius.opis.data.holders.CoordinatesBlock;
 import mcp.mobius.opis.data.holders.CoordinatesChunk;
@@ -64,6 +67,7 @@ public class OverlayMeanTime implements IMwDataProvider {
 							MathHelper.ceiling_double_int(this.mapView.getZ()) >> 4);
 				}
 				else{
+					modOpis.selectedBlock = coord;
 					PacketDispatcher.sendPacketToServer(Packet_ReqTeleport.create(coord));
 					Minecraft.getMinecraft().setIngameFocus();
 				}
@@ -266,8 +270,14 @@ public class OverlayMeanTime implements IMwDataProvider {
 
 		
 		for (TileEntityStats data : entities){
-			String[] name = data.getType().split("\\.");
-			table.addRow(data, name[name.length - 1], String.format("[ %s %s %s ]", data.getCoordinates().x, data.getCoordinates().y, data.getCoordinates().z),  String.format("%.5f ms",data.getGeometricMean()/1000.0));
+			
+			String orig  = I18n.getString(data.getType());
+        	if (orig.equals(data.getType()))
+        		orig = LanguageRegistry.instance().getStringLocalization(data.getType());
+        	if (orig.isEmpty())
+        		orig = data.getType();	
+        	
+			table.addRow(data, orig, String.format("[ %s %s %s ]", data.getCoordinates().x, data.getCoordinates().y, data.getCoordinates().z),  String.format("%.5f ms",data.getGeometricMean()/1000.0));
 		}
 
 		this.showList = true;

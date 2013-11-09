@@ -77,9 +77,15 @@ public class TileEntityManager {
 		        Block mouseoverBlock = Block.blocksList[world.getBlockId(tecoord.x, tecoord.y, tecoord.z)];
 		        
 		        try{
-		        	ItemStack pick = new ItemStack(mouseoverBlock, 1, world.getBlockMetadata(tecoord.x, tecoord.y, tecoord.z));
-		        	testats.setType(pick.getDisplayName());
-		        }catch (Exception e){}
+		            ItemStack stack = mouseoverBlock.getBlockDropped(world, tecoord.x, tecoord.y, tecoord.z, world.getBlockMetadata(tecoord.x, tecoord.y, tecoord.z), 0).get(0);
+		        	//testats.setType(stack.getUnlocalizedName());
+		            testats.setType(stack.getDisplayName());
+		        }catch (Exception e){
+		        	try{
+		        		ItemStack stack = new ItemStack(mouseoverBlock, 1, world.getBlockMetadata(tecoord.x, tecoord.y, tecoord.z));
+		        		testats.setType(stack.getDisplayName());		        		
+		        	}catch (Exception f){}
+		        }
 		        
 				returnList.add(testats);
 			}
@@ -101,9 +107,17 @@ public class TileEntityManager {
 	        Block mouseoverBlock = Block.blocksList[world.getBlockId(testats.getCoordinates().x, testats.getCoordinates().y, testats.getCoordinates().z)];
 	        
 	        try{
-	        	ItemStack pick = new ItemStack(mouseoverBlock, 1, world.getBlockMetadata(testats.getCoordinates().x, testats.getCoordinates().y, testats.getCoordinates().z));
-	        	testats.setType(pick.getDisplayName());
-	        }catch (Exception e){}			
+	            ItemStack stack = mouseoverBlock.getBlockDropped(world, testats.getCoordinates().x, testats.getCoordinates().y, testats.getCoordinates().z, 
+	            												 world.getBlockMetadata(testats.getCoordinates().x, testats.getCoordinates().y, testats.getCoordinates().z), 0).get(0);
+	        	//testats.setType(stack.getUnlocalizedName());
+	            testats.setType(stack.getDisplayName());
+	        	
+	        }catch (Exception e){
+	        	try{
+	        		ItemStack stack = new ItemStack(mouseoverBlock, 1, world.getBlockMetadata(testats.getCoordinates().x, testats.getCoordinates().y, testats.getCoordinates().z));
+	        		testats.setType(stack.getDisplayName());
+	        	}catch (Exception f){}
+	        }			
 			
 			topEntities.add(testats);
 		}

@@ -21,7 +21,7 @@ public class CommandStart extends CommandBase {
 	@Override
 	public void processCommand(ICommandSender icommandsender, String[] astring) {
 		modOpis.profilerRun = true;
-		notifyAdmins(icommandsender, "Opis started.", new Object[] {});		
+		notifyAdmins(icommandsender, "Opis started with a tick delay %s.", new Object[] {modOpis.profilerDelay});		
 	}
 
 	@Override

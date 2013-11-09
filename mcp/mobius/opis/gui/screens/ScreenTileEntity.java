@@ -2,6 +2,7 @@ package mcp.mobius.opis.gui.screens;
 
 import java.util.ArrayList;
 
+import cpw.mods.fml.common.registry.LanguageRegistry;
 import mapwriter.Mw;
 import mapwriter.api.MwAPI;
 import mapwriter.gui.MwGui;
@@ -17,6 +18,7 @@ import mcp.mobius.opis.gui.widgets.tableview.ViewTable;
 import mcp.mobius.opis.overlay.OverlayMeanTime;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.resources.I18n;
 
 public class ScreenTileEntity extends ScreenBase {
 	
@@ -54,9 +56,18 @@ public class ScreenTileEntity extends ScreenBase {
 			 .setFontSize(1.0f);		
 
 		for (TileEntityStats data : tes){
-			String[] name = data.getType().split("\\.");
+        	
+			String orig  = I18n.getString(data.getType());
+        	if (orig.equals(data.getType()))
+        		orig = LanguageRegistry.instance().getStringLocalization(data.getType());
+        	if (orig.isEmpty())
+        		orig = data.getType();			
+			
+			
+			//String[] name = data.getType().split("\\.");
 			table.addRow(data, 
-					     name[name.length - 1], 
+					     //name[name.length - 1],
+						 orig,
 					     String.format("%3d", data.getCoordinates().dim),
 					     String.format("[ %4d %4d %4d ]", 	data.getCoordinates().x, data.getCoordinates().y, data.getCoordinates().z),  
 					     String.format("%.5f ms",data.getGeometricMean()/1000.0));
