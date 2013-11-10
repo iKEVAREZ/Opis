@@ -30,11 +30,11 @@ import mcp.mobius.opis.gui.widgets.LayoutCanvas;
 import mcp.mobius.opis.gui.widgets.WidgetGeometry;
 import mcp.mobius.opis.gui.widgets.tableview.TableRow;
 import mcp.mobius.opis.gui.widgets.tableview.ViewTable;
-import mcp.mobius.opis.network.Packet_ReqChunks;
-import mcp.mobius.opis.network.Packet_ReqChunksInDim;
-import mcp.mobius.opis.network.Packet_ReqTeleport;
-import mcp.mobius.opis.network.Packet_ReqTickets;
-import mcp.mobius.opis.network.Packet_UnregisterPlayer;
+import mcp.mobius.opis.network.client.Packet_ReqChunks;
+import mcp.mobius.opis.network.client.Packet_ReqChunksInDim;
+import mcp.mobius.opis.network.client.Packet_ReqTeleport;
+import mcp.mobius.opis.network.client.Packet_ReqTickets;
+import mcp.mobius.opis.network.client.Packet_UnregisterPlayer;
 
 public class OverlayLoadedChunks implements IMwDataProvider {
 

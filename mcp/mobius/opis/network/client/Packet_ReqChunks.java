@@ -1,4 +1,4 @@
-package mcp.mobius.opis.network;
+package mcp.mobius.opis.network.client;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 import net.minecraft.network.packet.Packet250CustomPayload;
 import mcp.mobius.opis.data.holders.CoordinatesChunk;
+import mcp.mobius.opis.network.Packets;
 
 public class Packet_ReqChunks {
 

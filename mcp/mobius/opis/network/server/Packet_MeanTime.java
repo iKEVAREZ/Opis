@@ -1,4 +1,4 @@
-package mcp.mobius.opis.network;
+package mcp.mobius.opis.network.server;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -9,6 +9,7 @@ import java.util.HashMap;
 
 import mcp.mobius.opis.data.holders.ChunkStats;
 import mcp.mobius.opis.data.holders.CoordinatesChunk;
+import mcp.mobius.opis.network.Packets;
 import net.minecraft.network.packet.Packet250CustomPayload;
 
 public class Packet_MeanTime {

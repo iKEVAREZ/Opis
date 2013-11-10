@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import mcp.mobius.opis.data.TileEntityManager;
 import mcp.mobius.opis.data.holders.TileEntityStats;
-import mcp.mobius.opis.network.Packet_TileEntitiesTopList;
+import mcp.mobius.opis.network.server.Packet_TileEntitiesTopList;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;

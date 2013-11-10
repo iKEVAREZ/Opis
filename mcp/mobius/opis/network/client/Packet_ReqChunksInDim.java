@@ -1,4 +1,4 @@
-package mcp.mobius.opis.network;
+package mcp.mobius.opis.network.client;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -6,6 +6,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import mcp.mobius.opis.network.Packets;
 import net.minecraft.network.packet.Packet250CustomPayload;
 
 public class Packet_ReqChunksInDim {

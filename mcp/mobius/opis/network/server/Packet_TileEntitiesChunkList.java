@@ -1,4 +1,4 @@
-package mcp.mobius.opis.network;
+package mcp.mobius.opis.network.server;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -9,12 +9,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import mcp.mobius.opis.data.holders.TileEntityStats;
+import mcp.mobius.opis.network.Packets;
 import net.minecraft.network.packet.Packet250CustomPayload;
 
 public class Packet_TileEntitiesChunkList {
 
 	public byte header;
-	ArrayList<TileEntityStats> entities = new ArrayList<TileEntityStats>(); 
+	public ArrayList<TileEntityStats> entities = new ArrayList<TileEntityStats>(); 
 	
 	public Packet_TileEntitiesChunkList(Packet250CustomPayload packet) {
 		DataInputStream inputStream = new DataInputStream(new ByteArrayInputStream(packet.data));

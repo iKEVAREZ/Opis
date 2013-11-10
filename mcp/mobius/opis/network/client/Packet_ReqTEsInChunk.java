@@ -1,43 +1,39 @@
-package mcp.mobius.opis.network;
+package mcp.mobius.opis.network.client;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.util.HashSet;
 
-import mcp.mobius.opis.data.holders.TicketData;
+import mcp.mobius.opis.data.holders.CoordinatesChunk;
+import mcp.mobius.opis.network.Packets;
 import net.minecraft.network.packet.Packet250CustomPayload;
 
-public class Packet_Tickets {
+public class Packet_ReqTEsInChunk {
 
 	public byte header;
-	public HashSet<TicketData> tickets = new HashSet<TicketData>();
+	public CoordinatesChunk chunk;
 	
-	public Packet_Tickets(Packet250CustomPayload packet) {
+	public Packet_ReqTEsInChunk(Packet250CustomPayload packet) {
 		DataInputStream inputStream = new DataInputStream(new ByteArrayInputStream(packet.data));
 		
 		try{
-			this.header = inputStream.readByte();
-			int ntickets = inputStream.readInt();
-			
-			for (int i = 0; i < ntickets; i++)
-				tickets.add(TicketData.readFromStream(inputStream));
-			
+			this.header    = inputStream.readByte();
+			this.chunk     = new CoordinatesChunk(inputStream.readInt(), inputStream.readInt(), inputStream.readInt());
 		} catch (IOException e){}				
 	}
 
-	public static Packet250CustomPayload create(HashSet<TicketData>  data){
+	public static Packet250CustomPayload create(CoordinatesChunk chunk){
 		Packet250CustomPayload packet = new Packet250CustomPayload();
 		ByteArrayOutputStream bos     = new ByteArrayOutputStream(1);
 		DataOutputStream outputStream = new DataOutputStream(bos);
 
 		try{
-			outputStream.writeByte(Packets.TICKETS);
-			outputStream.writeInt(data.size());
-			for (TicketData ticket : data)
-				ticket.writeToStream(outputStream);
+			outputStream.writeByte(Packets.REQ_TES_IN_CHUNK);
+			outputStream.writeInt(chunk.dim);
+			outputStream.writeInt(chunk.chunkX);
+			outputStream.writeInt(chunk.chunkZ);
 		}catch(IOException e){}
 		
 		packet.channel = "Opis";
