@@ -168,7 +168,7 @@ public class OpisPacketHandler implements IPacketHandler {
 		try{
 			DataInputStream inputStream = new DataInputStream(new ByteArrayInputStream(packet.data));			
 			return inputStream.readByte();
-		} catch (IOException e){
+		} catch (Exception e){
 			return -1;
 		}
 	}        
