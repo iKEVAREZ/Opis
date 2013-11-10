@@ -50,6 +50,8 @@ public class OpisPacketHandler implements IPacketHandler {
         if (packet.channel.equals("Opis")) {
 			byte header = this.getHeader(packet);
 			
+			if (header == -1) return;
+			
 			if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
 				this.onPacketToClient(manager, packet, player, header);
 
@@ -163,8 +165,8 @@ public class OpisPacketHandler implements IPacketHandler {
 	
 	
 	public byte getHeader(Packet250CustomPayload packet){
-		DataInputStream inputStream = new DataInputStream(new ByteArrayInputStream(packet.data));
 		try{
+			DataInputStream inputStream = new DataInputStream(new ByteArrayInputStream(packet.data));			
 			return inputStream.readByte();
 		} catch (IOException e){
 			return -1;

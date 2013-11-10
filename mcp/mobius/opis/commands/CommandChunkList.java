@@ -9,6 +9,7 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.dedicated.DedicatedServer;
 
 public class CommandChunkList extends CommandBase {
 
@@ -53,6 +54,7 @@ public class CommandChunkList extends CommandBase {
 	@Override
     public boolean canCommandSenderUseCommand(ICommandSender sender)
     {
+		if (sender instanceof DedicatedServer) return false;
         return MinecraftServer.getServer().getConfigurationManager().isPlayerOpped(((EntityPlayerMP)sender).username);
     }	
 
