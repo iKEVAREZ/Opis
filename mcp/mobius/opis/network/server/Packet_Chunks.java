@@ -14,6 +14,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import mapwriter.region.MwChunk;
 import mcp.mobius.opis.modOpis;
+import mcp.mobius.opis.network.Packet251Extended;
 import mcp.mobius.opis.network.Packets;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.packet.Packet250CustomPayload;
@@ -53,7 +54,8 @@ public class Packet_Chunks {
 	}
 
 	public static Packet250CustomPayload create(int dim, boolean hasNoSky, ArrayList<Chunk> chunks){
-		Packet250CustomPayload packet = new Packet250CustomPayload();
+		//Packet250CustomPayload packet = new Packet250CustomPayload();
+		Packet251Extended packet      = new Packet251Extended();
 		ByteArrayOutputStream bos     = new ByteArrayOutputStream(1);
 		DataOutputStream outputStream = new DataOutputStream(bos);
 
@@ -70,11 +72,13 @@ public class Packet_Chunks {
 		packet.data    = bos.toByteArray();
 		packet.length  = bos.size();		
 		
+		/*
         if (packet.length > 32767){
             //throw new IllegalArgumentException(String.format("Payload may not be larger than 32k : %s", packet.length));
         	modOpis.log.log(Level.WARNING, String.format("Payload may not be larger than 32k : %s", packet.length));
         	return null;
         }
+        */
 		
 		return packet;
 	}		

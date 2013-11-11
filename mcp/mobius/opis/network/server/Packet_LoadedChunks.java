@@ -7,6 +7,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 
+import mcp.mobius.opis.network.Packet251Extended;
 import mcp.mobius.opis.network.Packets;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.world.ChunkCoordIntPair;
@@ -33,7 +34,7 @@ public class Packet_LoadedChunks {
 	}
 
 	public static Packet250CustomPayload create(HashMap<ChunkCoordIntPair, Boolean> chunks){
-		Packet250CustomPayload packet = new Packet250CustomPayload();
+		Packet251Extended packet      = new Packet251Extended();
 		ByteArrayOutputStream bos     = new ByteArrayOutputStream(1);
 		DataOutputStream outputStream = new DataOutputStream(bos);
 

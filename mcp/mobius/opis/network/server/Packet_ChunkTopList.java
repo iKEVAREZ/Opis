@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import mcp.mobius.opis.data.holders.ChunkStats;
+import mcp.mobius.opis.network.Packet251Extended;
 import mcp.mobius.opis.network.Packets;
 import net.minecraft.network.packet.Packet250CustomPayload;
 
@@ -29,7 +30,7 @@ public class Packet_ChunkTopList {
 	}
 
 	public static Packet250CustomPayload create(ArrayList<ChunkStats> stats){
-		Packet250CustomPayload packet = new Packet250CustomPayload();
+		Packet251Extended packet      = new Packet251Extended();
 		ByteArrayOutputStream bos     = new ByteArrayOutputStream(1);
 		DataOutputStream outputStream = new DataOutputStream(bos);
 

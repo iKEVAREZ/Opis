@@ -54,5 +54,29 @@ public class UIHelper {
         GL11.glEnable(GL11.GL_ALPHA_TEST);
         GL11.glEnable(GL11.GL_TEXTURE_2D);
     }    
+
+    public void drawLine(int x, int y, int x2, int y2, int width, float... rgba) {
+
+    	Tessellator tess = Tessellator.instance;
+    	GL11.glPushMatrix();
+    	//GL11.glLineWidth(3);
+    	GL11.glLineWidth(width);
+    	GL11.glDisable(GL11.GL_TEXTURE_2D);
+    	tess.startDrawing(3);
+
+		if(rgba.length == 4)
+			tess.setColorRGBA_F(rgba[0], rgba[1], rgba[2], rgba[3]);    	
+    	//tess.setColorRGBA_F(1,1,1,1);
+		
+    	tess.addVertex(x, y, 0);
+    	tess.addVertex(x2, y2, 0);
+
+
+    	tess.draw();
+    	GL11.glDisable(32826 /*GL_RESCALE_NORMAL_EXT*/);
+    	GL11.glEnable(GL11.GL_TEXTURE_2D);
+    	GL11.glPopMatrix();
+
+    	}    
     
 }

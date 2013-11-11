@@ -2,6 +2,7 @@ package mcp.mobius.opis;
 
 import java.util.logging.Logger;
 
+import net.minecraft.network.packet.Packet;
 import net.minecraftforge.common.MinecraftForge;
 import mcp.mobius.mobiuscore.profiler.ProfilerRegistrar;
 import mcp.mobius.opis.client.OpisClientEventHandler;
@@ -16,6 +17,7 @@ import mcp.mobius.opis.data.TileEntityProfiler;
 import mcp.mobius.opis.data.holders.CoordinatesBlock;
 import mcp.mobius.opis.network.OpisConnectionHandler;
 import mcp.mobius.opis.network.OpisPacketHandler;
+import mcp.mobius.opis.network.Packet251Extended;
 import mcp.mobius.opis.proxy.ProxyServer;
 import mcp.mobius.opis.server.OpisPlayerTracker;
 import mcp.mobius.opis.server.OpisServerTickHandler;
@@ -54,6 +56,7 @@ public class modOpis {
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		MinecraftForge.EVENT_BUS.register(new OpisClientEventHandler());
+		Packet.addIdClassMapping(251, true, true, Packet251Extended.class);
 	}	
 	
 	@EventHandler
