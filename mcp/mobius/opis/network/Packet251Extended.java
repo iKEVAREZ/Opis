@@ -39,4 +39,9 @@ public class Packet251Extended extends Packet250CustomPayload {
             par1DataOutput.write(this.data);
     }    
     
+    public int getPacketSize()
+    {
+        return 2 + this.channel.length() * 2 + 4 + this.length;
+    }    
+    
 }
