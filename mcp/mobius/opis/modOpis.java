@@ -12,6 +12,7 @@ import mcp.mobius.opis.commands.CommandChunkList;
 import mcp.mobius.opis.commands.CommandFrequency;
 import mcp.mobius.opis.commands.CommandStart;
 import mcp.mobius.opis.commands.CommandStop;
+import mcp.mobius.opis.commands.CommandTPS;
 import mcp.mobius.opis.commands.CommandTileEntitiesList;
 import mcp.mobius.opis.data.TileEntityProfiler;
 import mcp.mobius.opis.data.holders.CoordinatesBlock;
@@ -35,7 +36,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
 
-@Mod(modid="Opis", name="Opis", version="1.0.2_alpha")
+@Mod(modid="Opis", name="Opis", version="1.0.3_alpha")
 @NetworkMod(channels={"Opis", "Opis_Chunk"},clientSideRequired=false, serverSideRequired=false, connectionHandler=OpisConnectionHandler.class, packetHandler=OpisPacketHandler.class)
 
 public class modOpis {
@@ -77,6 +78,7 @@ public class modOpis {
 		event.registerServerCommand(new CommandStart());
 		event.registerServerCommand(new CommandStop());		
 		event.registerServerCommand(new CommandTileEntitiesList());
+		//event.registerServerCommand(new CommandTPS());		
 		
 		GameRegistry.registerPlayerTracker(new OpisPlayerTracker());
 		ProfilerRegistrar.registerTileEntityProfiler(new TileEntityProfiler());		

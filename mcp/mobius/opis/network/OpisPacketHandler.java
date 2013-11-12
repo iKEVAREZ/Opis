@@ -23,6 +23,7 @@ import mcp.mobius.opis.network.server.Packet_ChunkTopList;
 import mcp.mobius.opis.network.server.Packet_Chunks;
 import mcp.mobius.opis.network.server.Packet_LoadedChunks;
 import mcp.mobius.opis.network.server.Packet_MeanTime;
+import mcp.mobius.opis.network.server.Packet_TPS;
 import mcp.mobius.opis.network.server.Packet_Tickets;
 import mcp.mobius.opis.network.server.Packet_TileEntitiesChunkList;
 import mcp.mobius.opis.network.server.Packet_TileEntitiesTopList;
@@ -95,6 +96,15 @@ public class OpisPacketHandler implements IPacketHandler {
 			Packet_ChunkTopList castedPacket = new Packet_ChunkTopList(packet);
 			modOpis.proxy.displayChunkList(castedPacket.chunks);
 		}	
+		
+		else if (header == Packets.TPS){
+			Packet_TPS castedPacket = new Packet_TPS(packet);
+			
+			for(Integer dim : castedPacket.ticktimes.keySet())
+				System.out.printf("%s : %.5f ms | %.5f ms\n", dim,
+						castedPacket.ticktimes.get(dim).getMean() / 1000.0,
+						castedPacket.ticktimes.get(dim).getGeometricMean() / 1000.0);
+		}
 	}
 
 	void onPacketToServer(INetworkManager manager, Packet250CustomPayload packet, Player player, Byte header) {

@@ -19,5 +19,7 @@ public class Packets {
 	public static byte TILEENTITIES_CHUNKLIST = 0x21;  // S => C
 	public static byte TILEENTITIES_TOPLIST   = 0x22;  // S => C	
 	
+	public static byte TPS                 = 0x23;
+	
 	public static byte REQ_TELEPORT        = 0x30;  // C => S	
 }
