@@ -73,16 +73,20 @@ public class TileEntityManager {
 			if (coord.equals(new CoordinatesChunk(tecoord))){
 		        TileEntityStats testats = TileEntityManager.stats.get(tecoord);
 				
+				int x = testats.getCoordinates().x;
+				int y = testats.getCoordinates().y;
+				int z = testats.getCoordinates().z;		        
+		        
 				World world = DimensionManager.getWorld(tecoord.dim);
-		        Block mouseoverBlock = Block.blocksList[world.getBlockId(tecoord.x, tecoord.y, tecoord.z)];
+		        Block mouseoverBlock = Block.blocksList[world.getBlockId(x, y, z)];
 		        
 		        try{
-		            ItemStack stack = mouseoverBlock.getBlockDropped(world, tecoord.x, tecoord.y, tecoord.z, world.getBlockMetadata(tecoord.x, tecoord.y, tecoord.z), 0).get(0);
-		        	//testats.setType(stack.getUnlocalizedName());
+	        		ItemStack stack = new ItemStack(mouseoverBlock, 1, world.getBlockMetadata(x, y, z));
 		            testats.setType(stack.getDisplayName());
+		            
 		        }catch (Exception e){
 		        	try{
-		        		ItemStack stack = new ItemStack(mouseoverBlock, 1, world.getBlockMetadata(tecoord.x, tecoord.y, tecoord.z));
+		        		ItemStack stack = mouseoverBlock.getBlockDropped(world, x, y, z, world.getBlockMetadata(x, y, z), 0).get(0);
 		        		testats.setType(stack.getDisplayName());		        		
 		        	}catch (Exception f){}
 		        }
@@ -103,18 +107,20 @@ public class TileEntityManager {
 		for (int i = 0; i < Math.min(quantity, sortedEntities.size()); i++){
 			TileEntityStats testats = sortedEntities.get(i);
 
+			int x = testats.getCoordinates().x;
+			int y = testats.getCoordinates().y;
+			int z = testats.getCoordinates().z;
+			
 			World world = DimensionManager.getWorld(testats.getCoordinates().dim);
-	        Block mouseoverBlock = Block.blocksList[world.getBlockId(testats.getCoordinates().x, testats.getCoordinates().y, testats.getCoordinates().z)];
+	        Block mouseoverBlock = Block.blocksList[world.getBlockId(x, y, z)];
+	        //MovingObjectPosition mop = new MovingObjectPosition(x, y, z, 0, Vec3.createVectorHelper(0, 0, 0));
 	        
 	        try{
-	            ItemStack stack = mouseoverBlock.getBlockDropped(world, testats.getCoordinates().x, testats.getCoordinates().y, testats.getCoordinates().z, 
-	            												 world.getBlockMetadata(testats.getCoordinates().x, testats.getCoordinates().y, testats.getCoordinates().z), 0).get(0);
-	        	//testats.setType(stack.getUnlocalizedName());
+        		ItemStack stack = new ItemStack(mouseoverBlock, 1, world.getBlockMetadata(x, y, z));
 	            testats.setType(stack.getDisplayName());
-	        	
 	        }catch (Exception e){
 	        	try{
-	        		ItemStack stack = new ItemStack(mouseoverBlock, 1, world.getBlockMetadata(testats.getCoordinates().x, testats.getCoordinates().y, testats.getCoordinates().z));
+		            ItemStack stack = mouseoverBlock.getBlockDropped(world, x, y, z, world.getBlockMetadata(x, y, z), 0).get(0);
 	        		testats.setType(stack.getDisplayName());
 	        	}catch (Exception f){}
 	        }			
