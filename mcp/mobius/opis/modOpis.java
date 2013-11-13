@@ -81,6 +81,6 @@ public class modOpis {
 		//event.registerServerCommand(new CommandTPS());		
 		
 		GameRegistry.registerPlayerTracker(new OpisPlayerTracker());
-		ProfilerRegistrar.registerTileEntityProfiler(new TileEntityProfiler());		
+		ProfilerRegistrar.registerProfilerTileEntity(new TileEntityProfiler());		
 	}	
 }
