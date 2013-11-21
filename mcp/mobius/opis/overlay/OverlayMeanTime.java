@@ -7,6 +7,7 @@ import org.lwjgl.input.Mouse;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.util.MathHelper;
 import cpw.mods.fml.common.network.PacketDispatcher;
@@ -271,13 +272,17 @@ public class OverlayMeanTime implements IMwDataProvider {
 		
 		for (TileEntityStats data : entities){
 			
-			String orig  = I18n.getString(data.getType());
-        	if (orig.equals(data.getType()))
-        		orig = LanguageRegistry.instance().getStringLocalization(data.getType());
-        	if (orig.isEmpty())
-        		orig = data.getType();	
+			ItemStack is = new ItemStack(data.getID(), 1, data.getMeta());
+			String name  = is.getDisplayName();
+			
+			/*
+        	if (name.equals(data.getType()))
+        		name = LanguageRegistry.instance().getStringLocalization(data.getType());
+        	if (name.isEmpty())
+        		name = data.getType();	
+        	*/
         	
-			table.addRow(data, orig, String.format("[ %s %s %s ]", data.getCoordinates().x, data.getCoordinates().y, data.getCoordinates().z),  String.format("%.5f ms",data.getGeometricMean()/1000.0));
+			table.addRow(data, name, String.format("[ %s %s %s ]", data.getCoordinates().x, data.getCoordinates().y, data.getCoordinates().z),  String.format("%.5f ms",data.getGeometricMean()/1000.0));
 		}
 
 		this.showList = true;

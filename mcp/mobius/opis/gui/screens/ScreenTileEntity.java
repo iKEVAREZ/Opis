@@ -19,6 +19,7 @@ import mcp.mobius.opis.overlay.OverlayMeanTime;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.item.ItemStack;
 
 public class ScreenTileEntity extends ScreenBase {
 	
@@ -57,17 +58,21 @@ public class ScreenTileEntity extends ScreenBase {
 
 		for (TileEntityStats data : tes){
         	
-			String orig  = I18n.getString(data.getType());
-        	if (orig.equals(data.getType()))
-        		orig = LanguageRegistry.instance().getStringLocalization(data.getType());
-        	if (orig.isEmpty())
-        		orig = data.getType();			
+			ItemStack is = new ItemStack(data.getID(), 1, data.getMeta());
+			String name  = is.getDisplayName();
 			
+			/*
+			String name  = I18n.getString(data.getType());
+        	if (name.equals(data.getType()))
+        		name = LanguageRegistry.instance().getStringLocalization(data.getType());
+        	if (name.isEmpty())
+        		name = data.getType();			
+			*/
 			
 			//String[] name = data.getType().split("\\.");
 			table.addRow(data, 
 					     //name[name.length - 1],
-						 orig,
+						 name,
 					     String.format("%3d", data.getCoordinates().dim),
 					     String.format("[ %4d %4d %4d ]", 	data.getCoordinates().x, data.getCoordinates().y, data.getCoordinates().z),  
 					     String.format("%.5f ms",data.getGeometricMean()/1000.0));

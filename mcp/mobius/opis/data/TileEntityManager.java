@@ -3,6 +3,7 @@ package mcp.mobius.opis.data;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 
 import mcp.mobius.opis.data.holders.ChunkStats;
 import mcp.mobius.opis.data.holders.CoordinatesBlock;
@@ -43,7 +44,13 @@ public class TileEntityManager {
 		
 		if (!(references.containsKey(coord))){
 			references.put(coord, te.getClass());
-			stats.put(coord, new TileEntityStats(coord, teName));
+
+			World world     = DimensionManager.getWorld(coord.dim);
+			int   blockID   = world.getBlockId(coord.x, coord.y, coord.z);
+			short blockMeta = (short)world.getBlockMetadata(coord.x, coord.y, coord.z);
+			stats.put(coord, new TileEntityStats(coord, blockID, blockMeta));
+			
+			//stats.put(coord, new TileEntityStats(coord, teName));
 		}
 			
 		stats.get(coord).addMeasure(timing);
@@ -66,13 +73,35 @@ public class TileEntityManager {
 		return chunks;
 	}
 	
+	private static void cleanUpStats(){
+		HashSet<CoordinatesBlock> dirty = new HashSet<CoordinatesBlock>();
+		
+		for (CoordinatesBlock tecoord : TileEntityManager.stats.keySet()){
+			World world   = DimensionManager.getWorld(tecoord.dim);
+	        int   blockID   = world.getBlockId(tecoord.x, tecoord.y, tecoord.z);
+	        short blockMeta = (short)world.getBlockMetadata(tecoord.x, tecoord.y, tecoord.z);
+	        
+	        if ((blockID != TileEntityManager.stats.get(tecoord).getID()) || (blockMeta != TileEntityManager.stats.get(tecoord).getMeta())){
+	        	dirty.add(tecoord);
+	        }
+		}
+		
+		for (CoordinatesBlock tecoord : dirty){
+			stats.remove(tecoord);
+			references.remove(tecoord);
+		}
+	}
+	
 	public static ArrayList<TileEntityStats> getInChunk(CoordinatesChunk coord){
+		cleanUpStats();
+		
 		ArrayList<TileEntityStats> returnList = new ArrayList<TileEntityStats>();
 		
 		for (CoordinatesBlock tecoord : TileEntityManager.stats.keySet()){
 			if (coord.equals(new CoordinatesChunk(tecoord))){
 		        TileEntityStats testats = TileEntityManager.stats.get(tecoord);
 				
+		        /*
 				int x = testats.getCoordinates().x;
 				int y = testats.getCoordinates().y;
 				int z = testats.getCoordinates().z;		        
@@ -90,6 +119,7 @@ public class TileEntityManager {
 		        		testats.setType(stack.getDisplayName());		        		
 		        	}catch (Exception f){}
 		        }
+		        */
 		        
 				returnList.add(testats);
 			}
@@ -99,6 +129,8 @@ public class TileEntityManager {
 	}
 	
 	public static ArrayList<TileEntityStats> getTopEntities(int quantity){
+		cleanUpStats();	
+		
 		ArrayList<TileEntityStats> sortedEntities = new ArrayList(TileEntityManager.stats.values());
 		ArrayList<TileEntityStats> topEntities    = new ArrayList<TileEntityStats>();
 		Collections.sort(sortedEntities);
@@ -107,6 +139,7 @@ public class TileEntityManager {
 		for (int i = 0; i < Math.min(quantity, sortedEntities.size()); i++){
 			TileEntityStats testats = sortedEntities.get(i);
 
+			/*
 			int x = testats.getCoordinates().x;
 			int y = testats.getCoordinates().y;
 			int z = testats.getCoordinates().z;
@@ -124,6 +157,7 @@ public class TileEntityManager {
 	        		testats.setType(stack.getDisplayName());
 	        	}catch (Exception f){}
 	        }			
+			*/
 			
 			topEntities.add(testats);
 		}

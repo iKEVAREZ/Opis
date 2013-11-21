@@ -14,12 +14,16 @@ public class TileEntityStats implements ISerializable, Comparable {
 	private DescriptiveStatistics stats = new DescriptiveStatistics(modOpis.profilerMaxTicks);	
 	private CoordinatesBlock coord;
 	private String name;
+	private int    blockID;
+	private short  blockMeta;
 	private Double geomMean = null;
 	
 	
-	public TileEntityStats(CoordinatesBlock coord, String teclass){
+	public TileEntityStats(CoordinatesBlock coord, int blockID, short blockMeta){
 		this.coord = coord;
-		this.name  = teclass;
+		//this.name  = teclass;
+		this.blockID   = blockID;
+		this.blockMeta = blockMeta;
 	}
 	
 	public void addMeasure(long timing){
@@ -45,26 +49,42 @@ public class TileEntityStats implements ISerializable, Comparable {
 		return new CoordinatesChunk(this.coord);
 	}
 	
-	public String getType(){
-		return this.name;
-	}
+	//public String getType(){
+	//	return this.name;
+	//}
 	
-	public void setType(String name){
-		this.name = name;
-	}
+	//public void setType(String name){
+	//	this.name = name;
+	//}
 	
+	public int getID(){
+		return this.blockID;
+	}
 
+	public short getMeta(){
+		return this.blockMeta;
+	}
+	
+	public void setBlock(int ID, short meta){
+		this.blockID   = ID;
+		this.blockMeta = meta;
+	}
+	
 	@Override
 	public   void writeToStream(DataOutputStream stream) throws IOException{
 		this.coord.writeToStream(stream);
-		Packet.writeString(this.name, stream);
+		//Packet.writeString(this.name, stream);
+		stream.writeInt(this.blockID);
+		stream.writeShort(this.blockMeta);
 		stream.writeDouble(this.getGeometricMean());
 	}
 
 	public static  TileEntityStats readFromStream(DataInputStream stream) throws IOException {
 		CoordinatesBlock coord   = CoordinatesBlock.readFromStream(stream);
-		String classname         = Packet.readString(stream, 255);
-		TileEntityStats stat = new TileEntityStats(coord, classname);
+		int blockID     = stream.readInt();
+		short blockMeta = stream.readShort();
+		//String classname         = Packet.readString(stream, 255);
+		TileEntityStats stat = new TileEntityStats(coord, blockID, blockMeta);
 		stat.setGeometricMean(stream.readDouble());
 		return stat;
 	}
@@ -80,6 +100,6 @@ public class TileEntityStats implements ISerializable, Comparable {
 	}
 	
 	public String toString(){
-		return String.format("%s %s %s", this.name, this.coord, this.getGeometricMean());
+		return String.format("[%d:%d] %s %s", this.blockID, this.blockMeta, this.coord, this.getGeometricMean());
 	}
 }
