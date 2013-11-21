@@ -4,6 +4,7 @@ import mcp.mobius.opis.modOpis;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.network.MemoryConnection;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.dedicated.DedicatedServer;
 
@@ -38,6 +39,7 @@ public class CommandFrequency extends CommandBase {
     public boolean canCommandSenderUseCommand(ICommandSender sender)
     {
 		if (sender instanceof DedicatedServer) return true;
+		if (((EntityPlayerMP)sender).playerNetServerHandler.netManager instanceof MemoryConnection) return true;
         return MinecraftServer.getServer().getConfigurationManager().isPlayerOpped(((EntityPlayerMP)sender).username);
     }	
 	

@@ -18,10 +18,10 @@ public class TileEntityProfiler implements IProfilerTileEntity {
 	private Clock      clock = new Clock();
 	
 	@Override
-	public void FullTEStart() {	}
+	public void FullTileEntityStart() {	}
 
 	@Override
-	public void FullTEStop() { }
+	public void FullTileEntityStop() { }
 
 	@Override
 	public void Start(TileEntity te) {
