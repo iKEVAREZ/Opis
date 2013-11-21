@@ -42,17 +42,26 @@ public class ModStats implements ISerializable, Comparable{
 		return this.modID;
 	}
 	
+	public double getMedian(){
+		if (this.cachedMedian < 0.0){
+			int ndata = (int)this.dstat.getN();
+			if (ndata == 1)
+				return this.dstat.getElement(0);
+			
+			if (ndata % 2 == 1)
+				return this.dstat.getSortedValues()[ndata/2];
+			
+			if (ndata % 2 == 0)
+				return (this.dstat.getSortedValues()[ndata/2 - 1] + this.dstat.getSortedValues()[ndata/2]) / 2;
+		}	
+		return this.cachedMedian;
+	}
+	
 	@Override
 	public int compareTo(Object o) {
 		//return this.dstat.getMean() > ((ModStats)o).dstat.getMean() ? -1 : 1;
 		//return this.meanTime > ((ModStats)o).meanTime ? -1 : 1;
-		if (this.cachedMedian < 0.0)
-			this.cachedMedian = this.dstat.getSortedValues()[(int)this.dstat.getN()/2];
-
-		if (((ModStats)o).cachedMedian < 0.0)
-			((ModStats)o).cachedMedian = ((ModStats)o).dstat.getSortedValues()[(int)((ModStats)o).dstat.getN()/2];
-			
-		return this.cachedMedian > ((ModStats)o).cachedMedian ? -1 : 1;		
+		return this.getMedian() > ((ModStats)o).getMedian() ? -1 : 1;		
 	}
 
 	@Override
