@@ -184,7 +184,7 @@ public class OpisPacketHandler implements IPacketHandler {
 	}        
 	
 	public boolean isOp(Player player){
-		return MinecraftServer.getServer().getConfigurationManager().isPlayerOpped(((EntityPlayerMP)player).username);
+		return MinecraftServer.getServer().getConfigurationManager().isPlayerOpped(((EntityPlayerMP)player).username) || MinecraftServer.getServer().isSinglePlayer();
 	}
         
 }
