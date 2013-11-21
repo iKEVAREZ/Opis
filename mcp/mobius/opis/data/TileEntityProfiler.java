@@ -25,7 +25,7 @@ public class TileEntityProfiler implements IProfilerTileEntity {
 
 	@Override
 	public void Start(TileEntity te) {
-		if ((!modOpis.profilerRun) || (OpisServerTickHandler.profilerUpdateTickCounter % modOpis.profilerDelay != 0)) return;
+		if ((!modOpis.profilerRun) || (OpisServerTickHandler.instance.profilerUpdateTickCounter % modOpis.profilerDelay != 0)) return;
 		
 		if (te.worldObj.isRemote) return;
 		
@@ -35,7 +35,7 @@ public class TileEntityProfiler implements IProfilerTileEntity {
 
 	@Override
 	public void Stop(TileEntity te) {
-		if ((!modOpis.profilerRun) || (OpisServerTickHandler.profilerUpdateTickCounter % modOpis.profilerDelay != 0)) return;		
+		if ((!modOpis.profilerRun) || (OpisServerTickHandler.instance.profilerUpdateTickCounter % modOpis.profilerDelay != 0)) return;		
 		
 		this.clock.stop();
 		if (te.worldObj.isRemote) return;

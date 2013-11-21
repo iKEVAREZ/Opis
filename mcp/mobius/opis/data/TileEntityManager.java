@@ -1,6 +1,7 @@
 package mcp.mobius.opis.data;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -8,7 +9,9 @@ import java.util.HashSet;
 import mcp.mobius.opis.data.holders.ChunkStats;
 import mcp.mobius.opis.data.holders.CoordinatesBlock;
 import mcp.mobius.opis.data.holders.CoordinatesChunk;
+import mcp.mobius.opis.data.holders.ModStats;
 import mcp.mobius.opis.data.holders.TileEntityStats;
+import mcp.mobius.waila.tools.ModIdentification;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -20,7 +23,7 @@ import net.minecraftforge.common.DimensionManager;
 public class TileEntityManager {
 	public static HashMap<CoordinatesBlock, Class> references = new HashMap<CoordinatesBlock, Class>();
 	public static HashMap<CoordinatesBlock, TileEntityStats> stats = new HashMap<CoordinatesBlock, TileEntityStats>();
-
+	
 	public static void addTileEntity(TileEntity te, long timing){
 		CoordinatesBlock coord = new CoordinatesBlock(te);
 		
@@ -77,13 +80,13 @@ public class TileEntityManager {
 		HashSet<CoordinatesBlock> dirty = new HashSet<CoordinatesBlock>();
 		
 		for (CoordinatesBlock tecoord : TileEntityManager.stats.keySet()){
-			World world   = DimensionManager.getWorld(tecoord.dim);
-	        int   blockID   = world.getBlockId(tecoord.x, tecoord.y, tecoord.z);
-	        short blockMeta = (short)world.getBlockMetadata(tecoord.x, tecoord.y, tecoord.z);
-	        
-	        if ((blockID != TileEntityManager.stats.get(tecoord).getID()) || (blockMeta != TileEntityManager.stats.get(tecoord).getMeta())){
-	        	dirty.add(tecoord);
-	        }
+				World world   = DimensionManager.getWorld(tecoord.dim);
+				int   blockID   = world.getBlockId(tecoord.x, tecoord.y, tecoord.z);
+				short blockMeta = (short)world.getBlockMetadata(tecoord.x, tecoord.y, tecoord.z);
+				
+				if ((blockID != TileEntityManager.stats.get(tecoord).getID()) || (blockMeta != TileEntityManager.stats.get(tecoord).getMeta())){
+					dirty.add(tecoord);
+				}
 		}
 		
 		for (CoordinatesBlock tecoord : dirty){
@@ -164,5 +167,24 @@ public class TileEntityManager {
 		
 		return topEntities;
 		
+	}
+	
+	public static ArrayList<ModStats> getModStats(){
+		cleanUpStats();
+		HashMap<String, ModStats> modStats = new HashMap<String, ModStats>();
+		
+		for (TileEntityStats testat : TileEntityManager.stats.values()){
+			String modID = ModIdentification.idFromStack(new ItemStack(testat.getID(), 1, testat.getMeta()));
+			if (!modStats.containsKey(modID))
+				modStats.put(modID, new ModStats(modID));
+			
+			modStats.get(modID).addStat(testat);
+		}
+		
+		ArrayList<ModStats> outModStats = new ArrayList<ModStats>(modStats.values());
+		
+		//Collections.sort(outModStats);
+		
+		return outModStats;
 	}
 }

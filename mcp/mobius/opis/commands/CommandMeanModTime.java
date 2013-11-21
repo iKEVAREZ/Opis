@@ -1,23 +1,22 @@
 package mcp.mobius.opis.commands;
 
-import cpw.mods.fml.common.network.PacketDispatcher;
-import mcp.mobius.opis.modOpis;
+import java.util.ArrayList;
+
 import mcp.mobius.opis.data.TileEntityManager;
-import mcp.mobius.opis.server.OpisServerTickHandler;
+import mcp.mobius.opis.data.holders.ModStats;
+import mcp.mobius.opis.network.server.Packet_ModMeanTime;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.MemoryConnection;
-import net.minecraft.network.packet.Packet3Chat;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.dedicated.DedicatedServer;
-import net.minecraft.util.ChatMessageComponent;
 
-public class CommandStart extends CommandBase {
+public class CommandMeanModTime extends CommandBase {
 
 	@Override
 	public String getCommandName() {
-		return "opis_start";
+		return "opis_mods";
 	}
 
 	@Override
@@ -27,14 +26,8 @@ public class CommandStart extends CommandBase {
 
 	@Override
 	public void processCommand(ICommandSender icommandsender, String[] astring) {
-		modOpis.profilerRun = true;
-
-		OpisServerTickHandler.instance.profilerRunningTicks = 0;
-		TileEntityManager.references.clear();
-		TileEntityManager.stats.clear();
-		
-		PacketDispatcher.sendPacketToAllPlayers(new Packet3Chat(ChatMessageComponent.createFromText(String.format("\u00A7oOpis started with a tick delay %s.", modOpis.profilerDelay))));
-		//notifyAdmins(icommandsender, "Opis started with a tick delay %s.", new Object[] {modOpis.profilerDelay});		
+		ArrayList<ModStats> modStats = TileEntityManager.getModStats();
+		((EntityPlayerMP)icommandsender).playerNetServerHandler.sendPacketToPlayer(Packet_ModMeanTime.create(modStats));		
 	}
 
 	@Override
@@ -49,6 +42,6 @@ public class CommandStart extends CommandBase {
 		if (sender instanceof DedicatedServer) return true;
 		if (((EntityPlayerMP)sender).playerNetServerHandler.netManager instanceof MemoryConnection) return true;
         return MinecraftServer.getServer().getConfigurationManager().isPlayerOpped(((EntityPlayerMP)sender).username);
-    }	
-	
+    }
+
 }

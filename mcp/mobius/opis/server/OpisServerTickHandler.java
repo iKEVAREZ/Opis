@@ -17,9 +17,15 @@ import cpw.mods.fml.common.network.Player;
 
 public class OpisServerTickHandler implements ITickHandler {
 
-	public static long profilerUpdateTickCounter = 0;	
-	public static long clientUpdateTickCounter = 0;
-	public static long profilerRunningTicks;
+	public long profilerUpdateTickCounter = 0;	
+	public long clientUpdateTickCounter = 0;
+	public long profilerRunningTicks;
+	
+	public static OpisServerTickHandler instance;
+	
+	public OpisServerTickHandler(){
+		instance = this;
+	}
 	
 	@Override
 	public void tickStart(EnumSet<TickType> type, Object... tickData) {
@@ -27,7 +33,7 @@ public class OpisServerTickHandler implements ITickHandler {
 
 	@Override
 	public void tickEnd(EnumSet<TickType> type, Object... tickData) {
-		if(type.contains(TickType.WORLD)){
+		if(type.contains(TickType.SERVER)){
 			clientUpdateTickCounter++;
 			if (clientUpdateTickCounter % 100 == 0){
 				updatePlayers();
@@ -35,22 +41,21 @@ public class OpisServerTickHandler implements ITickHandler {
 			}
 			
 			profilerUpdateTickCounter++;
-		}
-		
-		if (profilerRunningTicks < modOpis.profilerMaxTicks && modOpis.profilerRun)
-			profilerRunningTicks++;
-		else if (profilerRunningTicks >= modOpis.profilerMaxTicks && modOpis.profilerRun){
-			modOpis.profilerRun = false;
-			PacketDispatcher.sendPacketToAllPlayers(new Packet3Chat(ChatMessageComponent.createFromText(String.format("\u00A7oOpis automaticly stopped after %d ticks.", modOpis.profilerMaxTicks))));
-		}
 			
-		
-		
+			if (profilerRunningTicks < modOpis.profilerMaxTicks && modOpis.profilerRun)
+				profilerRunningTicks++;
+			else if (profilerRunningTicks >= modOpis.profilerMaxTicks && modOpis.profilerRun){
+				profilerRunningTicks = 0;
+				modOpis.profilerRun = false;
+				PacketDispatcher.sendPacketToAllPlayers(new Packet3Chat(ChatMessageComponent.createFromText(String.format("\u00A7oOpis automaticly stopped after %d ticks.", modOpis.profilerMaxTicks))));
+			}			
+			
+		}
 	}
 
 	@Override
 	public EnumSet<TickType> ticks() {
-		return EnumSet.of(TickType.WORLD);
+		return EnumSet.of(TickType.SERVER);
 	}
 
 	@Override

@@ -16,6 +16,7 @@ import mcp.mobius.opis.gui.widgets.WidgetGeometry;
 import mcp.mobius.opis.gui.widgets.tableview.TableRow;
 import mcp.mobius.opis.gui.widgets.tableview.ViewTable;
 import mcp.mobius.opis.overlay.OverlayMeanTime;
+import mcp.mobius.opis.tools.ModIdentification;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.resources.I18n;
@@ -49,10 +50,10 @@ public class ScreenTileEntity extends ScreenBase {
 
 		table.setGeometry(new WidgetGeometry(50.0, 50.0, 80.0, 80.0,CType.RELXY, CType.RELXY, WAlign.CENTER, WAlign.CENTER));
 		
-	    table.setColumnsAlign(WAlign.CENTER, WAlign.CENTER, WAlign.CENTER, WAlign.CENTER)
+	    table.setColumnsAlign(WAlign.CENTER, WAlign.CENTER, WAlign.CENTER, WAlign.CENTER, WAlign.CENTER)
 		     //.setColumnsTitle("\u00a7a\u00a7oType", "\u00a7a\u00a7oPos", "\u00a7a\u00a7oUpdate Time")
-	    	 .setColumnsTitle("Type", "Dim", "Pos", "Update Time")
-			 .setColumnsWidth(40, 20, 20, 20)
+	    	 .setColumnsTitle("Type", "Mod", "Dim", "Pos", "Update Time")
+			 .setColumnsWidth(30, 20, 15, 15, 20)
 			 .setRowColors(0xff808080, 0xff505050)
 			 .setFontSize(1.0f);		
 
@@ -73,6 +74,8 @@ public class ScreenTileEntity extends ScreenBase {
 			table.addRow(data, 
 					     //name[name.length - 1],
 						 name,
+						 //"\u00A79\u00A7o" + ModIdentification.idFromStack(is),
+						 ModIdentification.idFromStack(is),
 					     String.format("%3d", data.getCoordinates().dim),
 					     String.format("[ %4d %4d %4d ]", 	data.getCoordinates().x, data.getCoordinates().y, data.getCoordinates().z),  
 					     String.format("%.5f ms",data.getGeometricMean()/1000.0));

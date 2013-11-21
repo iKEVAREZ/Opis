@@ -11,7 +11,7 @@ import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 
 public class TileEntityStats implements ISerializable, Comparable {
 
-	private DescriptiveStatistics stats = new DescriptiveStatistics(modOpis.profilerMaxTicks);	
+	private DescriptiveStatistics stats = new DescriptiveStatistics(modOpis.profilerMaxTicks);	// Stored in microseconds !
 	private CoordinatesBlock coord;
 	private String name;
 	private int    blockID;
