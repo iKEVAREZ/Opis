@@ -4,13 +4,14 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import mcp.mobius.opis.modOpis;
 import net.minecraft.network.packet.Packet;
 
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 
 public class TileEntityStats implements ISerializable, Comparable {
 
-	private DescriptiveStatistics stats = new DescriptiveStatistics(100);	
+	private DescriptiveStatistics stats = new DescriptiveStatistics(modOpis.profilerMaxTicks);	
 	private CoordinatesBlock coord;
 	private String name;
 	private Double geomMean = null;

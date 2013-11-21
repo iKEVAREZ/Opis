@@ -2,6 +2,8 @@ package mcp.mobius.opis.server;
 
 import java.util.EnumSet;
 
+import net.minecraft.network.packet.Packet3Chat;
+import net.minecraft.util.ChatMessageComponent;
 import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.data.ChunkManager;
 import mcp.mobius.opis.data.TileEntityManager;
@@ -17,6 +19,7 @@ public class OpisServerTickHandler implements ITickHandler {
 
 	public static long profilerUpdateTickCounter = 0;	
 	public static long clientUpdateTickCounter = 0;
+	public static long profilerRunningTicks;
 	
 	@Override
 	public void tickStart(EnumSet<TickType> type, Object... tickData) {
@@ -32,7 +35,17 @@ public class OpisServerTickHandler implements ITickHandler {
 			}
 			
 			profilerUpdateTickCounter++;
-		}		
+		}
+		
+		if (profilerRunningTicks < modOpis.profilerMaxTicks && modOpis.profilerRun)
+			profilerRunningTicks++;
+		else if (profilerRunningTicks >= modOpis.profilerMaxTicks && modOpis.profilerRun){
+			modOpis.profilerRun = false;
+			PacketDispatcher.sendPacketToAllPlayers(new Packet3Chat(ChatMessageComponent.createFromText(String.format("\u00A7oOpis automaticly stopped after %d ticks.", modOpis.profilerMaxTicks))));
+		}
+			
+		
+		
 	}
 
 	@Override

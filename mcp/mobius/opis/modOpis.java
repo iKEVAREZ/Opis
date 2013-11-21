@@ -49,8 +49,9 @@ public class modOpis {
 	@SidedProxy(clientSide="mcp.mobius.opis.proxy.ProxyClient", serverSide="mcp.mobius.opis.proxy.ProxyServer")
 	public static ProxyServer proxy;		
 
-	public static int profilerDelay   = 1;
-	public static boolean profilerRun = false; 
+	public static int profilerDelay    = 1;
+	public static boolean profilerRun  = false; 
+	public static int profilerMaxTicks = 250;
 	
 	public static CoordinatesBlock selectedBlock = null;
 	
