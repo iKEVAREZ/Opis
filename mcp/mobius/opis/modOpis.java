@@ -9,6 +9,7 @@ import mcp.mobius.opis.client.OpisClientEventHandler;
 import mcp.mobius.opis.client.OpisClientTickHandler;
 import mcp.mobius.opis.commands.CommandChunkDump;
 import mcp.mobius.opis.commands.CommandChunkList;
+import mcp.mobius.opis.commands.CommandDataDump;
 import mcp.mobius.opis.commands.CommandFrequency;
 import mcp.mobius.opis.commands.CommandMeanModTime;
 import mcp.mobius.opis.commands.CommandStart;
@@ -82,7 +83,8 @@ public class modOpis {
 		event.registerServerCommand(new CommandStart());
 		event.registerServerCommand(new CommandStop());		
 		event.registerServerCommand(new CommandTileEntitiesList());
-		event.registerServerCommand(new CommandMeanModTime());		
+		event.registerServerCommand(new CommandMeanModTime());
+		event.registerServerCommand(new CommandDataDump());
 		//event.registerServerCommand(new CommandTPS());		
 		
 		GameRegistry.registerPlayerTracker(new OpisPlayerTracker());

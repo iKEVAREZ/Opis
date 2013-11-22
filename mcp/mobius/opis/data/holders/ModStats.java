@@ -21,7 +21,7 @@ public class ModStats implements ISerializable, Comparable{
 
 	private double cachedMedian = -1.0;
 	
-	DescriptiveStatistics dstat = new DescriptiveStatistics();
+	public DescriptiveStatistics dstat = new DescriptiveStatistics();
 	
 	public ModStats(String modID){
 		this.modID = modID;
@@ -74,7 +74,7 @@ public class ModStats implements ISerializable, Comparable{
 		stream.writeDouble(dstat.getMin());
 		stream.writeDouble(dstat.getMax());
 		stream.writeDouble(dstat.getSum());
-		stream.writeDouble(dstat.getSortedValues()[(int)dstat.getN()/2]);
+		stream.writeDouble(this.getMedian());
 		stream.writeInt((int)dstat.getN());
 	}
 	

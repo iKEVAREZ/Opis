@@ -55,10 +55,14 @@ public class ScreenMods extends ScreenBase {
 			table.addRow(data, 
 				     	 String.format("%s", data.getModID()),
 					     String.format("%d", data.ntes),
-					     String.format("%.5f ms", data.total    / 1000.0),
-					     String.format("%.5f ms", data.meanTime / 1000.0),
-					     String.format("%.5f ms", data.median   / 1000.0),
-					     String.format("%.5f ms", data.maxTime  / 1000.0)
+					     //String.format("%.5f ms", data.total    / 1000.0),
+					     //String.format("%.5f ms", data.meanTime / 1000.0),
+					     //String.format("%.5f ms", data.median   / 1000.0),
+					     //String.format("%.5f ms", data.maxTime  / 1000.0)
+					     String.format("%.3f \u00B5s", data.total),
+					     String.format("%.3f \u00B5s", data.meanTime),
+					     String.format("%.3f \u00B5s", data.median),
+					     String.format("%.3f \u00B5s", data.maxTime)					     
 					);
 		}	    
 	    

@@ -165,7 +165,8 @@ public class OverlayMeanTime implements IMwDataProvider {
 		CoordinatesChunk chunkCoord = new CoordinatesChunk(dim, xChunk, zChunk);
 		
 		if (ChunkManager.chunkMeanTime.containsKey(chunkCoord))
-			return String.format(", %.5f ms", ChunkManager.chunkMeanTime.get(chunkCoord).updateTime/1000.0);
+			//return String.format(", %.5f ms", ChunkManager.chunkMeanTime.get(chunkCoord).updateTime/1000.0);
+			return String.format("%.3f \u00B5s", ChunkManager.chunkMeanTime.get(chunkCoord).updateTime);
 		else
 			return "";
 	}

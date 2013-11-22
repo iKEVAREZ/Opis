@@ -11,12 +11,13 @@ import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 
 public class TileEntityStats implements ISerializable, Comparable {
 
-	private DescriptiveStatistics stats = new DescriptiveStatistics(modOpis.profilerMaxTicks);	// Stored in microseconds !
+	public  DescriptiveStatistics dstat = new DescriptiveStatistics(modOpis.profilerMaxTicks);	// Stored in microseconds !
 	private CoordinatesBlock coord;
 	private String name;
 	private int    blockID;
 	private short  blockMeta;
 	private Double geomMean = null;
+	private double cachedMedian;
 	
 	
 	public TileEntityStats(CoordinatesBlock coord, int blockID, short blockMeta){
@@ -27,14 +28,14 @@ public class TileEntityStats implements ISerializable, Comparable {
 	}
 	
 	public void addMeasure(long timing){
-		stats.addValue(timing/1000.0);
+		dstat.addValue(timing/1000.0);
 	}
 	
 	public double getGeometricMean(){
 		if (geomMean != null)
 			return geomMean;
 		else
-			return stats.getGeometricMean();
+			return dstat.getGeometricMean();
 	}
 	
 	public void setGeometricMean(double value){
@@ -69,6 +70,21 @@ public class TileEntityStats implements ISerializable, Comparable {
 		this.blockID   = ID;
 		this.blockMeta = meta;
 	}
+	
+	public double getMedian(){
+		if (this.cachedMedian < 0.0){
+			int ndata = (int)this.dstat.getN();
+			if (ndata == 1)
+				return this.dstat.getElement(0);
+			
+			if (ndata % 2 == 1)
+				return this.dstat.getSortedValues()[ndata/2];
+			
+			if (ndata % 2 == 0)
+				return (this.dstat.getSortedValues()[ndata/2 - 1] + this.dstat.getSortedValues()[ndata/2]) / 2;
+		}	
+		return this.cachedMedian;
+	}	
 	
 	@Override
 	public   void writeToStream(DataOutputStream stream) throws IOException{

@@ -1,0 +1,132 @@
+package mcp.mobius.opis.commands;
+
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+
+import cpw.mods.fml.common.network.PacketDispatcher;
+import cpw.mods.fml.common.network.Player;
+import mcp.mobius.opis.modOpis;
+import mcp.mobius.opis.data.TileEntityManager;
+import mcp.mobius.opis.data.holders.ModStats;
+import mcp.mobius.opis.data.holders.TileEntityStats;
+import mcp.mobius.opis.tools.ModIdentification;
+import net.minecraft.command.CommandBase;
+import net.minecraft.command.ICommandSender;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
+import net.minecraft.network.MemoryConnection;
+import net.minecraft.network.packet.Packet3Chat;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.dedicated.DedicatedServer;
+import net.minecraft.util.ChatMessageComponent;
+
+public class CommandDataDump extends CommandBase {
+
+	@Override
+	public String getCommandName() {
+		return "opis_dump";
+	}
+
+	@Override
+	public String getCommandUsage(ICommandSender icommandsender) {
+		return "";
+	}
+
+	@Override
+	public void processCommand(ICommandSender icommandsender, String[] astring) {
+		ArrayList<ModStats> modStats = TileEntityManager.getModStats();
+        try {
+			BufferedWriter out = new BufferedWriter(new FileWriter("mods.csv"));
+			
+			out.write(String.format("modid,ntes,mean,geommean,variance,min,max,sum,median\n"));
+			
+			for (ModStats stat: modStats)
+				out.write(String.format("%s,%d,%f,%f,%f,%f,%f,%f,%f\n", stat.getModID(),
+																		stat.dstat.getN(),
+																		stat.dstat.getMean(),
+																		stat.dstat.getGeometricMean(),
+																		stat.dstat.getVariance(),
+																		stat.dstat.getMin(),
+																		stat.dstat.getMax(),
+																		stat.dstat.getSum(),
+																		stat.getMedian()));
+			out.close();
+			if (icommandsender instanceof DedicatedServer){}
+				//PacketDispatcher.sendPacketToServer(new Packet3Chat(ChatMessageComponent.createFromText("\u00A7oMods datadump done.")));
+			else
+				PacketDispatcher.sendPacketToPlayer(new Packet3Chat(ChatMessageComponent.createFromText("\u00A7oMods datadump done.")), (Player)icommandsender);
+			
+		} catch (IOException e) {
+			modOpis.log.log(Level.WARNING, "Failed to write mods data");
+			
+			if (icommandsender instanceof DedicatedServer){}
+				//PacketDispatcher.sendPacketToServer(new Packet3Chat(ChatMessageComponent.createFromText("\u00A7oMods datadump failed.")));	
+			else
+				PacketDispatcher.sendPacketToPlayer(new Packet3Chat(ChatMessageComponent.createFromText("\u00A7oMods datadump failed.")), (Player)icommandsender);
+			
+			e.printStackTrace();
+		}	
+        
+        int nentities = TileEntityManager.stats.size();
+        ArrayList<TileEntityStats> entStats = TileEntityManager.getTopEntities(nentities);
+        try {
+			BufferedWriter out = new BufferedWriter(new FileWriter("tileentities.csv"));
+			
+			out.write(String.format("name,mod,dim,x,y,z,chunkX,chunkZ,npoints,mean,geommean,variance,min,max,sum,median\n"));
+
+			for (TileEntityStats stat: entStats){
+				ItemStack is = new ItemStack(stat.getID(), 1, stat.getMeta());
+				String name  = is.getDisplayName();
+				
+				out.write(String.format("%s,%s,%d,%d,%d,%d,%d,%d,%d,%f,%f,%f,%f,%f,%f,%f\n", name,
+																		ModIdentification.idFromStack(is),
+																		stat.getCoordinates().dim,
+																		stat.getCoordinates().x,
+																		stat.getCoordinates().y,
+																		stat.getCoordinates().z,
+																		stat.getChunk().chunkX,
+																		stat.getChunk().chunkZ,
+																		stat.dstat.getN(),
+																		stat.dstat.getMean(),
+																		stat.dstat.getGeometricMean(),
+																		stat.dstat.getVariance(),
+																		stat.dstat.getMin(),
+																		stat.dstat.getMax(),
+																		stat.dstat.getSum(),
+																		stat.getMedian()));
+			}
+			out.close();
+			
+			if (icommandsender instanceof DedicatedServer){}
+				//PacketDispatcher.sendPacketToServer(new Packet3Chat(ChatMessageComponent.createFromText("\u00A7oTileEntities datadump done.")));				
+			else
+				PacketDispatcher.sendPacketToPlayer(new Packet3Chat(ChatMessageComponent.createFromText("\u00A7oTileEntities datadump done.")), (Player)icommandsender);
+			
+		} catch (IOException e) {
+			modOpis.log.log(Level.WARNING, "Failed to write tile entities data");
+			if (icommandsender instanceof DedicatedServer){}
+				//PacketDispatcher.sendPacketToServer(new Packet3Chat(ChatMessageComponent.createFromText("\u00A7oTileEntities datadump failed.")));
+			else
+				PacketDispatcher.sendPacketToPlayer(new Packet3Chat(ChatMessageComponent.createFromText("\u00A7oTileEntities datadump failed.")), (Player)icommandsender);
+			e.printStackTrace();
+		}	        
+	}
+
+	@Override
+    public int getRequiredPermissionLevel()
+    {
+        return 3;
+    }	
+
+	@Override
+    public boolean canCommandSenderUseCommand(ICommandSender sender)
+    {
+		if (sender instanceof DedicatedServer) return true;
+		if (((EntityPlayerMP)sender).playerNetServerHandler.netManager instanceof MemoryConnection) return true;
+        return MinecraftServer.getServer().getConfigurationManager().isPlayerOpped(((EntityPlayerMP)sender).username);
+    }
+
+}

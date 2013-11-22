@@ -78,7 +78,8 @@ public class ScreenTileEntity extends ScreenBase {
 						 ModIdentification.idFromStack(is),
 					     String.format("%3d", data.getCoordinates().dim),
 					     String.format("[ %4d %4d %4d ]", 	data.getCoordinates().x, data.getCoordinates().y, data.getCoordinates().z),  
-					     String.format("%.5f ms",data.getGeometricMean()/1000.0));
+					     //String.format("%.5f ms",data.getGeometricMean()/1000.0));
+					     String.format("%.3f \u00B5s",data.getGeometricMean()));
 		}	    
 	    
 	}

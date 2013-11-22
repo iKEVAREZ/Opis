@@ -58,7 +58,8 @@ public class ScreenChunks extends ScreenBase {
 				     	 String.format("%3d", data.coord.dim),
 					     String.format("[ %4d %4d ]", 	data.coord.chunkX, data.coord.chunkZ),
 					     String.format("%d", data.nentities),
-					     String.format("%.5f ms",data.updateTime/1000.0));
+					     //String.format("%.5f ms",data.updateTime/1000.0));
+					     String.format("%.5f \u00B5s",data.updateTime));
 		}	    
 	    
 	}
