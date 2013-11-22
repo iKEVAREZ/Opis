@@ -17,7 +17,7 @@ public class TileEntityStats implements ISerializable, Comparable {
 	private int    blockID;
 	private short  blockMeta;
 	private Double geomMean = null;
-	private double cachedMedian;
+	private double cachedMedian = -1.0;
 	
 	
 	public TileEntityStats(CoordinatesBlock coord, int blockID, short blockMeta){
