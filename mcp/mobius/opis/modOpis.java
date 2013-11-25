@@ -16,6 +16,7 @@ import mcp.mobius.opis.commands.CommandMeanModTime;
 import mcp.mobius.opis.commands.CommandStart;
 import mcp.mobius.opis.commands.CommandStop;
 import mcp.mobius.opis.commands.CommandTPS;
+import mcp.mobius.opis.commands.CommandTicks;
 import mcp.mobius.opis.commands.CommandTileEntitiesList;
 import mcp.mobius.opis.data.TileEntityProfiler;
 import mcp.mobius.opis.data.holders.CoordinatesBlock;
@@ -97,6 +98,7 @@ public class modOpis {
 		event.registerServerCommand(new CommandTileEntitiesList());
 		event.registerServerCommand(new CommandMeanModTime());
 		event.registerServerCommand(new CommandDataDump());
+		event.registerServerCommand(new CommandTicks());		
 		//event.registerServerCommand(new CommandTPS());		
 		
 		GameRegistry.registerPlayerTracker(new OpisPlayerTracker());
