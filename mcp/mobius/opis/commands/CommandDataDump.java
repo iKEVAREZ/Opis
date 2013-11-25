@@ -80,12 +80,17 @@ public class CommandDataDump extends CommandBase {
 			for (TileEntityStats stat: entStats){
 				
 				ItemStack is = new ItemStack(stat.getID(), 1, stat.getMeta());
-				String name  = "te.null";
+				String name  = String.format("te.%d.%d", stat.getID(), stat.getMeta());
 				String modID = "<UNKNOWN>";
 				if (is != null) {
-					name  = is.getDisplayName();
-					modID = ModIdentification.idFromStack(is);
-				}				
+					
+					try{
+						name  = is.getDisplayName();
+						modID = ModIdentification.idFromStack(is);					
+					} catch (Exception e){
+						System.out.printf("Error while grabbing name for %d:%d\n", stat.getID(), stat.getMeta());
+					}
+				}		
 				
 				out.write(String.format("%s,%s,%d,%d,%d,%d,%d,%d,%d,%f,%f,%f,%f,%f,%f,%f\n", name,
 																		modID,

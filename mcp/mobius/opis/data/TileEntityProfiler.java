@@ -1,6 +1,9 @@
 package mcp.mobius.opis.data;
 
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.relauncher.Side;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.ForgeHooks;
 import mcp.mobius.mobiuscore.profiler.IProfilerTileEntity;
 import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.server.OpisServerTickHandler;
@@ -25,6 +28,7 @@ public class TileEntityProfiler implements IProfilerTileEntity {
 
 	@Override
 	public void Start(TileEntity te) {
+		if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT) return;		
 		if ((!modOpis.profilerRun) || (OpisServerTickHandler.instance.profilerUpdateTickCounter % modOpis.profilerDelay != 0)) return;
 		
 		if (te.worldObj.isRemote) return;
@@ -35,6 +39,7 @@ public class TileEntityProfiler implements IProfilerTileEntity {
 
 	@Override
 	public void Stop(TileEntity te) {
+		if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT) return;
 		if ((!modOpis.profilerRun) || (OpisServerTickHandler.instance.profilerUpdateTickCounter % modOpis.profilerDelay != 0)) return;		
 		
 		this.clock.stop();

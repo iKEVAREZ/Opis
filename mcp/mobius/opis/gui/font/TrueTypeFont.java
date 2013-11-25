@@ -297,9 +297,13 @@ public class TrueTypeFont {
 	}
 
 	public void drawString(float x, float y, String whatchars, float scaleX, float scaleY, float... rgba) {
+		if (whatchars == null)
+			whatchars = "";
 		drawString(x,y,whatchars, 0, whatchars.length()-1, scaleX, scaleY, ALIGN_LEFT, rgba);
 	}
 	public void drawString(float x, float y, String whatchars, float scaleX, float scaleY, int format, float... rgba) {
+		if (whatchars == null)
+			whatchars = "";		
 		drawString(x,y,whatchars, 0, whatchars.length()-1, scaleX, scaleY, format, rgba);
 	}
 

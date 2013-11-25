@@ -61,11 +61,16 @@ public class ScreenTileEntity extends ScreenBase {
 		for (TileEntityStats data : tes){
         	
 			ItemStack is = new ItemStack(data.getID(), 1, data.getMeta());
-			String name  = "te.null";
+			String name  = String.format("te.%d.%d", data.getID(), data.getMeta());
 			String modID = "<UNKNOWN>";
 			if (is != null) {
-				name  = is.getDisplayName();
-				modID = ModIdentification.idFromStack(is);
+				
+				try{
+					name  = is.getDisplayName();
+					modID = ModIdentification.idFromStack(is);					
+				} catch (Exception e){
+					System.out.printf("Error while grabbing name for %d:%d\n", data.getID(), data.getMeta());
+				}
 			}
 			
 			if(modOpis.microseconds)
