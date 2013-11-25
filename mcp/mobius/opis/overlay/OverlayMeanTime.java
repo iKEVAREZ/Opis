@@ -165,8 +165,11 @@ public class OverlayMeanTime implements IMwDataProvider {
 		CoordinatesChunk chunkCoord = new CoordinatesChunk(dim, xChunk, zChunk);
 		
 		if (ChunkManager.chunkMeanTime.containsKey(chunkCoord))
-			//return String.format(", %.5f ms", ChunkManager.chunkMeanTime.get(chunkCoord).updateTime/1000.0);
-			return String.format("%.3f \u00B5s", ChunkManager.chunkMeanTime.get(chunkCoord).updateTime);
+			if (modOpis.microseconds)
+				return String.format("%.3f \u00B5s", ChunkManager.chunkMeanTime.get(chunkCoord).updateTime);
+			else
+				return String.format(", %.5f ms", ChunkManager.chunkMeanTime.get(chunkCoord).updateTime/1000.0);
+
 		else
 			return "";
 	}
@@ -283,7 +286,10 @@ public class OverlayMeanTime implements IMwDataProvider {
         		name = data.getType();	
         	*/
         	
-			table.addRow(data, name, String.format("[ %s %s %s ]", data.getCoordinates().x, data.getCoordinates().y, data.getCoordinates().z),  String.format("%.5f ms",data.getGeometricMean()/1000.0));
+			if (modOpis.microseconds)
+				table.addRow(data, name, String.format("[ %s %s %s ]", data.getCoordinates().x, data.getCoordinates().y, data.getCoordinates().z),  String.format("%.5f \u00B5s",data.getGeometricMean()));
+			else
+				table.addRow(data, name, String.format("[ %s %s %s ]", data.getCoordinates().x, data.getCoordinates().y, data.getCoordinates().z),  String.format("%.5f ms",data.getGeometricMean()/1000.0));				
 		}
 
 		this.showList = true;

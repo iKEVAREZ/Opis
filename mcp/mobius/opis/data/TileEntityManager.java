@@ -11,7 +11,7 @@ import mcp.mobius.opis.data.holders.CoordinatesBlock;
 import mcp.mobius.opis.data.holders.CoordinatesChunk;
 import mcp.mobius.opis.data.holders.ModStats;
 import mcp.mobius.opis.data.holders.TileEntityStats;
-import mcp.mobius.waila.tools.ModIdentification;
+import mcp.mobius.opis.tools.ModIdentification;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;

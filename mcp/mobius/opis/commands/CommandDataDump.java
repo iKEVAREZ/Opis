@@ -78,11 +78,17 @@ public class CommandDataDump extends CommandBase {
 			out.write(String.format("name,mod,dim,x,y,z,chunkX,chunkZ,npoints,mean,geommean,variance,min,max,sum,median\n"));
 
 			for (TileEntityStats stat: entStats){
+				
 				ItemStack is = new ItemStack(stat.getID(), 1, stat.getMeta());
-				String name  = is.getDisplayName();
+				String name  = "te.null";
+				String modID = "<UNKNOWN>";
+				if (is != null) {
+					name  = is.getDisplayName();
+					modID = ModIdentification.idFromStack(is);
+				}				
 				
 				out.write(String.format("%s,%s,%d,%d,%d,%d,%d,%d,%d,%f,%f,%f,%f,%f,%f,%f\n", name,
-																		ModIdentification.idFromStack(is),
+																		modID,
 																		stat.getCoordinates().dim,
 																		stat.getCoordinates().x,
 																		stat.getCoordinates().y,

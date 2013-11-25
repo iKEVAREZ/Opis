@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import net.minecraft.client.gui.GuiScreen;
+import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.data.holders.ModStats;
 import mcp.mobius.opis.gui.interfaces.CType;
 import mcp.mobius.opis.gui.interfaces.WAlign;
@@ -52,7 +53,8 @@ public class ScreenMods extends ScreenBase {
 		*/	    
 
 		for (ModStats data : mods){
-			table.addRow(data, 
+			if (modOpis.microseconds)			
+				table.addRow(data, 
 				     	 String.format("%s", data.getModID()),
 					     String.format("%d", data.ntes),
 					     //String.format("%.5f ms", data.total    / 1000.0),
@@ -64,6 +66,15 @@ public class ScreenMods extends ScreenBase {
 					     String.format("%.3f \u00B5s", data.median),
 					     String.format("%.3f \u00B5s", data.maxTime)					     
 					);
+			else
+				table.addRow(data, 
+				     	 String.format("%s", data.getModID()),
+					     String.format("%d", data.ntes),
+					     String.format("%.5f ms", data.total    / 1000.0),
+					     String.format("%.5f ms", data.meanTime / 1000.0),
+					     String.format("%.5f ms", data.median   / 1000.0),
+					     String.format("%.5f ms", data.maxTime  / 1000.0)
+					);				
 		}	    
 	    
 	}	

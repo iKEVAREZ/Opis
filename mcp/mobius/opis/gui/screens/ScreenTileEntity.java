@@ -6,6 +6,7 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 import mapwriter.Mw;
 import mapwriter.api.MwAPI;
 import mapwriter.gui.MwGui;
+import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.data.holders.CoordinatesBlock;
 import mcp.mobius.opis.data.holders.TileEntityStats;
 import mcp.mobius.opis.gui.events.MouseEvent;
@@ -60,26 +61,27 @@ public class ScreenTileEntity extends ScreenBase {
 		for (TileEntityStats data : tes){
         	
 			ItemStack is = new ItemStack(data.getID(), 1, data.getMeta());
-			String name  = is.getDisplayName();
+			String name  = "te.null";
+			String modID = "<UNKNOWN>";
+			if (is != null) {
+				name  = is.getDisplayName();
+				modID = ModIdentification.idFromStack(is);
+			}
 			
-			/*
-			String name  = I18n.getString(data.getType());
-        	if (name.equals(data.getType()))
-        		name = LanguageRegistry.instance().getStringLocalization(data.getType());
-        	if (name.isEmpty())
-        		name = data.getType();			
-			*/
-			
-			//String[] name = data.getType().split("\\.");
-			table.addRow(data, 
-					     //name[name.length - 1],
+			if(modOpis.microseconds)
+				table.addRow(data, 
 						 name,
-						 //"\u00A79\u00A7o" + ModIdentification.idFromStack(is),
-						 ModIdentification.idFromStack(is),
+						 modID,
 					     String.format("%3d", data.getCoordinates().dim),
 					     String.format("[ %4d %4d %4d ]", 	data.getCoordinates().x, data.getCoordinates().y, data.getCoordinates().z),  
-					     //String.format("%.5f ms",data.getGeometricMean()/1000.0));
 					     String.format("%.3f \u00B5s",data.getGeometricMean()));
+			else
+				table.addRow(data, 
+						 name,
+						 modID,
+					     String.format("%3d", data.getCoordinates().dim),
+					     String.format("[ %4d %4d %4d ]", 	data.getCoordinates().x, data.getCoordinates().y, data.getCoordinates().z),  
+					     String.format("%.5f ms",data.getGeometricMean()/1000.0));
 		}	    
 	    
 	}

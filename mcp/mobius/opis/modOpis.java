@@ -3,6 +3,7 @@ package mcp.mobius.opis;
 import java.util.logging.Logger;
 
 import net.minecraft.network.packet.Packet;
+import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.MinecraftForge;
 import mcp.mobius.mobiuscore.profiler.ProfilerRegistrar;
 import mcp.mobius.opis.client.OpisClientEventHandler;
@@ -55,11 +56,22 @@ public class modOpis {
 	public static int profilerDelay    = 1;
 	public static boolean profilerRun  = false; 
 	public static int profilerMaxTicks = 250;
+	public static boolean microseconds = true;
 	
 	public static CoordinatesBlock selectedBlock = null;
 	
+	public  Configuration config = null;	
+	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
+		config = new Configuration(event.getSuggestedConfigurationFile());
+
+		profilerDelay    = config.get(Configuration.CATEGORY_GENERAL, "profiler.delay", 1).getInt();
+		profilerMaxTicks = config.get(Configuration.CATEGORY_GENERAL, "profiler.maxpts", 250).getInt();
+		microseconds     = config.get(Configuration.CATEGORY_GENERAL, "display.microseconds", true).getBoolean(true);		
+		
+		config.save();
+		
 		MinecraftForge.EVENT_BUS.register(new OpisClientEventHandler());
 		Packet.addIdClassMapping(251, true, true, Packet251Extended.class);
 	}	

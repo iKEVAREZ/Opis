@@ -6,6 +6,7 @@ import net.minecraft.client.gui.GuiScreen;
 import mapwriter.Mw;
 import mapwriter.api.MwAPI;
 import mapwriter.gui.MwGui;
+import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.data.holders.ChunkStats;
 import mcp.mobius.opis.data.holders.CoordinatesBlock;
 import mcp.mobius.opis.data.holders.CoordinatesChunk;
@@ -54,12 +55,19 @@ public class ScreenChunks extends ScreenBase {
 			 .setFontSize(1.0f);		
 
 		for (ChunkStats data : chunks){
-			table.addRow(data, 
-				     	 String.format("%3d", data.coord.dim),
-					     String.format("[ %4d %4d ]", 	data.coord.chunkX, data.coord.chunkZ),
-					     String.format("%d", data.nentities),
-					     //String.format("%.5f ms",data.updateTime/1000.0));
-					     String.format("%.5f \u00B5s",data.updateTime));
+			if (modOpis.microseconds)
+				table.addRow(data, 
+						String.format("%3d", data.coord.dim),
+					    String.format("[ %4d %4d ]", 	data.coord.chunkX, data.coord.chunkZ),
+					    String.format("%d", data.nentities),
+					    //String.format("%.5f ms",data.updateTime/1000.0));
+					    String.format("%.5f \u00B5s",data.updateTime));
+			else
+				table.addRow(data, 
+						String.format("%3d", data.coord.dim),
+					    String.format("[ %4d %4d ]", 	data.coord.chunkX, data.coord.chunkZ),
+					    String.format("%d", data.nentities),
+					    String.format("%.5f ms",data.updateTime/1000.0));
 		}	    
 	    
 	}
