@@ -55,7 +55,8 @@ public final class CoordinatesChunk implements ISerializable {
 	//11111111 11111111 11111111 11122222 22222222 22222222 22222200 00000000
 	
 	public int hashCode() {
-		return String.format("%s %s %s", this.dim, this.chunkX, this.chunkZ).hashCode();
+		//return String.format("%s %s %s", this.dim, this.chunkX, this.chunkZ).hashCode();
+		return this.dim + 31 * this.chunkX + 877 * this.chunkZ;
 	}
 
 	public ChunkCoordIntPair toChunkCoordIntPair(){

@@ -72,7 +72,8 @@ public final class CoordinatesBlock implements ISerializable {
 		//if (this.isChunk)
 		//	return String.format("%s %s %s", this.dim, this.chunkX, this.chunkZ).hashCode();
 		//else
-			return String.format("%s %s %s %s", this.dim, this.x, this.y, this.z).hashCode();
+		//	return String.format("%s %s %s %s", this.dim, this.x, this.y, this.z).hashCode();
+		return this.dim + 31 * this.x + 877 * this.y + 3187 * this.z;
 	}
 
 	@Override

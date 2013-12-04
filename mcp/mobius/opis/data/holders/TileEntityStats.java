@@ -28,7 +28,7 @@ public class TileEntityStats implements ISerializable, Comparable {
 	}
 	
 	public void addMeasure(long timing){
-		dstat.addValue(timing/1000.0);
+		dstat.addValue((double)timing/1000.0);
 	}
 	
 	public double getGeometricMean(){

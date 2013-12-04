@@ -276,8 +276,13 @@ public class OverlayMeanTime implements IMwDataProvider {
 		
 		for (TileEntityStats data : entities){
 			
-			ItemStack is = new ItemStack(data.getID(), 1, data.getMeta());
-			String name  = is.getDisplayName();
+			ItemStack is;
+			String name  = String.format("te.%d.%d", data.getID(), data.getMeta());
+			
+			try{
+				is = new ItemStack(data.getID(), 1, data.getMeta());
+				name  = is.getDisplayName();
+			}  catch (Exception e) {	}
 			
 			/*
         	if (name.equals(data.getType()))
