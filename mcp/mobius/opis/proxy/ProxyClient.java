@@ -17,6 +17,7 @@ import mcp.mobius.opis.gui.screens.ScreenBase;
 import mcp.mobius.opis.gui.screens.ScreenChunks;
 import mcp.mobius.opis.gui.screens.ScreenMods;
 import mcp.mobius.opis.gui.screens.ScreenTileEntity;
+import mcp.mobius.opis.overlay.OverlayEntityPerChunk;
 import mcp.mobius.opis.overlay.OverlayLoadedChunks;
 import mcp.mobius.opis.overlay.OverlayMeanTime;
 
@@ -29,6 +30,7 @@ public class ProxyClient extends ProxyServer {
 		//MwAPI.registerDataProvider("Loaded chunks", OverlayLoadedChunks.instance);
 		MwAPI.registerDataProvider("Loaded chunks", OverlayLoadedChunks.instance());
 		MwAPI.registerDataProvider("Mean time",     OverlayMeanTime.instance());
+		MwAPI.registerDataProvider("Ent per chunk", OverlayEntityPerChunk.instance());
 		
 		//fontMC12 = Fonts.createFont(new ResourceLocation("opis", "fonts/Minecraftia.ttf"), 12, false);
 		//fontMC24 = Fonts.createFont(new ResourceLocation("opis", "fonts/Minecraftia.ttf"), 24, false);

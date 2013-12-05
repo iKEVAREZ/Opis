@@ -63,6 +63,10 @@ public final class CoordinatesChunk implements ISerializable {
 		return new ChunkCoordIntPair(this.chunkX, this.chunkZ);
 	}
 	
+	public CoordinatesBlock asCoordinatesBlock(){
+		return new CoordinatesBlock(this);
+	}
+	
 	@Override
 	public void writeToStream(DataOutputStream stream) throws IOException {
 		stream.writeInt(this.dim);

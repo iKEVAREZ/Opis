@@ -53,6 +53,10 @@ public final class CoordinatesBlock implements ISerializable {
 		//this.isChunk = false;
 	}	
 	
+	public CoordinatesChunk asCoordinatesChunk(){
+		return new CoordinatesChunk(this);
+	}
+	
 	public String toString(){
 		//if (this.isChunk)
 		//	return String.format("[%6d %6d %6d]", this.dim, this.chunkX, this.chunkZ);

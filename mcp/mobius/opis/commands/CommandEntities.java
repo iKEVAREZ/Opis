@@ -1,6 +1,11 @@
 package mcp.mobius.opis.commands;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import mcp.mobius.opis.data.EntityManager;
+import mcp.mobius.opis.data.holders.CoordinatesChunk;
+import mcp.mobius.opis.data.holders.EntityStats;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -24,11 +29,28 @@ public class CommandEntities extends CommandBase {
 	public void processCommand(ICommandSender icommandsender, String[] astring) {
 		double totalTime = 0;
 		System.out.printf("=====\n");
+		/*
 		for (Integer index : EntityManager.stats.keySet()){
-			System.out.printf("%s\n", EntityManager.stats.get(index));
+			//System.out.printf("%s\n", EntityManager.stats.get(index));
 			totalTime += EntityManager.stats.get(index).getGeometricMean();
 		}
-		System.out.printf("Total entity update time : %.3f \u00B5s\n", totalTime);
+		*/
+
+		/*
+		for (EntityStats stats : EntityManager.getTopEntities(20)){
+			System.out.printf("%s\n", stats);
+		}		
+		*/
+		
+		//System.out.printf("Total entity update time : %.3f \u00B5s\n", totalTime);
+		
+		HashMap<CoordinatesChunk, ArrayList<EntityStats>> entities = EntityManager.getEntitiesPerChunkInDim(0);
+		for (CoordinatesChunk chunk : entities.keySet()){
+			System.out.printf("%s %s\n", chunk, entities.get(chunk).size());
+			for (EntityStats stats : entities.get(chunk)){
+				System.out.printf("\t%s\n", stats.getName());
+			}
+		}
 	}
 
 	@Override

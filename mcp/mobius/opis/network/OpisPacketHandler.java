@@ -14,13 +14,16 @@ import mcp.mobius.opis.data.holders.CoordinatesChunk;
 import mcp.mobius.opis.data.holders.TicketData;
 import mcp.mobius.opis.network.client.Packet_ReqChunks;
 import mcp.mobius.opis.network.client.Packet_ReqChunksInDim;
+import mcp.mobius.opis.network.client.Packet_ReqDataDim;
 import mcp.mobius.opis.network.client.Packet_ReqMeanTimeInDim;
 import mcp.mobius.opis.network.client.Packet_ReqTEsInChunk;
 import mcp.mobius.opis.network.client.Packet_ReqTeleport;
 import mcp.mobius.opis.network.client.Packet_ReqTickets;
 import mcp.mobius.opis.network.client.Packet_UnregisterPlayer;
+import mcp.mobius.opis.network.handlers.DataDimHandler;
 import mcp.mobius.opis.network.server.Packet_ChunkTopList;
 import mcp.mobius.opis.network.server.Packet_Chunks;
+import mcp.mobius.opis.network.server.Packet_DataOverlayChunkEntities;
 import mcp.mobius.opis.network.server.Packet_LoadedChunks;
 import mcp.mobius.opis.network.server.Packet_MeanTime;
 import mcp.mobius.opis.network.server.Packet_ModMeanTime;
@@ -28,6 +31,7 @@ import mcp.mobius.opis.network.server.Packet_TPS;
 import mcp.mobius.opis.network.server.Packet_Tickets;
 import mcp.mobius.opis.network.server.Packet_TileEntitiesChunkList;
 import mcp.mobius.opis.network.server.Packet_TileEntitiesTopList;
+import mcp.mobius.opis.overlay.OverlayEntityPerChunk;
 import mcp.mobius.opis.overlay.OverlayLoadedChunks;
 import mcp.mobius.opis.overlay.OverlayMeanTime;
 import mcp.mobius.opis.overlay.OverlayStatus;
@@ -111,6 +115,11 @@ public class OpisPacketHandler implements IPacketHandler {
 						castedPacket.ticktimes.get(dim).getMean() / 1000.0,
 						castedPacket.ticktimes.get(dim).getGeometricMean() / 1000.0);
 		}
+		
+		else if (header == Packets.DATA_OVERLAY_CHUNK_ENTITIES){
+			Packet_DataOverlayChunkEntities castedPacket = new Packet_DataOverlayChunkEntities(packet);
+			OverlayEntityPerChunk.instance().overlayData = castedPacket.chunkStatus;
+		}
 	}
 
 	void onPacketToServer(INetworkManager manager, Packet250CustomPayload packet, Player player, Byte header) {
@@ -175,7 +184,12 @@ public class OpisPacketHandler implements IPacketHandler {
 			if (this.isOp(player)){		
 				EntityManager.teleportPlayer(castedPacket.coord, (EntityPlayerMP)player);
 			}
-		}		
+		}
+		
+		else if (header == Packets.REQ_DATA_DIM){
+			Packet_ReqDataDim castedPacket = new Packet_ReqDataDim(packet);
+			DataDimHandler.instance().handle(castedPacket.dimension, castedPacket.datatype, player);
+		}
 	}	
 	
 	
