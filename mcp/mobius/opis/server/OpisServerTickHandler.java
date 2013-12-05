@@ -49,7 +49,6 @@ public class OpisServerTickHandler implements ITickHandler {
 				modOpis.profilerRun = false;
 				PacketDispatcher.sendPacketToAllPlayers(new Packet3Chat(ChatMessageComponent.createFromText(String.format("\u00A7oOpis automaticly stopped after %d ticks.", modOpis.profilerMaxTicks))));
 			}			
-			
 		}
 	}
 

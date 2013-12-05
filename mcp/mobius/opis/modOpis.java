@@ -11,6 +11,7 @@ import mcp.mobius.opis.client.OpisClientTickHandler;
 import mcp.mobius.opis.commands.CommandChunkDump;
 import mcp.mobius.opis.commands.CommandChunkList;
 import mcp.mobius.opis.commands.CommandDataDump;
+import mcp.mobius.opis.commands.CommandEntities;
 import mcp.mobius.opis.commands.CommandFrequency;
 import mcp.mobius.opis.commands.CommandMeanModTime;
 import mcp.mobius.opis.commands.CommandStart;
@@ -18,6 +19,7 @@ import mcp.mobius.opis.commands.CommandStop;
 import mcp.mobius.opis.commands.CommandTPS;
 import mcp.mobius.opis.commands.CommandTicks;
 import mcp.mobius.opis.commands.CommandTileEntitiesList;
+import mcp.mobius.opis.data.EntityProfiler;
 import mcp.mobius.opis.data.TileEntityProfiler;
 import mcp.mobius.opis.data.holders.CoordinatesBlock;
 import mcp.mobius.opis.network.OpisConnectionHandler;
@@ -41,7 +43,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
 
-@Mod(modid="Opis", name="Opis", version="1.0.5_alpha")
+@Mod(modid="Opis", name="Opis", version="1.0.6_alpha")
 @NetworkMod(channels={"Opis", "Opis_Chunk"},clientSideRequired=false, serverSideRequired=false, connectionHandler=OpisConnectionHandler.class, packetHandler=OpisPacketHandler.class)
 
 public class modOpis {
@@ -98,10 +100,12 @@ public class modOpis {
 		event.registerServerCommand(new CommandTileEntitiesList());
 		event.registerServerCommand(new CommandMeanModTime());
 		event.registerServerCommand(new CommandDataDump());
-		event.registerServerCommand(new CommandTicks());		
+		event.registerServerCommand(new CommandTicks());
+		event.registerServerCommand(new CommandEntities());			
 		//event.registerServerCommand(new CommandTPS());		
 		
 		GameRegistry.registerPlayerTracker(new OpisPlayerTracker());
-		ProfilerRegistrar.registerProfilerTileEntity(new TileEntityProfiler());		
+		ProfilerRegistrar.registerProfilerTileEntity(new TileEntityProfiler());	
+		ProfilerRegistrar.registerProfilerEntity(new EntityProfiler());
 	}	
 }

@@ -1,14 +1,31 @@
 package mcp.mobius.opis.data;
 
+import java.util.HashMap;
+
 import cpw.mods.fml.common.network.Player;
 import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 import mcp.mobius.opis.data.holders.CoordinatesBlock;
+import mcp.mobius.opis.data.holders.EntityStats;
 
 public class EntityManager {
 
+	public static HashMap<Integer, EntityStats> stats = new HashMap<Integer, EntityStats>();
+	
+	public static void addEntity(Entity ent, long timing){
+		int entID = ent.entityId;
+		String entName;
+		entName = ent.getClass().getName();
+
+		if (!(stats.containsKey(entID)))
+			stats.put(entID, new EntityStats(entID, entName));
+		stats.get(entID).addMeasure(timing);
+	}	
+	
+	
 	public static CoordinatesBlock getTeleportTarget(CoordinatesBlock coord){
 		World world = DimensionManager.getWorld(coord.dim);
 		if (world == null) {return null;}

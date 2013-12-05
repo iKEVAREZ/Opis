@@ -80,7 +80,7 @@ public class TileEntityManager {
 		HashSet<CoordinatesBlock> dirty = new HashSet<CoordinatesBlock>();
 		
 		for (CoordinatesBlock tecoord : TileEntityManager.stats.keySet()){
-				World world   = DimensionManager.getWorld(tecoord.dim);
+				World world     = DimensionManager.getWorld(tecoord.dim);
 				int   blockID   = world.getBlockId(tecoord.x, tecoord.y, tecoord.z);
 				short blockMeta = (short)world.getBlockMetadata(tecoord.x, tecoord.y, tecoord.z);
 				
