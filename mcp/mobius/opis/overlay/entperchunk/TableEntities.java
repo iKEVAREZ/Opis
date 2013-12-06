@@ -13,6 +13,7 @@ import mcp.mobius.opis.gui.widgets.tableview.TableRow;
 import mcp.mobius.opis.gui.widgets.tableview.ViewTable;
 import mcp.mobius.opis.network.client.Packet_ReqData;
 import mcp.mobius.opis.network.client.Packet_ReqTeleport;
+import mcp.mobius.opis.network.client.Packet_ReqTeleportEID;
 import mcp.mobius.opis.overlay.entperchunk.OverlayEntityPerChunk.ReducedData;
 
 public class TableEntities extends ViewTable {
@@ -34,8 +35,11 @@ public class TableEntities extends ViewTable {
 	public void onMouseClick(MouseEvent event){
 		TableRow row = this.getRow(event.x, event.y);
 		if (row != null){
-			CoordinatesBlock coord = ((EntityStats)row.getObject()).getCoord();
-			PacketDispatcher.sendPacketToServer(Packet_ReqTeleport.create(coord));
+			//CoordinatesBlock coord = ((EntityStats)row.getObject()).getCoord();
+			//PacketDispatcher.sendPacketToServer(Packet_ReqTeleport.create(coord));
+			int eid = ((EntityStats)row.getObject()).getID();
+			int dim = ((EntityStats)row.getObject()).getCoord().dim;
+			PacketDispatcher.sendPacketToServer(Packet_ReqTeleportEID.create(eid, dim));
 			Minecraft.getMinecraft().setIngameFocus();			
 		}
 	}

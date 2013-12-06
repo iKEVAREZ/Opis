@@ -211,6 +211,24 @@ public class EntityManager {
 		return true;
 	}
 	
+	public static boolean teleportPlayer(int eid, int dim, EntityPlayerMP player){
+		World world = DimensionManager.getWorld(dim);
+		if (world == null) return false;
+		
+		Entity entity = world.getEntityByID(eid);
+		if (entity == null) {
+			System.out.printf("Cannot teleport on %s in %s\n", eid, dim);
+			return false;
+		}
+		
+		if (player.worldObj.provider.dimensionId != dim) 
+			player.travelToDimension(dim);
+		
+		player.setPositionAndUpdate(entity.posX, entity.posY, entity.posZ);
+		
+		return true;
+	}	
+	
 	public static String getEntityName(Entity ent){
 		if (ent instanceof EntityItem)
 			return "Dropped Item";

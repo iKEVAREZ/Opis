@@ -23,6 +23,7 @@ public class Packets {
 	public static byte MODMEANTIME            = 0x24;  // S => C	
 	
 	public static byte REQ_TELEPORT           = 0x30;  // C => S
+	public static byte REQ_TELEPORT_EID       = 0x31;  // C => S	
 	
 	/* Entities packets */
 	public static byte DATA_OVERLAY_CHUNK_ENTITIES = 0x40;

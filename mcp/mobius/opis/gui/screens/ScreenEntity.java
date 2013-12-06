@@ -15,6 +15,7 @@ import mcp.mobius.opis.gui.widgets.WidgetGeometry;
 import mcp.mobius.opis.gui.widgets.tableview.TableRow;
 import mcp.mobius.opis.gui.widgets.tableview.ViewTable;
 import mcp.mobius.opis.network.client.Packet_ReqTeleport;
+import mcp.mobius.opis.network.client.Packet_ReqTeleportEID;
 import mcp.mobius.opis.data.holders.EntityStats;
 
 public class ScreenEntity extends ScreenBase {
@@ -28,9 +29,10 @@ public class ScreenEntity extends ScreenBase {
 		public void onMouseClick(MouseEvent event){
 			TableRow row = this.getRow(event.x, event.y);
 			if (row != null){
-				CoordinatesBlock coord = ((EntityStats)row.getObject()).getCoord();
-				PacketDispatcher.sendPacketToServer(Packet_ReqTeleport.create(coord));
-				Minecraft.getMinecraft().setIngameFocus();	
+				int eid = ((EntityStats)row.getObject()).getID();
+				int dim = ((EntityStats)row.getObject()).getCoord().dim;
+				PacketDispatcher.sendPacketToServer(Packet_ReqTeleportEID.create(eid, dim));
+				Minecraft.getMinecraft().setIngameFocus();						
 			}
 		}
 	}	
