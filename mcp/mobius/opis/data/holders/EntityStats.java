@@ -4,6 +4,8 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import net.minecraft.network.packet.Packet;
+
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 
 import mcp.mobius.opis.modOpis;
@@ -31,6 +33,10 @@ public class EntityStats implements ISerializable, Comparable {
 		dstat.addValue((double)timing/1000.0);
 	}	
 
+	public void setGeometricMean(double value){
+		this.geomMean = value;
+	}	
+	
 	public String getName(){ return this.name; };
 	
 	public double getGeometricMean(){
@@ -71,10 +77,20 @@ public class EntityStats implements ISerializable, Comparable {
 
 	@Override
 	public   void writeToStream(DataOutputStream stream) throws IOException{
+		stream.writeInt(this.entId);
+		Packet.writeString(this.name, stream);
+		stream.writeInt(this.dim);
+		stream.writeDouble(this.x);
+		stream.writeDouble(this.y);
+		stream.writeDouble(this.z);
+		stream.writeDouble(this.getGeometricMean());
 	}
 
-	public static  TileEntityStats readFromStream(DataInputStream stream) throws IOException {
-		return null;
+	public static  EntityStats readFromStream(DataInputStream stream) throws IOException {
+		EntityStats stats = new EntityStats(stream.readInt(), Packet.readString(stream, 255), stream.readInt(),
+											stream.readDouble(), stream.readDouble(), stream.readDouble());
+		stats.setGeometricMean(stream.readDouble());
+		return stats;
 	}		
 	
 }

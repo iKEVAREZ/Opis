@@ -68,9 +68,6 @@ public class OverlayEntityPerChunk implements IMwDataProvider {
 		for (CoordinatesChunk chunk : this.overlayData.keySet())
 			this.reducedData.add(new ReducedData(chunk, this.overlayData.get(chunk)));
 		Collections.sort(this.reducedData);
-		
-		for (ReducedData data : this.reducedData)
-			System.out.printf("%s %s\n", data.chunk, data.amount);
 	}
 	
 	@Override

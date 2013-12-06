@@ -25,7 +25,8 @@ public class Packets {
 	public static byte REQ_TELEPORT           = 0x30;  // C => S
 	
 	
-	public static byte DATA_OVERLAY_CHUNK_ENTITIES = 0x40; 
+	public static byte DATA_OVERLAY_CHUNK_ENTITIES = 0x40;
+	public static byte DATA_LIST_CHUNK_ENTITIES    = 0x41; 	
 	
 	public static byte REQ_DATA = 0x50; // C => S
 }

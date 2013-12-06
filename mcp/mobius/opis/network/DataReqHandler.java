@@ -10,6 +10,7 @@ import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.data.EntityManager;
 import mcp.mobius.opis.data.holders.CoordinatesChunk;
 import mcp.mobius.opis.data.holders.EntityStats;
+import mcp.mobius.opis.network.server.Packet_DataListChunkEntities;
 import mcp.mobius.opis.network.server.Packet_DataOverlayChunkEntities;
 
 public class DataReqHandler {
@@ -22,7 +23,7 @@ public class DataReqHandler {
 			_instance = new DataReqHandler();			
 		return _instance;
 	}	
-	
+
 	public void handle(CoordinatesChunk coord, String datatype, Player player){
 		String[] data  = datatype.split(":");
 		
@@ -34,7 +35,16 @@ public class DataReqHandler {
 				}
 			}
 		}
-
+		else if (data[0].equals("list")){
+			if (data[1].equals("chunk")){
+				if (data[2].equals("entities")){
+					PacketDispatcher.sendPacketToPlayer(Packet_DataListChunkEntities.create(EntityManager.getEntitiesInChunk(coord)), player);
+					return;
+				}
+			}
+		}
+		
+		
 		modOpis.log.log(Level.WARNING, String.format("Unknown data request : %s", datatype));
 	}
 	

@@ -11,6 +11,7 @@ import mcp.mobius.opis.data.ChunkManager;
 import mcp.mobius.opis.data.EntityManager;
 import mcp.mobius.opis.data.TileEntityManager;
 import mcp.mobius.opis.data.holders.CoordinatesChunk;
+import mcp.mobius.opis.data.holders.EntityStats;
 import mcp.mobius.opis.data.holders.TicketData;
 import mcp.mobius.opis.network.client.Packet_ReqChunks;
 import mcp.mobius.opis.network.client.Packet_ReqChunksInDim;
@@ -22,6 +23,7 @@ import mcp.mobius.opis.network.client.Packet_ReqTickets;
 import mcp.mobius.opis.network.client.Packet_UnregisterPlayer;
 import mcp.mobius.opis.network.server.Packet_ChunkTopList;
 import mcp.mobius.opis.network.server.Packet_Chunks;
+import mcp.mobius.opis.network.server.Packet_DataListChunkEntities;
 import mcp.mobius.opis.network.server.Packet_DataOverlayChunkEntities;
 import mcp.mobius.opis.network.server.Packet_LoadedChunks;
 import mcp.mobius.opis.network.server.Packet_MeanTime;
@@ -121,6 +123,13 @@ public class OpisPacketHandler implements IPacketHandler {
 			OverlayEntityPerChunk.instance().reduceData();
 			OverlayEntityPerChunk.instance().setupChunkTable();
 		}
+		
+		else if (header == Packets.DATA_LIST_CHUNK_ENTITIES){
+			Packet_DataListChunkEntities castedPacket = new Packet_DataListChunkEntities(packet);
+			for (EntityStats entity : castedPacket.stats)
+				System.out.printf("%s\n", entity);
+		}		
+		
 	}
 
 	void onPacketToServer(INetworkManager manager, Packet250CustomPayload packet, Player player, Byte header) {

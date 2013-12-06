@@ -96,6 +96,23 @@ public class EntityManager {
 		return entities;
 	}
 	
+	/* Returns an array of all entities in a given chunk */
+	public static ArrayList<EntityStats> getEntitiesInChunk(CoordinatesChunk coord){
+		ArrayList<EntityStats> entities = new  ArrayList<EntityStats>();
+		
+		World world = DimensionManager.getWorld(coord.dim);
+		if (world == null) return entities;
+		
+		for (int i = 0; i < world.loadedEntityList.size(); i++){
+			Entity ent = (Entity)world.loadedEntityList.get(i);
+			CoordinatesChunk chunk = new CoordinatesBlock(ent.dimension, (int)ent.posX, (int)ent.posY, (int)ent.posZ).asCoordinatesChunk();
+			if (chunk.equals(coord))
+				entities.add(new EntityStats(ent.entityId, ent.getClass().getName(), ent.dimension, ent.posX, ent.posY, ent.posZ));
+		}		
+		
+		return entities;
+	}
+	
 	public static CoordinatesBlock getTeleportTarget(CoordinatesBlock coord){
 		World world = DimensionManager.getWorld(coord.dim);
 		if (world == null) {return null;}
