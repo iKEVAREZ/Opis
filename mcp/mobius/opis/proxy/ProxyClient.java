@@ -9,12 +9,14 @@ import net.minecraft.util.ResourceLocation;
 import mapwriter.api.MwAPI;
 import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.data.holders.ChunkStats;
+import mcp.mobius.opis.data.holders.EntityStats;
 import mcp.mobius.opis.data.holders.TileEntityStats;
 import mcp.mobius.opis.data.holders.ModStats;
 import mcp.mobius.opis.gui.font.Fonts;
 import mcp.mobius.opis.gui.font.TrueTypeFont;
 import mcp.mobius.opis.gui.screens.ScreenBase;
 import mcp.mobius.opis.gui.screens.ScreenChunks;
+import mcp.mobius.opis.gui.screens.ScreenEntity;
 import mcp.mobius.opis.gui.screens.ScreenMods;
 import mcp.mobius.opis.gui.screens.ScreenTileEntity;
 import mcp.mobius.opis.overlay.OverlayLoadedChunks;
@@ -48,6 +50,12 @@ public class ProxyClient extends ProxyServer {
 		ScreenBase screenTEs = new ScreenTileEntity(null, stats);
 		screenTEs.display();		
 	}
+	
+	@Override	
+	public void displayEntityList(ArrayList<EntityStats> stats){
+		ScreenBase screenEnts = new ScreenEntity(null, stats);
+		screenEnts.display();		
+	}	
 	
 	@Override
 	public void displayChunkList(ArrayList<ChunkStats> stats){

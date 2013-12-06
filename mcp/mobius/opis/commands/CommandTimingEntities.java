@@ -1,10 +1,12 @@
 package mcp.mobius.opis.commands;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
-import mcp.mobius.opis.data.TileEntityManager;
-import mcp.mobius.opis.data.holders.TileEntityStats;
-import mcp.mobius.opis.network.server.Packet_TileEntitiesTopList;
+import mcp.mobius.opis.data.EntityManager;
+import mcp.mobius.opis.data.holders.CoordinatesChunk;
+import mcp.mobius.opis.data.holders.EntityStats;
+import mcp.mobius.opis.network.server.Packet_DataScreenTimingEntities;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -12,11 +14,11 @@ import net.minecraft.network.MemoryConnection;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.dedicated.DedicatedServer;
 
-public class CommandTileEntitiesList extends CommandBase {
+public class CommandTimingEntities extends CommandBase {
 
 	@Override
 	public String getCommandName() {
-		return "opis_te";
+		return "opis_ent";
 	}
 
 	@Override
@@ -26,17 +28,17 @@ public class CommandTileEntitiesList extends CommandBase {
 
 	@Override
 	public void processCommand(ICommandSender icommandsender, String[] astring) {
-		ArrayList<TileEntityStats> tes = new ArrayList<TileEntityStats>(); 
+		ArrayList<EntityStats> ents = new ArrayList<EntityStats>(); 
 		if (astring.length == 0){
-			tes = TileEntityManager.getTopEntities(20);
+			ents = EntityManager.getTopEntities(20);
 		}
 		else{
 			try{
-				tes = TileEntityManager.getTopEntities(Integer.valueOf(astring[0]));
+				ents = EntityManager.getTopEntities(Integer.valueOf(astring[0]));
 			} catch (Exception e) {return;}
 		}
 		
-		((EntityPlayerMP)icommandsender).playerNetServerHandler.sendPacketToPlayer(Packet_TileEntitiesTopList.create(tes));
+		((EntityPlayerMP)icommandsender).playerNetServerHandler.sendPacketToPlayer(Packet_DataScreenTimingEntities.create(ents));
 		
 	}
 
@@ -50,8 +52,8 @@ public class CommandTileEntitiesList extends CommandBase {
     public boolean canCommandSenderUseCommand(ICommandSender sender)
     {
 		if (sender instanceof DedicatedServer) return false;
-		if (((EntityPlayerMP)sender).playerNetServerHandler.netManager instanceof MemoryConnection) return true;
+		if (((EntityPlayerMP)sender).playerNetServerHandler.netManager instanceof MemoryConnection) return true;		
         return MinecraftServer.getServer().getConfigurationManager().isPlayerOpped(((EntityPlayerMP)sender).username);
-    }			
-	
+    }
+
 }

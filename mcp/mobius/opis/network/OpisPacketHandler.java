@@ -25,6 +25,7 @@ import mcp.mobius.opis.network.server.Packet_ChunkTopList;
 import mcp.mobius.opis.network.server.Packet_Chunks;
 import mcp.mobius.opis.network.server.Packet_DataListChunkEntities;
 import mcp.mobius.opis.network.server.Packet_DataOverlayChunkEntities;
+import mcp.mobius.opis.network.server.Packet_DataScreenTimingEntities;
 import mcp.mobius.opis.network.server.Packet_LoadedChunks;
 import mcp.mobius.opis.network.server.Packet_MeanTime;
 import mcp.mobius.opis.network.server.Packet_ModMeanTime;
@@ -128,6 +129,11 @@ public class OpisPacketHandler implements IPacketHandler {
 			Packet_DataListChunkEntities castedPacket = new Packet_DataListChunkEntities(packet);
 			OverlayEntityPerChunk.instance().entStats = castedPacket.stats;
 			OverlayEntityPerChunk.instance().setupEntTable();
+		}		
+		
+		else if (header == Packets.DATA_SCREEN_TIMING_ENTITIES){
+			Packet_DataScreenTimingEntities castedPacket = new Packet_DataScreenTimingEntities(packet);
+			modOpis.proxy.displayEntityList(castedPacket.entities);
 		}		
 		
 	}

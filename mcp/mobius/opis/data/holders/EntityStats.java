@@ -39,6 +39,8 @@ public class EntityStats implements ISerializable, Comparable {
 	
 	public String getName(){ return this.name; };
 	
+	public int getID(){ return this.entId; }
+	
 	public double getGeometricMean(){
 		if (geomMean != null)
 			return geomMean;
