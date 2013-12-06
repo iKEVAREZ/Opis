@@ -12,7 +12,8 @@ import mcp.mobius.opis.modOpis;
 
 public class EntityStats implements ISerializable, Comparable {
 
-	public  DescriptiveStatistics dstat = new DescriptiveStatistics(modOpis.profilerMaxTicks);	// Stored in microseconds !
+	//public  DescriptiveStatistics dstat = new DescriptiveStatistics(modOpis.profilerMaxTicks);	// Stored in microseconds !
+	public  DescriptiveStatistics dstat = new DescriptiveStatistics();	// Stored in microseconds !
 	private String name;
 	private int    entId;
 	private Double geomMean = null;
