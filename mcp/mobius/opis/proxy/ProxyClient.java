@@ -2,6 +2,7 @@ package mcp.mobius.opis.proxy;
 
 import java.awt.Font;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -17,6 +18,7 @@ import mcp.mobius.opis.gui.font.TrueTypeFont;
 import mcp.mobius.opis.gui.screens.ScreenBase;
 import mcp.mobius.opis.gui.screens.ScreenChunks;
 import mcp.mobius.opis.gui.screens.ScreenEntity;
+import mcp.mobius.opis.gui.screens.ScreenEntityAmount;
 import mcp.mobius.opis.gui.screens.ScreenMods;
 import mcp.mobius.opis.gui.screens.ScreenTileEntity;
 import mcp.mobius.opis.overlay.OverlayLoadedChunks;
@@ -54,6 +56,12 @@ public class ProxyClient extends ProxyServer {
 	@Override	
 	public void displayEntityList(ArrayList<EntityStats> stats){
 		ScreenBase screenEnts = new ScreenEntity(null, stats);
+		screenEnts.display();		
+	}	
+	
+	@Override	
+	public void displayEntityAmount(HashMap<String, Integer> stats){
+		ScreenBase screenEnts = new ScreenEntityAmount(null, stats);
 		screenEnts.display();		
 	}	
 	

@@ -19,5 +19,5 @@ public class ProxyServer {
 	public void displayEntityList(ArrayList<EntityStats> stats){}
 	public void displayChunkList(ArrayList<ChunkStats> stats){}
 	public void displayModList(ArrayList<ModStats> stats){}
- 	
+	public void displayEntityAmount(HashMap<String, Integer> stats){}
 }

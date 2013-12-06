@@ -113,6 +113,28 @@ public class EntityManager {
 		return entities;
 	}
 	
+	/* Returns a hashmap with the entity name and amount of it on the server */
+	public static HashMap<String, Integer> getCumulativeEntities(){
+		HashMap<String, Integer> entities = new HashMap<String, Integer>();
+		
+		for (int dim : DimensionManager.getIDs()){
+			World world = DimensionManager.getWorld(dim);
+			if (world == null) continue;
+			
+			for (int i = 0; i < world.loadedEntityList.size(); i++){
+				Entity ent = (Entity)world.loadedEntityList.get(i);
+				String name = ent.getClass().getName();
+				
+				if (!entities.containsKey(name))
+					entities.put(name, 0);
+				
+				entities.put(name, entities.get(name) + 1);
+			}
+		}		
+		
+		return entities;
+	}
+	
 	public static CoordinatesBlock getTeleportTarget(CoordinatesBlock coord){
 		World world = DimensionManager.getWorld(coord.dim);
 		if (world == null) {return null;}
