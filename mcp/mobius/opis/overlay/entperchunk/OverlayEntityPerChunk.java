@@ -1,4 +1,4 @@
-package mcp.mobius.opis.overlay;
+package mcp.mobius.opis.overlay.entperchunk;
 
 import java.awt.Point;
 import java.util.ArrayList;
@@ -32,82 +32,6 @@ import mcp.mobius.opis.network.client.Packet_ReqTeleport;
 
 public class OverlayEntityPerChunk implements IMwDataProvider {
 
-	public class EntitiesTable extends ViewTable{
-		MapView mapView;
-		MapMode mapMode;
-		OverlayEntityPerChunk overlay;		
-		
-		public EntitiesTable(IWidget parent, OverlayEntityPerChunk overlay) { 	
-			super(parent);
-			this.overlay = overlay;			
-		}
-		
-		public void setMap(MapView mapView, MapMode mapMode){
-		    this.mapView = mapView;
-			this.mapMode = mapMode;			
-		}
-		
-		@Override
-		public void onMouseClick(MouseEvent event){
-			TableRow row = this.getRow(event.x, event.y);
-			if (row != null){
-				CoordinatesBlock coord = ((ReducedData)row.getObject()).chunk.asCoordinatesBlock();
-				
-				if (this.mapView.getX() != coord.x || this.mapView.getZ() != coord.z || this.mapView.getDimension() != coord.dim){
-					this.mapView.setDimension(coord.dim);
-					this.mapView.setViewCentre(coord.x, coord.z);
-					this.overlay.requestChunkUpdate(this.mapView.getDimension(), 
-							MathHelper.ceiling_double_int(this.mapView.getX()) >> 4, 
-							MathHelper.ceiling_double_int(this.mapView.getZ()) >> 4);
-				} else {
-					PacketDispatcher.sendPacketToServer(Packet_ReqTeleport.create(coord));
-					Minecraft.getMinecraft().setIngameFocus();
-				}
-			}
-		}
-	}	
-	
-	public class ChunkOverlay implements IMwChunkOverlay{
-
-		Point coord;
-		int minEnts;
-		int maxEnts;
-		int ents;
-		boolean selected;
-		
-		public ChunkOverlay(int x, int z, int minEnts, int maxEnts, int ents, boolean selected){
-			this.coord = new Point(x, z);
-			this.minEnts = minEnts;
-			this.maxEnts = maxEnts;
-			this.ents    = ents;
-			this.selected = selected;
-		}
-		
-		@Override
-		public Point getCoordinates() {	return this.coord; }
-
-		@Override
-		public int getColor() {
-			double scaledAmount = (double)this.ents / (double)this.maxEnts;
-			int    red          = MathHelper.ceiling_double_int(scaledAmount * 255.0);
-			int    blue         = 255 - MathHelper.ceiling_double_int(scaledAmount * 255.0);
-			
-			return (200 << 24) + (red << 16) + (blue);  }
-
-		@Override
-		public float getFilling() {	return 1.0f; }
-
-		@Override
-		public boolean hasBorder() { return true; }
-
-		@Override
-		public float getBorderWidth() { return 0.5f; }
-
-		@Override
-		public int getBorderColor() { return this.selected ? 0xffffffff : 0xff000000; }
-		
-	}	
-	
 	class ReducedData implements Comparable{
 		CoordinatesChunk chunk;
 		int amount;
@@ -164,9 +88,9 @@ public class OverlayEntityPerChunk implements IMwDataProvider {
 		for (CoordinatesChunk chunk : overlayData.keySet()){
 			if (chunk.dim == dim)
 				if (this.selectedChunk != null)
-					overlays.add(new ChunkOverlay(chunk.toChunkCoordIntPair().chunkXPos, chunk.toChunkCoordIntPair().chunkZPos, minEnts, maxEnts, overlayData.get(chunk), chunk.equals(this.selectedChunk)));
+					overlays.add(new OverlayElement(chunk.toChunkCoordIntPair().chunkXPos, chunk.toChunkCoordIntPair().chunkZPos, minEnts, maxEnts, overlayData.get(chunk), chunk.equals(this.selectedChunk)));
 				else
-					overlays.add(new ChunkOverlay(chunk.toChunkCoordIntPair().chunkXPos, chunk.toChunkCoordIntPair().chunkZPos, minEnts, maxEnts, overlayData.get(chunk), false));
+					overlays.add(new OverlayElement(chunk.toChunkCoordIntPair().chunkXPos, chunk.toChunkCoordIntPair().chunkZPos, minEnts, maxEnts, overlayData.get(chunk), false));
 		}
 		return overlays;
 	}
@@ -257,7 +181,7 @@ public class OverlayEntityPerChunk implements IMwDataProvider {
 		layout.setGeometry(new WidgetGeometry(100.0,0.0,20.0,100.0,CType.RELXY, CType.RELXY, WAlign.RIGHT, WAlign.TOP));		
 		layout.setBackgroundColors(0x90202020, 0x90202020);
 		
-		EntitiesTable table  = (EntitiesTable)layout.addWidget("Table_", new EntitiesTable(null, this));
+		TableChunks table  = (TableChunks)layout.addWidget("Table_", new TableChunks(null, this));
 		
 		table.setGeometry(new WidgetGeometry(0.0,0.0,100.0,100.0,CType.RELXY, CType.RELXY, WAlign.LEFT, WAlign.TOP));
 	    table.setColumnsAlign(WAlign.CENTER, WAlign.CENTER)
@@ -280,14 +204,14 @@ public class OverlayEntityPerChunk implements IMwDataProvider {
 	@Override
 	public boolean onMouseInput(MapView mapview, MapMode mapmode) {
 		if (this.canvas != null && this.canvas.shouldRender() && ((LayoutCanvas)this.canvas).hasWidgetAtCursor()){
-			((EntitiesTable)this.canvas.getWidget("Table").getWidget("Table_")).setMap(mapview, mapmode);
+			((TableChunks)this.canvas.getWidget("Table").getWidget("Table_")).setMap(mapview, mapmode);
 			this.canvas.handleMouseInput();
 			return true;
 		}
 		return false;
 	}
 
-	private void requestChunkUpdate(int dim, int chunkX, int chunkZ){
+	public void requestChunkUpdate(int dim, int chunkX, int chunkZ){
 		ArrayList<CoordinatesChunk> chunks = new ArrayList<CoordinatesChunk>();
 		//HashSet<ChunkCoordIntPair> chunkCoords = new HashSet<ChunkCoordIntPair>(); 
 

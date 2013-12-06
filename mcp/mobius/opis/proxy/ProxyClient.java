@@ -17,9 +17,9 @@ import mcp.mobius.opis.gui.screens.ScreenBase;
 import mcp.mobius.opis.gui.screens.ScreenChunks;
 import mcp.mobius.opis.gui.screens.ScreenMods;
 import mcp.mobius.opis.gui.screens.ScreenTileEntity;
-import mcp.mobius.opis.overlay.OverlayEntityPerChunk;
 import mcp.mobius.opis.overlay.OverlayLoadedChunks;
 import mcp.mobius.opis.overlay.OverlayMeanTime;
+import mcp.mobius.opis.overlay.entperchunk.OverlayEntityPerChunk;
 
 public class ProxyClient extends ProxyServer {
 	
