@@ -2,6 +2,7 @@ package mcp.mobius.opis.commands;
 
 import cpw.mods.fml.common.network.PacketDispatcher;
 import mcp.mobius.opis.modOpis;
+import mcp.mobius.opis.data.EntityManager;
 import mcp.mobius.opis.data.TileEntityManager;
 import mcp.mobius.opis.server.OpisServerTickHandler;
 import net.minecraft.command.CommandBase;
@@ -32,6 +33,7 @@ public class CommandStart extends CommandBase {
 		OpisServerTickHandler.instance.profilerRunningTicks = 0;
 		TileEntityManager.references.clear();
 		TileEntityManager.stats.clear();
+		EntityManager.stats.clear();
 		
 		PacketDispatcher.sendPacketToAllPlayers(new Packet3Chat(ChatMessageComponent.createFromText(String.format("\u00A7oOpis started with a tick delay %s.", modOpis.profilerDelay))));
 		//notifyAdmins(icommandsender, "Opis started with a tick delay %s.", new Object[] {modOpis.profilerDelay});		

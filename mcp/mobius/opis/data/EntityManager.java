@@ -24,7 +24,7 @@ public class EntityManager {
 	public static void addEntity(Entity ent, long timing){
 		int entID = ent.entityId;
 		String entName;
-		entName = ent.getClass().getName();
+		entName = getEntityName(ent); //ent.getClass().getName();
 
 		if (!(stats.containsKey(entID)))
 			stats.put(entID, new EntityStats(entID, entName, ent.dimension, ent.posX, ent.posY, ent.posZ));
