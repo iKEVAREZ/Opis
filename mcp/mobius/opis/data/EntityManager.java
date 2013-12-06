@@ -4,12 +4,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
+import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
+import net.minecraft.network.packet.Packet3Chat;
+import net.minecraft.util.ChatMessageComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 import mcp.mobius.opis.data.holders.CoordinatesBlock;
@@ -37,10 +40,25 @@ public class EntityManager {
 		ArrayList<EntityStats> topEntities    = new ArrayList<EntityStats>();
 		Collections.sort(sortedEntities);
 		
-		
-		for (int i = 0; i < Math.min(quantity, sortedEntities.size()); i++){
+		int i = 0;
+		while (topEntities.size() < Math.min(quantity, sortedEntities.size()) && (i < sortedEntities.size()) ){
+		//for (int i = 0; i < Math.min(quantity, sortedEntities.size()); i++){
 			EntityStats testats = sortedEntities.get(i);
+			
+			World world = DimensionManager.getWorld(testats.getCoord().dim);
+			if (world == null) {
+				i++;
+				continue;				
+			};
+			
+			Entity entity = world.getEntityByID(testats.getID());
+			if (entity == null) {
+				i++;
+				continue;
+			}			
+			
 			topEntities.add(testats);
+			i++;
 		}
 		
 		return topEntities;
@@ -217,7 +235,8 @@ public class EntityManager {
 		
 		Entity entity = world.getEntityByID(eid);
 		if (entity == null) {
-			System.out.printf("Cannot teleport on %s in %s\n", eid, dim);
+			PacketDispatcher.sendPacketToPlayer(
+				new Packet3Chat(ChatMessageComponent.createFromText(String.format("\u00A7oCannot find entity %d in world %d", eid, dim))), (Player)player);
 			return false;
 		}
 		
