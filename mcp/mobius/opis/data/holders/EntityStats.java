@@ -16,6 +16,7 @@ public class EntityStats implements ISerializable, Comparable {
 	private String name;
 	private int    entId;
 	private Double geomMean = null;
+	private Long   ndata    = null;
 	private int dim;
 	private double cachedMedian = -1.0;	
 	private double x, y, z;
@@ -47,6 +48,17 @@ public class EntityStats implements ISerializable, Comparable {
 		else
 			return dstat.getGeometricMean();
 	}	
+	
+	public long getNData(){
+		if (this.ndata != null)
+			return this.ndata;
+		else
+			return this.dstat.getN();
+	}
+	
+	public void setNData(long ndata){
+		this.ndata = ndata;
+	}
 	
 	public double getMedian(){
 		if (this.cachedMedian < 0.0){
@@ -90,12 +102,14 @@ public class EntityStats implements ISerializable, Comparable {
 		stream.writeDouble(this.y);
 		stream.writeDouble(this.z);
 		stream.writeDouble(this.getGeometricMean());
+		stream.writeLong(this.getNData());
 	}
 
 	public static  EntityStats readFromStream(DataInputStream stream) throws IOException {
 		EntityStats stats = new EntityStats(stream.readInt(), Packet.readString(stream, 255), stream.readInt(),
 											stream.readDouble(), stream.readDouble(), stream.readDouble());
 		stats.setGeometricMean(stream.readDouble());
+		stats.setNData(stream.readLong());
 		return stats;
 	}		
 	

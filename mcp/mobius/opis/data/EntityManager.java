@@ -45,6 +45,11 @@ public class EntityManager {
 		//for (int i = 0; i < Math.min(quantity, sortedEntities.size()); i++){
 			EntityStats testats = sortedEntities.get(i);
 			
+			if (testats.getNData() < 40){
+				i++;
+				continue;
+			}
+			
 			World world = DimensionManager.getWorld(testats.getCoord().dim);
 			if (world == null) {
 				i++;

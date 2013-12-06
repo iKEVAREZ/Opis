@@ -46,10 +46,10 @@ public class ScreenEntity extends ScreenBase {
 
 		table.setGeometry(new WidgetGeometry(50.0, 50.0, 80.0, 80.0,CType.RELXY, CType.RELXY, WAlign.CENTER, WAlign.CENTER));
 		
-	    table.setColumnsAlign(WAlign.CENTER, WAlign.CENTER, WAlign.CENTER, WAlign.CENTER, WAlign.CENTER)
+	    table.setColumnsAlign(WAlign.CENTER, WAlign.CENTER, WAlign.CENTER, WAlign.CENTER, WAlign.CENTER, WAlign.CENTER)
 		     //.setColumnsTitle("\u00a7a\u00a7oType", "\u00a7a\u00a7oPos", "\u00a7a\u00a7oUpdate Time")
-	    	 .setColumnsTitle("Type", "ID", "Dim", "Pos", "Update Time")
-			 .setColumnsWidth(35, 15, 15, 15, 20)
+	    	 .setColumnsTitle("Type", "ID", "Dim", "Pos", "Update Time", "Data")
+			 .setColumnsWidth(30, 15, 15, 15, 15, 10)
 			 .setRowColors(0xff808080, 0xff505050)
 			 .setFontSize(1.0f);		
 
@@ -65,14 +65,16 @@ public class ScreenEntity extends ScreenBase {
 						 String.valueOf(data.getID()),
 					     String.format("%3d", data.getCoord().dim),
 					     String.format("[ %4d %4d %4d ]", 	data.getCoord().x, data.getCoord().y, data.getCoord().z),  
-					     String.format("%.3f \u00B5s",data.getGeometricMean()));
+					     String.format("%.3f \u00B5s",data.getGeometricMean()),
+					     String.valueOf(data.getNData()));
 			else
 				table.addRow(data, 
 						 name,
 						 String.valueOf(data.getID()),						 
 					     String.format("%3d", data.getCoord().dim),
 					     String.format("[ %4d %4d %4d ]", 	data.getCoord().x, data.getCoord().y, data.getCoord().z),  
-					     String.format("%.5f ms",data.getGeometricMean()/1000.0));
+					     String.format("%.5f ms",data.getGeometricMean()/1000.0),
+					     String.valueOf(data.getNData()));
 		}	    
 	    
 	}	
