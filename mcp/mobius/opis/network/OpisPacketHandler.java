@@ -14,13 +14,12 @@ import mcp.mobius.opis.data.holders.CoordinatesChunk;
 import mcp.mobius.opis.data.holders.TicketData;
 import mcp.mobius.opis.network.client.Packet_ReqChunks;
 import mcp.mobius.opis.network.client.Packet_ReqChunksInDim;
-import mcp.mobius.opis.network.client.Packet_ReqDataDim;
+import mcp.mobius.opis.network.client.Packet_ReqData;
 import mcp.mobius.opis.network.client.Packet_ReqMeanTimeInDim;
 import mcp.mobius.opis.network.client.Packet_ReqTEsInChunk;
 import mcp.mobius.opis.network.client.Packet_ReqTeleport;
 import mcp.mobius.opis.network.client.Packet_ReqTickets;
 import mcp.mobius.opis.network.client.Packet_UnregisterPlayer;
-import mcp.mobius.opis.network.handlers.DataDimHandler;
 import mcp.mobius.opis.network.server.Packet_ChunkTopList;
 import mcp.mobius.opis.network.server.Packet_Chunks;
 import mcp.mobius.opis.network.server.Packet_DataOverlayChunkEntities;
@@ -188,9 +187,9 @@ public class OpisPacketHandler implements IPacketHandler {
 			}
 		}
 		
-		else if (header == Packets.REQ_DATA_DIM){
-			Packet_ReqDataDim castedPacket = new Packet_ReqDataDim(packet);
-			DataDimHandler.instance().handle(castedPacket.dimension, castedPacket.datatype, player);
+		else if (header == Packets.REQ_DATA){
+			Packet_ReqData castedPacket = new Packet_ReqData(packet);
+			DataReqHandler.instance().handle(castedPacket.coord, castedPacket.datatype, player);
 		}
 	}	
 	

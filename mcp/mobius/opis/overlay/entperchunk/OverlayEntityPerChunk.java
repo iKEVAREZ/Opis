@@ -27,7 +27,7 @@ import mcp.mobius.opis.gui.widgets.WidgetGeometry;
 import mcp.mobius.opis.gui.widgets.tableview.TableRow;
 import mcp.mobius.opis.gui.widgets.tableview.ViewTable;
 import mcp.mobius.opis.network.client.Packet_ReqChunks;
-import mcp.mobius.opis.network.client.Packet_ReqDataDim;
+import mcp.mobius.opis.network.client.Packet_ReqData;
 import mcp.mobius.opis.network.client.Packet_ReqTeleport;
 
 public class OverlayEntityPerChunk implements IMwDataProvider {
@@ -111,6 +111,7 @@ public class OverlayEntityPerChunk implements IMwDataProvider {
 		int chunkX = bX >> 4;
 		int chunkZ = bZ >> 4;		
 		CoordinatesChunk clickedChunk = new CoordinatesChunk(dim, chunkX, chunkZ); 
+		CoordinatesChunk prevSelected = this.selectedChunk;
 		
 		if (this.overlayData.containsKey(clickedChunk)){
 			if (this.selectedChunk == null)
@@ -126,20 +127,22 @@ public class OverlayEntityPerChunk implements IMwDataProvider {
 		if (this.selectedChunk == null)
 			this.showList = true;
 		
-		//if (this.selectedChunk != null)
-		//	PacketDispatcher.sendPacketToServer(Packet_ReqTEsInChunk.create(this.selectedChunk));
-		
-		//ArrayList<CoordinatesChunk> chunks = new ArrayList<CoordinatesChunk>();
-		//for (int x = -5; x <= 5; x++)
-		//	for (int z = -5; z <= 5; z++)
-		//		chunks.add(new CoordinatesChunk(dim, x, z));
-		//PacketDispatcher.sendPacketToServer(Packet_ReqChunks.create(chunks));
+		if (prevSelected == null && this.selectedChunk != null)
+			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(this.selectedChunk, "list:chunk:entities"));
 
+		else if (prevSelected != null && this.selectedChunk == null)
+			PacketDispatcher.sendPacketToServer(Packet_ReqData.create("overlay:chunk:entities"));		
+		
+		else if (!this.selectedChunk.equals(prevSelected) && this.selectedChunk != null)
+			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(this.selectedChunk, "list:chunk:entities"));
+		
+		else if (!this.selectedChunk.equals(prevSelected) && this.selectedChunk == null)
+			PacketDispatcher.sendPacketToServer(Packet_ReqData.create("overlay:chunk:entities"));
 	}
 
 	@Override
 	public void onDimensionChanged(int dimension, MapView mapview) {
-		PacketDispatcher.sendPacketToServer(Packet_ReqDataDim.create(dimension, "overlay:chunk:entities"));
+		PacketDispatcher.sendPacketToServer(Packet_ReqData.create("overlay:chunk:entities"));
 	}
 
 	@Override
@@ -150,7 +153,7 @@ public class OverlayEntityPerChunk implements IMwDataProvider {
 
 	@Override
 	public void onOverlayActivated(MapView mapview) {
-		PacketDispatcher.sendPacketToServer(Packet_ReqDataDim.create(mapview.getDimension(), "overlay:chunk:entities"));
+		PacketDispatcher.sendPacketToServer(Packet_ReqData.create("overlay:chunk:entities"));
 	}
 
 	@Override

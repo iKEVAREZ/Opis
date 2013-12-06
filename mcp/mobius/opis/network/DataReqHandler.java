@@ -1,4 +1,4 @@
-package mcp.mobius.opis.network.handlers;
+package mcp.mobius.opis.network;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,24 +12,24 @@ import mcp.mobius.opis.data.holders.CoordinatesChunk;
 import mcp.mobius.opis.data.holders.EntityStats;
 import mcp.mobius.opis.network.server.Packet_DataOverlayChunkEntities;
 
-public class DataDimHandler {
+public class DataReqHandler {
 
-	private static DataDimHandler _instance;
-	private DataDimHandler(){}
+	private static DataReqHandler _instance;
+	private DataReqHandler(){}
 	
-	public static DataDimHandler instance(){
+	public static DataReqHandler instance(){
 		if(_instance == null)
-			_instance = new DataDimHandler();			
+			_instance = new DataReqHandler();			
 		return _instance;
 	}	
 	
-	public void handle(int dimension, String datatype, Player player){
+	public void handle(CoordinatesChunk coord, String datatype, Player player){
 		String[] data  = datatype.split(":");
 		
 		if (data[0].equals("overlay")){
 			if (data[1].equals("chunk")){
 				if (data[2].equals("entities")){
-					this.handleOverlayChunkEntities(dimension, player);
+					this.handleOverlayChunkEntities(coord, player);
 					return;
 				}
 			}
@@ -38,7 +38,7 @@ public class DataDimHandler {
 		modOpis.log.log(Level.WARNING, String.format("Unknown data request : %s", datatype));
 	}
 	
-	public void handleOverlayChunkEntities(int dimension, Player player){
+	public void handleOverlayChunkEntities(CoordinatesChunk coord, Player player){
 		
 		HashMap<CoordinatesChunk, ArrayList<EntityStats>> entities = EntityManager.getAllEntitiesPerChunk();
 		HashMap<CoordinatesChunk, Integer> perChunk = new HashMap<CoordinatesChunk, Integer>();

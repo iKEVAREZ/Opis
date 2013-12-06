@@ -27,5 +27,5 @@ public class Packets {
 	
 	public static byte DATA_OVERLAY_CHUNK_ENTITIES = 0x40; 
 	
-	public static byte REQ_DATA_DIM = 0x50; // C => S
+	public static byte REQ_DATA = 0x50; // C => S
 }
