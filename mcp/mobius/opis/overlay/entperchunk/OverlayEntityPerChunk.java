@@ -178,6 +178,9 @@ public class OverlayEntityPerChunk implements IMwDataProvider {
 
 	@SideOnly(Side.CLIENT)
 	public void setupChunkTable(){
+		if (this.canvas == null)
+			this.canvas = new LayoutCanvas();
+		
 		if (this.canvas.hasWidget("Table"))
 			this.canvas.delWidget("Table");
 		
@@ -208,6 +211,9 @@ public class OverlayEntityPerChunk implements IMwDataProvider {
 	
 	@SideOnly(Side.CLIENT)
 	public void setupEntTable(){
+		if (this.canvas == null)
+			this.canvas = new LayoutCanvas();		
+		
 		if (this.canvas.hasWidget("Table"))
 			this.canvas.delWidget("Table");
 		

@@ -232,6 +232,9 @@ public class OverlayLoadedChunks implements IMwDataProvider {
 
 	@SideOnly(Side.CLIENT)
 	public void setupTable(HashSet<TicketData> tickets){
+		if (this.canvas == null)
+			this.canvas = new LayoutCanvas();		
+		
 		LayoutBase layout = (LayoutBase)this.canvas.addWidget("Table", new LayoutBase(null));
 		//layout.setGeometry(new WidgetGeometry(100.0,0.0,300.0,100.0,CType.RELXY, CType.REL_Y, WAlign.RIGHT, WAlign.TOP));
 		layout.setGeometry(new WidgetGeometry(100.0,0.0,30.0,100.0,CType.RELXY, CType.RELXY, WAlign.RIGHT, WAlign.TOP));
