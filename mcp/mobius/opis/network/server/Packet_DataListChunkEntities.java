@@ -18,7 +18,7 @@ public class Packet_DataListChunkEntities {
 	
 	public Packet_DataListChunkEntities(Packet250CustomPayload packet) {
 		DataInputStream inputStream = new DataInputStream(new ByteArrayInputStream(packet.data));
-		this.stats.clear();
+		this.stats.clear(); 
 		
 		try{
 			this.header  = inputStream.readByte();

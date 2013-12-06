@@ -75,6 +75,10 @@ public class EntityStats implements ISerializable, Comparable {
 		return String.format("[%d] %50s %.3f \u00B5s", this.entId, this.name, this.getGeometricMean());
 	}
 
+	public CoordinatesBlock getCoord(){
+		return new CoordinatesBlock(this.dim, this.x, this.y, this.z);
+	}
+	
 	@Override
 	public   void writeToStream(DataOutputStream stream) throws IOException{
 		stream.writeInt(this.entId);

@@ -1,23 +1,26 @@
 package mcp.mobius.opis.overlay.entperchunk;
 
-import net.minecraft.util.MathHelper;
 import cpw.mods.fml.common.network.PacketDispatcher;
+import net.minecraft.client.Minecraft;
+import net.minecraft.util.MathHelper;
 import mapwriter.map.MapView;
 import mapwriter.map.mapmode.MapMode;
 import mcp.mobius.opis.data.holders.CoordinatesBlock;
+import mcp.mobius.opis.data.holders.EntityStats;
 import mcp.mobius.opis.gui.events.MouseEvent;
 import mcp.mobius.opis.gui.interfaces.IWidget;
 import mcp.mobius.opis.gui.widgets.tableview.TableRow;
 import mcp.mobius.opis.gui.widgets.tableview.ViewTable;
 import mcp.mobius.opis.network.client.Packet_ReqData;
+import mcp.mobius.opis.network.client.Packet_ReqTeleport;
 import mcp.mobius.opis.overlay.entperchunk.OverlayEntityPerChunk.ReducedData;
 
-public class TableChunks extends ViewTable {
+public class TableEntities extends ViewTable {
 	MapView mapView;
 	MapMode mapMode;
 	OverlayEntityPerChunk overlay;		
 	
-	public TableChunks(IWidget parent, OverlayEntityPerChunk overlay) { 	
+	public TableEntities(IWidget parent, OverlayEntityPerChunk overlay) { 	
 		super(parent);
 		this.overlay = overlay;			
 	}
@@ -31,17 +34,9 @@ public class TableChunks extends ViewTable {
 	public void onMouseClick(MouseEvent event){
 		TableRow row = this.getRow(event.x, event.y);
 		if (row != null){
-			CoordinatesBlock coord = ((ReducedData)row.getObject()).chunk.asCoordinatesBlock();
-			this.overlay.selectedChunk = ((ReducedData)row.getObject()).chunk;
-			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(this.overlay.selectedChunk, "list:chunk:entities"));
-			this.overlay.showList = false;
-			
-			this.mapView.setDimension(coord.dim);
-			this.mapView.setViewCentre(coord.x, coord.z);
-			this.overlay.requestChunkUpdate(this.mapView.getDimension(), 
-					MathHelper.ceiling_double_int(this.mapView.getX()) >> 4, 
-					MathHelper.ceiling_double_int(this.mapView.getZ()) >> 4);
-
+			CoordinatesBlock coord = ((EntityStats)row.getObject()).getCoord();
+			PacketDispatcher.sendPacketToServer(Packet_ReqTeleport.create(coord));
+			Minecraft.getMinecraft().setIngameFocus();			
 		}
 	}
 }

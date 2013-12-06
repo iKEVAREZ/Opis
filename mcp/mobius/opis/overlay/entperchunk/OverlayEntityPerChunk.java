@@ -17,6 +17,7 @@ import mapwriter.map.MapView;
 import mapwriter.map.mapmode.MapMode;
 import mcp.mobius.opis.data.holders.CoordinatesBlock;
 import mcp.mobius.opis.data.holders.CoordinatesChunk;
+import mcp.mobius.opis.data.holders.EntityStats;
 import mcp.mobius.opis.gui.events.MouseEvent;
 import mcp.mobius.opis.gui.interfaces.CType;
 import mcp.mobius.opis.gui.interfaces.IWidget;
@@ -53,6 +54,7 @@ public class OverlayEntityPerChunk implements IMwDataProvider {
 	public LayoutCanvas canvas = null;
 	public HashMap<CoordinatesChunk, Integer> overlayData = new HashMap<CoordinatesChunk, Integer>(); 
 	public ArrayList<ReducedData> reducedData = new ArrayList<ReducedData>();
+	public ArrayList<EntityStats> entStats    = new ArrayList<EntityStats>();
 	CoordinatesChunk selectedChunk = null;
 	
 	private OverlayEntityPerChunk(){}
@@ -139,7 +141,7 @@ public class OverlayEntityPerChunk implements IMwDataProvider {
 
 	@Override
 	public void onDimensionChanged(int dimension, MapView mapview) {
-		PacketDispatcher.sendPacketToServer(Packet_ReqData.create("overlay:chunk:entities"));
+		//PacketDispatcher.sendPacketToServer(Packet_ReqData.create("overlay:chunk:entities"));
 	}
 
 	@Override
@@ -176,6 +178,9 @@ public class OverlayEntityPerChunk implements IMwDataProvider {
 
 	@SideOnly(Side.CLIENT)
 	public void setupChunkTable(){
+		if (this.canvas.hasWidget("Table"))
+			this.canvas.delWidget("Table");
+		
 		LayoutBase layout = (LayoutBase)this.canvas.addWidget("Table", new LayoutBase(null));
 		//layout.setGeometry(new WidgetGeometry(100.0,0.0,300.0,100.0,CType.RELXY, CType.REL_Y, WAlign.RIGHT, WAlign.TOP));
 		layout.setGeometry(new WidgetGeometry(100.0,0.0,20.0,100.0,CType.RELXY, CType.RELXY, WAlign.RIGHT, WAlign.TOP));		
@@ -201,10 +206,47 @@ public class OverlayEntityPerChunk implements IMwDataProvider {
 		this.showList = true;
 	}	
 	
+	@SideOnly(Side.CLIENT)
+	public void setupEntTable(){
+		if (this.canvas.hasWidget("Table"))
+			this.canvas.delWidget("Table");
+		
+		LayoutBase layout = (LayoutBase)this.canvas.addWidget("Table", new LayoutBase(null));
+		//layout.setGeometry(new WidgetGeometry(100.0,0.0,300.0,100.0,CType.RELXY, CType.REL_Y, WAlign.RIGHT, WAlign.TOP));
+		layout.setGeometry(new WidgetGeometry(100.0,0.0,20.0,100.0,CType.RELXY, CType.RELXY, WAlign.RIGHT, WAlign.TOP));		
+		layout.setBackgroundColors(0x90202020, 0x90202020);
+		
+		TableEntities table  = (TableEntities)layout.addWidget("Table_", new TableEntities(null, this));
+		
+		table.setGeometry(new WidgetGeometry(0.0,0.0,100.0,100.0,CType.RELXY, CType.RELXY, WAlign.LEFT, WAlign.TOP));
+	    table.setColumnsAlign(WAlign.CENTER, WAlign.CENTER)
+		     //.setColumnsTitle("\u00a7a\u00a7oType", "\u00a7a\u00a7oPos", "\u00a7a\u00a7oUpdate Time")
+	    	 .setColumnsTitle("Name", "Pos")
+			 .setColumnsWidth(75,25)
+			 .setRowColors(0xff808080, 0xff505050)
+			 .setFontSize(1.0f);
+
+		int nrows = 0;
+		for (EntityStats data : this.entStats){
+			String[] namelst = data.getName().split("\\.");
+			String name = namelst[namelst.length - 1];
+				table.addRow(data, name, String.format("[ %d %d %d ]", data.getCoord().x, data.getCoord().y, data.getCoord().z));
+				nrows++;
+				if (nrows > 100) break;
+		}
+
+		this.showList = true;
+	}		
+	
 	@Override
 	public boolean onMouseInput(MapView mapview, MapMode mapmode) {
 		if (this.canvas != null && this.canvas.shouldRender() && ((LayoutCanvas)this.canvas).hasWidgetAtCursor()){
-			((TableChunks)this.canvas.getWidget("Table").getWidget("Table_")).setMap(mapview, mapmode);
+			
+			if (this.canvas.getWidget("Table").getWidget("Table_") instanceof TableEntities)
+				((TableEntities)this.canvas.getWidget("Table").getWidget("Table_")).setMap(mapview, mapmode);
+			else
+				((TableChunks)this.canvas.getWidget("Table").getWidget("Table_")).setMap(mapview, mapmode);
+			
 			this.canvas.handleMouseInput();
 			return true;
 		}

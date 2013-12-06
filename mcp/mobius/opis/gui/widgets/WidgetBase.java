@@ -95,10 +95,17 @@ public abstract class WidgetBase implements IWidget {
 	@Override
 	public IWidget delWidget(String name){
 		IWidget widget = this.getWidget(name);
-		this.widgets.remove(widget);
+		//this.widgets.remove(widget);
+		this.widgets.remove(name);
 		return widget;
 	}
 
+	@Override
+	public boolean hasWidget(String name){
+		if (this.widgets.containsKey(name)) return true;
+		return false;
+	}
+	
 	@Override
 	public IWidget getWidgetAtLayer(double posX, double posY, int layer){
 		if (layer == 0) return this;

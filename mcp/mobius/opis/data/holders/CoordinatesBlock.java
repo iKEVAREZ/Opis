@@ -4,6 +4,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import codechicken.lib.math.MathHelper;
 import net.minecraft.tileentity.TileEntity;
 
 public final class CoordinatesBlock implements ISerializable {
@@ -21,6 +22,16 @@ public final class CoordinatesBlock implements ISerializable {
 		//this.isChunk = false;
 	}
 
+	public CoordinatesBlock(int dim, double x, double y, double z){
+		this.dim = dim;
+		this.x = MathHelper.floor_double(x); 
+		this.y = MathHelper.floor_double(y); 
+		this.z = MathHelper.floor_double(z);
+		this.chunkX = MathHelper.floor_double(x) >> 4;
+		this.chunkZ = MathHelper.floor_double(z) >> 4;
+		//this.isChunk = false;
+	}	
+	
 	public CoordinatesBlock(CoordinatesChunk coord){
 		this.dim = coord.dim;
 		this.chunkX = coord.chunkX;
