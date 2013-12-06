@@ -7,7 +7,9 @@ import java.util.HashMap;
 import cpw.mods.fml.common.network.Player;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.Item;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 import mcp.mobius.opis.data.holders.CoordinatesBlock;
@@ -62,7 +64,8 @@ public class EntityManager {
 		
 		for (int i = 0; i < world.loadedEntityList.size(); i++){
 			Entity ent = (Entity)world.loadedEntityList.get(i);
-			entities.add(new EntityStats(ent.entityId, ent.getClass().getName(), ent.dimension, ent.posX, ent.posY, ent.posZ));
+			//entities.add(new EntityStats(ent.entityId, ent.getClass().getName(), ent.dimension, ent.posX, ent.posY, ent.posZ));
+			entities.add(new EntityStats(ent.entityId, getEntityName(ent), ent.dimension, ent.posX, ent.posY, ent.posZ));
 		}
 		
 		return entities;
@@ -90,7 +93,8 @@ public class EntityManager {
 			if (!entities.containsKey(chunk))
 				entities.put(chunk, new ArrayList<EntityStats>());
 			
-			entities.get(chunk).add(new EntityStats(ent.entityId, ent.getClass().getName(), ent.dimension, ent.posX, ent.posY, ent.posZ));
+			//entities.get(chunk).add(new EntityStats(ent.entityId, ent.getClass().getName(), ent.dimension, ent.posX, ent.posY, ent.posZ));
+			entities.get(chunk).add(new EntityStats(ent.entityId, getEntityName(ent), ent.dimension, ent.posX, ent.posY, ent.posZ));
 		}
 		
 		return entities;
@@ -107,7 +111,8 @@ public class EntityManager {
 			Entity ent = (Entity)world.loadedEntityList.get(i);
 			CoordinatesChunk chunk = new CoordinatesBlock(ent.dimension, (int)ent.posX, (int)ent.posY, (int)ent.posZ).asCoordinatesChunk();
 			if (chunk.equals(coord))
-				entities.add(new EntityStats(ent.entityId, ent.getClass().getName(), ent.dimension, ent.posX, ent.posY, ent.posZ));
+				//entities.add(new EntityStats(ent.entityId, ent.getClass().getName(), ent.dimension, ent.posX, ent.posY, ent.posZ));
+				entities.add(new EntityStats(ent.entityId, getEntityName(ent), ent.dimension, ent.posX, ent.posY, ent.posZ));
 		}		
 		
 		return entities;
@@ -123,7 +128,8 @@ public class EntityManager {
 			
 			for (int i = 0; i < world.loadedEntityList.size(); i++){
 				Entity ent = (Entity)world.loadedEntityList.get(i);
-				String name = ent.getClass().getName();
+				//String name = ent.getClass().getName();
+				String name = getEntityName(ent);
 				
 				if (!entities.containsKey(name))
 					entities.put(name, 0);
@@ -203,6 +209,23 @@ public class EntityManager {
 		player.setPositionAndUpdate(target.x + 0.5, target.y, target.z + 0.5);
 		
 		return true;
+	}
+	
+	public static String getEntityName(Entity ent){
+		if (ent instanceof EntityItem)
+			return "Dropped Item";
+		
+		if (ent instanceof EntityPlayerMP)
+			return "Player";
+		
+		String name = ent.getTranslatedEntityName();
+		
+		if (name.contains(".")){
+			String[] namelst = ent.getClass().getName().split("\\.");
+			return namelst[namelst.length - 1];
+		}
+		
+		return name;
 	}
 	
 }

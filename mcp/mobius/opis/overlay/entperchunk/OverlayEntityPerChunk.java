@@ -228,11 +228,14 @@ public class OverlayEntityPerChunk implements IMwDataProvider {
 
 		int nrows = 0;
 		for (EntityStats data : this.entStats){
-			String[] namelst = data.getName().split("\\.");
-			String name = namelst[namelst.length - 1];
-				table.addRow(data, name, String.format("[ %d %d %d ]", data.getCoord().x, data.getCoord().y, data.getCoord().z));
-				nrows++;
-				if (nrows > 100) break;
+			//String[] namelst = data.getName().split("\\.");
+			//String name = namelst[namelst.length - 1];
+			
+			String name = data.getName();
+			
+			table.addRow(data, name, String.format("[ %d %d %d ]", data.getCoord().x, data.getCoord().y, data.getCoord().z));
+			nrows++;
+			if (nrows > 100) break;
 		}
 
 		this.showList = true;

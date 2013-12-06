@@ -53,8 +53,9 @@ public class ScreenEntity extends ScreenBase {
 
 		for (EntityStats data : stat){
 
-			String[] namelst = data.getName().split("\\.");
-			String name = namelst[namelst.length - 1];
+			//String[] namelst = data.getName().split("\\.");
+			//String name = namelst[namelst.length - 1];
+			String name = data.getName();
 			
 			if(modOpis.microseconds)
 				table.addRow(data, 

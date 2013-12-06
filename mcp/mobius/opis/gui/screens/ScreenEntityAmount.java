@@ -27,9 +27,10 @@ public class ScreenEntityAmount extends ScreenBase {
 			 .setFontSize(1.0f);		
 
 		for (String name : stat.keySet()){
-			String[] namelst = name.split("\\.");
-			String nameshort = namelst[namelst.length - 1];
-			table.addRow(new Object(), nameshort, String.valueOf(stat.get(name)));
+			//String[] namelst = name.split("\\.");
+			//String nameshort = namelst[namelst.length - 1];
+			
+			table.addRow(new Object(), name, String.valueOf(stat.get(name)));
 		}
 	}	
 	
