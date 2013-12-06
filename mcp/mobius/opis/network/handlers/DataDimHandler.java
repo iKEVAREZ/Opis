@@ -40,7 +40,7 @@ public class DataDimHandler {
 	
 	public void handleOverlayChunkEntities(int dimension, Player player){
 		
-		HashMap<CoordinatesChunk, ArrayList<EntityStats>> entities = EntityManager.getEntitiesPerChunkInDim(dimension);
+		HashMap<CoordinatesChunk, ArrayList<EntityStats>> entities = EntityManager.getAllEntitiesPerChunk();
 		HashMap<CoordinatesChunk, Integer> perChunk = new HashMap<CoordinatesChunk, Integer>();
 		
 		for (CoordinatesChunk chunk : entities.keySet())

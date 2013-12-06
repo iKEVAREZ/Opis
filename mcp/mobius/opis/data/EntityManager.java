@@ -68,6 +68,16 @@ public class EntityManager {
 		return entities;
 	}		
 	
+	/* Returns a hashmap of all entities per chunk (not timing) */
+	public static HashMap<CoordinatesChunk, ArrayList<EntityStats>> getAllEntitiesPerChunk(){
+		HashMap<CoordinatesChunk, ArrayList<EntityStats>> entities = new HashMap<CoordinatesChunk, ArrayList<EntityStats>>();
+		for (int i : DimensionManager.getIDs()){
+			entities.putAll(EntityManager.getEntitiesPerChunkInDim(i));
+		}
+		return entities;		
+	}
+	
+	/* Returns a hashmap of entities in the given dimension (not timing) */
 	public static HashMap<CoordinatesChunk, ArrayList<EntityStats>> getEntitiesPerChunkInDim(int dim){
 		HashMap<CoordinatesChunk, ArrayList<EntityStats>> entities = new HashMap<CoordinatesChunk, ArrayList<EntityStats>>();
 		World world = DimensionManager.getWorld(dim);

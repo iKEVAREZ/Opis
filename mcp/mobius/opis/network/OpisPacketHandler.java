@@ -119,6 +119,8 @@ public class OpisPacketHandler implements IPacketHandler {
 		else if (header == Packets.DATA_OVERLAY_CHUNK_ENTITIES){
 			Packet_DataOverlayChunkEntities castedPacket = new Packet_DataOverlayChunkEntities(packet);
 			OverlayEntityPerChunk.instance().overlayData = castedPacket.chunkStatus;
+			OverlayEntityPerChunk.instance().reduceData();
+			OverlayEntityPerChunk.instance().setupChunkTable();
 		}
 	}
 
