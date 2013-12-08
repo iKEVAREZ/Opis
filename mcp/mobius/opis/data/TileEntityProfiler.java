@@ -28,7 +28,7 @@ public class TileEntityProfiler implements IProfilerTileEntity {
 
 	@Override
 	public void Start(TileEntity te) {
-		if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT) return;		
+		//if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT) return;		
 		if ((!modOpis.profilerRun) || (OpisServerTickHandler.instance.profilerUpdateTickCounter % modOpis.profilerDelay != 0)) return;
 		
 		if (te.worldObj.isRemote) return;
@@ -39,7 +39,7 @@ public class TileEntityProfiler implements IProfilerTileEntity {
 
 	@Override
 	public void Stop(TileEntity te) {
-		if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT) return;
+		//if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT) return;
 		if ((!modOpis.profilerRun) || (OpisServerTickHandler.instance.profilerUpdateTickCounter % modOpis.profilerDelay != 0)) return;		
 		
 		this.clock.stop();

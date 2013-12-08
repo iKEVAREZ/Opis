@@ -27,7 +27,7 @@ public class EntityProfiler implements IProfilerEntity {
 
 	@Override
 	public void Start(Entity ent) {
-		if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT) return;		
+		//if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT) return;		
 		if ((!modOpis.profilerRun) || (OpisServerTickHandler.instance.profilerUpdateTickCounter % modOpis.profilerDelay != 0)) return;
 		
 		if (ent.worldObj.isRemote) return;
@@ -39,7 +39,7 @@ public class EntityProfiler implements IProfilerEntity {
 
 	@Override
 	public void Stop(Entity ent) {
-		if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT) return;
+		//if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT) return;
 		if ((!modOpis.profilerRun) || (OpisServerTickHandler.instance.profilerUpdateTickCounter % modOpis.profilerDelay != 0)) return;		
 		
 		this.clock.stop();

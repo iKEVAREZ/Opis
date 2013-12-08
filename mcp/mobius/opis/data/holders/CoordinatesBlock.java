@@ -4,8 +4,8 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import codechicken.lib.math.MathHelper;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.MathHelper;
 
 public final class CoordinatesBlock implements ISerializable {
 	public final int dim, x, y, z;
