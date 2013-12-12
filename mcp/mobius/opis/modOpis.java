@@ -13,6 +13,7 @@ import mcp.mobius.opis.commands.CommandChunkDump;
 import mcp.mobius.opis.commands.CommandChunkList;
 import mcp.mobius.opis.commands.CommandDataDump;
 import mcp.mobius.opis.commands.CommandKill;
+import mcp.mobius.opis.commands.CommandReset;
 import mcp.mobius.opis.commands.CommandTimingEntities;
 import mcp.mobius.opis.commands.CommandFrequency;
 import mcp.mobius.opis.commands.CommandMeanModTime;
@@ -105,7 +106,8 @@ public class modOpis {
 		event.registerServerCommand(new CommandTicks());
 		event.registerServerCommand(new CommandTimingEntities());
 		event.registerServerCommand(new CommandAmountEntities());
-		event.registerServerCommand(new CommandKill());			
+		event.registerServerCommand(new CommandKill());
+		event.registerServerCommand(new CommandReset());
 		//event.registerServerCommand(new CommandTPS());		
 		
 		GameRegistry.registerPlayerTracker(new OpisPlayerTracker());
