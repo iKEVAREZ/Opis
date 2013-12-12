@@ -7,6 +7,7 @@ import mcp.mobius.mobiuscore.profiler.ProfilerRegistrar;
 import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.data.EntityManager;
 import mcp.mobius.opis.data.TileEntityManager;
+import mcp.mobius.opis.network.server.Packet_ClearSelection;
 import mcp.mobius.opis.server.OpisServerTickHandler;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
@@ -44,6 +45,8 @@ public class CommandReset extends CommandBase {
 		
 		if (icommandsender instanceof EntityPlayer)
 			PacketDispatcher.sendPacketToPlayer(new Packet3Chat(ChatMessageComponent.createFromText(String.format("\u00A7oInternal data reseted."))), (Player)icommandsender);
+		
+		PacketDispatcher.sendPacketToAllPlayers(Packet_ClearSelection.create());
 		//notifyAdmins(icommandsender, "Opis started with a tick delay %s.", new Object[] {modOpis.profilerDelay});		
 	}
 

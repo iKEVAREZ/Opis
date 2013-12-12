@@ -31,5 +31,7 @@ public class Packets {
 	public static byte DATA_SCREEN_TIMING_ENTITIES = 0x42;
 	public static byte DATA_SCREEN_AMOUNT_ENTITIES = 0x43;	
 	
-	public static byte REQ_DATA = 0x50; // C => S
+	
+	public static byte REQ_DATA      = 0x50; // C => S
+	public static byte CLR_SELECTION = 0x51; // S => C
 }
