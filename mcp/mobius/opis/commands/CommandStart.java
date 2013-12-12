@@ -1,6 +1,7 @@
 package mcp.mobius.opis.commands;
 
 import cpw.mods.fml.common.network.PacketDispatcher;
+import cpw.mods.fml.common.network.Player;
 import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.data.EntityManager;
 import mcp.mobius.opis.data.EntityProfiler;
@@ -9,6 +10,7 @@ import mcp.mobius.opis.data.TileEntityProfiler;
 import mcp.mobius.opis.server.OpisServerTickHandler;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.MemoryConnection;
 import net.minecraft.network.packet.Packet3Chat;
@@ -41,8 +43,11 @@ public class CommandStart extends CommandBase {
 		ProfilerRegistrar.registerProfilerTileEntity(new TileEntityProfiler());	
 		ProfilerRegistrar.registerProfilerEntity(new EntityProfiler());		
 		
-		PacketDispatcher.sendPacketToAllPlayers(new Packet3Chat(ChatMessageComponent.createFromText(String.format("\u00A7oOpis started with a tick delay %s.", modOpis.profilerDelay))));
-		//notifyAdmins(icommandsender, "Opis started with a tick delay %s.", new Object[] {modOpis.profilerDelay});		
+		if (icommandsender instanceof EntityPlayer){
+			OpisServerTickHandler.instance.players.add((EntityPlayer)icommandsender);
+			PacketDispatcher.sendPacketToPlayer(new Packet3Chat(ChatMessageComponent.createFromText(String.format("\u00A7oOpis started with a tick delay %s.", modOpis.profilerDelay))), (Player)icommandsender);
+		}
+		
 	}
 
 	@Override

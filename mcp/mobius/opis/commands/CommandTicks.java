@@ -1,12 +1,17 @@
 package mcp.mobius.opis.commands;
 
+import cpw.mods.fml.common.network.PacketDispatcher;
+import cpw.mods.fml.common.network.Player;
 import mcp.mobius.opis.modOpis;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.MemoryConnection;
+import net.minecraft.network.packet.Packet3Chat;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.dedicated.DedicatedServer;
+import net.minecraft.util.ChatMessageComponent;
 
 public class CommandTicks extends CommandBase {
 
@@ -25,7 +30,9 @@ public class CommandTicks extends CommandBase {
 		if (astring.length < 1) return;
 		try{
 			modOpis.profilerMaxTicks = Integer.valueOf(astring[0]);
-			notifyAdmins(icommandsender, "Opis ticks set to %s ticks.", new Object[] {astring[0]});
+			
+			if (icommandsender instanceof EntityPlayer)
+				PacketDispatcher.sendPacketToPlayer(new Packet3Chat(ChatMessageComponent.createFromText(String.format("\u00A7oOpis ticks set to %s ticks.", astring[0]))), (Player)icommandsender);
 		} catch (Exception e){}
 	}
 

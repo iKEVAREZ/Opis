@@ -1,7 +1,11 @@
 package mcp.mobius.opis.server;
 
+import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.HashSet;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.packet.Packet3Chat;
 import net.minecraft.util.ChatMessageComponent;
 import mcp.mobius.opis.modOpis;
@@ -22,6 +26,8 @@ public class OpisServerTickHandler implements ITickHandler {
 	public long profilerUpdateTickCounter = 0;	
 	public long clientUpdateTickCounter = 0;
 	public long profilerRunningTicks;
+	public HashSet<EntityPlayer> players = new HashSet<EntityPlayer>();
+	
 	
 	public static OpisServerTickHandler instance;
 	
@@ -50,8 +56,12 @@ public class OpisServerTickHandler implements ITickHandler {
 				profilerRunningTicks = 0;
 				modOpis.profilerRun = false;
 				ProfilerRegistrar.registerProfilerTileEntity(new DummyProfiler());	
-				ProfilerRegistrar.registerProfilerEntity(new DummyProfiler());					
-				PacketDispatcher.sendPacketToAllPlayers(new Packet3Chat(ChatMessageComponent.createFromText(String.format("\u00A7oOpis automaticly stopped after %d ticks.", modOpis.profilerMaxTicks))));
+				ProfilerRegistrar.registerProfilerEntity(new DummyProfiler());
+				
+				for (EntityPlayer player : players)
+					PacketDispatcher.sendPacketToPlayer(new Packet3Chat(ChatMessageComponent.createFromText(String.format("\u00A7oOpis automaticly stopped after %d ticks.", modOpis.profilerMaxTicks))), (Player)player);
+				
+				players.clear();
 			}			
 		}
 	}
