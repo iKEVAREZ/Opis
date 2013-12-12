@@ -162,6 +162,7 @@ public class Packet_Chunks {
 		byte[][] msbArray = new byte[16][];
 		byte[][] lsbArray = new byte[16][];
 		byte[][] metaArray = new byte[16][];
+		byte[][] lightingArray = new byte[16][];		
 		
 		if (storageArrays != null) {
 			for (ExtendedBlockStorage storage : storageArrays) {
@@ -170,10 +171,11 @@ public class Packet_Chunks {
 					lsbArray[y]  =  storage.getBlockLSBArray();
 					msbArray[y]  = (storage.getBlockMSBArray() != null) ? storage.getBlockMSBArray().data : null;
 					metaArray[y] = (storage.getMetadataArray() != null) ? storage.getMetadataArray().data : null;
+					lightingArray[y] = (storage.getBlocklightArray() != null) ? storage.getBlocklightArray().data : null;					
 				}
 			}
 		}        
 
-        return new MwChunk(x, z, dim, msbArray, lsbArray, metaArray, blockBiomeArray);
+        return new MwChunk(x, z, dim, msbArray, lsbArray, metaArray, lightingArray, blockBiomeArray);
 	}
 }
