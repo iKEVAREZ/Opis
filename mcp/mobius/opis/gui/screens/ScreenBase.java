@@ -41,7 +41,8 @@ public abstract class ScreenBase extends GuiScreen{
 	
 	public IWidget delWidget(String name){
 		IWidget widget = this.getWidget(name);
-		this.widgets.remove(widget);
+		//this.widgets.remove(widget);
+		this.widgets.remove(name);
 		return widget;
 	}
 	

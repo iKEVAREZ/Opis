@@ -1,6 +1,7 @@
 package mcp.mobius.opis.commands;
 
 import cpw.mods.fml.common.network.PacketDispatcher;
+import mcp.mobius.mobiuscore.profiler.DummyProfiler;
 import mcp.mobius.opis.modOpis;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
@@ -10,6 +11,7 @@ import net.minecraft.network.packet.Packet3Chat;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.dedicated.DedicatedServer;
 import net.minecraft.util.ChatMessageComponent;
+import mcp.mobius.mobiuscore.profiler.ProfilerRegistrar;
 
 public class CommandStop extends CommandBase {
 
@@ -26,6 +28,9 @@ public class CommandStop extends CommandBase {
 	@Override
 	public void processCommand(ICommandSender icommandsender, String[] astring) {
 		modOpis.profilerRun = false;
+		
+		ProfilerRegistrar.registerProfilerTileEntity(new DummyProfiler());	
+		ProfilerRegistrar.registerProfilerEntity(new DummyProfiler());			
 		
 		PacketDispatcher.sendPacketToAllPlayers(new Packet3Chat(ChatMessageComponent.createFromText(String.format("\u00A7oOpis stopped."))));
 		//notifyAdmins(icommandsender, "Opis stopped.", new Object[] {});		

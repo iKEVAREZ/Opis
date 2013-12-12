@@ -14,6 +14,8 @@ import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.TickType;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
+import mcp.mobius.mobiuscore.profiler.DummyProfiler;
+import mcp.mobius.mobiuscore.profiler.ProfilerRegistrar;
 
 public class OpisServerTickHandler implements ITickHandler {
 
@@ -47,6 +49,8 @@ public class OpisServerTickHandler implements ITickHandler {
 			else if (profilerRunningTicks >= modOpis.profilerMaxTicks && modOpis.profilerRun){
 				profilerRunningTicks = 0;
 				modOpis.profilerRun = false;
+				ProfilerRegistrar.registerProfilerTileEntity(new DummyProfiler());	
+				ProfilerRegistrar.registerProfilerEntity(new DummyProfiler());					
 				PacketDispatcher.sendPacketToAllPlayers(new Packet3Chat(ChatMessageComponent.createFromText(String.format("\u00A7oOpis automaticly stopped after %d ticks.", modOpis.profilerMaxTicks))));
 			}			
 		}

@@ -132,6 +132,8 @@ public class OverlayEntityPerChunk implements IMwDataProvider {
 		else if (prevSelected != null && this.selectedChunk == null)
 			PacketDispatcher.sendPacketToServer(Packet_ReqData.create("overlay:chunk:entities"));		
 		
+		// TODO : Logic derp below
+		
 		else if (!this.selectedChunk.equals(prevSelected) && this.selectedChunk != null)
 			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(this.selectedChunk, "list:chunk:entities"));
 		
