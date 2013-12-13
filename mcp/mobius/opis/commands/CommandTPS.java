@@ -5,7 +5,7 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
 
-public class CommandTPS extends CommandBase {
+public class CommandTPS extends CommandBase implements IOpisCommand {
 
 	@Override
 	public String getCommandName() {
@@ -33,5 +33,10 @@ public class CommandTPS extends CommandBase {
     {
         return true;
     }		
+
+	@Override
+	public String getDescription() {
+		return "Unused";
+	}
 	
 }

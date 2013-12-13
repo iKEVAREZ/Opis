@@ -12,7 +12,7 @@ import net.minecraft.network.MemoryConnection;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.dedicated.DedicatedServer;
 
-public class CommandTimingTileEntities extends CommandBase {
+public class CommandTimingTileEntities extends CommandBase implements IOpisCommand {
 
 	@Override
 	public String getCommandName() {
@@ -53,5 +53,10 @@ public class CommandTimingTileEntities extends CommandBase {
 		if (((EntityPlayerMP)sender).playerNetServerHandler.netManager instanceof MemoryConnection) return true;
         return MinecraftServer.getServer().getConfigurationManager().isPlayerOpped(((EntityPlayerMP)sender).username);
     }			
+	
+	@Override
+	public String getDescription() {
+		return "Returns the 20 longest TEs to update.";
+	}	
 	
 }

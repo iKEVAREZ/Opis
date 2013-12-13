@@ -13,7 +13,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.dedicated.DedicatedServer;
 import net.minecraft.util.ChatMessageComponent;
 
-public class CommandTicks extends CommandBase {
+public class CommandTicks extends CommandBase implements IOpisCommand {
 
 	@Override
 	public String getCommandName() {
@@ -48,6 +48,11 @@ public class CommandTicks extends CommandBase {
 		if (sender instanceof DedicatedServer) return true;
 		if (((EntityPlayerMP)sender).playerNetServerHandler.netManager instanceof MemoryConnection) return true;
         return MinecraftServer.getServer().getConfigurationManager().isPlayerOpped(((EntityPlayerMP)sender).username);
-    }	
+    }
+
+	@Override
+	public String getDescription() {
+		return "Sets the amount of data points to gather.";
+	}	
 	
 }

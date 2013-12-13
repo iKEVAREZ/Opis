@@ -12,7 +12,7 @@ import net.minecraft.network.MemoryConnection;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.dedicated.DedicatedServer;
 
-public class CommandChunkList extends CommandBase {
+public class CommandChunkList extends CommandBase implements IOpisCommand {
 
 	@Override
 	public String getCommandName() {
@@ -58,6 +58,11 @@ public class CommandChunkList extends CommandBase {
 		if (sender instanceof DedicatedServer) return false;
 		if (((EntityPlayerMP)sender).playerNetServerHandler.netManager instanceof MemoryConnection) return true;		
         return MinecraftServer.getServer().getConfigurationManager().isPlayerOpped(((EntityPlayerMP)sender).username);
-    }	
+    }
+
+	@Override
+	public String getDescription() {
+		return "Shows the 20 slowest chunks, in respect to tile entities.";
+	}	
 
 }

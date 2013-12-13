@@ -18,7 +18,7 @@ import net.minecraft.util.ChatMessageComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 
-public class CommandKillAll extends CommandBase {
+public class CommandKillAll extends CommandBase implements IOpisCommand {
 
 	@Override
 	public String getCommandName() {
@@ -100,5 +100,10 @@ public class CommandKillAll extends CommandBase {
 		if (((EntityPlayerMP)sender).playerNetServerHandler.netManager instanceof MemoryConnection) return true;		
         return MinecraftServer.getServer().getConfigurationManager().isPlayerOpped(((EntityPlayerMP)sender).username);
     }
+
+	@Override
+	public String getDescription() {
+		return "Kills all entities of the given name.";
+	}
 
 }

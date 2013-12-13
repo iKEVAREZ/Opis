@@ -19,7 +19,7 @@ import net.minecraft.server.dedicated.DedicatedServer;
 import net.minecraft.util.ChatMessageComponent;
 import mcp.mobius.mobiuscore.profiler.ProfilerRegistrar;
 
-public class CommandStart extends CommandBase {
+public class CommandStart extends CommandBase implements IOpisCommand {
 
 	@Override
 	public String getCommandName() {
@@ -62,6 +62,11 @@ public class CommandStart extends CommandBase {
 		if (sender instanceof DedicatedServer) return true;
 		if (((EntityPlayerMP)sender).playerNetServerHandler.netManager instanceof MemoryConnection) return true;
         return MinecraftServer.getServer().getConfigurationManager().isPlayerOpped(((EntityPlayerMP)sender).username);
-    }	
+    }
+
+	@Override
+	public String getDescription() {
+		return "Starts a run.";
+	}	
 	
 }

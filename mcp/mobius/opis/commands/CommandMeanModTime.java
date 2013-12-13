@@ -12,7 +12,7 @@ import net.minecraft.network.MemoryConnection;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.dedicated.DedicatedServer;
 
-public class CommandMeanModTime extends CommandBase {
+public class CommandMeanModTime extends CommandBase implements IOpisCommand {
 
 	@Override
 	public String getCommandName() {
@@ -43,5 +43,10 @@ public class CommandMeanModTime extends CommandBase {
 		if (((EntityPlayerMP)sender).playerNetServerHandler.netManager instanceof MemoryConnection) return true;
         return MinecraftServer.getServer().getConfigurationManager().isPlayerOpped(((EntityPlayerMP)sender).username);
     }
+
+	@Override
+	public String getDescription() {
+		return "List of mods update time, in respect to TEs.";
+	}
 
 }

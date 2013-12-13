@@ -23,7 +23,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.dedicated.DedicatedServer;
 import net.minecraft.util.ChatMessageComponent;
 
-public class CommandDataDump extends CommandBase {
+public class CommandDataDump extends CommandBase implements IOpisCommand {
 
 	@Override
 	public String getCommandName() {
@@ -136,5 +136,10 @@ public class CommandDataDump extends CommandBase {
 		if (((EntityPlayerMP)sender).playerNetServerHandler.netManager instanceof MemoryConnection) return true;
         return MinecraftServer.getServer().getConfigurationManager().isPlayerOpped(((EntityPlayerMP)sender).username);
     }
+
+	@Override
+	public String getDescription() {
+		return "Dumps chunks and TEs data to csv.";
+	}
 
 }

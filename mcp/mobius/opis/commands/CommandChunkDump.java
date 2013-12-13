@@ -17,7 +17,7 @@ import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.ForgeChunkManager.Ticket;
 import net.minecraft.entity.player.EntityPlayerMP;
 
-public class CommandChunkDump extends CommandBase {
+public class CommandChunkDump extends CommandBase  implements IOpisCommand{
 
 	@Override
 	public String getCommandName() {
@@ -59,6 +59,11 @@ public class CommandChunkDump extends CommandBase {
     public boolean canCommandSenderUseCommand(ICommandSender par1ICommandSender)
     {
         return false;
-    }	
+    }
+
+	@Override
+	public String getDescription() {
+		return "Unused";
+	}	
 	
 }
