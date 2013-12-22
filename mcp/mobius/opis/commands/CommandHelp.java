@@ -43,7 +43,9 @@ public class CommandHelp extends CommandBase implements IOpisCommand {
 				new CommandDataDump(),
 
 				new CommandKill(),
-				new CommandKillAll()		
+				new CommandKillAll(),
+				
+				new CommandHandler()
 		};
 
 		if (icommandsender instanceof EntityPlayer)		

@@ -12,6 +12,7 @@ import mcp.mobius.opis.commands.CommandAmountEntities;
 import mcp.mobius.opis.commands.CommandChunkDump;
 import mcp.mobius.opis.commands.CommandChunkList;
 import mcp.mobius.opis.commands.CommandDataDump;
+import mcp.mobius.opis.commands.CommandHandler;
 import mcp.mobius.opis.commands.CommandHelp;
 import mcp.mobius.opis.commands.CommandKill;
 import mcp.mobius.opis.commands.CommandKillAll;
@@ -111,6 +112,7 @@ public class modOpis {
 		event.registerServerCommand(new CommandKill());
 		event.registerServerCommand(new CommandKillAll());		
 		event.registerServerCommand(new CommandReset());
+		event.registerServerCommand(new CommandHandler());		
 		
 		event.registerServerCommand(new CommandHelp());		
 		//event.registerServerCommand(new CommandTPS());		

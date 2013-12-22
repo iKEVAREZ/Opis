@@ -33,7 +33,8 @@ public class CommandStop extends CommandBase implements IOpisCommand {
 		modOpis.profilerRun = false;
 		
 		ProfilerRegistrar.registerProfilerTileEntity(new DummyProfiler());	
-		ProfilerRegistrar.registerProfilerEntity(new DummyProfiler());			
+		ProfilerRegistrar.registerProfilerEntity(new DummyProfiler());	
+		ProfilerRegistrar.registerProfilerTick(new DummyProfiler());
 
 		if (icommandsender instanceof EntityPlayer)
 			OpisServerTickHandler.instance.players.add((EntityPlayer)icommandsender);
