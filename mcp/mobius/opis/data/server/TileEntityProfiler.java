@@ -6,6 +6,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeHooks;
 import mcp.mobius.mobiuscore.profiler.IProfilerTileEntity;
 import mcp.mobius.opis.modOpis;
+import mcp.mobius.opis.data.managers.TileEntityManager;
 import mcp.mobius.opis.server.OpisServerTickHandler;
 
 public class TileEntityProfiler implements IProfilerTileEntity {

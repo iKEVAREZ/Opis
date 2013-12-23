@@ -5,7 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
 import mcp.mobius.opis.commands.IOpisCommand;
-import mcp.mobius.opis.data.server.EntityManager;
+import mcp.mobius.opis.data.managers.EntityManager;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.Entity;

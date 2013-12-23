@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import mcp.mobius.opis.commands.IOpisCommand;
 import mcp.mobius.opis.data.holders.ChunkStats;
-import mcp.mobius.opis.data.server.ChunkManager;
+import mcp.mobius.opis.data.managers.ChunkManager;
 import mcp.mobius.opis.network.server.Packet_ChunkTopList;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;

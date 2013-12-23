@@ -3,7 +3,7 @@ package mcp.mobius.opis.commands.server;
 import java.util.HashMap;
 
 import mcp.mobius.opis.commands.IOpisCommand;
-import mcp.mobius.opis.data.server.EntityManager;
+import mcp.mobius.opis.data.managers.EntityManager;
 import mcp.mobius.opis.network.server.Packet_DataScreenAmountEntities;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;

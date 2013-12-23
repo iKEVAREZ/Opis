@@ -1,4 +1,4 @@
-package mcp.mobius.opis.data.server;
+package mcp.mobius.opis.data.managers;
 
 import java.util.ArrayList;
 import java.util.Collections;

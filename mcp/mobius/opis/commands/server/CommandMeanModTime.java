@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import mcp.mobius.opis.commands.IOpisCommand;
 import mcp.mobius.opis.data.holders.ModStats;
-import mcp.mobius.opis.data.server.TileEntityManager;
+import mcp.mobius.opis.data.managers.TileEntityManager;
 import mcp.mobius.opis.network.server.Packet_ModMeanTime;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;

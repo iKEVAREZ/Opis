@@ -5,7 +5,7 @@ import java.util.EnumSet;
 import mcp.mobius.mobiuscore.profiler.IProfilerTick;
 import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.client.OpisClientTickHandler;
-import mcp.mobius.opis.data.server.TickHandlerManager;
+import mcp.mobius.opis.data.managers.TickHandlerManager;
 import mcp.mobius.opis.server.OpisServerTickHandler;
 import cpw.mods.fml.common.IScheduledTickHandler;
 import cpw.mods.fml.common.TickType;
@@ -28,7 +28,7 @@ public class TickHandlerClientProfiler implements IProfilerTick {
 		if ((!modOpis.profilerRun) || (OpisClientTickHandler.instance.profilerUpdateTickCounter % modOpis.profilerDelay != 0)) return;
 		if (!ticksToRun.contains(TickType.RENDER)) return;
 		
-		String name = TickHandlerClientManager.getHandlerName(ticker);
+		String name = TickHandlerManager.getHandlerName(ticker);
 		this.currentHandler = name;
 		this.clock.start();		
 	}
@@ -39,12 +39,12 @@ public class TickHandlerClientProfiler implements IProfilerTick {
 		if (!ticksToRun.contains(TickType.RENDER)) return;		
 		this.clock.stop();
 		
-		String name = TickHandlerClientManager.getHandlerName(ticker);
+		String name = TickHandlerManager.getHandlerName(ticker);
 		if (!this.currentHandler.equals(name))
 			throw new RuntimeException(String.format("Mismatched tick handler during the profiling ! %s %s", this.currentHandler, ticker.getLabel()));
 
 		//EntityManager.addEntity(ent, this.clock.timeDelta);
-		TickHandlerClientManager.addHandlerStart(ticker, this.clock.timeDelta);
+		TickHandlerManager.addHandlerStart(ticker, this.clock.timeDelta);
 		this.currentHandler = null;		
 	}
 
@@ -53,7 +53,7 @@ public class TickHandlerClientProfiler implements IProfilerTick {
 		if ((!modOpis.profilerRun) || (OpisClientTickHandler.instance.profilerUpdateTickCounter % modOpis.profilerDelay != 0)) return;
 		if (!ticksToRun.contains(TickType.RENDER)) return;
 
-		String name = TickHandlerClientManager.getHandlerName(ticker);	
+		String name = TickHandlerManager.getHandlerName(ticker);	
 		this.currentHandler = name;
 		this.clock.start();				
 	}
@@ -64,11 +64,11 @@ public class TickHandlerClientProfiler implements IProfilerTick {
 		if (!ticksToRun.contains(TickType.RENDER)) return;		
 		this.clock.stop();
 		
-		String name = TickHandlerClientManager.getHandlerName(ticker);
+		String name = TickHandlerManager.getHandlerName(ticker);
 		if (!this.currentHandler.equals(name))
 			throw new RuntimeException(String.format("Mismatched tick handler during the profiling ! %s %s", this.currentHandler, ticker.getLabel()));
 
-		TickHandlerClientManager.addHandlerEnd(ticker, this.clock.timeDelta);
+		TickHandlerManager.addHandlerEnd(ticker, this.clock.timeDelta);
 		this.currentHandler = null;					
 	}	
 	
