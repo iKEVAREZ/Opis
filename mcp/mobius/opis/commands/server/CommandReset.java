@@ -7,6 +7,7 @@ import mcp.mobius.mobiuscore.profiler.ProfilerRegistrar;
 import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.commands.IOpisCommand;
 import mcp.mobius.opis.data.managers.EntityManager;
+import mcp.mobius.opis.data.managers.MetaManager;
 import mcp.mobius.opis.data.managers.TickHandlerManager;
 import mcp.mobius.opis.data.managers.TileEntityManager;
 import mcp.mobius.opis.network.server.Packet_ClearSelection;
@@ -35,18 +36,7 @@ public class CommandReset extends CommandBase implements IOpisCommand {
 
 	@Override
 	public void processCommand(ICommandSender icommandsender, String[] astring) {
-		modOpis.profilerRun = false;
-
-		modOpis.selectedBlock = null;
-		OpisServerTickHandler.instance.profilerRunningTicks = 0;
-		TileEntityManager.references.clear();
-		TileEntityManager.stats.clear();
-		EntityManager.stats.clear();
-		TickHandlerManager.startStats.clear();
-		TickHandlerManager.endStats.clear();			
-		ProfilerRegistrar.registerProfilerTileEntity(new DummyProfiler());	
-		ProfilerRegistrar.registerProfilerEntity(    new DummyProfiler());	
-		ProfilerRegistrar.registerProfilerTick(new DummyProfiler());		
+		MetaManager.reset();
 		
 		if (icommandsender instanceof EntityPlayer)
 			PacketDispatcher.sendPacketToPlayer(new Packet3Chat(ChatMessageComponent.createFromText(String.format("\u00A7oInternal data reseted."))), (Player)icommandsender);

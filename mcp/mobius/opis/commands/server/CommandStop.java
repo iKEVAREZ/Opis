@@ -32,10 +32,7 @@ public class CommandStop extends CommandBase implements IOpisCommand {
 	@Override
 	public void processCommand(ICommandSender icommandsender, String[] astring) {
 		modOpis.profilerRun = false;
-		
-		ProfilerRegistrar.registerProfilerTileEntity(new DummyProfiler());	
-		ProfilerRegistrar.registerProfilerEntity(new DummyProfiler());	
-		ProfilerRegistrar.registerProfilerTick(new DummyProfiler());
+		ProfilerRegistrar.turnOff();
 
 		if (icommandsender instanceof EntityPlayer)
 			OpisServerTickHandler.instance.players.add((EntityPlayer)icommandsender);

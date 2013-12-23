@@ -8,6 +8,7 @@ import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.client.OpisClientTickHandler;
 import mcp.mobius.opis.data.client.TickHandlerClientProfiler;
 import mcp.mobius.opis.data.holders.TickHandlerStats;
+import mcp.mobius.opis.data.managers.MetaManager;
 import mcp.mobius.opis.data.managers.TickHandlerManager;
 
 public class ClientCommandHandler {
@@ -25,12 +26,9 @@ public class ClientCommandHandler {
 		if (cmd == ClientCommand.START_PROFILING){
 			modOpis.log.log(Level.INFO, "Started profiling");
 			
+			MetaManager.reset();		
 			modOpis.profilerRun = true;
-			OpisClientTickHandler.instance.profilerRunningTicks = 0;
-			TickHandlerManager.startStats.clear();
-			TickHandlerManager.endStats.clear();		
-	
-			ProfilerRegistrar.registerProfilerTick(new TickHandlerClientProfiler());			
+			ProfilerRegistrar.turnOn();		
 		}
 		else if (cmd == ClientCommand.SHOW_RENDER_TICK){
 			modOpis.log.log(Level.INFO, "=== RENDER TICK ===");

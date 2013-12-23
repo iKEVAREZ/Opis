@@ -35,9 +35,7 @@ public class OpisClientTickHandler implements ITickHandler {
 			else if (profilerRunningTicks >= modOpis.profilerMaxTicks && modOpis.profilerRun){
 				profilerRunningTicks = 0;
 				modOpis.profilerRun = false;
-				ProfilerRegistrar.registerProfilerTileEntity(new DummyProfiler());	
-				ProfilerRegistrar.registerProfilerEntity(new DummyProfiler());
-				ProfilerRegistrar.registerProfilerTick(new DummyProfiler());				
+				ProfilerRegistrar.turnOff();
 				
 				//TODO : Print something to the client chat
 				System.out.printf("Profiling done\n");				

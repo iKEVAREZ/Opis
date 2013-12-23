@@ -55,9 +55,7 @@ public class OpisServerTickHandler implements ITickHandler {
 			else if (profilerRunningTicks >= modOpis.profilerMaxTicks && modOpis.profilerRun){
 				profilerRunningTicks = 0;
 				modOpis.profilerRun = false;
-				ProfilerRegistrar.registerProfilerTileEntity(new DummyProfiler());	
-				ProfilerRegistrar.registerProfilerEntity(new DummyProfiler());
-				ProfilerRegistrar.registerProfilerTick(new DummyProfiler());				
+				ProfilerRegistrar.turnOff();				
 				
 				for (EntityPlayer player : players)
 					PacketDispatcher.sendPacketToPlayer(new Packet3Chat(ChatMessageComponent.createFromText(String.format("\u00A7oOpis automaticly stopped after %d ticks.", modOpis.profilerMaxTicks))), (Player)player);

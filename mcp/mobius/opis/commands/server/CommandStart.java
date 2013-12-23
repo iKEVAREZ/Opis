@@ -5,6 +5,7 @@ import cpw.mods.fml.common.network.Player;
 import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.commands.IOpisCommand;
 import mcp.mobius.opis.data.managers.EntityManager;
+import mcp.mobius.opis.data.managers.MetaManager;
 import mcp.mobius.opis.data.managers.TickHandlerManager;
 import mcp.mobius.opis.data.managers.TileEntityManager;
 import mcp.mobius.opis.data.server.EntityProfiler;
@@ -36,18 +37,9 @@ public class CommandStart extends CommandBase implements IOpisCommand {
 
 	@Override
 	public void processCommand(ICommandSender icommandsender, String[] astring) {
+		MetaManager.reset();	
 		modOpis.profilerRun = true;
-
-		OpisServerTickHandler.instance.profilerRunningTicks = 0;
-		TileEntityManager.references.clear();
-		TileEntityManager.stats.clear();
-		EntityManager.stats.clear();
-		TickHandlerManager.startStats.clear();
-		TickHandlerManager.endStats.clear();		
-		
-		ProfilerRegistrar.registerProfilerTileEntity(new TileEntityProfiler());	
-		ProfilerRegistrar.registerProfilerEntity(new EntityProfiler());		
-		ProfilerRegistrar.registerProfilerTick(new TickHandlerProfiler());
+		ProfilerRegistrar.turnOn();
 		
 		if (icommandsender instanceof EntityPlayer){
 			OpisServerTickHandler.instance.players.add((EntityPlayer)icommandsender);
