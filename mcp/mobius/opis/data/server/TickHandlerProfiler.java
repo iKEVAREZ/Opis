@@ -1,4 +1,4 @@
-package mcp.mobius.opis.data;
+package mcp.mobius.opis.data.server;
 
 import java.util.EnumSet;
 

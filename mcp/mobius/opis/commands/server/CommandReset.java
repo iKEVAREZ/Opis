@@ -1,13 +1,14 @@
-package mcp.mobius.opis.commands;
+package mcp.mobius.opis.commands.server;
 
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
 import mcp.mobius.mobiuscore.profiler.DummyProfiler;
 import mcp.mobius.mobiuscore.profiler.ProfilerRegistrar;
 import mcp.mobius.opis.modOpis;
-import mcp.mobius.opis.data.EntityManager;
-import mcp.mobius.opis.data.TickHandlerManager;
-import mcp.mobius.opis.data.TileEntityManager;
+import mcp.mobius.opis.commands.IOpisCommand;
+import mcp.mobius.opis.data.server.EntityManager;
+import mcp.mobius.opis.data.server.TickHandlerManager;
+import mcp.mobius.opis.data.server.TileEntityManager;
 import mcp.mobius.opis.network.server.Packet_ClearSelection;
 import mcp.mobius.opis.server.OpisServerTickHandler;
 import net.minecraft.command.CommandBase;

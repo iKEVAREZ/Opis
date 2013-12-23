@@ -1,14 +1,10 @@
-package mcp.mobius.opis.commands;
+package mcp.mobius.opis.commands.server;
 
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
+import mcp.mobius.mobiuscore.profiler.DummyProfiler;
 import mcp.mobius.opis.modOpis;
-import mcp.mobius.opis.data.EntityManager;
-import mcp.mobius.opis.data.EntityProfiler;
-import mcp.mobius.opis.data.TickHandlerManager;
-import mcp.mobius.opis.data.TickHandlerProfiler;
-import mcp.mobius.opis.data.TileEntityManager;
-import mcp.mobius.opis.data.TileEntityProfiler;
+import mcp.mobius.opis.commands.IOpisCommand;
 import mcp.mobius.opis.server.OpisServerTickHandler;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
@@ -21,11 +17,11 @@ import net.minecraft.server.dedicated.DedicatedServer;
 import net.minecraft.util.ChatMessageComponent;
 import mcp.mobius.mobiuscore.profiler.ProfilerRegistrar;
 
-public class CommandStart extends CommandBase implements IOpisCommand {
+public class CommandStop extends CommandBase implements IOpisCommand {
 
 	@Override
 	public String getCommandName() {
-		return "opis_start";
+		return "opis_stop";
 	}
 
 	@Override
@@ -35,24 +31,17 @@ public class CommandStart extends CommandBase implements IOpisCommand {
 
 	@Override
 	public void processCommand(ICommandSender icommandsender, String[] astring) {
-		modOpis.profilerRun = true;
+		modOpis.profilerRun = false;
+		
+		ProfilerRegistrar.registerProfilerTileEntity(new DummyProfiler());	
+		ProfilerRegistrar.registerProfilerEntity(new DummyProfiler());	
+		ProfilerRegistrar.registerProfilerTick(new DummyProfiler());
 
-		OpisServerTickHandler.instance.profilerRunningTicks = 0;
-		TileEntityManager.references.clear();
-		TileEntityManager.stats.clear();
-		EntityManager.stats.clear();
-		TickHandlerManager.startStats.clear();
-		TickHandlerManager.endStats.clear();		
-		
-		ProfilerRegistrar.registerProfilerTileEntity(new TileEntityProfiler());	
-		ProfilerRegistrar.registerProfilerEntity(new EntityProfiler());		
-		ProfilerRegistrar.registerProfilerTick(new TickHandlerProfiler());
-		
-		if (icommandsender instanceof EntityPlayer){
+		if (icommandsender instanceof EntityPlayer)
 			OpisServerTickHandler.instance.players.add((EntityPlayer)icommandsender);
-			PacketDispatcher.sendPacketToPlayer(new Packet3Chat(ChatMessageComponent.createFromText(String.format("\u00A7oOpis started with a tick delay %s.", modOpis.profilerDelay))), (Player)icommandsender);
-		}
 		
+		for (EntityPlayer player : OpisServerTickHandler.instance.players)
+			PacketDispatcher.sendPacketToPlayer(new Packet3Chat(ChatMessageComponent.createFromText(String.format("\u00A7oOpis stopped."))), (Player)player);		
 	}
 
 	@Override
@@ -71,7 +60,7 @@ public class CommandStart extends CommandBase implements IOpisCommand {
 
 	@Override
 	public String getDescription() {
-		return "Starts a run.";
+		return "Ends a run before completion.";
 	}	
 	
 }

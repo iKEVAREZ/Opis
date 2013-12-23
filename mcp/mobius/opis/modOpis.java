@@ -8,26 +8,26 @@ import net.minecraftforge.common.MinecraftForge;
 import mcp.mobius.mobiuscore.profiler.ProfilerRegistrar;
 import mcp.mobius.opis.client.OpisClientEventHandler;
 import mcp.mobius.opis.client.OpisClientTickHandler;
-import mcp.mobius.opis.commands.CommandAmountEntities;
-import mcp.mobius.opis.commands.CommandChunkDump;
-import mcp.mobius.opis.commands.CommandChunkList;
-import mcp.mobius.opis.commands.CommandDataDump;
-import mcp.mobius.opis.commands.CommandHandler;
-import mcp.mobius.opis.commands.CommandHelp;
-import mcp.mobius.opis.commands.CommandKill;
-import mcp.mobius.opis.commands.CommandKillAll;
-import mcp.mobius.opis.commands.CommandReset;
-import mcp.mobius.opis.commands.CommandTimingEntities;
-import mcp.mobius.opis.commands.CommandFrequency;
-import mcp.mobius.opis.commands.CommandMeanModTime;
-import mcp.mobius.opis.commands.CommandStart;
-import mcp.mobius.opis.commands.CommandStop;
-import mcp.mobius.opis.commands.CommandTPS;
-import mcp.mobius.opis.commands.CommandTicks;
-import mcp.mobius.opis.commands.CommandTimingTileEntities;
-import mcp.mobius.opis.data.EntityProfiler;
-import mcp.mobius.opis.data.TileEntityProfiler;
+import mcp.mobius.opis.commands.server.CommandAmountEntities;
+import mcp.mobius.opis.commands.server.CommandChunkDump;
+import mcp.mobius.opis.commands.server.CommandChunkList;
+import mcp.mobius.opis.commands.server.CommandDataDump;
+import mcp.mobius.opis.commands.server.CommandFrequency;
+import mcp.mobius.opis.commands.server.CommandHandler;
+import mcp.mobius.opis.commands.server.CommandHelp;
+import mcp.mobius.opis.commands.server.CommandKill;
+import mcp.mobius.opis.commands.server.CommandKillAll;
+import mcp.mobius.opis.commands.server.CommandMeanModTime;
+import mcp.mobius.opis.commands.server.CommandReset;
+import mcp.mobius.opis.commands.server.CommandStart;
+import mcp.mobius.opis.commands.server.CommandStop;
+import mcp.mobius.opis.commands.server.CommandTPS;
+import mcp.mobius.opis.commands.server.CommandTicks;
+import mcp.mobius.opis.commands.server.CommandTimingEntities;
+import mcp.mobius.opis.commands.server.CommandTimingTileEntities;
 import mcp.mobius.opis.data.holders.CoordinatesBlock;
+import mcp.mobius.opis.data.server.EntityProfiler;
+import mcp.mobius.opis.data.server.TileEntityProfiler;
 import mcp.mobius.opis.network.OpisConnectionHandler;
 import mcp.mobius.opis.network.OpisPacketHandler;
 import mcp.mobius.opis.network.Packet251Extended;
@@ -88,7 +88,6 @@ public class modOpis {
 	@EventHandler
 	public void load(FMLInitializationEvent event) {
 		TickRegistry.registerTickHandler(new OpisServerTickHandler(), Side.SERVER);
-		//TickRegistry.registerTickHandler(new OpisClientTickHandler(), Side.CLIENT);			
 	}
 	
 	@EventHandler
@@ -118,7 +117,5 @@ public class modOpis {
 		//event.registerServerCommand(new CommandTPS());		
 		
 		GameRegistry.registerPlayerTracker(new OpisPlayerTracker());
-		//ProfilerRegistrar.registerProfilerTileEntity(new TileEntityProfiler());	
-		//ProfilerRegistrar.registerProfilerEntity(new EntityProfiler());
 	}	
 }

@@ -1,23 +1,23 @@
-package mcp.mobius.opis.commands;
+package mcp.mobius.opis.commands.server;
 
-import cpw.mods.fml.common.network.PacketDispatcher;
-import cpw.mods.fml.common.network.Player;
-import mcp.mobius.opis.modOpis;
+import java.util.ArrayList;
+
+import mcp.mobius.opis.commands.IOpisCommand;
+import mcp.mobius.opis.data.holders.ModStats;
+import mcp.mobius.opis.data.server.TileEntityManager;
+import mcp.mobius.opis.network.server.Packet_ModMeanTime;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.MemoryConnection;
-import net.minecraft.network.packet.Packet3Chat;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.dedicated.DedicatedServer;
-import net.minecraft.util.ChatMessageComponent;
 
-public class CommandFrequency extends CommandBase implements IOpisCommand {
+public class CommandMeanModTime extends CommandBase implements IOpisCommand {
 
 	@Override
 	public String getCommandName() {
-		return "opis_delay";
+		return "opis_mods";
 	}
 
 	@Override
@@ -27,13 +27,8 @@ public class CommandFrequency extends CommandBase implements IOpisCommand {
 
 	@Override
 	public void processCommand(ICommandSender icommandsender, String[] astring) {
-		if (astring.length < 1) return;
-		try{
-			modOpis.profilerDelay = Integer.valueOf(astring[0]);
-			if (icommandsender instanceof EntityPlayer)
-				PacketDispatcher.sendPacketToPlayer(new Packet3Chat(ChatMessageComponent.createFromText(String.format("\u00A7oOpis delay set to %s ticks.", astring[0]))), (Player)icommandsender);			
-
-		} catch (Exception e){}
+		ArrayList<ModStats> modStats = TileEntityManager.getModStats();
+		((EntityPlayerMP)icommandsender).playerNetServerHandler.sendPacketToPlayer(Packet_ModMeanTime.create(modStats));		
 	}
 
 	@Override
@@ -52,7 +47,7 @@ public class CommandFrequency extends CommandBase implements IOpisCommand {
 
 	@Override
 	public String getDescription() {
-		return "Sets the delay in ticks between 2 data points."; 
-	}	
-	
+		return "List of mods update time, in respect to TEs.";
+	}
+
 }

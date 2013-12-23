@@ -1,10 +1,11 @@
-package mcp.mobius.opis.commands;
+package mcp.mobius.opis.commands.server;
 
 import java.util.ArrayList;
 
-import mcp.mobius.opis.data.ChunkManager;
-import mcp.mobius.opis.data.holders.ChunkStats;
-import mcp.mobius.opis.network.server.Packet_ChunkTopList;
+import mcp.mobius.opis.commands.IOpisCommand;
+import mcp.mobius.opis.data.holders.TileEntityStats;
+import mcp.mobius.opis.data.server.TileEntityManager;
+import mcp.mobius.opis.network.server.Packet_TileEntitiesTopList;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -12,11 +13,11 @@ import net.minecraft.network.MemoryConnection;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.dedicated.DedicatedServer;
 
-public class CommandChunkList extends CommandBase implements IOpisCommand {
+public class CommandTimingTileEntities extends CommandBase implements IOpisCommand {
 
 	@Override
 	public String getCommandName() {
-		return "opis_chunk";
+		return "opis_te";
 	}
 
 	@Override
@@ -26,23 +27,17 @@ public class CommandChunkList extends CommandBase implements IOpisCommand {
 
 	@Override
 	public void processCommand(ICommandSender icommandsender, String[] astring) {
-		ArrayList<ChunkStats> chunks = new ArrayList<ChunkStats>();
-		
-		if (astring.length == 0)
-			chunks = ChunkManager.getTopChunks(20);
-		else
-			try{
-				chunks = ChunkManager.getTopChunks(Integer.valueOf(astring.length));	
-			}catch (Exception e){return;}
-		
-		/*
-		System.out.printf("== ==\n");
-		for (ChunkStats stat : chunks){
-			System.out.printf("%s\n", stat);
+		ArrayList<TileEntityStats> tes = new ArrayList<TileEntityStats>(); 
+		if (astring.length == 0){
+			tes = TileEntityManager.getTopEntities(20);
 		}
-		*/
+		else{
+			try{
+				tes = TileEntityManager.getTopEntities(Integer.valueOf(astring[0]));
+			} catch (Exception e) {return;}
+		}
 		
-		((EntityPlayerMP)icommandsender).playerNetServerHandler.sendPacketToPlayer(Packet_ChunkTopList.create(chunks));		
+		((EntityPlayerMP)icommandsender).playerNetServerHandler.sendPacketToPlayer(Packet_TileEntitiesTopList.create(tes));
 		
 	}
 
@@ -56,13 +51,13 @@ public class CommandChunkList extends CommandBase implements IOpisCommand {
     public boolean canCommandSenderUseCommand(ICommandSender sender)
     {
 		if (sender instanceof DedicatedServer) return false;
-		if (((EntityPlayerMP)sender).playerNetServerHandler.netManager instanceof MemoryConnection) return true;		
+		if (((EntityPlayerMP)sender).playerNetServerHandler.netManager instanceof MemoryConnection) return true;
         return MinecraftServer.getServer().getConfigurationManager().isPlayerOpped(((EntityPlayerMP)sender).username);
-    }
-
+    }			
+	
 	@Override
 	public String getDescription() {
-		return "Shows the 20 slowest chunks, in respect to tile entities.";
+		return "Returns the 20 longest TEs to update.";
 	}	
-
+	
 }

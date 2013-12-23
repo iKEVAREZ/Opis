@@ -1,10 +1,9 @@
-package mcp.mobius.opis.commands;
+package mcp.mobius.opis.commands.server;
 
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
-import mcp.mobius.mobiuscore.profiler.DummyProfiler;
 import mcp.mobius.opis.modOpis;
-import mcp.mobius.opis.server.OpisServerTickHandler;
+import mcp.mobius.opis.commands.IOpisCommand;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,13 +13,12 @@ import net.minecraft.network.packet.Packet3Chat;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.dedicated.DedicatedServer;
 import net.minecraft.util.ChatMessageComponent;
-import mcp.mobius.mobiuscore.profiler.ProfilerRegistrar;
 
-public class CommandStop extends CommandBase implements IOpisCommand {
+public class CommandTicks extends CommandBase implements IOpisCommand {
 
 	@Override
 	public String getCommandName() {
-		return "opis_stop";
+		return "opis_ticks";
 	}
 
 	@Override
@@ -30,17 +28,13 @@ public class CommandStop extends CommandBase implements IOpisCommand {
 
 	@Override
 	public void processCommand(ICommandSender icommandsender, String[] astring) {
-		modOpis.profilerRun = false;
-		
-		ProfilerRegistrar.registerProfilerTileEntity(new DummyProfiler());	
-		ProfilerRegistrar.registerProfilerEntity(new DummyProfiler());	
-		ProfilerRegistrar.registerProfilerTick(new DummyProfiler());
-
-		if (icommandsender instanceof EntityPlayer)
-			OpisServerTickHandler.instance.players.add((EntityPlayer)icommandsender);
-		
-		for (EntityPlayer player : OpisServerTickHandler.instance.players)
-			PacketDispatcher.sendPacketToPlayer(new Packet3Chat(ChatMessageComponent.createFromText(String.format("\u00A7oOpis stopped."))), (Player)player);		
+		if (astring.length < 1) return;
+		try{
+			modOpis.profilerMaxTicks = Integer.valueOf(astring[0]);
+			
+			if (icommandsender instanceof EntityPlayer)
+				PacketDispatcher.sendPacketToPlayer(new Packet3Chat(ChatMessageComponent.createFromText(String.format("\u00A7oOpis ticks set to %s ticks.", astring[0]))), (Player)icommandsender);
+		} catch (Exception e){}
 	}
 
 	@Override
@@ -59,7 +53,7 @@ public class CommandStop extends CommandBase implements IOpisCommand {
 
 	@Override
 	public String getDescription() {
-		return "Ends a run before completion.";
+		return "Sets the amount of data points to gather.";
 	}	
 	
 }

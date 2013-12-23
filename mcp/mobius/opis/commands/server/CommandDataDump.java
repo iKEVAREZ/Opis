@@ -1,4 +1,4 @@
-package mcp.mobius.opis.commands;
+package mcp.mobius.opis.commands.server;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -9,9 +9,10 @@ import java.util.logging.Level;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
 import mcp.mobius.opis.modOpis;
-import mcp.mobius.opis.data.TileEntityManager;
+import mcp.mobius.opis.commands.IOpisCommand;
 import mcp.mobius.opis.data.holders.ModStats;
 import mcp.mobius.opis.data.holders.TileEntityStats;
+import mcp.mobius.opis.data.server.TileEntityManager;
 import mcp.mobius.opis.tools.ModIdentification;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;

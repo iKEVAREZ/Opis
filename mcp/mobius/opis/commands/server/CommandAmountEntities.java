@@ -1,10 +1,10 @@
-package mcp.mobius.opis.commands;
+package mcp.mobius.opis.commands.server;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
-import mcp.mobius.opis.data.TileEntityManager;
-import mcp.mobius.opis.data.holders.ModStats;
-import mcp.mobius.opis.network.server.Packet_ModMeanTime;
+import mcp.mobius.opis.commands.IOpisCommand;
+import mcp.mobius.opis.data.server.EntityManager;
+import mcp.mobius.opis.network.server.Packet_DataScreenAmountEntities;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -12,11 +12,11 @@ import net.minecraft.network.MemoryConnection;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.dedicated.DedicatedServer;
 
-public class CommandMeanModTime extends CommandBase implements IOpisCommand {
+public class CommandAmountEntities extends CommandBase implements IOpisCommand{
 
 	@Override
 	public String getCommandName() {
-		return "opis_mods";
+		return "opis_nent";
 	}
 
 	@Override
@@ -26,8 +26,9 @@ public class CommandMeanModTime extends CommandBase implements IOpisCommand {
 
 	@Override
 	public void processCommand(ICommandSender icommandsender, String[] astring) {
-		ArrayList<ModStats> modStats = TileEntityManager.getModStats();
-		((EntityPlayerMP)icommandsender).playerNetServerHandler.sendPacketToPlayer(Packet_ModMeanTime.create(modStats));		
+		HashMap<String, Integer> ents = EntityManager.getCumulativeEntities();
+		((EntityPlayerMP)icommandsender).playerNetServerHandler.sendPacketToPlayer(Packet_DataScreenAmountEntities.create(ents));
+		
 	}
 
 	@Override
@@ -39,14 +40,14 @@ public class CommandMeanModTime extends CommandBase implements IOpisCommand {
 	@Override
     public boolean canCommandSenderUseCommand(ICommandSender sender)
     {
-		if (sender instanceof DedicatedServer) return true;
-		if (((EntityPlayerMP)sender).playerNetServerHandler.netManager instanceof MemoryConnection) return true;
+		if (sender instanceof DedicatedServer) return false;
+		if (((EntityPlayerMP)sender).playerNetServerHandler.netManager instanceof MemoryConnection) return true;		
         return MinecraftServer.getServer().getConfigurationManager().isPlayerOpped(((EntityPlayerMP)sender).username);
     }
 
 	@Override
 	public String getDescription() {
-		return "List of mods update time, in respect to TEs.";
+		return "Opens a summary of the number of entities on the server, by type.";
 	}
 
 }

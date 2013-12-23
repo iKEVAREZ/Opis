@@ -1,5 +1,6 @@
-package mcp.mobius.opis.commands;
+package mcp.mobius.opis.commands.server;
 
+import mcp.mobius.opis.commands.IOpisCommand;
 import mcp.mobius.opis.network.server.Packet_TPS;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;

@@ -1,4 +1,4 @@
-package mcp.mobius.opis.commands;
+package mcp.mobius.opis.commands.server;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -8,6 +8,7 @@ import java.util.logging.Level;
 import com.google.common.collect.ImmutableSetMultimap;
 
 import mcp.mobius.opis.modOpis;
+import mcp.mobius.opis.commands.IOpisCommand;
 import mcp.mobius.opis.network.server.Packet_LoadedChunks;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;

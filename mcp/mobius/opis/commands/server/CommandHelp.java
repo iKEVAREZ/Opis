@@ -1,7 +1,8 @@
-package mcp.mobius.opis.commands;
+package mcp.mobius.opis.commands.server;
 
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
+import mcp.mobius.opis.commands.IOpisCommand;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;

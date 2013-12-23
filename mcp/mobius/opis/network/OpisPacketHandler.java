@@ -7,12 +7,12 @@ import java.util.ArrayList;
 
 import mapwriter.Mw;
 import mcp.mobius.opis.modOpis;
-import mcp.mobius.opis.data.ChunkManager;
-import mcp.mobius.opis.data.EntityManager;
-import mcp.mobius.opis.data.TileEntityManager;
 import mcp.mobius.opis.data.holders.CoordinatesChunk;
 import mcp.mobius.opis.data.holders.EntityStats;
 import mcp.mobius.opis.data.holders.TicketData;
+import mcp.mobius.opis.data.server.ChunkManager;
+import mcp.mobius.opis.data.server.EntityManager;
+import mcp.mobius.opis.data.server.TileEntityManager;
 import mcp.mobius.opis.network.client.Packet_ReqChunks;
 import mcp.mobius.opis.network.client.Packet_ReqChunksInDim;
 import mcp.mobius.opis.network.client.Packet_ReqData;

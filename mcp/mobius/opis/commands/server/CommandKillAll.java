@@ -1,10 +1,15 @@
-package mcp.mobius.opis.commands;
+package mcp.mobius.opis.commands.server;
+
+import org.apache.commons.lang3.StringUtils;
 
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
+import mcp.mobius.opis.commands.IOpisCommand;
+import mcp.mobius.opis.data.server.EntityManager;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.MemoryConnection;
 import net.minecraft.network.packet.Packet3Chat;
@@ -14,11 +19,11 @@ import net.minecraft.util.ChatMessageComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 
-public class CommandKill extends CommandBase implements IOpisCommand {
+public class CommandKillAll extends CommandBase implements IOpisCommand {
 
 	@Override
 	public String getCommandName() {
-		return "opis_kill";
+		return "opis_killall";
 	}
 
 	@Override
@@ -28,10 +33,37 @@ public class CommandKill extends CommandBase implements IOpisCommand {
 
 	@Override
 	public void processCommand(ICommandSender icommandsender, String[] astring) {
-		if (astring.length != 2) return;
-		int dim = Integer.valueOf(astring[0]);
-		int eid = Integer.valueOf(astring[1]);
+		if (astring.length < 1) return;
 		
+		String searchname = StringUtils.join(astring, " ").toLowerCase();
+		int nkilled = 0;
+		
+		if (searchname.equals("Player")){
+			if (icommandsender instanceof EntityPlayer)
+				PacketDispatcher.sendPacketToPlayer(new Packet3Chat(ChatMessageComponent.createFromText(String.format("\u00A7oSeriously ? I can't, seriously, I can't. I should remove you from the OP list !"))), (Player)icommandsender);
+			return;
+		}
+			
+		
+		for (int dim : DimensionManager.getIDs()){
+			World world = DimensionManager.getWorld(dim);
+			if (world == null) continue;
+			
+			for (Object o : world.loadedEntityList){
+				Entity ent  = (Entity)o;
+				String name = EntityManager.getEntityName(ent).toLowerCase(); 
+				
+				if (name.equals(searchname)){
+					ent.setDead();
+					nkilled += 1;
+				}
+			}
+		}
+
+		if (icommandsender instanceof EntityPlayer)
+			PacketDispatcher.sendPacketToPlayer(new Packet3Chat(ChatMessageComponent.createFromText(String.format("\u00A7oKilled %d entities of type %s", nkilled, searchname))), (Player)icommandsender);		
+		
+		/*
 		World world = DimensionManager.getWorld(dim);
 		if (world == null){
 			PacketDispatcher.sendPacketToPlayer(			
@@ -52,7 +84,8 @@ public class CommandKill extends CommandBase implements IOpisCommand {
 		PacketDispatcher.sendPacketToPlayer(			
 		new Packet3Chat(ChatMessageComponent.createFromText(String.format("\u00A7oKilled entity %d in dim %d", eid, dim))), 
 		               (Player)icommandsender);
-		return;		
+		return;
+		*/		
 	}
 
 	@Override
@@ -71,7 +104,7 @@ public class CommandKill extends CommandBase implements IOpisCommand {
 
 	@Override
 	public String getDescription() {
-		return "Kills the given entity id in the given dimension.";
+		return "Kills all entities of the given name.";
 	}
 
 }

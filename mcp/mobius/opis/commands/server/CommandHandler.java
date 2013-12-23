@@ -1,11 +1,12 @@
-package mcp.mobius.opis.commands;
+package mcp.mobius.opis.commands.server;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
-import mcp.mobius.opis.data.TickHandlerManager;
+import mcp.mobius.opis.commands.IOpisCommand;
 import mcp.mobius.opis.data.holders.TickHandlerStats;
+import mcp.mobius.opis.data.server.TickHandlerManager;
 import mcp.mobius.opis.network.server.Packet_DataScreenTimingHandlers;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
