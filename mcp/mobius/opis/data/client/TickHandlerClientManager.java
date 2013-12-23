@@ -1,4 +1,4 @@
-package mcp.mobius.opis.data.server;
+package mcp.mobius.opis.data.client;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -8,7 +8,7 @@ import cpw.mods.fml.common.IScheduledTickHandler;
 import cpw.mods.fml.common.SingleIntervalHandler;
 import mcp.mobius.opis.data.holders.TickHandlerStats;
 
-public class TickHandlerManager {
+public class TickHandlerClientManager {
 
 	public static HashMap<String, TickHandlerStats> startStats = new HashMap<String, TickHandlerStats>();
 	public static HashMap<String, TickHandlerStats> endStats   = new HashMap<String, TickHandlerStats>();	
@@ -22,7 +22,7 @@ public class TickHandlerManager {
 	}	
 	
 	public static void addHandlerEnd(IScheduledTickHandler handler, long timing){
-		String name = getHandlerName(handler);			
+		String name = getHandlerName(handler);
 		
 		if (!(endStats.containsKey(name)))
 			endStats.put(name, new TickHandlerStats(name));
@@ -41,7 +41,7 @@ public class TickHandlerManager {
 		Collections.sort(sortedStats);
 		
 		return sortedStats;
-	}
+	}	
 	
 	public static String getHandlerName(IScheduledTickHandler handler){
 		String name = handler.getLabel();
@@ -52,5 +52,6 @@ public class TickHandlerManager {
 				name = handler.getClass().getName();
 		
 		return name;
-	}	
+	}
+	
 }

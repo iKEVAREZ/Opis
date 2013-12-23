@@ -8,6 +8,8 @@ import net.minecraftforge.common.MinecraftForge;
 import mcp.mobius.mobiuscore.profiler.ProfilerRegistrar;
 import mcp.mobius.opis.client.OpisClientEventHandler;
 import mcp.mobius.opis.client.OpisClientTickHandler;
+import mcp.mobius.opis.commands.client.CommandClientShowRenderTick;
+import mcp.mobius.opis.commands.client.CommandClientStart;
 import mcp.mobius.opis.commands.client.CommandClientTest;
 import mcp.mobius.opis.commands.server.CommandAmountEntities;
 import mcp.mobius.opis.commands.server.CommandChunkDump;
@@ -89,6 +91,7 @@ public class modOpis {
 	@EventHandler
 	public void load(FMLInitializationEvent event) {
 		TickRegistry.registerTickHandler(new OpisServerTickHandler(), Side.SERVER);
+		TickRegistry.registerTickHandler(new OpisClientTickHandler(), Side.CLIENT);		
 	}
 	
 	@EventHandler
@@ -115,8 +118,11 @@ public class modOpis {
 		event.registerServerCommand(new CommandHandler());		
 		
 		event.registerServerCommand(new CommandClientTest());
+		event.registerServerCommand(new CommandClientStart());
+		event.registerServerCommand(new CommandClientShowRenderTick());		
 		
-		//event.registerServerCommand(new CommandHelp());		
+		event.registerServerCommand(new CommandHelp());
+		
 		//event.registerServerCommand(new CommandTPS());		
 		
 		GameRegistry.registerPlayerTracker(new OpisPlayerTracker());
