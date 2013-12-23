@@ -25,7 +25,8 @@ public class Packets {
 	public static byte REQ_TELEPORT           = 0x30;  // C => S
 	public static byte REQ_TELEPORT_EID       = 0x31;  // C => S	
 	
-	/* Entities packets */
+	public static byte CLIENT_CMD             = 0x32;
+	
 	public static byte DATA_OVERLAY_CHUNK_ENTITIES = 0x40;
 	public static byte DATA_LIST_CHUNK_ENTITIES    = 0x41;
 	public static byte DATA_SCREEN_TIMING_ENTITIES = 0x42;
