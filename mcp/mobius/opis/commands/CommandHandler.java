@@ -1,9 +1,12 @@
 package mcp.mobius.opis.commands;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 import mcp.mobius.opis.data.TickHandlerManager;
 import mcp.mobius.opis.data.holders.TickHandlerStats;
+import mcp.mobius.opis.network.server.Packet_DataScreenTimingHandlers;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -25,16 +28,8 @@ public class CommandHandler extends CommandBase  implements IOpisCommand {
 
 	@Override
 	public void processCommand(ICommandSender icommandsender, String[] astring) {
-		HashMap<String, TickHandlerStats> startStats = TickHandlerManager.startStats;
-		HashMap<String, TickHandlerStats> endStats   = TickHandlerManager.endStats;
-		
-		System.out.printf("== TICK START ==\n");
-		for (String stats : startStats.keySet())
-			System.out.printf("%s\n", startStats.get(stats));
-		
-		System.out.printf("== TICK END ==\n");
-		for (String stats : endStats.keySet())
-			System.out.printf("%s\n", endStats.get(stats));		
+		ArrayList<TickHandlerStats> stats = TickHandlerManager.getCumulatedStats();
+		((EntityPlayerMP)icommandsender).playerNetServerHandler.sendPacketToPlayer(Packet_DataScreenTimingHandlers.create(stats));		
 	}
 
 	@Override

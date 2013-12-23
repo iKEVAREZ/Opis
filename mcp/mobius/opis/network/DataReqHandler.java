@@ -36,6 +36,7 @@ public class DataReqHandler {
 			}
 		}
 		else if (data[0].equals("list")){
+			
 			if (data[1].equals("chunk")){
 				if (data[2].equals("entities")){
 					PacketDispatcher.sendPacketToPlayer(Packet_DataListChunkEntities.create(EntityManager.getEntitiesInChunk(coord)), player);

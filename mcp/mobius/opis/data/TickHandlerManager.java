@@ -1,5 +1,7 @@
 package mcp.mobius.opis.data;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 import cpw.mods.fml.common.IScheduledTickHandler;
@@ -21,5 +23,20 @@ public class TickHandlerManager {
 			endStats.put(handler.getLabel(), new TickHandlerStats(handler.getLabel()));
 		endStats.get(handler.getLabel()).addMeasure(timing);
 	}	
+	
+	public static ArrayList<TickHandlerStats> getCumulatedStats(){
+		HashMap<String, TickHandlerStats> totalStats = new HashMap<String, TickHandlerStats>();
+		
+		for (String key : startStats.keySet()){
+			totalStats.put(key, new TickHandlerStats(key));
+			totalStats.get(key).setGeometricMean(startStats.get(key).getGeometricMean() + endStats.get(key).getGeometricMean());
+		}
+		
+		ArrayList<TickHandlerStats> sortedStats   = new ArrayList(totalStats.values());
+		Collections.sort(sortedStats);
+		
+		return sortedStats;
+	}
+	
 	
 }

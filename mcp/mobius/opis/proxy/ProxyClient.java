@@ -11,6 +11,7 @@ import mapwriter.api.MwAPI;
 import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.data.holders.ChunkStats;
 import mcp.mobius.opis.data.holders.EntityStats;
+import mcp.mobius.opis.data.holders.TickHandlerStats;
 import mcp.mobius.opis.data.holders.TileEntityStats;
 import mcp.mobius.opis.data.holders.ModStats;
 import mcp.mobius.opis.gui.font.Fonts;
@@ -20,6 +21,7 @@ import mcp.mobius.opis.gui.screens.ScreenChunks;
 import mcp.mobius.opis.gui.screens.ScreenEntity;
 import mcp.mobius.opis.gui.screens.ScreenEntityAmount;
 import mcp.mobius.opis.gui.screens.ScreenMods;
+import mcp.mobius.opis.gui.screens.ScreenTickHandler;
 import mcp.mobius.opis.gui.screens.ScreenTileEntity;
 import mcp.mobius.opis.overlay.OverlayLoadedChunks;
 import mcp.mobius.opis.overlay.OverlayMeanTime;
@@ -58,6 +60,13 @@ public class ProxyClient extends ProxyServer {
 		ScreenBase screenEnts = new ScreenEntity(null, stats);
 		screenEnts.display();		
 	}	
+	
+	@Override	
+	public void displayHandlerList(ArrayList<TickHandlerStats> stats){
+		ScreenBase screenHandlers = new ScreenTickHandler(null, stats);
+		screenHandlers.display();		
+	}
+	
 	
 	@Override	
 	public void displayEntityAmount(HashMap<String, Integer> stats){

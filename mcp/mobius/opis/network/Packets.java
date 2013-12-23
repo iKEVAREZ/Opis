@@ -29,7 +29,8 @@ public class Packets {
 	public static byte DATA_OVERLAY_CHUNK_ENTITIES = 0x40;
 	public static byte DATA_LIST_CHUNK_ENTITIES    = 0x41;
 	public static byte DATA_SCREEN_TIMING_ENTITIES = 0x42;
-	public static byte DATA_SCREEN_AMOUNT_ENTITIES = 0x43;	
+	public static byte DATA_SCREEN_AMOUNT_ENTITIES = 0x43;
+	public static byte DATA_SCREEN_TIMING_HANDLERS = 0x44;		
 	
 	
 	public static byte REQ_DATA      = 0x50; // C => S
