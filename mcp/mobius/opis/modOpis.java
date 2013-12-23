@@ -28,8 +28,10 @@ import mcp.mobius.opis.commands.server.CommandTPS;
 import mcp.mobius.opis.commands.server.CommandTicks;
 import mcp.mobius.opis.commands.server.CommandTimingEntities;
 import mcp.mobius.opis.commands.server.CommandTimingTileEntities;
+import mcp.mobius.opis.data.client.TickHandlerClientProfiler;
 import mcp.mobius.opis.data.holders.CoordinatesBlock;
 import mcp.mobius.opis.data.server.EntityProfiler;
+import mcp.mobius.opis.data.server.TickHandlerProfiler;
 import mcp.mobius.opis.data.server.TileEntityProfiler;
 import mcp.mobius.opis.network.OpisConnectionHandler;
 import mcp.mobius.opis.network.OpisPacketHandler;
@@ -38,6 +40,7 @@ import mcp.mobius.opis.proxy.ProxyServer;
 import mcp.mobius.opis.server.OpisPlayerTracker;
 import mcp.mobius.opis.server.OpisServerTickHandler;
 import mcp.mobius.opis.tools.ModIdentification;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -91,7 +94,16 @@ public class modOpis {
 	@EventHandler
 	public void load(FMLInitializationEvent event) {
 		TickRegistry.registerTickHandler(new OpisServerTickHandler(), Side.SERVER);
-		TickRegistry.registerTickHandler(new OpisClientTickHandler(), Side.CLIENT);		
+		TickRegistry.registerTickHandler(new OpisClientTickHandler(), Side.CLIENT);
+		
+		if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT){
+			ProfilerRegistrar.registerProfilerTick(new TickHandlerClientProfiler());
+		} else {
+			ProfilerRegistrar.registerProfilerTileEntity(new TileEntityProfiler());
+			ProfilerRegistrar.registerProfilerEntity(new EntityProfiler());
+			ProfilerRegistrar.registerProfilerTick(new TickHandlerProfiler());			
+		}
+			
 	}
 	
 	@EventHandler
