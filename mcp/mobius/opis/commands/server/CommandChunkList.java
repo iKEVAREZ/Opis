@@ -8,10 +8,12 @@ import mcp.mobius.opis.data.managers.ChunkManager;
 import mcp.mobius.opis.network.server.Packet_ChunkTopList;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.MemoryConnection;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.dedicated.DedicatedServer;
+import net.minecraft.util.ChatMessageComponent;
 
 public class CommandChunkList extends CommandBase implements IOpisCommand {
 
@@ -42,8 +44,14 @@ public class CommandChunkList extends CommandBase implements IOpisCommand {
 			System.out.printf("%s\n", stat);
 		}
 		*/
-		
-		((EntityPlayerMP)icommandsender).playerNetServerHandler.sendPacketToPlayer(Packet_ChunkTopList.create(chunks));		
+		if (icommandsender instanceof EntityPlayer)		
+			((EntityPlayerMP)icommandsender).playerNetServerHandler.sendPacketToPlayer(Packet_ChunkTopList.create(chunks));
+		else if (icommandsender instanceof DedicatedServer){
+			icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText("[DIM X Z] Time NTEs"));
+			for (ChunkStats stat : chunks){
+				icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText(stat.toString()));
+			}
+		}
 		
 	}
 
@@ -56,7 +64,7 @@ public class CommandChunkList extends CommandBase implements IOpisCommand {
 	@Override
     public boolean canCommandSenderUseCommand(ICommandSender sender)
     {
-		if (sender instanceof DedicatedServer) return false;
+		if (sender instanceof DedicatedServer) return true;
 		if (((EntityPlayerMP)sender).playerNetServerHandler.netManager instanceof MemoryConnection) return true;		
         return MinecraftServer.getServer().getConfigurationManager().isPlayerOpped(((EntityPlayerMP)sender).username);
     }

@@ -8,10 +8,12 @@ import mcp.mobius.opis.data.managers.TileEntityManager;
 import mcp.mobius.opis.network.server.Packet_ModMeanTime;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.MemoryConnection;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.dedicated.DedicatedServer;
+import net.minecraft.util.ChatMessageComponent;
 
 public class CommandMeanModTime extends CommandBase implements IOpisCommand {
 
@@ -28,7 +30,17 @@ public class CommandMeanModTime extends CommandBase implements IOpisCommand {
 	@Override
 	public void processCommand(ICommandSender icommandsender, String[] astring) {
 		ArrayList<ModStats> modStats = TileEntityManager.getModStats();
-		((EntityPlayerMP)icommandsender).playerNetServerHandler.sendPacketToPlayer(Packet_ModMeanTime.create(modStats));		
+		
+		if (icommandsender instanceof EntityPlayer)		
+			((EntityPlayerMP)icommandsender).playerNetServerHandler.sendPacketToPlayer(Packet_ModMeanTime.create(modStats));
+		else if (icommandsender instanceof DedicatedServer){
+			icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText("[Name] NTEs MeanTime"));
+			for (ModStats stat : modStats){
+				icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText(
+						String.format("[ %s ] %3d %.2f", stat.getModID(), stat.ntes, stat.dstat.getMean())));
+			}
+		}		
+		
 	}
 
 	@Override

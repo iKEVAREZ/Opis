@@ -127,11 +127,11 @@ public class modOpis {
 		event.registerServerCommand(new CommandKill());
 		event.registerServerCommand(new CommandKillAll());		
 		event.registerServerCommand(new CommandReset());
-		event.registerServerCommand(new CommandHandler());		
+		//event.registerServerCommand(new CommandHandler());		
 		
-		event.registerServerCommand(new CommandClientTest());
-		event.registerServerCommand(new CommandClientStart());
-		event.registerServerCommand(new CommandClientShowRenderTick());		
+		//event.registerServerCommand(new CommandClientTest());
+		//event.registerServerCommand(new CommandClientStart());
+		//event.registerServerCommand(new CommandClientShowRenderTick());		
 		
 		event.registerServerCommand(new CommandHelp());
 		

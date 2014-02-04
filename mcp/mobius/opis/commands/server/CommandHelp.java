@@ -46,14 +46,11 @@ public class CommandHelp extends CommandBase implements IOpisCommand {
 				new CommandKill(),
 				new CommandKillAll(),
 				
-				new CommandHandler()
+				//new CommandHandler()
 		};
-
-		if (icommandsender instanceof EntityPlayer)		
-			for (IOpisCommand cmd : commands)
-				PacketDispatcher.sendPacketToPlayer(new Packet3Chat(ChatMessageComponent.createFromText(String.format("/%s : %s", cmd.getCommandName(), cmd.getDescription()))), (Player)icommandsender);		
 		
-		
+		for (IOpisCommand cmd : commands)
+			icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText(String.format("/%s : %s", cmd.getCommandName(), cmd.getDescription())));
 	}
 
 	@Override
@@ -65,7 +62,6 @@ public class CommandHelp extends CommandBase implements IOpisCommand {
 	@Override
     public boolean canCommandSenderUseCommand(ICommandSender sender)
     {
-		if (sender instanceof DedicatedServer) return false;
 		return true;		
     }
 

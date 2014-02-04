@@ -8,10 +8,12 @@ import mcp.mobius.opis.data.managers.TileEntityManager;
 import mcp.mobius.opis.network.server.Packet_TileEntitiesTopList;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.MemoryConnection;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.dedicated.DedicatedServer;
+import net.minecraft.util.ChatMessageComponent;
 
 public class CommandTimingTileEntities extends CommandBase implements IOpisCommand {
 
@@ -37,7 +39,13 @@ public class CommandTimingTileEntities extends CommandBase implements IOpisComma
 			} catch (Exception e) {return;}
 		}
 		
-		((EntityPlayerMP)icommandsender).playerNetServerHandler.sendPacketToPlayer(Packet_TileEntitiesTopList.create(tes));
+		if (icommandsender instanceof EntityPlayer)		
+			((EntityPlayerMP)icommandsender).playerNetServerHandler.sendPacketToPlayer(Packet_TileEntitiesTopList.create(tes));
+		else if (icommandsender instanceof DedicatedServer){
+			for (TileEntityStats stat : tes){
+				icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText(stat.toString()));
+			}
+		}			
 		
 	}
 
@@ -50,7 +58,7 @@ public class CommandTimingTileEntities extends CommandBase implements IOpisComma
 	@Override
     public boolean canCommandSenderUseCommand(ICommandSender sender)
     {
-		if (sender instanceof DedicatedServer) return false;
+		if (sender instanceof DedicatedServer) return true;
 		if (((EntityPlayerMP)sender).playerNetServerHandler.netManager instanceof MemoryConnection) return true;
         return MinecraftServer.getServer().getConfigurationManager().isPlayerOpped(((EntityPlayerMP)sender).username);
     }			

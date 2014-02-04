@@ -35,24 +35,18 @@ public class CommandKill extends CommandBase implements IOpisCommand {
 		
 		World world = DimensionManager.getWorld(dim);
 		if (world == null){
-			PacketDispatcher.sendPacketToPlayer(			
-			new Packet3Chat(ChatMessageComponent.createFromText(String.format("\u00A7oCannot find dim %d in world %d", dim))), 
-			               (Player)icommandsender);
+			icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText(String.format("\u00A7oCannot find dim %d in world %d", dim)));
 			return;
 		}
 		
 		Entity entity = world.getEntityByID(eid);
 		if (entity == null) {
-			PacketDispatcher.sendPacketToPlayer(			
-			new Packet3Chat(ChatMessageComponent.createFromText(String.format("\u00A7oCannot find entity %d in dim %d", eid, dim))), 
-			               (Player)icommandsender);
+			icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText(String.format("\u00A7oCannot find entity %d in dim %d", eid, dim))); 
 			return;
 		}
 		
 		entity.setDead();
-		PacketDispatcher.sendPacketToPlayer(			
-		new Packet3Chat(ChatMessageComponent.createFromText(String.format("\u00A7oKilled entity %d in dim %d", eid, dim))), 
-		               (Player)icommandsender);
+		icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText(String.format("\u00A7oKilled entity %d in dim %d", eid, dim)));
 		return;		
 	}
 
@@ -65,7 +59,7 @@ public class CommandKill extends CommandBase implements IOpisCommand {
 	@Override
     public boolean canCommandSenderUseCommand(ICommandSender sender)
     {
-		if (sender instanceof DedicatedServer) return false;
+		if (sender instanceof DedicatedServer) return true;
 		if (((EntityPlayerMP)sender).playerNetServerHandler.netManager instanceof MemoryConnection) return true;		
         return MinecraftServer.getServer().getConfigurationManager().isPlayerOpped(((EntityPlayerMP)sender).username);
     }

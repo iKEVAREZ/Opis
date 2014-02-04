@@ -10,10 +10,12 @@ import mcp.mobius.opis.data.managers.EntityManager;
 import mcp.mobius.opis.network.server.Packet_DataScreenTimingEntities;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.MemoryConnection;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.dedicated.DedicatedServer;
+import net.minecraft.util.ChatMessageComponent;
 
 public class CommandTimingEntities extends CommandBase implements IOpisCommand {
 
@@ -39,7 +41,14 @@ public class CommandTimingEntities extends CommandBase implements IOpisCommand {
 			} catch (Exception e) {return;}
 		}
 		
-		((EntityPlayerMP)icommandsender).playerNetServerHandler.sendPacketToPlayer(Packet_DataScreenTimingEntities.create(ents));
+		if (icommandsender instanceof EntityPlayer)		
+			((EntityPlayerMP)icommandsender).playerNetServerHandler.sendPacketToPlayer(Packet_DataScreenTimingEntities.create(ents));
+		else if (icommandsender instanceof DedicatedServer){
+			icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText("[DIM X Z] Time NTEs"));
+			for (EntityStats stat : ents){
+				icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText(stat.toString()));
+			}
+		}		
 		
 	}
 
@@ -52,7 +61,7 @@ public class CommandTimingEntities extends CommandBase implements IOpisCommand {
 	@Override
     public boolean canCommandSenderUseCommand(ICommandSender sender)
     {
-		if (sender instanceof DedicatedServer) return false;
+		if (sender instanceof DedicatedServer) return true;
 		if (((EntityPlayerMP)sender).playerNetServerHandler.netManager instanceof MemoryConnection) return true;		
         return MinecraftServer.getServer().getConfigurationManager().isPlayerOpped(((EntityPlayerMP)sender).username);
     }

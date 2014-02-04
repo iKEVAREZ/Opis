@@ -31,8 +31,7 @@ public class CommandFrequency extends CommandBase implements IOpisCommand {
 		if (astring.length < 1) return;
 		try{
 			modOpis.profilerDelay = Integer.valueOf(astring[0]);
-			if (icommandsender instanceof EntityPlayer)
-				PacketDispatcher.sendPacketToPlayer(new Packet3Chat(ChatMessageComponent.createFromText(String.format("\u00A7oOpis delay set to %s ticks.", astring[0]))), (Player)icommandsender);			
+			icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText(String.format("\u00A7oOpis delay set to %s ticks.", astring[0])));
 
 		} catch (Exception e){}
 	}

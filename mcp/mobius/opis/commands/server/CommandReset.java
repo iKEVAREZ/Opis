@@ -38,8 +38,7 @@ public class CommandReset extends CommandBase implements IOpisCommand {
 	public void processCommand(ICommandSender icommandsender, String[] astring) {
 		MetaManager.reset();
 		
-		if (icommandsender instanceof EntityPlayer)
-			PacketDispatcher.sendPacketToPlayer(new Packet3Chat(ChatMessageComponent.createFromText(String.format("\u00A7oInternal data reseted."))), (Player)icommandsender);
+		icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText(String.format("\u00A7oInternal data reseted.")));
 		
 		PacketDispatcher.sendPacketToAllPlayers(Packet_ClearSelection.create());
 		//notifyAdmins(icommandsender, "Opis started with a tick delay %s.", new Object[] {modOpis.profilerDelay});		

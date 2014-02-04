@@ -39,8 +39,7 @@ public class CommandKillAll extends CommandBase implements IOpisCommand {
 		int nkilled = 0;
 		
 		if (searchname.equals("Player")){
-			if (icommandsender instanceof EntityPlayer)
-				PacketDispatcher.sendPacketToPlayer(new Packet3Chat(ChatMessageComponent.createFromText(String.format("\u00A7oSeriously ? I can't, seriously, I can't. I should remove you from the OP list !"))), (Player)icommandsender);
+			icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText(String.format("\u00A7oSeriously ? I can't, seriously, I can't. I should remove you from the OP list !")));
 			return;
 		}
 			
@@ -61,7 +60,7 @@ public class CommandKillAll extends CommandBase implements IOpisCommand {
 		}
 
 		if (icommandsender instanceof EntityPlayer)
-			PacketDispatcher.sendPacketToPlayer(new Packet3Chat(ChatMessageComponent.createFromText(String.format("\u00A7oKilled %d entities of type %s", nkilled, searchname))), (Player)icommandsender);		
+			icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText(String.format("\u00A7oKilled %d entities of type %s", nkilled, searchname)));		
 		
 		/*
 		World world = DimensionManager.getWorld(dim);
@@ -97,7 +96,7 @@ public class CommandKillAll extends CommandBase implements IOpisCommand {
 	@Override
     public boolean canCommandSenderUseCommand(ICommandSender sender)
     {
-		if (sender instanceof DedicatedServer) return false;
+		if (sender instanceof DedicatedServer) return true;
 		if (((EntityPlayerMP)sender).playerNetServerHandler.netManager instanceof MemoryConnection) return true;		
         return MinecraftServer.getServer().getConfigurationManager().isPlayerOpped(((EntityPlayerMP)sender).username);
     }
