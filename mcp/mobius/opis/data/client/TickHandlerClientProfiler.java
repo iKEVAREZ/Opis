@@ -24,9 +24,8 @@ public class TickHandlerClientProfiler implements IProfilerTick {
 	
 	@Override
 	public void StartTickStart(IScheduledTickHandler ticker, EnumSet<TickType> ticksToRun) {
-		//if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT) return;		
-		if ((!modOpis.profilerRun) || (OpisClientTickHandler.instance.profilerUpdateTickCounter % modOpis.profilerDelay != 0)) return;
-		if (!ticksToRun.contains(TickType.RENDER)) return;
+		if (OpisClientTickHandler.instance.profilerUpdateTickCounter % modOpis.profilerDelay != 0) return;
+		if (!ticksToRun.contains(TickType.RENDER) || ticksToRun.size() != 1) return;
 		
 		String name = TickHandlerManager.getHandlerName(ticker);
 		this.currentHandler = name;
@@ -35,9 +34,9 @@ public class TickHandlerClientProfiler implements IProfilerTick {
 
 	@Override
 	public void StopTickStart(IScheduledTickHandler ticker, EnumSet<TickType> ticksToRun) {
-		if ((!modOpis.profilerRun) || (OpisClientTickHandler.instance.profilerUpdateTickCounter % modOpis.profilerDelay != 0)) return;		
-		if (!ticksToRun.contains(TickType.RENDER)) return;		
-		this.clock.stop();
+		this.clock.stop();	
+		if (OpisClientTickHandler.instance.profilerUpdateTickCounter % modOpis.profilerDelay != 0) return;		
+		if (!ticksToRun.contains(TickType.RENDER) || ticksToRun.size() != 1) return;	
 		
 		String name = TickHandlerManager.getHandlerName(ticker);
 		if (!this.currentHandler.equals(name))
@@ -50,8 +49,8 @@ public class TickHandlerClientProfiler implements IProfilerTick {
 
 	@Override
 	public void StartTickEnd(IScheduledTickHandler ticker, EnumSet<TickType> ticksToRun) {
-		if ((!modOpis.profilerRun) || (OpisClientTickHandler.instance.profilerUpdateTickCounter % modOpis.profilerDelay != 0)) return;
-		if (!ticksToRun.contains(TickType.RENDER)) return;
+		if (OpisClientTickHandler.instance.profilerUpdateTickCounter % modOpis.profilerDelay != 0) return;
+		if (!ticksToRun.contains(TickType.RENDER) || ticksToRun.size() != 1) return;
 
 		String name = TickHandlerManager.getHandlerName(ticker);	
 		this.currentHandler = name;
@@ -60,9 +59,9 @@ public class TickHandlerClientProfiler implements IProfilerTick {
 
 	@Override
 	public void StopTickEnd(IScheduledTickHandler ticker, EnumSet<TickType> ticksToRun) {
-		if ((!modOpis.profilerRun) || (OpisClientTickHandler.instance.profilerUpdateTickCounter % modOpis.profilerDelay != 0)) return;
-		if (!ticksToRun.contains(TickType.RENDER)) return;		
-		this.clock.stop();
+		this.clock.stop();	
+		if (OpisClientTickHandler.instance.profilerUpdateTickCounter % modOpis.profilerDelay != 0) return;
+		if (!ticksToRun.contains(TickType.RENDER) || ticksToRun.size() != 1) return;		
 		
 		String name = TickHandlerManager.getHandlerName(ticker);
 		if (!this.currentHandler.equals(name))
