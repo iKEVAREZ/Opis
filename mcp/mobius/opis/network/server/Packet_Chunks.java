@@ -6,9 +6,14 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+
+import cpw.mods.fml.common.network.PacketDispatcher;
+import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import mapwriter.region.MwChunk;
+import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.network.Packets;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.network.packet.Packet56MapChunks;
@@ -18,13 +23,83 @@ import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
 
 public class Packet_Chunks {
 
+	public static int MAXPACKETSIZE = 32000;	// This should be set to 32k but can be made lower for testing
+	
 	public byte header;
 	public int  dim;
 	public MwChunk[] chunks;
 	
+	private static ByteArrayOutputStream bosPayload = new ByteArrayOutputStream(1);
+	private static DataOutputStream streamPayload   = new DataOutputStream(bosPayload);
+	
 	@SideOnly(Side.CLIENT)
-	public Packet_Chunks(Packet250CustomPayload packet) {
+	public static Packet_Chunks read(Packet250CustomPayload packet) {
 		DataInputStream inputStream = new DataInputStream(new ByteArrayInputStream(packet.data));
+		Packet_Chunks   retPacket   = null;
+		
+		byte header;
+		int  dataSize;
+		
+		try{
+			header   = inputStream.readByte();
+			dataSize = inputStream.readInt();
+			
+			if (dataSize == -1){
+				retPacket = new Packet_Chunks(bosPayload.toByteArray());
+				bosPayload.reset();
+			} else {
+				byte[] buffer = new byte[dataSize];
+				int    readBytes = 0;
+				while ((readBytes = inputStream.read(buffer)) != -1){
+					streamPayload.write(buffer);
+				}
+			}
+			
+		} catch (IOException e){}
+		
+		return retPacket;
+	}	
+	
+	public static Packet250CustomPayload[] createPackets(String channel, byte header, byte[] data){
+		Packet250CustomPayload[] packets = new Packet250CustomPayload[(data.length / MAXPACKETSIZE) + 2];	// Might require a small change to take round values into account
+		
+		ByteArrayInputStream bis   = new ByteArrayInputStream(data);
+		DataInputStream dataStream = new DataInputStream(bis);
+		int packetIndex    = 0;
+		int readBytes      = 0;
+		
+		while(readBytes != -1){
+			Packet250CustomPayload tmpPacket = new Packet250CustomPayload();
+			ByteArrayOutputStream bos        = new ByteArrayOutputStream(1);
+			DataOutputStream outputStream    = new DataOutputStream(bos);	
+
+			try{
+			
+				outputStream.writeByte(header);
+				byte[] buffer = new byte[MAXPACKETSIZE];
+				readBytes = dataStream.read(buffer);
+				outputStream.writeInt(readBytes);
+				
+				if (readBytes != -1)
+					outputStream.write(buffer);
+			
+			} catch (IOException e){}
+			
+			tmpPacket.channel = channel;
+			tmpPacket.data    = bos.toByteArray();
+			tmpPacket.length  = bos.size();			
+			
+			packets[packetIndex] = tmpPacket;
+			packetIndex += 1;
+		}
+		return packets;
+	}
+	
+	
+
+	@SideOnly(Side.CLIENT)
+	public Packet_Chunks(byte[] data) {
+		DataInputStream inputStream = new DataInputStream(new ByteArrayInputStream(data));
 		
 		try{
 			this.header      = inputStream.readByte();
@@ -41,10 +116,20 @@ public class Packet_Chunks {
 				this.chunks[i] = newChunk;
 			}
 			
-		} catch (IOException e){}				
+		} catch (IOException e){}
 	}
 
-	public static Packet250CustomPayload create(int dim, boolean hasNoSky, ArrayList<Chunk> chunks){
+	public static void send(int dim, boolean hasNoSky, ArrayList<Chunk> chunks, Player player){
+		Packet250CustomPayload packet    = create(dim, hasNoSky, chunks);
+		Packet250CustomPayload[] packets = createPackets("Opis_Chunk", Packets.CHUNKS, packet.data);
+		
+		for (Packet250CustomPayload p : packets){
+			if (p != null)
+				PacketDispatcher.sendPacketToPlayer(p, player);
+		}
+	}
+	
+	private static Packet250CustomPayload create(int dim, boolean hasNoSky, ArrayList<Chunk> chunks){
 		//Packet250CustomPayload packet = new Packet250CustomPayload();
 		Packet250CustomPayload packet = new Packet250CustomPayload();
 		ByteArrayOutputStream bos     = new ByteArrayOutputStream(1);
@@ -59,17 +144,9 @@ public class Packet_Chunks {
 			 chunkPacket.writePacketData(outputStream);
 		}catch(IOException e){}
 		
-		packet.channel = "Opis";
+		packet.channel = "Opis_Chunk";
 		packet.data    = bos.toByteArray();
 		packet.length  = bos.size();		
-		
-		/*
-        if (packet.length > 32767){
-            //throw new IllegalArgumentException(String.format("Payload may not be larger than 32k : %s", packet.length));
-        	modOpis.log.log(Level.WARNING, String.format("Payload may not be larger than 32k : %s", packet.length));
-        	return null;
-        }
-        */
 		
 		return packet;
 	}		

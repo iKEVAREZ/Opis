@@ -60,7 +60,7 @@ public class OpisPacketHandler implements IPacketHandler {
 
 	@Override
 	public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player player) {
-        if (packet.channel.equals("Opis")) {
+        if (packet.channel.equals("Opis") || packet.channel.equals("Opis_Chunk")) {
 			byte header = this.getHeader(packet);
 			
 			if (header == -1) return;
@@ -100,8 +100,9 @@ public class OpisPacketHandler implements IPacketHandler {
 		}			
 
 		else if (header == Packets.CHUNKS){
-			Packet_Chunks castedPacket = new Packet_Chunks(packet);
-			Mw.instance.chunkManager.forceChunks(castedPacket.chunks);
+			Packet_Chunks castedPacket = Packet_Chunks.read(packet);
+			if (castedPacket != null)
+				Mw.instance.chunkManager.forceChunks(castedPacket.chunks);
 		}
 		
 		else if (header == Packets.CHUNKS_TOPLIST){
@@ -211,10 +212,12 @@ public class OpisPacketHandler implements IPacketHandler {
 						list.add(world.getChunkFromChunkCoords(chunk.chunkX, chunk.chunkZ));
 					
 					if (!list.isEmpty()){
+						Packet_Chunks.send(castedPacket.dim, !world.provider.hasNoSky, list, player);
+						/*
 						Packet250CustomPayload chunkPacket = Packet_Chunks.create(castedPacket.dim, !world.provider.hasNoSky, list);
 						if (chunkPacket != null)
 							PacketDispatcher.sendPacketToPlayer( chunkPacket, player);
-						//PacketDispatcher.sendPacketToPlayer( new Packet56MapChunks(list), player);
+						*/
 					}
 				}
 			}
