@@ -10,7 +10,6 @@ import java.util.Hashtable;
 
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 
-import mcp.mobius.opis.network.Packet251Extended;
 import mcp.mobius.opis.network.Packets;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.server.MinecraftServer;
@@ -43,7 +42,7 @@ public class Packet_TPS {
 	}
 
 	public static Packet250CustomPayload create(){
-		Packet251Extended packet      = new Packet251Extended();
+		Packet250CustomPayload packet      = new Packet250CustomPayload();
 		ByteArrayOutputStream bos     = new ByteArrayOutputStream(1);
 		DataOutputStream outputStream = new DataOutputStream(bos);
 

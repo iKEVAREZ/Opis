@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import mcp.mobius.opis.data.holders.TileEntityStats;
-import mcp.mobius.opis.network.Packet251Extended;
 import mcp.mobius.opis.network.Packets;
 import net.minecraft.network.packet.Packet250CustomPayload;
 
@@ -30,7 +29,7 @@ public class Packet_TileEntitiesTopList {
 	}
 
 	public static Packet250CustomPayload create(ArrayList<TileEntityStats> stats){
-		Packet251Extended packet      = new Packet251Extended();
+		Packet250CustomPayload packet      = new Packet250CustomPayload();
 		ByteArrayOutputStream bos     = new ByteArrayOutputStream(1);
 		DataOutputStream outputStream = new DataOutputStream(bos);
 

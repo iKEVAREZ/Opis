@@ -6,24 +6,15 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.zip.ZipInputStream;
-import java.util.zip.ZipOutputStream;
-
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import mapwriter.region.MwChunk;
-import mcp.mobius.opis.modOpis;
-import mcp.mobius.opis.network.Packet251Extended;
 import mcp.mobius.opis.network.Packets;
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.network.packet.Packet56MapChunks;
-import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.NibbleArray;
 import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
-import net.minecraftforge.common.DimensionManager;
 
 public class Packet_Chunks {
 
@@ -55,7 +46,7 @@ public class Packet_Chunks {
 
 	public static Packet250CustomPayload create(int dim, boolean hasNoSky, ArrayList<Chunk> chunks){
 		//Packet250CustomPayload packet = new Packet250CustomPayload();
-		Packet251Extended packet      = new Packet251Extended();
+		Packet250CustomPayload packet = new Packet250CustomPayload();
 		ByteArrayOutputStream bos     = new ByteArrayOutputStream(1);
 		DataOutputStream outputStream = new DataOutputStream(bos);
 

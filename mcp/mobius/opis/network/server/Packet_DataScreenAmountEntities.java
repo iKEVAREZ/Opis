@@ -7,8 +7,8 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 
-import mcp.mobius.opis.network.Packet251Extended;
 import mcp.mobius.opis.network.Packets;
+import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
 
 public class Packet_DataScreenAmountEntities {
@@ -23,7 +23,7 @@ public class Packet_DataScreenAmountEntities {
 			this.header  = inputStream.readByte();
 			int ndata    = inputStream.readInt();
 			for (int i = 0; i < ndata; i++){
-				String name = packet.readString(inputStream, 255);
+				String name = Packet.readString(inputStream, 255);
 				int    amount = inputStream.readInt();
 				entities.put(name, amount);
 			}
@@ -31,7 +31,7 @@ public class Packet_DataScreenAmountEntities {
 	}
 
 	public static Packet250CustomPayload create(HashMap<String, Integer> entities){
-		Packet251Extended packet      = new Packet251Extended();
+		Packet250CustomPayload packet      = new Packet250CustomPayload();
 		ByteArrayOutputStream bos     = new ByteArrayOutputStream(1);
 		DataOutputStream outputStream = new DataOutputStream(bos);
 

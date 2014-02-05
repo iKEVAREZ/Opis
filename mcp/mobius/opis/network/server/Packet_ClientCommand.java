@@ -6,7 +6,6 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import mcp.mobius.opis.network.ClientCommand;
 import mcp.mobius.opis.network.Packets;
 import net.minecraft.network.packet.Packet250CustomPayload;
 

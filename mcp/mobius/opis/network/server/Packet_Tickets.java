@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.util.HashSet;
 
 import mcp.mobius.opis.data.holders.TicketData;
-import mcp.mobius.opis.network.Packet251Extended;
 import mcp.mobius.opis.network.Packets;
 import net.minecraft.network.packet.Packet250CustomPayload;
 
@@ -31,7 +30,7 @@ public class Packet_Tickets {
 	}
 
 	public static Packet250CustomPayload create(HashSet<TicketData>  data){
-		Packet251Extended packet      = new Packet251Extended();
+		Packet250CustomPayload packet      = new Packet250CustomPayload();
 		ByteArrayOutputStream bos     = new ByteArrayOutputStream(1);
 		DataOutputStream outputStream = new DataOutputStream(bos);
 
