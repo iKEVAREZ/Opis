@@ -23,7 +23,7 @@ import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
 
 public class Packet_Chunks {
 
-	public static int MAXPACKETSIZE = 32000;	// This should be set to 32k but can be made lower for testing
+	public static int MAXPACKETSIZE = 30000;	// This should be set to 32k but can be made lower for testing
 	
 	public byte header;
 	public int  dim;
