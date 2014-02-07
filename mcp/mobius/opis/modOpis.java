@@ -55,7 +55,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
 
-@Mod(modid="Opis", name="Opis", version="1.1.3_alpha")
+@Mod(modid="Opis", name="Opis", version="1.1.3a_alpha")
 @NetworkMod(channels={"Opis", "Opis_Chunk"},clientSideRequired=false, serverSideRequired=false, connectionHandler=OpisConnectionHandler.class, packetHandler=OpisPacketHandler.class)
 
 public class modOpis {
@@ -97,11 +97,11 @@ public class modOpis {
 		TickRegistry.registerTickHandler(new OpisClientTickHandler(), Side.CLIENT);
 		
 		if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT){
-			ProfilerRegistrar.registerProfilerTick(new TickHandlerClientProfiler());
+			//ProfilerRegistrar.registerProfilerTick(new TickHandlerClientProfiler());
 		} else {
 			ProfilerRegistrar.registerProfilerTileEntity(new TileEntityProfiler());
 			ProfilerRegistrar.registerProfilerEntity(new EntityProfiler());
-			ProfilerRegistrar.registerProfilerTick(new TickHandlerProfiler());			
+			//ProfilerRegistrar.registerProfilerTick(new TickHandlerProfiler());			
 		}
 			
 	}

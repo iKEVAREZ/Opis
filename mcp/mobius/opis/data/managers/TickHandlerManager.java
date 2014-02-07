@@ -47,7 +47,8 @@ public class TickHandlerManager {
 		String name = handler.getLabel();
 		if (name == null || name.equals(""))
 			if (handler instanceof SingleIntervalHandler)
-				name = ((SingleIntervalHandler)handler).wrapped.getClass().getName();
+				//name = ((SingleIntervalHandler)handler).wrapped.getClass().getName();
+				name = "<Unnamed SingleIntervalHandler>";
 			else
 				name = handler.getClass().getName();
 		
