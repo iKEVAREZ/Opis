@@ -27,6 +27,11 @@ public class CommandKillAll extends CommandBase implements IOpisCommand {
 	}
 
 	@Override
+	public String getCommandNameOpis() {
+		return this.getCommandName();
+	}	
+	
+	@Override
 	public String getCommandUsage(ICommandSender icommandsender) {
 		return "";
 	}
@@ -59,8 +64,7 @@ public class CommandKillAll extends CommandBase implements IOpisCommand {
 			}
 		}
 
-		if (icommandsender instanceof EntityPlayer)
-			icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText(String.format("\u00A7oKilled %d entities of type %s", nkilled, searchname)));		
+		icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText(String.format("\u00A7oKilled %d entities of type %s", nkilled, searchname)));		
 		
 		/*
 		World world = DimensionManager.getWorld(dim);
@@ -97,7 +101,8 @@ public class CommandKillAll extends CommandBase implements IOpisCommand {
     public boolean canCommandSenderUseCommand(ICommandSender sender)
     {
 		if (sender instanceof DedicatedServer) return true;
-		if (((EntityPlayerMP)sender).playerNetServerHandler.netManager instanceof MemoryConnection) return true;		
+		if ((sender instanceof EntityPlayerMP) && ((EntityPlayerMP)sender).playerNetServerHandler.netManager instanceof MemoryConnection) return true;
+		if (!(sender instanceof DedicatedServer) && !(sender instanceof EntityPlayerMP)) return true;
         return MinecraftServer.getServer().getConfigurationManager().isPlayerOpped(((EntityPlayerMP)sender).username);
     }
 

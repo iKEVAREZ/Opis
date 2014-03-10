@@ -32,6 +32,11 @@ public class CommandDataDump extends CommandBase implements IOpisCommand {
 	}
 
 	@Override
+	public String getCommandNameOpis() {
+		return this.getCommandName();
+	}	
+	
+	@Override
 	public String getCommandUsage(ICommandSender icommandsender) {
 		return "";
 	}
@@ -134,7 +139,8 @@ public class CommandDataDump extends CommandBase implements IOpisCommand {
     public boolean canCommandSenderUseCommand(ICommandSender sender)
     {
 		if (sender instanceof DedicatedServer) return true;
-		if (((EntityPlayerMP)sender).playerNetServerHandler.netManager instanceof MemoryConnection) return true;
+		if ((sender instanceof EntityPlayerMP) && ((EntityPlayerMP)sender).playerNetServerHandler.netManager instanceof MemoryConnection) return true;
+		if (!(sender instanceof DedicatedServer) && !(sender instanceof EntityPlayerMP)) return true;
         return MinecraftServer.getServer().getConfigurationManager().isPlayerOpped(((EntityPlayerMP)sender).username);
     }
 

@@ -1,5 +1,6 @@
 package mcp.mobius.opis.data.managers;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -12,6 +13,21 @@ public class TickHandlerManager {
 
 	public static HashMap<String, TickHandlerStats> startStats = new HashMap<String, TickHandlerStats>();
 	public static HashMap<String, TickHandlerStats> endStats   = new HashMap<String, TickHandlerStats>();	
+	public static Class SingleIntervalHandlerReflect;
+	public static Field wrapped;
+	
+	static {
+		try{
+			SingleIntervalHandlerReflect = Class.forName("cpw.mods.fml.common.SingleIntervalHandler");
+			wrapped                = SingleIntervalHandlerReflect.getDeclaredField("wrapped");
+			wrapped.setAccessible(true);
+			
+		} catch (Exception e) {
+			
+			throw new RuntimeException(e);
+			
+		}
+	}
 	
 	public static void addHandlerStart(IScheduledTickHandler handler, long timing){
 		String name = getHandlerName(handler);			
@@ -35,6 +51,7 @@ public class TickHandlerManager {
 		for (String key : startStats.keySet()){
 			totalStats.put(key, new TickHandlerStats(key));
 			totalStats.get(key).setGeometricMean(startStats.get(key).getGeometricMean() + endStats.get(key).getGeometricMean());
+			totalStats.get(key).npoints = startStats.get(key).npoints + endStats.get(key).npoints;
 		}
 		
 		ArrayList<TickHandlerStats> sortedStats   = new ArrayList(totalStats.values());
@@ -46,9 +63,18 @@ public class TickHandlerManager {
 	public static String getHandlerName(IScheduledTickHandler handler){
 		String name = handler.getLabel();
 		if (name == null || name.equals(""))
-			if (handler instanceof SingleIntervalHandler)
+			if (handler instanceof SingleIntervalHandler){
+				try{
+					Object ticker = wrapped.get(handler);
+					name = ticker.getClass().getName();
+				} catch (Exception e) {
+					throw new RuntimeException(e);
+				}
+				
+				
 				//name = ((SingleIntervalHandler)handler).wrapped.getClass().getName();
-				name = "<Unnamed SingleIntervalHandler>";
+				name = "<Unnamed SingleIntervalHandler>"; // This part should be done via reflection to get the handler name./opis
+			}
 			else
 				name = handler.getClass().getName();
 		

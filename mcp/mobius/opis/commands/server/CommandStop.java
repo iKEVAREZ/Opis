@@ -25,6 +25,11 @@ public class CommandStop extends CommandBase implements IOpisCommand {
 	}
 
 	@Override
+	public String getCommandNameOpis() {
+		return this.getCommandName();
+	}	
+	
+	@Override
 	public String getCommandUsage(ICommandSender icommandsender) {
 		return "";
 	}
@@ -40,7 +45,7 @@ public class CommandStop extends CommandBase implements IOpisCommand {
 		for (EntityPlayer player : OpisServerTickHandler.instance.players)
 			PacketDispatcher.sendPacketToPlayer(new Packet3Chat(ChatMessageComponent.createFromText(String.format("\u00A7oOpis stopped."))), (Player)player);
 		
-		if (icommandsender instanceof DedicatedServer)
+		if (!(icommandsender instanceof EntityPlayer))
 			icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText(String.format("\u00A7oOpis stopped.")));
 	}
 
@@ -54,7 +59,8 @@ public class CommandStop extends CommandBase implements IOpisCommand {
     public boolean canCommandSenderUseCommand(ICommandSender sender)
     {
 		if (sender instanceof DedicatedServer) return true;
-		if (((EntityPlayerMP)sender).playerNetServerHandler.netManager instanceof MemoryConnection) return true;
+		if ((sender instanceof EntityPlayerMP) && ((EntityPlayerMP)sender).playerNetServerHandler.netManager instanceof MemoryConnection) return true;
+		if (!(sender instanceof DedicatedServer) && !(sender instanceof EntityPlayerMP)) return true;
         return MinecraftServer.getServer().getConfigurationManager().isPlayerOpped(((EntityPlayerMP)sender).username);
     }
 

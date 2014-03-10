@@ -13,6 +13,7 @@ public class TickHandlerStats implements ISerializable, Comparable{
 	public  DescriptiveStatistics dstat = new DescriptiveStatistics();	// Stored in microseconds !
 	private String name;
 	private Double geomMean = null;	
+	public  int npoints = 0;
 	
 	
 	public TickHandlerStats(String name){
@@ -21,6 +22,7 @@ public class TickHandlerStats implements ISerializable, Comparable{
 	
 	public void addMeasure(long timing){
 		dstat.addValue((double)timing/1000.0);
+		npoints += 1;
 	}	
 	
 	public double getGeometricMean(){

@@ -142,7 +142,7 @@ public class EntityManager {
 	}
 	
 	/* Returns a hashmap with the entity name and amount of it on the server */
-	public static HashMap<String, Integer> getCumulativeEntities(){
+	public static HashMap<String, Integer> getCumulativeEntities(boolean showSubType){
 		HashMap<String, Integer> entities = new HashMap<String, Integer>();
 		
 		for (int dim : DimensionManager.getIDs()){
@@ -152,7 +152,7 @@ public class EntityManager {
 			for (int i = 0; i < world.loadedEntityList.size(); i++){
 				Entity ent = (Entity)world.loadedEntityList.get(i);
 				//String name = ent.getClass().getName();
-				String name = getEntityName(ent);
+				String name = getEntityName(ent, showSubType);
 				
 				if (!entities.containsKey(name))
 					entities.put(name, 0);
@@ -254,7 +254,11 @@ public class EntityManager {
 	}	
 	
 	public static String getEntityName(Entity ent){
-		if (ent instanceof EntityItem)
+		return getEntityName(ent, false);
+	}
+	
+	public static String getEntityName(Entity ent, boolean showSubType){
+		if (ent instanceof EntityItem && !showSubType)
 			return "Dropped Item";
 		
 		if (ent instanceof EntityPlayerMP)

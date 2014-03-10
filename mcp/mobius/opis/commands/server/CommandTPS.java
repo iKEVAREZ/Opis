@@ -14,6 +14,11 @@ public class CommandTPS extends CommandBase implements IOpisCommand {
 	}
 
 	@Override
+	public String getCommandNameOpis() {
+		return this.getCommandName();
+	}	
+	
+	@Override
 	public String getCommandUsage(ICommandSender icommandsender) {
 		return "";
 	}

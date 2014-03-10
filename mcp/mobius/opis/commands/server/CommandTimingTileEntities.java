@@ -23,6 +23,11 @@ public class CommandTimingTileEntities extends CommandBase implements IOpisComma
 	}
 
 	@Override
+	public String getCommandNameOpis() {
+		return this.getCommandName();
+	}	
+	
+	@Override
 	public String getCommandUsage(ICommandSender icommandsender) {
 		return "";
 	}
@@ -41,7 +46,7 @@ public class CommandTimingTileEntities extends CommandBase implements IOpisComma
 		
 		if (icommandsender instanceof EntityPlayer)		
 			((EntityPlayerMP)icommandsender).playerNetServerHandler.sendPacketToPlayer(Packet_TileEntitiesTopList.create(tes));
-		else if (icommandsender instanceof DedicatedServer){
+		else{
 			for (TileEntityStats stat : tes){
 				icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText(stat.toString()));
 			}
@@ -59,7 +64,8 @@ public class CommandTimingTileEntities extends CommandBase implements IOpisComma
     public boolean canCommandSenderUseCommand(ICommandSender sender)
     {
 		if (sender instanceof DedicatedServer) return true;
-		if (((EntityPlayerMP)sender).playerNetServerHandler.netManager instanceof MemoryConnection) return true;
+		if ((sender instanceof EntityPlayerMP) && ((EntityPlayerMP)sender).playerNetServerHandler.netManager instanceof MemoryConnection) return true;
+		if (!(sender instanceof DedicatedServer) && !(sender instanceof EntityPlayerMP)) return true;
         return MinecraftServer.getServer().getConfigurationManager().isPlayerOpped(((EntityPlayerMP)sender).username);
     }			
 	

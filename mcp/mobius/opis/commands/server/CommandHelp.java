@@ -21,6 +21,11 @@ public class CommandHelp extends CommandBase implements IOpisCommand {
 	}
 
 	@Override
+	public String getCommandNameOpis() {
+		return this.getCommandName();
+	}
+	
+	@Override
 	public String getCommandUsage(ICommandSender icommandsender) {
 		return "";
 	}
@@ -46,11 +51,11 @@ public class CommandHelp extends CommandBase implements IOpisCommand {
 				new CommandKill(),
 				new CommandKillAll(),
 				
-				//new CommandHandler()
+				new CommandHandler()
 		};
 		
 		for (IOpisCommand cmd : commands)
-			icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText(String.format("/%s : %s", cmd.getCommandName(), cmd.getDescription())));
+			icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText(String.format("/%s : %s", cmd.getCommandNameOpis(), cmd.getDescription())));
 	}
 
 	@Override
