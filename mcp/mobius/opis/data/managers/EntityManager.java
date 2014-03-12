@@ -85,8 +85,10 @@ public class EntityManager {
 		World world = DimensionManager.getWorld(dim);
 		if (world == null) return entities;
 		
-		for (int i = 0; i < world.loadedEntityList.size(); i++){
-			Entity ent = (Entity)world.loadedEntityList.get(i);
+		ArrayList copyList = new ArrayList(world.loadedEntityList);
+		
+		for (int i = 0; i < copyList.size(); i++){
+			Entity ent = (Entity)copyList.get(i);
 			//entities.add(new EntityStats(ent.entityId, ent.getClass().getName(), ent.dimension, ent.posX, ent.posY, ent.posZ));
 			entities.add(new EntityStats(ent.entityId, getEntityName(ent), ent.dimension, ent.posX, ent.posY, ent.posZ));
 		}
@@ -109,8 +111,10 @@ public class EntityManager {
 		World world = DimensionManager.getWorld(dim);
 		if (world == null) return entities;
 		
-		for (int i = 0; i < world.loadedEntityList.size(); i++){
-			Entity ent = (Entity)world.loadedEntityList.get(i);
+		ArrayList copyList = new ArrayList(world.loadedEntityList);
+		
+		for (int i = 0; i < copyList.size(); i++){
+			Entity ent = (Entity)copyList.get(i);
 			CoordinatesChunk chunk = new CoordinatesBlock(ent.dimension, (int)ent.posX, (int)ent.posY, (int)ent.posZ).asCoordinatesChunk();
 			
 			if (!entities.containsKey(chunk))
@@ -130,8 +134,10 @@ public class EntityManager {
 		World world = DimensionManager.getWorld(coord.dim);
 		if (world == null) return entities;
 		
-		for (int i = 0; i < world.loadedEntityList.size(); i++){
-			Entity ent = (Entity)world.loadedEntityList.get(i);
+		ArrayList copyList = new ArrayList(world.loadedEntityList);
+		
+		for (int i = 0; i < copyList.size(); i++){
+			Entity ent = (Entity)copyList.get(i);
 			CoordinatesChunk chunk = new CoordinatesBlock(ent.dimension, (int)ent.posX, (int)ent.posY, (int)ent.posZ).asCoordinatesChunk();
 			if (chunk.equals(coord))
 				//entities.add(new EntityStats(ent.entityId, ent.getClass().getName(), ent.dimension, ent.posX, ent.posY, ent.posZ));
@@ -149,8 +155,10 @@ public class EntityManager {
 			World world = DimensionManager.getWorld(dim);
 			if (world == null) continue;
 			
-			for (int i = 0; i < world.loadedEntityList.size(); i++){
-				Entity ent = (Entity)world.loadedEntityList.get(i);
+			ArrayList copyList = new ArrayList(world.loadedEntityList);
+			
+			for (int i = 0; i < copyList.size(); i++){
+				Entity ent = (Entity)copyList.get(i);
 				//String name = ent.getClass().getName();
 				String name = getEntityName(ent, showSubType);
 				
@@ -258,8 +266,16 @@ public class EntityManager {
 	}
 	
 	public static String getEntityName(Entity ent, boolean showSubType){
-		if (ent instanceof EntityItem && !showSubType)
+		if (ent instanceof EntityItem && !showSubType){
 			return "Dropped Item";
+		} else if (ent instanceof EntityItem && showSubType){
+			try {
+				return "[Stack] " + ((EntityItem)ent).getEntityItem().getDisplayName();
+			} catch (Exception e) {
+				return "<Unknown dropped item>";
+			}
+		}
+			
 		
 		if (ent instanceof EntityPlayerMP)
 			return "Player";

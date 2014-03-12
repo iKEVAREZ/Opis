@@ -1,5 +1,7 @@
 package mcp.mobius.opis.commands.server;
 
+import java.util.ArrayList;
+
 import org.apache.commons.lang3.StringUtils;
 
 import cpw.mods.fml.common.network.PacketDispatcher;
@@ -53,7 +55,9 @@ public class CommandKillAll extends CommandBase implements IOpisCommand {
 			World world = DimensionManager.getWorld(dim);
 			if (world == null) continue;
 			
-			for (Object o : world.loadedEntityList){
+			ArrayList copyList = new ArrayList(world.loadedEntityList);
+			
+			for (Object o : copyList){
 				Entity ent  = (Entity)o;
 				String name = EntityManager.getEntityName(ent).toLowerCase(); 
 				
