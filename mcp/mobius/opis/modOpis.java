@@ -15,12 +15,14 @@ import mcp.mobius.opis.commands.server.CommandAmountEntities;
 import mcp.mobius.opis.commands.server.CommandChunkDump;
 import mcp.mobius.opis.commands.server.CommandChunkList;
 import mcp.mobius.opis.commands.server.CommandDataDump;
+import mcp.mobius.opis.commands.server.CommandEntityCreate;
 import mcp.mobius.opis.commands.server.CommandFrequency;
 import mcp.mobius.opis.commands.server.CommandHandler;
 import mcp.mobius.opis.commands.server.CommandHelp;
 import mcp.mobius.opis.commands.server.CommandKill;
 import mcp.mobius.opis.commands.server.CommandKillAll;
 import mcp.mobius.opis.commands.server.CommandMeanModTime;
+import mcp.mobius.opis.commands.server.CommandOpis;
 import mcp.mobius.opis.commands.server.CommandReset;
 import mcp.mobius.opis.commands.server.CommandStart;
 import mcp.mobius.opis.commands.server.CommandStop;
@@ -38,6 +40,7 @@ import mcp.mobius.opis.network.OpisPacketHandler;
 import mcp.mobius.opis.network.Packet251Extended;
 import mcp.mobius.opis.proxy.ProxyServer;
 import mcp.mobius.opis.server.OpisPlayerTracker;
+import mcp.mobius.opis.server.OpisServerEventHandler;
 import mcp.mobius.opis.server.OpisServerTickHandler;
 import mcp.mobius.opis.tools.ModIdentification;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -88,7 +91,8 @@ public class modOpis {
 		config.save();
 		
 		MinecraftForge.EVENT_BUS.register(new OpisClientEventHandler());
-		Packet.addIdClassMapping(251, true, true, Packet251Extended.class);
+		MinecraftForge.EVENT_BUS.register(new OpisServerEventHandler());
+		//Packet.addIdClassMapping(251, true, true, Packet251Extended.class);
 	}	
 	
 	@EventHandler
@@ -127,7 +131,9 @@ public class modOpis {
 		event.registerServerCommand(new CommandKill());
 		event.registerServerCommand(new CommandKillAll());		
 		event.registerServerCommand(new CommandReset());
-		event.registerServerCommand(new CommandHandler());		
+		event.registerServerCommand(new CommandHandler());
+		event.registerServerCommand(new CommandEntityCreate());
+		//event.registerServerCommand(new CommandOpis());
 		
 		//event.registerServerCommand(new CommandClientTest());
 		//event.registerServerCommand(new CommandClientStart());
