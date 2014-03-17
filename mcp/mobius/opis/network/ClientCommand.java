@@ -7,4 +7,6 @@ public class ClientCommand {
 	public static byte RESET_PROFILING = 0x03;
 	
 	public static byte SHOW_RENDER_TICK = 0x04;
+	
+	public static byte SHOW_SWING = 0x05;
 }

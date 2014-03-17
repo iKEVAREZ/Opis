@@ -49,7 +49,7 @@ public class CommandAmountEntities extends CommandBase implements IOpisCommand{
 		}
 		
 	}
-
+	
 	@Override
     public int getRequiredPermissionLevel()
     {

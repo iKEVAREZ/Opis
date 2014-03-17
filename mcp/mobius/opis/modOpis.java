@@ -11,6 +11,7 @@ import mcp.mobius.opis.client.OpisClientTickHandler;
 import mcp.mobius.opis.commands.client.CommandClientShowRenderTick;
 import mcp.mobius.opis.commands.client.CommandClientStart;
 import mcp.mobius.opis.commands.client.CommandClientTest;
+import mcp.mobius.opis.commands.client.CommandOpis;
 import mcp.mobius.opis.commands.server.CommandAmountEntities;
 import mcp.mobius.opis.commands.server.CommandChunkDump;
 import mcp.mobius.opis.commands.server.CommandChunkList;
@@ -22,7 +23,6 @@ import mcp.mobius.opis.commands.server.CommandHelp;
 import mcp.mobius.opis.commands.server.CommandKill;
 import mcp.mobius.opis.commands.server.CommandKillAll;
 import mcp.mobius.opis.commands.server.CommandMeanModTime;
-import mcp.mobius.opis.commands.server.CommandOpis;
 import mcp.mobius.opis.commands.server.CommandReset;
 import mcp.mobius.opis.commands.server.CommandStart;
 import mcp.mobius.opis.commands.server.CommandStop;
@@ -133,7 +133,7 @@ public class modOpis {
 		event.registerServerCommand(new CommandReset());
 		event.registerServerCommand(new CommandHandler());
 		event.registerServerCommand(new CommandEntityCreate());
-		//event.registerServerCommand(new CommandOpis());
+		event.registerServerCommand(new CommandOpis());
 		
 		//event.registerServerCommand(new CommandClientTest());
 		//event.registerServerCommand(new CommandClientStart());

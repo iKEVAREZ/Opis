@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import mapwriter.Mw;
 import mcp.mobius.opis.modOpis;
+import mcp.mobius.opis.data.client.DataCache;
 import mcp.mobius.opis.data.holders.CoordinatesChunk;
 import mcp.mobius.opis.data.holders.EntityStats;
 import mcp.mobius.opis.data.holders.TicketData;
@@ -144,7 +145,7 @@ public class OpisPacketHandler implements IPacketHandler {
 
 		else if (header == Packets.DATA_SCREEN_AMOUNT_ENTITIES){
 			Packet_DataScreenAmountEntities castedPacket = new Packet_DataScreenAmountEntities(packet);
-			modOpis.proxy.displayEntityAmount(castedPacket.entities);
+			DataCache.instance().setAmountEntities(castedPacket.entities);
 		}			
 
 		else if (header == Packets.DATA_SCREEN_TIMING_HANDLERS){

@@ -3,13 +3,18 @@ package mcp.mobius.opis.network;
 import java.util.ArrayList;
 import java.util.logging.Level;
 
+import javax.swing.event.TableModelEvent;
+import javax.swing.table.DefaultTableModel;
+
 import mcp.mobius.mobiuscore.profiler.ProfilerRegistrar;
 import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.client.OpisClientTickHandler;
+import mcp.mobius.opis.data.client.DataCache;
 import mcp.mobius.opis.data.client.TickHandlerClientProfiler;
 import mcp.mobius.opis.data.holders.TickHandlerStats;
 import mcp.mobius.opis.data.managers.MetaManager;
 import mcp.mobius.opis.data.managers.TickHandlerManager;
+import mcp.mobius.opis.gui.swing.SwingUI;
 
 public class ClientCommandHandler {
 	
@@ -36,6 +41,10 @@ public class ClientCommandHandler {
 			for (TickHandlerStats stat : stats){
 				System.out.printf("%s \n", stat);
 			}
+		}
+		
+		else if (cmd == ClientCommand.SHOW_SWING){
+			SwingUI.instance().showUI();		
 		}
 	}
 }
