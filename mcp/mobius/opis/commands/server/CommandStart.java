@@ -49,7 +49,6 @@ public class CommandStart extends CommandBase implements IOpisCommand {
 		if (icommandsender instanceof EntityPlayer)
 			OpisServerTickHandler.instance.players.add((EntityPlayer)icommandsender);
 		icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText(String.format("\u00A7oOpis started with a tick delay %s.", modOpis.profilerDelay)));
-		
 	}
 
 	@Override

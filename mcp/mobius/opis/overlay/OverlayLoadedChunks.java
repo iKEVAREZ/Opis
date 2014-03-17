@@ -30,11 +30,13 @@ import mcp.mobius.opis.gui.widgets.LayoutCanvas;
 import mcp.mobius.opis.gui.widgets.WidgetGeometry;
 import mcp.mobius.opis.gui.widgets.tableview.TableRow;
 import mcp.mobius.opis.gui.widgets.tableview.ViewTable;
-import mcp.mobius.opis.network.client.Packet_ReqChunks;
-import mcp.mobius.opis.network.client.Packet_ReqChunksInDim;
-import mcp.mobius.opis.network.client.Packet_ReqTeleport;
-import mcp.mobius.opis.network.client.Packet_ReqTickets;
-import mcp.mobius.opis.network.client.Packet_UnregisterPlayer;
+//import mcp.mobius.opis.network.client.Packet_ReqChunks;
+//import mcp.mobius.opis.network.client.Packet_ReqChunksInDim;
+//import mcp.mobius.opis.network.client.Packet_ReqTeleport;
+//import mcp.mobius.opis.network.client.Packet_ReqTickets;
+//import mcp.mobius.opis.network.client.Packet_UnregisterPlayer;
+import mcp.mobius.opis.network.json.CommandPacket;
+import mcp.mobius.opis.network.json.OpisCommand;
 
 public class OverlayLoadedChunks implements IMwDataProvider {
 
@@ -66,7 +68,7 @@ public class OverlayLoadedChunks implements IMwDataProvider {
 							MathHelper.ceiling_double_int(this.mapView.getX()) >> 4, 
 							MathHelper.ceiling_double_int(this.mapView.getZ()) >> 4);
 				} else {
-					PacketDispatcher.sendPacketToServer(Packet_ReqTeleport.create(new CoordinatesBlock(coord)));
+					CommandPacket.sendCommand(OpisCommand.TELEPORT, new CoordinatesBlock(coord));
 					Minecraft.getMinecraft().setIngameFocus();
 				}
 			}
@@ -158,9 +160,7 @@ public class OverlayLoadedChunks implements IMwDataProvider {
 			for (int z = -5; z <= 5; z++){
 				chunks.add(new CoordinatesChunk(dim, chunkX + x, chunkZ + z));
 				if (chunks.size() >= 1){
-					Packet250CustomPayload packet = Packet_ReqChunks.create(dim, chunks);
-					if (packet != null)
-						PacketDispatcher.sendPacketToServer(packet);
+					CommandPacket.sendCommand(OpisCommand.GET_CHUNKS, dim, chunks);
 					chunks.clear();
 				}
 			}
@@ -182,12 +182,12 @@ public class OverlayLoadedChunks implements IMwDataProvider {
 		*/
 		
 		if (chunks.size() > 0)
-			PacketDispatcher.sendPacketToServer(Packet_ReqChunks.create(dim, chunks));				
+			CommandPacket.sendCommand(OpisCommand.GET_CHUNKS, dim, chunks);				
 	}
 	
 	@Override
 	public void onDimensionChanged(int dimension, MapView mapview) {
-		PacketDispatcher.sendPacketToServer(Packet_ReqChunksInDim.create(dimension));
+		CommandPacket.sendCommand(OpisCommand.GET_LOADED_CHUNKS_IN_DIM, dimension);
 	}
 
 	@Override
@@ -201,15 +201,15 @@ public class OverlayLoadedChunks implements IMwDataProvider {
 	@Override
 	public void onOverlayActivated(MapView mapview) {
 		this.selectedChunk = null;		
-		PacketDispatcher.sendPacketToServer(Packet_ReqChunksInDim.create(mapview.getDimension()));
-		PacketDispatcher.sendPacketToServer(Packet_ReqTickets.create());		
+		CommandPacket.sendCommand(OpisCommand.GET_LOADED_CHUNKS_IN_DIM, mapview.getDimension());
+		CommandPacket.sendCommand(OpisCommand.GET_LOADED_CHUNKS_TICKETS);
 	}
 
 	@Override
 	public void onOverlayDeactivated(MapView mapview) {
 		this.showList = false;
-		this.selectedChunk = null;		
-		PacketDispatcher.sendPacketToServer(Packet_UnregisterPlayer.create());
+		this.selectedChunk = null;
+		CommandPacket.sendCommand(OpisCommand.UNREGISTER_USER);
 	}
 
 	@Override

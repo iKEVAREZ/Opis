@@ -9,7 +9,9 @@ import mcp.mobius.opis.gui.events.MouseEvent;
 import mcp.mobius.opis.gui.interfaces.IWidget;
 import mcp.mobius.opis.gui.widgets.tableview.TableRow;
 import mcp.mobius.opis.gui.widgets.tableview.ViewTable;
-import mcp.mobius.opis.network.client.Packet_ReqData;
+import mcp.mobius.opis.network.json.CommandPacket;
+import mcp.mobius.opis.network.json.OpisCommand;
+//import mcp.mobius.opis.network.client.Packet_ReqData;
 import mcp.mobius.opis.overlay.entperchunk.OverlayEntityPerChunk.ReducedData;
 
 public class TableChunks extends ViewTable {
@@ -33,7 +35,7 @@ public class TableChunks extends ViewTable {
 		if (row != null){
 			CoordinatesBlock coord = ((ReducedData)row.getObject()).chunk.asCoordinatesBlock();
 			this.overlay.selectedChunk = ((ReducedData)row.getObject()).chunk;
-			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(this.overlay.selectedChunk, "list:chunk:entities"));
+			CommandPacket.sendCommand(OpisCommand.GET_DATA, this.overlay.selectedChunk,  "list:chunk:entities");
 			this.overlay.showList = false;
 			
 			this.mapView.setDimension(coord.dim);

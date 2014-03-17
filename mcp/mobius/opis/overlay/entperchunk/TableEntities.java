@@ -11,9 +11,11 @@ import mcp.mobius.opis.gui.events.MouseEvent;
 import mcp.mobius.opis.gui.interfaces.IWidget;
 import mcp.mobius.opis.gui.widgets.tableview.TableRow;
 import mcp.mobius.opis.gui.widgets.tableview.ViewTable;
-import mcp.mobius.opis.network.client.Packet_ReqData;
-import mcp.mobius.opis.network.client.Packet_ReqTeleport;
-import mcp.mobius.opis.network.client.Packet_ReqTeleportEID;
+//import mcp.mobius.opis.network.client.Packet_ReqData;
+//import mcp.mobius.opis.network.client.Packet_ReqTeleport;
+//import mcp.mobius.opis.network.client.Packet_ReqTeleportEID;
+import mcp.mobius.opis.network.json.CommandPacket;
+import mcp.mobius.opis.network.json.OpisCommand;
 import mcp.mobius.opis.overlay.entperchunk.OverlayEntityPerChunk.ReducedData;
 
 public class TableEntities extends ViewTable {
@@ -39,7 +41,7 @@ public class TableEntities extends ViewTable {
 			//PacketDispatcher.sendPacketToServer(Packet_ReqTeleport.create(coord));
 			int eid = ((EntityStats)row.getObject()).getID();
 			int dim = ((EntityStats)row.getObject()).getCoord().dim;
-			PacketDispatcher.sendPacketToServer(Packet_ReqTeleportEID.create(eid, dim));
+			CommandPacket.sendCommand(OpisCommand.TELEPORT_TO_ENTITY, eid, dim);
 			Minecraft.getMinecraft().setIngameFocus();			
 		}
 	}

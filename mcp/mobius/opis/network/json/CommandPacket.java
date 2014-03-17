@@ -33,10 +33,10 @@ public class CommandPacket {
 	}
 	
 	public static void sendCommand(OpisCommand command){
-		CommandPacket.sendCommand(command, null);
+		CommandPacket.sendCommand(command, (Object[])null);
 	}
 	
-	public static void sendCommand(OpisCommand command, Object[] params){
+	public static void sendCommand(OpisCommand command, Object... params){
 		Packet250CustomPayload packet = null;
 		
 		if (params == null)

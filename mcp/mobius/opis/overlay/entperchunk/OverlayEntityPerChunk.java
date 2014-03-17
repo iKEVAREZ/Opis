@@ -27,9 +27,11 @@ import mcp.mobius.opis.gui.widgets.LayoutCanvas;
 import mcp.mobius.opis.gui.widgets.WidgetGeometry;
 import mcp.mobius.opis.gui.widgets.tableview.TableRow;
 import mcp.mobius.opis.gui.widgets.tableview.ViewTable;
-import mcp.mobius.opis.network.client.Packet_ReqChunks;
-import mcp.mobius.opis.network.client.Packet_ReqData;
-import mcp.mobius.opis.network.client.Packet_ReqTeleport;
+//import mcp.mobius.opis.network.client.Packet_ReqChunks;
+//import mcp.mobius.opis.network.client.Packet_ReqData;
+//import mcp.mobius.opis.network.client.Packet_ReqTeleport;
+import mcp.mobius.opis.network.json.CommandPacket;
+import mcp.mobius.opis.network.json.OpisCommand;
 
 public class OverlayEntityPerChunk implements IMwDataProvider {
 
@@ -127,13 +129,13 @@ public class OverlayEntityPerChunk implements IMwDataProvider {
 			this.showList = true;
 		
 		if (prevSelected == null && this.selectedChunk != null)
-			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(this.selectedChunk, "list:chunk:entities"));
+			CommandPacket.sendCommand(OpisCommand.GET_DATA, this.selectedChunk, "list:chunk:entities");
 
 		else if (this.selectedChunk != null && !this.selectedChunk.equals(prevSelected))
-			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(this.selectedChunk, "list:chunk:entities"));
+			CommandPacket.sendCommand(OpisCommand.GET_DATA, this.selectedChunk, "list:chunk:entities");
 		
 		else if (this.selectedChunk == null)
-			PacketDispatcher.sendPacketToServer(Packet_ReqData.create("overlay:chunk:entities"));		
+			CommandPacket.sendCommand(OpisCommand.GET_DATA, CoordinatesChunk.EMPTY, "overlay:chunk:entities");
 	}
 
 	@Override
@@ -149,7 +151,7 @@ public class OverlayEntityPerChunk implements IMwDataProvider {
 
 	@Override
 	public void onOverlayActivated(MapView mapview) {
-		PacketDispatcher.sendPacketToServer(Packet_ReqData.create("overlay:chunk:entities"));
+		CommandPacket.sendCommand(OpisCommand.GET_DATA, CoordinatesChunk.EMPTY, "overlay:chunk:entities");
 	}
 
 	@Override
@@ -267,16 +269,14 @@ public class OverlayEntityPerChunk implements IMwDataProvider {
 			for (int z = -5; z <= 5; z++){
 				chunks.add(new CoordinatesChunk(dim, chunkX + x, chunkZ + z));
 				if (chunks.size() >= 1){
-					Packet250CustomPayload packet = Packet_ReqChunks.create(dim, chunks);
-					if (packet != null)
-						PacketDispatcher.sendPacketToServer(packet);
+					CommandPacket.sendCommand(OpisCommand.GET_CHUNKS, dim, chunks);
 					chunks.clear();
 				}
 			}
 		}
 		
 		if (chunks.size() > 0)
-			PacketDispatcher.sendPacketToServer(Packet_ReqChunks.create(dim, chunks));				
+			CommandPacket.sendCommand(OpisCommand.GET_CHUNKS, dim, chunks);				
 	}	
 	
 }

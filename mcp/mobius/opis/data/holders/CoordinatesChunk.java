@@ -12,6 +12,8 @@ public final class CoordinatesChunk implements ISerializable {
 	public final int chunkX, chunkZ;
 	//public boolean isChunk;
 	
+	public static CoordinatesChunk EMPTY = new CoordinatesChunk(0,0,0);
+	
 	public CoordinatesChunk(CoordinatesBlock coord){
 		this.dim = coord.dim;
 		this.chunkX = coord.chunkX;

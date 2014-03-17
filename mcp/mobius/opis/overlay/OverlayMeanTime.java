@@ -32,11 +32,13 @@ import mcp.mobius.opis.gui.widgets.LayoutCanvas;
 import mcp.mobius.opis.gui.widgets.WidgetGeometry;
 import mcp.mobius.opis.gui.widgets.tableview.TableRow;
 import mcp.mobius.opis.gui.widgets.tableview.ViewTable;
-import mcp.mobius.opis.network.client.Packet_ReqChunks;
-import mcp.mobius.opis.network.client.Packet_ReqMeanTimeInDim;
-import mcp.mobius.opis.network.client.Packet_ReqTEsInChunk;
-import mcp.mobius.opis.network.client.Packet_ReqTeleport;
-import mcp.mobius.opis.network.client.Packet_UnregisterPlayer;
+//import mcp.mobius.opis.network.client.Packet_ReqChunks;
+//import mcp.mobius.opis.network.client.Packet_ReqMeanTimeInDim;
+//import mcp.mobius.opis.network.client.Packet_ReqTEsInChunk;
+//import mcp.mobius.opis.network.client.Packet_ReqTeleport;
+//import mcp.mobius.opis.network.client.Packet_UnregisterPlayer;
+import mcp.mobius.opis.network.json.CommandPacket;
+import mcp.mobius.opis.network.json.OpisCommand;
 
 public class OverlayMeanTime implements IMwDataProvider {
 
@@ -69,7 +71,7 @@ public class OverlayMeanTime implements IMwDataProvider {
 				}
 				else{
 					modOpis.selectedBlock = coord;
-					PacketDispatcher.sendPacketToServer(Packet_ReqTeleport.create(coord));
+					CommandPacket.sendCommand(OpisCommand.TELEPORT, coord);
 					Minecraft.getMinecraft().setIngameFocus();
 				}
 			}
@@ -194,7 +196,7 @@ public class OverlayMeanTime implements IMwDataProvider {
 		}
 		
 		if (this.selectedChunk != null)
-			PacketDispatcher.sendPacketToServer(Packet_ReqTEsInChunk.create(this.selectedChunk));
+			CommandPacket.sendCommand(OpisCommand.GET_TES_IN_CHUNK, this.selectedChunk);
 		
 		//ArrayList<CoordinatesChunk> chunks = new ArrayList<CoordinatesChunk>();
 		//for (int x = -5; x <= 5; x++)
@@ -208,12 +210,12 @@ public class OverlayMeanTime implements IMwDataProvider {
 		this.selectedChunk = new CoordinatesChunk(dim, chunkX, chunkZ);
 		
 		if (this.selectedChunk != null)
-			PacketDispatcher.sendPacketToServer(Packet_ReqTEsInChunk.create(this.selectedChunk));		
+			CommandPacket.sendCommand(OpisCommand.GET_TES_IN_CHUNK, this.selectedChunk);	
 	}
 	
 	@Override
 	public void onDimensionChanged(int dimension, MapView mapview) {
-		PacketDispatcher.sendPacketToServer(Packet_ReqMeanTimeInDim.create(dimension));		
+		CommandPacket.sendCommand(OpisCommand.GET_CHUNKS_MEAN_TIME, dimension);
 	}
 
 	@Override
@@ -227,14 +229,14 @@ public class OverlayMeanTime implements IMwDataProvider {
 	@Override
 	public void onOverlayActivated(MapView mapview) {
 		this.selectedChunk = null;
-		PacketDispatcher.sendPacketToServer(Packet_ReqMeanTimeInDim.create(mapview.getDimension()));			
+		CommandPacket.sendCommand(OpisCommand.GET_CHUNKS_MEAN_TIME, mapview.getDimension());
 	}
 
 	@Override
 	public void onOverlayDeactivated(MapView mapview) {
 		this.showList = false;
 		this.selectedChunk = null;
-		PacketDispatcher.sendPacketToServer(Packet_UnregisterPlayer.create());		
+		CommandPacket.sendCommand(OpisCommand.UNREGISTER_USER);
 	}
 
 	@Override
@@ -320,16 +322,14 @@ public class OverlayMeanTime implements IMwDataProvider {
 			for (int z = -5; z <= 5; z++){
 				chunks.add(new CoordinatesChunk(dim, chunkX + x, chunkZ + z));
 				if (chunks.size() >= 1){
-					Packet250CustomPayload packet = Packet_ReqChunks.create(dim, chunks);
-					if (packet != null)
-						PacketDispatcher.sendPacketToServer(packet);
+					CommandPacket.sendCommand(OpisCommand.GET_CHUNKS, dim, chunks);
 					chunks.clear();
 				}
 			}
 		}
 
 		if (chunks.size() > 0)
-			PacketDispatcher.sendPacketToServer(Packet_ReqChunks.create(dim, chunks));				
+			CommandPacket.sendCommand(OpisCommand.GET_CHUNKS, dim, chunks);				
 	}	
 	
 }

@@ -18,6 +18,13 @@ public class CommandPayload {
 	public CommandPayload(OpisCommand command, Object ... params){
 		this.command = command;
 		this.params  = params;
+		
+		for (int i = 0; i < params.length; i++){
+			if (!this.command.getParams()[i].getType().isInstance(params[i])){
+				//throw new RuntimeException(String.format("Type missmatched for command %s. Found %s, expected %s", this.command, params[i].getClass(), this.command.getParams()[i].getType()));
+				throw new RuntimeException(String.format("Type missmatched for command %s.", this.command));
+			}
+		}
 	}
 	
 	public CommandPayload(OpisCommand command){
@@ -33,10 +40,18 @@ public class CommandPayload {
 		return this.params;
 	}
 	
+	public Object getParam(String name){
+		return this.params[this.command.getParamIndex(name)];
+	}
+	
 	public NBTTagCompound toNBT(){
 		Gson          gson = new Gson();
 		NBTTagCompound tag = new NBTTagCompound();
-		tag.setString("payload", gson.toJson(this));
+		String        json = gson.toJson(this);
+		
+		System.out.printf("%s\n", json);
+		
+		tag.setString("payload", json);
 		return tag;
 	}
 	

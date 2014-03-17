@@ -7,21 +7,25 @@ import java.util.ArrayList;
 
 import mapwriter.Mw;
 import mcp.mobius.opis.modOpis;
+import mcp.mobius.opis.data.holders.CoordinatesBlock;
 import mcp.mobius.opis.data.holders.CoordinatesChunk;
 import mcp.mobius.opis.data.holders.EntityStats;
 import mcp.mobius.opis.data.holders.TicketData;
 import mcp.mobius.opis.data.managers.ChunkManager;
 import mcp.mobius.opis.data.managers.EntityManager;
 import mcp.mobius.opis.data.managers.TileEntityManager;
-import mcp.mobius.opis.network.client.Packet_ReqChunks;
-import mcp.mobius.opis.network.client.Packet_ReqChunksInDim;
-import mcp.mobius.opis.network.client.Packet_ReqData;
-import mcp.mobius.opis.network.client.Packet_ReqMeanTimeInDim;
-import mcp.mobius.opis.network.client.Packet_ReqTEsInChunk;
-import mcp.mobius.opis.network.client.Packet_ReqTeleport;
-import mcp.mobius.opis.network.client.Packet_ReqTeleportEID;
-import mcp.mobius.opis.network.client.Packet_ReqTickets;
-import mcp.mobius.opis.network.client.Packet_UnregisterPlayer;
+import mcp.mobius.opis.network.json.CommandPacket;
+import mcp.mobius.opis.network.json.CommandPayload;
+import mcp.mobius.opis.network.json.OpisCommand;
+//import mcp.mobius.opis.network.client.Packet_ReqChunks;
+//import mcp.mobius.opis.network.client.Packet_ReqChunksInDim;
+//import mcp.mobius.opis.network.client.Packet_ReqData;
+//import mcp.mobius.opis.network.client.Packet_ReqMeanTimeInDim;
+//import mcp.mobius.opis.network.client.Packet_ReqTEsInChunk;
+//import mcp.mobius.opis.network.client.Packet_ReqTeleport;
+//import mcp.mobius.opis.network.client.Packet_ReqTeleportEID;
+//import mcp.mobius.opis.network.client.Packet_ReqTickets;
+//import mcp.mobius.opis.network.client.Packet_UnregisterPlayer;
 import mcp.mobius.opis.network.server.Packet_ChunkTopList;
 import mcp.mobius.opis.network.server.Packet_Chunks;
 import mcp.mobius.opis.network.server.Packet_ClearSelection;
@@ -61,15 +65,15 @@ public class OpisPacketHandler implements IPacketHandler {
 	@Override
 	public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player player) {
         if (packet.channel.equals("Opis") || packet.channel.equals("Opis_Chunk")) {
-			byte header = this.getHeader(packet);
 			
-			if (header == -1) return;
-			
-			if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
+			if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT){
+				byte header = this.getHeader(packet);
+				if (header == -1) return;
 				this.onPacketToClient(manager, packet, player, header);
+			}
 
 			if (FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER)
-				this.onPacketToServer(manager, packet, player, header);
+				this.onPacketToServer(manager, packet, player);
         }
 	}
 
@@ -164,43 +168,94 @@ public class OpisPacketHandler implements IPacketHandler {
 		
 	}
 
-	void onPacketToServer(INetworkManager manager, Packet250CustomPayload packet, Player player, Byte header) {
-		if (header == Packets.UNREGISTER_USER){
-			Packet_UnregisterPlayer castedPacket = new Packet_UnregisterPlayer(packet);
-			modOpis.proxy.playerOverlayStatus.remove(player);
-			modOpis.proxy.playerDimension.remove(player);
-		}			
+	void onPacketToServer(INetworkManager manager, Packet250CustomPayload packet, Player player) {
 		
-		else if (header == Packets.REQ_CHUNKS_IN_DIM){
-			Packet_ReqChunksInDim castedPacket = new Packet_ReqChunksInDim(packet);
-			modOpis.proxy.playerOverlayStatus.put(player, OverlayStatus.CHUNKSTATUS);
-			modOpis.proxy.playerDimension.put(player, castedPacket.dimension);
-			PacketDispatcher.sendPacketToPlayer(Packet_LoadedChunks.create(ChunkManager.getLoadedChunks(castedPacket.dimension)), player);
-		}
-	
-		else if (header == Packets.REQ_MEANTIME_IN_DIM){
-			Packet_ReqMeanTimeInDim castedPacket = new Packet_ReqMeanTimeInDim(packet);
+		CommandPayload commandPayload = CommandPacket.getCommand(packet);
+		OpisCommand    command        = commandPayload.getCommand();
+		
+		switch(command){
+		case GET_CHUNKS:
+			break;
+			
+		case GET_CHUNKS_MEAN_TIME:
+		{
+			Integer dim = (Integer)commandPayload.getParam("dim");
 			if (this.isOp(player)){
 				modOpis.proxy.playerOverlayStatus.put(player, OverlayStatus.MEANTIME);
-				modOpis.proxy.playerDimension.put(player, castedPacket.dimension);
-				PacketDispatcher.sendPacketToPlayer(Packet_MeanTime.create(TileEntityManager.getTimes(castedPacket.dimension), castedPacket.dimension), player);
-			}
-		}		
-		
-		else if (header == Packets.REQ_TES_IN_CHUNK){
-			Packet_ReqTEsInChunk castedPacket = new Packet_ReqTEsInChunk(packet);
-			if (this.isOp(player)){				
-				PacketDispatcher.sendPacketToPlayer(Packet_TileEntitiesChunkList.create(TileEntityManager.getInChunk(castedPacket.chunk)), player);
-			}
+				modOpis.proxy.playerDimension.put(player, dim);
+				PacketDispatcher.sendPacketToPlayer(Packet_MeanTime.create(TileEntityManager.getTimes(dim), dim), player);
+			}			
+		}	
+			break;
+			
+		case GET_DATA:
+		{
+			CoordinatesChunk chunk = (CoordinatesChunk)commandPayload.getParam("chunk");
+			String           data  = (String)commandPayload.getParam("dataname");
+			
+			if (this.isOp(player)){	
+				DataReqHandler.instance().handle(chunk, data, player);
+			}			
 		}
-		
-		else if (header == Packets.REQ_TICKETS){
-			Packet_ReqTickets castedPacket = new Packet_ReqTickets(packet);
+			break;
+			
+		case GET_LOADED_CHUNKS_IN_DIM:
+		{
+			Integer dim = (Integer)commandPayload.getParam("dim");
+			modOpis.proxy.playerOverlayStatus.put(player, OverlayStatus.CHUNKSTATUS);
+			modOpis.proxy.playerDimension.put(player, dim);
+			PacketDispatcher.sendPacketToPlayer(Packet_LoadedChunks.create(ChunkManager.getLoadedChunks(dim)), player);
+		}
+			break;
+			
+		case GET_LOADED_CHUNKS_TICKETS:
+		{
 			if (this.isOp(player)){
 				PacketDispatcher.sendPacketToPlayer(Packet_Tickets.create(ChunkManager.getTickets()), player);
 			}
 		}
+			break;
+			
+		case GET_TES_IN_CHUNK:
+		{
+			CoordinatesChunk chunk = (CoordinatesChunk)commandPayload.getParam("chunk");
+			if (this.isOp(player)){				
+				PacketDispatcher.sendPacketToPlayer(Packet_TileEntitiesChunkList.create(TileEntityManager.getInChunk(chunk)), player);
+			}
+		}
+			break;
+			
+		case TELEPORT:
+		{
+			CoordinatesBlock coord = (CoordinatesBlock)commandPayload.getParam("blockcoord");
+			if (this.isOp(player)){		
+				EntityManager.teleportPlayer(coord, (EntityPlayerMP)player);
+			}			
+		}
+			break;
+			
+		case TELEPORT_TO_ENTITY:
+		{
+			Integer eid = (Integer)commandPayload.getParam("eid");
+			Integer dim = (Integer)commandPayload.getParam("dim");
+			if (this.isOp(player)){		
+				EntityManager.teleportPlayer(eid, dim, (EntityPlayerMP)player);
+			}
+		}
+			break;
+			
+		case UNREGISTER_USER:
+			modOpis.proxy.playerOverlayStatus.remove(player);
+			modOpis.proxy.playerDimension.remove(player);			
+			break;
+			
+		default:
+			modOpis.log.warning(String.format("Error while processing command packet ! Command : %s", command));
+			break;
 		
+		}
+		
+		/*
 		else if (header == Packets.REQ_CHUNKS){
 			Packet_ReqChunks castedPacket = new Packet_ReqChunks(packet);
 			if (this.isOp(player)){				
@@ -211,40 +266,13 @@ public class OpisPacketHandler implements IPacketHandler {
 					for (CoordinatesChunk chunk : castedPacket.chunks)
 						list.add(world.getChunkFromChunkCoords(chunk.chunkX, chunk.chunkZ));
 					
-					//if (!list.isEmpty()){
-					//	Packet_Chunks.send(castedPacket.dim, !world.provider.hasNoSky, list, player);
-					
-						
-						/*
-						Packet250CustomPayload chunkPacket = Packet_Chunks.create(castedPacket.dim, !world.provider.hasNoSky, list);
-						if (chunkPacket != null)
-							PacketDispatcher.sendPacketToPlayer( chunkPacket, player);
-						*/
-					//}
+					if (!list.isEmpty()){
+						Packet_Chunks.send(castedPacket.dim, !world.provider.hasNoSky, list, player);
+					}
 				}
 			}
 		}
-		
-		else if (header == Packets.REQ_TELEPORT){
-			Packet_ReqTeleport castedPacket = new Packet_ReqTeleport(packet);
-			if (this.isOp(player)){		
-				EntityManager.teleportPlayer(castedPacket.coord, (EntityPlayerMP)player);
-			}
-		}
-
-		else if (header == Packets.REQ_TELEPORT_EID){
-			Packet_ReqTeleportEID castedPacket = new Packet_ReqTeleportEID(packet);
-			if (this.isOp(player)){		
-				EntityManager.teleportPlayer(castedPacket.eid, castedPacket.dim, (EntityPlayerMP)player);
-			}
-		}		
-		
-		else if (header == Packets.REQ_DATA){
-			Packet_ReqData castedPacket = new Packet_ReqData(packet);
-			if (this.isOp(player)){	
-				DataReqHandler.instance().handle(castedPacket.coord, castedPacket.datatype, player);
-			}
-		}
+		*/
 	}	
 	
 	
