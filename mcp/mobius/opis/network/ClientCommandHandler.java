@@ -55,5 +55,9 @@ public class ClientCommandHandler {
 			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.LIST, DataReq.AMOUNT, DataReq.ENTITIES));	
 			SwingUI.instance().showUI();		
 		}
+		
+		else if (cmd == ClientCommand.CLEAR_SELECTION){
+			modOpis.selectedBlock = null;			
+		}
 	}
 }

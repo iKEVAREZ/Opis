@@ -7,7 +7,8 @@ public enum ClientCommand {
 	STOP_PROFILING,
 	RESET_PROFILING,
 	SHOW_RENDER_TICK,
-	SHOW_SWING;
+	SHOW_SWING,
+	CLEAR_SELECTION;
 	/*
 	public static byte TEST_CMD = 0x00;
 	public static byte START_PROFILING = 0x01;

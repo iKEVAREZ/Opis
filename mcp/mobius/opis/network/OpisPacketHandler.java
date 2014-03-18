@@ -27,7 +27,6 @@ import mcp.mobius.opis.network.client.Packet_ReqTickets;
 import mcp.mobius.opis.network.client.Packet_UnregisterPlayer;
 import mcp.mobius.opis.network.enums.DataReq;
 import mcp.mobius.opis.network.server.Packet_Chunks;
-import mcp.mobius.opis.network.server.Packet_ClearSelection;
 import mcp.mobius.opis.network.server.Packet_ClientCommand;
 import mcp.mobius.opis.network.server.Packet_DataList;
 import mcp.mobius.opis.network.server.Packet_DataListChunkEntities;
@@ -133,11 +132,6 @@ public class OpisPacketHandler implements IPacketHandler {
 			DataCache.instance().setAmountEntities(castedPacket.entities);
 		}	
 		
-		else if (header == Packets.CLR_SELECTION){
-			Packet_ClearSelection castedPacket = new Packet_ClearSelection(packet);
-			modOpis.selectedBlock = null;
-		}		
-
 		else if (header == Packets.CLIENT_CMD){
 			Packet_ClientCommand castedPacket = new Packet_ClientCommand(packet);
 			ClientCommandHandler.instance().handle(castedPacket.cmd);

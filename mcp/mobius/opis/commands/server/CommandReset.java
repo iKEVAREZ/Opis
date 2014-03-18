@@ -10,7 +10,8 @@ import mcp.mobius.opis.data.managers.EntityManager;
 import mcp.mobius.opis.data.managers.MetaManager;
 import mcp.mobius.opis.data.managers.TickHandlerManager;
 import mcp.mobius.opis.data.managers.TileEntityManager;
-import mcp.mobius.opis.network.server.Packet_ClearSelection;
+import mcp.mobius.opis.network.enums.ClientCommand;
+import mcp.mobius.opis.network.server.Packet_ClientCommand;
 import mcp.mobius.opis.server.OpisServerTickHandler;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
@@ -45,8 +46,7 @@ public class CommandReset extends CommandBase implements IOpisCommand {
 		
 		icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText(String.format("\u00A7oInternal data reseted.")));
 		
-		PacketDispatcher.sendPacketToAllPlayers(Packet_ClearSelection.create());
-		//notifyAdmins(icommandsender, "Opis started with a tick delay %s.", new Object[] {modOpis.profilerDelay});		
+		PacketDispatcher.sendPacketToAllPlayers(Packet_ClientCommand.create(ClientCommand.CLEAR_SELECTION));
 	}
 
 	@Override
