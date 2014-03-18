@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JScrollPane;
 
@@ -292,6 +293,24 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener{
 		});
 		tableTimingChunk.setAutoCreateRowSorter(true);		
 		scrollPaneTimingChunk.setViewportView(tableTimingChunk);
+		
+		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		centerRenderer.setHorizontalAlignment( JLabel.CENTER );
+		
+		for (int i = 0; i < tableEntityList.getColumnCount(); i++)
+			tableEntityList.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+
+		for (int i = 0; i < tableTimingTE.getColumnCount(); i++)
+			tableTimingTE.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+		
+		for (int i = 0; i < tableTimingEnt.getColumnCount(); i++)
+			tableTimingEnt.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+		
+		for (int i = 0; i < tableTimingHandler.getColumnCount(); i++)
+			tableTimingHandler.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+		
+		for (int i = 0; i < tableTimingChunk.getColumnCount(); i++)
+			tableTimingChunk.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);		
 	}
 
 	public JTable getTableEntityList() {
@@ -309,6 +328,9 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener{
 	public JTable getTableTimingHandler() {
 		return tableTimingHandler;
 	}
+	public JTable getTableTimingChunk() {
+		return tableTimingChunk;
+	}	
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -335,7 +357,5 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener{
 		PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.LIST, DataReq.AMOUNT, DataReq.ENTITIES));
 	}
 
-	public JTable getTableTimingChunk() {
-		return tableTimingChunk;
-	}
+
 }
