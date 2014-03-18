@@ -12,6 +12,7 @@ import mcp.mobius.opis.data.server.EntityProfiler;
 import mcp.mobius.opis.data.server.TickHandlerProfiler;
 import mcp.mobius.opis.data.server.TileEntityProfiler;
 import mcp.mobius.opis.server.OpisServerTickHandler;
+import mcp.mobius.opis.server.PlayerTracker;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
@@ -47,7 +48,7 @@ public class CommandStart extends CommandBase implements IOpisCommand {
 		ProfilerRegistrar.turnOn();
 		
 		if (icommandsender instanceof EntityPlayer)
-			OpisServerTickHandler.instance.players.add((EntityPlayer)icommandsender);
+			PlayerTracker.instance().playersOpis.add((EntityPlayer)icommandsender);
 		icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText(String.format("\u00A7oOpis started with a tick delay %s.", modOpis.profilerDelay)));
 		
 	}

@@ -6,6 +6,7 @@ import mcp.mobius.mobiuscore.profiler.DummyProfiler;
 import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.commands.IOpisCommand;
 import mcp.mobius.opis.server.OpisServerTickHandler;
+import mcp.mobius.opis.server.PlayerTracker;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
@@ -40,9 +41,9 @@ public class CommandStop extends CommandBase implements IOpisCommand {
 		ProfilerRegistrar.turnOff();
 
 		if (icommandsender instanceof EntityPlayer)
-			OpisServerTickHandler.instance.players.add((EntityPlayer)icommandsender);
+			PlayerTracker.instance().playersOpis.add((EntityPlayer)icommandsender);
 		
-		for (EntityPlayer player : OpisServerTickHandler.instance.players)
+		for (EntityPlayer player : PlayerTracker.instance().playersOpis)
 			PacketDispatcher.sendPacketToPlayer(new Packet3Chat(ChatMessageComponent.createFromText(String.format("\u00A7oOpis stopped."))), (Player)player);
 		
 		if (!(icommandsender instanceof EntityPlayer))

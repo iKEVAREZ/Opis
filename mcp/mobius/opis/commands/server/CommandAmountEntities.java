@@ -37,9 +37,9 @@ public class CommandAmountEntities extends CommandBase implements IOpisCommand{
 		HashMap<String, Integer> ents;
 		
 		if (astring.length == 1 && astring[0].equals("all"))
-			ents = EntityManager.getCumulativeEntities(true);
-		else
 			ents = EntityManager.getCumulativeEntities(false);
+		else
+			ents = EntityManager.getCumulativeEntities(true);
 		
 		if (icommandsender instanceof EntityPlayer)
 			((EntityPlayerMP)icommandsender).playerNetServerHandler.sendPacketToPlayer(Packet_DataListAmountEntities.create(ents));

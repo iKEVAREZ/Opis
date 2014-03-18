@@ -47,7 +47,6 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener{
 	private JCheckBox chkBoxDisplayAll;
 	private JButton btnRefreshEntityAmount;
 
-	private boolean filterEntityAmount = false;
 	private JPanel panelTimingTE;
 	private JPanel panelTimingEnt;
 	private JPanel panelTimingHandler;
@@ -254,7 +253,7 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == btnRefreshEntityAmount){
-			this.requestAmoutEntityUpdate(this.filterEntityAmount);
+			this.requestAmoutEntityUpdate();
 		}
 	}
 
@@ -262,22 +261,18 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener{
 	public void itemStateChanged(ItemEvent e) {
 		if (e.getItem() == chkBoxDisplayAll){
 			if      (e.getStateChange() == ItemEvent.SELECTED){
-				this.filterEntityAmount = true;
-				this.requestAmoutEntityUpdate(this.filterEntityAmount);
+				PacketDispatcher.sendPacketToServer(Packet_ReqData.create("cmd:filtering:true"));
+				this.requestAmoutEntityUpdate();
 			}
 			else if (e.getStateChange() == ItemEvent.DESELECTED){
-				this.filterEntityAmount = false;
-				this.requestAmoutEntityUpdate(this.filterEntityAmount);				
+				PacketDispatcher.sendPacketToServer(Packet_ReqData.create("cmd:filtering:false"));
+				this.requestAmoutEntityUpdate();				
 			}
 		}
 	}
 	
-	private void requestAmoutEntityUpdate(boolean filtered){
-		System.out.printf("Entity amount update request. Filtering : %s\n", this.filterEntityAmount);
-		if (filtered)
-			PacketDispatcher.sendPacketToServer(Packet_ReqData.create("list:amount_ent:filtered"));
-		else
-			PacketDispatcher.sendPacketToServer(Packet_ReqData.create("list:amount_ent:unfiltered"));
+	private void requestAmoutEntityUpdate(){
+		PacketDispatcher.sendPacketToServer(Packet_ReqData.create("list:amount_ent"));
 	}
 
 }

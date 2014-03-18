@@ -13,7 +13,6 @@ import mcp.mobius.opis.network.Packets;
 
 public class Packet_DataListTimingHandlers {
 
-
 	public byte header;
 	public ArrayList<TickHandlerStats> stats = new ArrayList<TickHandlerStats>(); 
 	

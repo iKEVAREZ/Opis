@@ -2,6 +2,7 @@ package mcp.mobius.opis.server;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.HashSet;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -9,8 +10,17 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.packet.Packet3Chat;
 import net.minecraft.util.ChatMessageComponent;
 import mcp.mobius.opis.modOpis;
+import mcp.mobius.opis.data.holders.EntityStats;
+import mcp.mobius.opis.data.holders.TickHandlerStats;
+import mcp.mobius.opis.data.holders.TileEntityStats;
 import mcp.mobius.opis.data.managers.ChunkManager;
+import mcp.mobius.opis.data.managers.EntityManager;
+import mcp.mobius.opis.data.managers.TickHandlerManager;
 import mcp.mobius.opis.data.managers.TileEntityManager;
+import mcp.mobius.opis.network.server.Packet_DataListAmountEntities;
+import mcp.mobius.opis.network.server.Packet_DataListTimingEntities;
+import mcp.mobius.opis.network.server.Packet_DataListTimingHandlers;
+import mcp.mobius.opis.network.server.Packet_DataListTimingTileEnts;
 import mcp.mobius.opis.network.server.Packet_LoadedChunks;
 import mcp.mobius.opis.network.server.Packet_MeanTime;
 import mcp.mobius.opis.overlay.OverlayStatus;
@@ -26,9 +36,7 @@ public class OpisServerTickHandler implements ITickHandler {
 	public long profilerUpdateTickCounter = 0;	
 	public long clientUpdateTickCounter = 0;
 	public long profilerRunningTicks;
-	public HashSet<EntityPlayer> players = new HashSet<EntityPlayer>();
-	
-	
+
 	public static OpisServerTickHandler instance;
 	
 	public OpisServerTickHandler(){
@@ -50,17 +58,39 @@ public class OpisServerTickHandler implements ITickHandler {
 			
 			profilerUpdateTickCounter++;
 			
-			if (profilerRunningTicks < modOpis.profilerMaxTicks && modOpis.profilerRun)
+			if (profilerRunningTicks < modOpis.profilerMaxTicks && modOpis.profilerRun){
 				profilerRunningTicks++;
-			else if (profilerRunningTicks >= modOpis.profilerMaxTicks && modOpis.profilerRun){
+			}else if (profilerRunningTicks >= modOpis.profilerMaxTicks && modOpis.profilerRun){
 				profilerRunningTicks = 0;
 				modOpis.profilerRun = false;
 				ProfilerRegistrar.turnOff();				
 				
-				for (EntityPlayer player : players)
-					PacketDispatcher.sendPacketToPlayer(new Packet3Chat(ChatMessageComponent.createFromText(String.format("\u00A7oOpis automaticly stopped after %d ticks.", modOpis.profilerMaxTicks))), (Player)player);
+				// Here we should send a full update to all the clients registered
 				
-				players.clear();
+				ArrayList<TickHandlerStats> timingHandlers = TickHandlerManager.getCumulatedStats();
+				ArrayList<EntityStats>      timingEntities = EntityManager.getTopEntities(100);
+				ArrayList<TileEntityStats>  timingTileEnts = TileEntityManager.getTopEntities(100);
+				
+				
+				for (EntityPlayer player : PlayerTracker.instance().playersSwing){
+
+					// This portion is to get the proper filtered amounts depending on the player preferences.
+					String name = player.getEntityName();
+					boolean filtered = false;
+					if (PlayerTracker.instance().filteredAmount.containsKey(name))
+						filtered = PlayerTracker.instance().filteredAmount.get(name);
+					HashMap<String, Integer> ents = EntityManager.getCumulativeEntities(filtered);
+
+					// Here we send a full update to the player
+					PacketDispatcher.sendPacketToPlayer(Packet_DataListAmountEntities.create(ents), (Player)player);					
+					PacketDispatcher.sendPacketToPlayer(Packet_DataListTimingHandlers.create(timingHandlers), (Player)player);
+					PacketDispatcher.sendPacketToPlayer(Packet_DataListTimingEntities.create(timingEntities), (Player)player);
+					PacketDispatcher.sendPacketToPlayer(Packet_DataListTimingTileEnts.create(timingTileEnts), (Player)player);
+				}
+				
+				for (EntityPlayer player : PlayerTracker.instance().playersOpis)
+					PacketDispatcher.sendPacketToPlayer(new Packet3Chat(ChatMessageComponent.createFromText(String.format("\u00A7oOpis automaticly stopped after %d ticks.", modOpis.profilerMaxTicks))), (Player)player);
+
 			}			
 		}
 	}

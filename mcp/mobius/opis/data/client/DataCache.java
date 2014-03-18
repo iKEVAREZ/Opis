@@ -27,7 +27,7 @@ public class DataCache {
 
 		DefaultTableModel model = (DefaultTableModel)SwingUI.instance().getTableEntityList().getModel();
 		
-		for (int i = 0; i < model.getRowCount(); i++)
+		for (int i = model.getRowCount() - 1; i >= 0; i--)
 			model.removeRow(i);
 		
 		int totalEntities = 0;
@@ -50,7 +50,7 @@ public class DataCache {
 		
 		DefaultTableModel model = (DefaultTableModel)SwingUI.instance().getTableTimingHandler().getModel();
 			
-		for (int i = 0; i < model.getRowCount(); i++)
+		for (int i = model.getRowCount() - 1; i >= 0; i--)
 			model.removeRow(i);
 		
 		for (TickHandlerStats stat : DataCache.instance().getTimingHandlers()){
@@ -81,7 +81,7 @@ public class DataCache {
 										String.valueOf(stat.getNData())});
 		}
 		
-		for (int i = 0; i < model.getRowCount(); i++)
+		for (int i = model.getRowCount() - 1; i >= 0; i--)
 			model.removeRow(i);
 		
 		model.fireTableDataChanged();			
@@ -97,7 +97,7 @@ public class DataCache {
 		
 		DefaultTableModel model = (DefaultTableModel)SwingUI.instance().getTableTimingTE().getModel();
 		
-		for (int i = 0; i < model.getRowCount(); i++)
+		for (int i = model.getRowCount() - 1; i >= 0; i--)
 			model.removeRow(i);
 		
 		for (TileEntityStats stat : DataCache.instance().getTimingTileEnts()){

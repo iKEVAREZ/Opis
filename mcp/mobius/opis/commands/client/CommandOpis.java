@@ -5,8 +5,10 @@ import javax.swing.JLabel;
 
 import mcp.mobius.opis.network.ClientCommand;
 import mcp.mobius.opis.network.server.Packet_ClientCommand;
+import mcp.mobius.opis.server.PlayerTracker;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 
 public class CommandOpis extends CommandBase {
@@ -23,6 +25,8 @@ public class CommandOpis extends CommandBase {
 
 	@Override
 	public void processCommand(ICommandSender icommandsender, String[] astring) {
+		PlayerTracker.instance().playersSwing.add((EntityPlayer)icommandsender);
+		PlayerTracker.instance().playersOpis.add((EntityPlayer)icommandsender);
 		((EntityPlayerMP)icommandsender).playerNetServerHandler.sendPacketToPlayer(Packet_ClientCommand.create(ClientCommand.SHOW_SWING));
 	}
 	

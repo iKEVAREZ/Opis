@@ -10,7 +10,6 @@ import mcp.mobius.opis.client.OpisClientEventHandler;
 import mcp.mobius.opis.client.OpisClientTickHandler;
 import mcp.mobius.opis.commands.client.CommandClientShowRenderTick;
 import mcp.mobius.opis.commands.client.CommandClientStart;
-import mcp.mobius.opis.commands.client.CommandClientTest;
 import mcp.mobius.opis.commands.client.CommandOpis;
 import mcp.mobius.opis.commands.server.CommandAmountEntities;
 import mcp.mobius.opis.commands.server.CommandChunkDump;
