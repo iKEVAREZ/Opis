@@ -22,13 +22,27 @@ public class DataCache {
 	private ArrayList<EntityStats>      timingEntities = new ArrayList<EntityStats>(); 
 	private ArrayList<TileEntityStats>  timingTileEnts = new ArrayList<TileEntityStats>(); 
 	
+	public HashMap<String, Integer> getAmountEntities(){
+		return this.amountEntities;
+	}
+	
+	public ArrayList<TickHandlerStats> getTimingHandlers(){
+		return this.timingHandlers;
+	}
+	
+	public ArrayList<EntityStats> getTimingEntities(){
+		return this.timingEntities;
+	}	
+
+	public ArrayList<TileEntityStats> getTimingTileEnts(){
+		return this.timingTileEnts;
+	}		
+	
 	public void setAmountEntities(HashMap<String, Integer> stats){
 		this.amountEntities = stats;
 
 		DefaultTableModel model = (DefaultTableModel)SwingUI.instance().getTableEntityList().getModel();
-		
-		for (int i = model.getRowCount() - 1; i >= 0; i--)
-			model.removeRow(i);
+		this.clearRows(model);
 		
 		int totalEntities = 0;
 		
@@ -41,17 +55,11 @@ public class DataCache {
 		model.fireTableDataChanged();		
 	}
 	
-	public HashMap<String, Integer> getAmountEntities(){
-		return this.amountEntities;
-	}
-	
 	public void setTimingHandler(ArrayList<TickHandlerStats> timingHandlers){
 		this.timingHandlers = timingHandlers;
 		
 		DefaultTableModel model = (DefaultTableModel)SwingUI.instance().getTableTimingHandler().getModel();
-			
-		for (int i = model.getRowCount() - 1; i >= 0; i--)
-			model.removeRow(i);
+		this.clearRows(model);
 		
 		for (TickHandlerStats stat : DataCache.instance().getTimingHandlers()){
 			model.addRow(new Object[] {stat.getName(), String.format("%.3f \u00B5s", stat.getGeometricMean())});
@@ -60,17 +68,11 @@ public class DataCache {
 		model.fireTableDataChanged();		
 	}
 	
-	public ArrayList<TickHandlerStats> getTimingHandlers(){
-		return this.timingHandlers;
-	}
-	
 	public void setTimingEntities(ArrayList<EntityStats> timingEntities){
 		this.timingEntities = timingEntities;
 		
 		DefaultTableModel model = (DefaultTableModel)SwingUI.instance().getTableTimingEnt().getModel();
-		
-		for (int i = 0; i < model.getRowCount(); i++)
-			model.removeRow(i);
+		this.clearRows(model);
 		
 		for (EntityStats stat : DataCache.instance().getTimingEntities()){
 			model.addRow(new Object[]  {stat.getName(), 
@@ -88,17 +90,11 @@ public class DataCache {
 		
 	}
 	
-	public ArrayList<EntityStats> getTimingEntities(){
-		return this.timingEntities;
-	}	
-
 	public void setTimingTileEnts(ArrayList<TileEntityStats> timingTileEnts){
 		this.timingTileEnts = timingTileEnts;
 		
 		DefaultTableModel model = (DefaultTableModel)SwingUI.instance().getTableTimingTE().getModel();
-		
-		for (int i = model.getRowCount() - 1; i >= 0; i--)
-			model.removeRow(i);
+		this.clearRows(model);
 		
 		for (TileEntityStats stat : DataCache.instance().getTimingTileEnts()){
 			ItemStack is;
@@ -122,7 +118,9 @@ public class DataCache {
 		model.fireTableDataChanged();				
 	}
 	
-	public ArrayList<TileEntityStats> getTimingTileEnts(){
-		return this.timingTileEnts;
-	}		
+	private void clearRows(DefaultTableModel model){
+		if (model.getRowCount() > 0)
+			for (int i = model.getRowCount() - 1; i >= 0; i--)
+				model.removeRow(i);		
+	}
 }

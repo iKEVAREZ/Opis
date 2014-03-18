@@ -1,6 +1,14 @@
-package mcp.mobius.opis.network;
+package mcp.mobius.opis.network.enums;
 
-public class ClientCommand {
+public enum ClientCommand {
+	INVALID,
+	TEST_CMD,
+	START_PROFILING,
+	STOP_PROFILING,
+	RESET_PROFILING,
+	SHOW_RENDER_TICK,
+	SHOW_SWING;
+	/*
 	public static byte TEST_CMD = 0x00;
 	public static byte START_PROFILING = 0x01;
 	public static byte STOP_PROFILING  = 0x02;
@@ -9,4 +17,5 @@ public class ClientCommand {
 	public static byte SHOW_RENDER_TICK = 0x04;
 	
 	public static byte SHOW_SWING = 0x05;
+	*/
 }

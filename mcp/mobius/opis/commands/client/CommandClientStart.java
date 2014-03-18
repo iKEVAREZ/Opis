@@ -1,6 +1,6 @@
 package mcp.mobius.opis.commands.client;
 
-import mcp.mobius.opis.network.ClientCommand;
+import mcp.mobius.opis.network.enums.ClientCommand;
 import mcp.mobius.opis.network.server.Packet_ClientCommand;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;

@@ -3,7 +3,8 @@ package mcp.mobius.opis.commands.client;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-import mcp.mobius.opis.network.ClientCommand;
+import mcp.mobius.opis.network.DataReqHandler;
+import mcp.mobius.opis.network.enums.ClientCommand;
 import mcp.mobius.opis.network.server.Packet_ClientCommand;
 import mcp.mobius.opis.server.PlayerTracker;
 import net.minecraft.command.CommandBase;

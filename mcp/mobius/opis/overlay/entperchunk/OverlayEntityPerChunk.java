@@ -30,6 +30,7 @@ import mcp.mobius.opis.gui.widgets.tableview.ViewTable;
 import mcp.mobius.opis.network.client.Packet_ReqChunks;
 import mcp.mobius.opis.network.client.Packet_ReqData;
 import mcp.mobius.opis.network.client.Packet_ReqTeleport;
+import mcp.mobius.opis.network.enums.DataReq;
 
 public class OverlayEntityPerChunk implements IMwDataProvider {
 
@@ -127,13 +128,13 @@ public class OverlayEntityPerChunk implements IMwDataProvider {
 			this.showList = true;
 		
 		if (prevSelected == null && this.selectedChunk != null)
-			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(this.selectedChunk, "list:chunk:entities"));
+			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(this.selectedChunk, DataReq.LIST, DataReq.CHUNK, DataReq.ENTITIES));
 
 		else if (this.selectedChunk != null && !this.selectedChunk.equals(prevSelected))
-			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(this.selectedChunk, "list:chunk:entities"));
+			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(this.selectedChunk, DataReq.LIST, DataReq.CHUNK, DataReq.ENTITIES));			
 		
 		else if (this.selectedChunk == null)
-			PacketDispatcher.sendPacketToServer(Packet_ReqData.create("overlay:chunk:entities"));		
+			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.OVERLAY, DataReq.CHUNK, DataReq.ENTITIES));			
 	}
 
 	@Override
@@ -149,7 +150,7 @@ public class OverlayEntityPerChunk implements IMwDataProvider {
 
 	@Override
 	public void onOverlayActivated(MapView mapview) {
-		PacketDispatcher.sendPacketToServer(Packet_ReqData.create("overlay:chunk:entities"));
+		PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.OVERLAY, DataReq.CHUNK, DataReq.ENTITIES));
 	}
 
 	@Override

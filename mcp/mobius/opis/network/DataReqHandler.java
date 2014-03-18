@@ -16,6 +16,7 @@ import mcp.mobius.opis.data.holders.TileEntityStats;
 import mcp.mobius.opis.data.managers.EntityManager;
 import mcp.mobius.opis.data.managers.TickHandlerManager;
 import mcp.mobius.opis.data.managers.TileEntityManager;
+import mcp.mobius.opis.network.enums.DataReq;
 import mcp.mobius.opis.network.server.Packet_DataListChunkEntities;
 import mcp.mobius.opis.network.server.Packet_DataListTimingEntities;
 import mcp.mobius.opis.network.server.Packet_DataListTimingHandlers;
@@ -35,68 +36,72 @@ public class DataReqHandler {
 		return _instance;
 	}	
 
-	public void handle(CoordinatesChunk coord, String datatype, Player player){
-		String[] data  = datatype.split(":");
+	public void handle(CoordinatesChunk coord, DataReq maintype, DataReq subtype, DataReq target, Player player){
 		String   name  = ((EntityPlayer)player).getEntityName();
 		
-		if (data[0].equals("overlay")){
-			if (data[1].equals("chunk")){
-				if (data[2].equals("entities")){
+		if (maintype == DataReq.OVERLAY){
+			if (subtype == DataReq.CHUNK){
+				if (target == DataReq.ENTITIES){
 					this.handleOverlayChunkEntities(coord, player);
 					return;
 				}
 			}
 		}
-		else if (data[0].equals("list")){
+		else if (maintype == DataReq.LIST){
 			
-			if (data[1].equals("chunk")){
-				if (data[2].equals("entities")){
+			if (subtype == DataReq.CHUNK){
+				if (target == DataReq.ENTITIES){
 					PacketDispatcher.sendPacketToPlayer(Packet_DataListChunkEntities.create(EntityManager.getEntitiesInChunk(coord)), player);
 					return;
 				}
 			}
 			
-			else if (data[1].equals("timing")){
+			else if (subtype == DataReq.TIMING){
 				
-				if (data[2].equals("tileents")){
+				if (target == DataReq.TILETENTS){
 					ArrayList<TileEntityStats>  timingTileEnts = TileEntityManager.getTopEntities(100);
-					PacketDispatcher.sendPacketToPlayer(Packet_DataListTimingTileEnts.create(timingTileEnts), (Player)player);							
+					PacketDispatcher.sendPacketToPlayer(Packet_DataListTimingTileEnts.create(timingTileEnts), (Player)player);		
+					return;
 				}
-				else if (data[2].equals("ents")){
+				else if (target == DataReq.ENTITIES){
 					ArrayList<EntityStats>      timingEntities = EntityManager.getTopEntities(100);
-					PacketDispatcher.sendPacketToPlayer(Packet_DataListTimingEntities.create(timingEntities), (Player)player);					
+					PacketDispatcher.sendPacketToPlayer(Packet_DataListTimingEntities.create(timingEntities), (Player)player);
+					return;
 				}
-				else if (data[2].equals("handlers")){
+				else if (target == DataReq.HANDLERS){
 					ArrayList<TickHandlerStats> timingHandlers = TickHandlerManager.getCumulatedStats();
-					PacketDispatcher.sendPacketToPlayer(Packet_DataListTimingHandlers.create(timingHandlers), (Player)player);					
+					PacketDispatcher.sendPacketToPlayer(Packet_DataListTimingHandlers.create(timingHandlers), (Player)player);
+					return;
 				}
 			}
 			
-			else if (data[1].equals("amount_ent")){
-				boolean filtered = false;
-				if (PlayerTracker.instance().filteredAmount.containsKey(name))
-					filtered = PlayerTracker.instance().filteredAmount.get(name);
+			else if (subtype == DataReq.AMOUNT){
 				
-				HashMap<String, Integer> ents = EntityManager.getCumulativeEntities(filtered);
-				PacketDispatcher.sendPacketToPlayer(Packet_DataListAmountEntities.create(ents), player);
-				return;
+				if (target == DataReq.ENTITIES){
+					boolean filtered = false;
+					if (PlayerTracker.instance().filteredAmount.containsKey(name))
+						filtered = PlayerTracker.instance().filteredAmount.get(name);
+					
+					HashMap<String, Integer> ents = EntityManager.getCumulativeEntities(filtered);
+					PacketDispatcher.sendPacketToPlayer(Packet_DataListAmountEntities.create(ents), player);
+					return;
+				}
 			}
 			
 		}
-		else if (data[0].equals("cmd")){
-			if (data[1].equals("filtering")){
-				if (data[2].equals("true")){
+		else if (maintype == DataReq.COMMAND){
+			if (subtype == DataReq.FILTERING){
+				if (target == DataReq.TRUE){
 					PlayerTracker.instance().filteredAmount.put(name, true);
 					return;
-				} else if (data[2].equals("false")) {
+				} else if (target == DataReq.FALSE) {
 					PlayerTracker.instance().filteredAmount.put(name, false);
 					return;
 				}
 			}
 		}
 		
-		
-		modOpis.log.log(Level.WARNING, String.format("Unknown data request : %s", datatype));
+		modOpis.log.log(Level.WARNING, String.format("Unknown data request : %s / %s / %s", maintype, subtype, target));		
 	}
 	
 	public void handleOverlayChunkEntities(CoordinatesChunk coord, Player player){

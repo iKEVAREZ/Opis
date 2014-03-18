@@ -29,6 +29,7 @@ import javax.swing.JButton;
 
 import cpw.mods.fml.common.network.PacketDispatcher;
 import mcp.mobius.opis.network.client.Packet_ReqData;
+import mcp.mobius.opis.network.enums.DataReq;
 
 public class SwingUI extends JFrame implements  ActionListener, ItemListener{
 
@@ -261,18 +262,18 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener{
 	public void itemStateChanged(ItemEvent e) {
 		if (e.getItem() == chkBoxDisplayAll){
 			if      (e.getStateChange() == ItemEvent.SELECTED){
-				PacketDispatcher.sendPacketToServer(Packet_ReqData.create("cmd:filtering:true"));
+				PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.COMMAND, DataReq.FILTERING, DataReq.TRUE));
 				this.requestAmoutEntityUpdate();
 			}
 			else if (e.getStateChange() == ItemEvent.DESELECTED){
-				PacketDispatcher.sendPacketToServer(Packet_ReqData.create("cmd:filtering:false"));
+				PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.COMMAND, DataReq.FILTERING, DataReq.FALSE));
 				this.requestAmoutEntityUpdate();				
 			}
 		}
 	}
 	
 	private void requestAmoutEntityUpdate(){
-		PacketDispatcher.sendPacketToServer(Packet_ReqData.create("list:amount_ent"));
+		PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.LIST, DataReq.AMOUNT, DataReq.ENTITIES));
 	}
 
 }
