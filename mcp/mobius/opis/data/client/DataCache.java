@@ -6,8 +6,10 @@ import java.util.HashMap;
 import javax.swing.table.DefaultTableModel;
 
 import net.minecraft.item.ItemStack;
+import mcp.mobius.opis.data.holders.AmountHolder;
 import mcp.mobius.opis.data.holders.ChunkStats;
 import mcp.mobius.opis.data.holders.EntityStats;
+import mcp.mobius.opis.data.holders.ISerializable;
 import mcp.mobius.opis.data.holders.StatAbstract;
 import mcp.mobius.opis.data.holders.TickHandlerStats;
 import mcp.mobius.opis.data.holders.TileEntityStats;
@@ -19,13 +21,13 @@ public class DataCache {
 	private static DataCache _instance = new DataCache();
 	public  static DataCache instance() { return _instance; };
 	
-	private HashMap<String, Integer>    amountEntities = new HashMap<String, Integer>();
+	private ArrayList<AmountHolder>     amountEntities = new ArrayList<AmountHolder>();
 	private ArrayList<TickHandlerStats> timingHandlers = new ArrayList<TickHandlerStats>(); 
 	private ArrayList<EntityStats>      timingEntities = new ArrayList<EntityStats>(); 
 	private ArrayList<TileEntityStats>  timingTileEnts = new ArrayList<TileEntityStats>();
 	private ArrayList<ChunkStats>       timingChunks   = new ArrayList<ChunkStats>();
 	
-	public HashMap<String, Integer> getAmountEntities(){
+	public ArrayList<AmountHolder> getAmountEntities(){
 		return this.amountEntities;
 	}
 	
@@ -45,26 +47,28 @@ public class DataCache {
 		return this.timingChunks;
 	}		
 	
-	public void setAmountEntities(HashMap<String, Integer> stats){
-		this.amountEntities = stats;
-
+	public void setAmountEntities(ArrayList<ISerializable> stats){
+		this.amountEntities.clear();
+		for (ISerializable stat : stats)
+			this.amountEntities.add((AmountHolder)stat);			
+		
 		DefaultTableModel model = (DefaultTableModel)SwingUI.instance().getTableEntityList().getModel();
 		this.clearRows(model);
 		
 		int totalEntities = 0;
 		
-		for (String type : DataCache.instance().getAmountEntities().keySet()){
-			model.addRow(new Object[] {type, DataCache.instance().getAmountEntities().get(type)});
-			totalEntities += DataCache.instance().getAmountEntities().get(type);
-		}
+		for (AmountHolder stat : DataCache.instance().getAmountEntities()){
+				model.addRow(new Object[] {stat.key, stat.value});
+				totalEntities += stat.value;
+		}		
 
 		SwingUI.instance().getLabelAmountValue().setText(String.valueOf(totalEntities));
 		model.fireTableDataChanged();		
 	}
 	
-	public void setTimingHandlers(ArrayList<StatAbstract> timingHandlers_){
+	public void setTimingHandlers(ArrayList<ISerializable> timingHandlers_){
 		this.timingHandlers.clear();
-		for (StatAbstract stat : timingHandlers_)
+		for (ISerializable stat : timingHandlers_)
 			this.timingHandlers.add((TickHandlerStats)stat);			
 		
 		DefaultTableModel model = (DefaultTableModel)SwingUI.instance().getTableTimingHandler().getModel();
@@ -77,9 +81,9 @@ public class DataCache {
 		model.fireTableDataChanged();		
 	}
 	
-	public void setTimingEntities(ArrayList<StatAbstract> timingEntities_){
+	public void setTimingEntities(ArrayList<ISerializable> timingEntities_){
 		this.timingEntities.clear();
-		for (StatAbstract stat : timingEntities_)
+		for (ISerializable stat : timingEntities_)
 			this.timingEntities.add((EntityStats)stat);		
 		
 		DefaultTableModel model = (DefaultTableModel)SwingUI.instance().getTableTimingEnt().getModel();
@@ -98,9 +102,9 @@ public class DataCache {
 		
 	}
 	
-	public void setTimingTileEnts(ArrayList<StatAbstract> timingTileEnts_){
+	public void setTimingTileEnts(ArrayList<ISerializable> timingTileEnts_){
 		this.timingTileEnts.clear();
-		for (StatAbstract stat : timingTileEnts_)
+		for (ISerializable stat : timingTileEnts_)
 			this.timingTileEnts.add((TileEntityStats)stat);
 		
 		DefaultTableModel model = (DefaultTableModel)SwingUI.instance().getTableTimingTE().getModel();
@@ -128,9 +132,9 @@ public class DataCache {
 		model.fireTableDataChanged();				
 	}
 	
-	public void setTimingChunks(ArrayList<StatAbstract> timingChunks_){
+	public void setTimingChunks(ArrayList<ISerializable> timingChunks_){
 		this.timingChunks.clear();
-		for (StatAbstract stat : timingChunks_)
+		for (ISerializable stat : timingChunks_)
 			this.timingChunks.add((ChunkStats)stat);
 		
 		DefaultTableModel model = (DefaultTableModel)SwingUI.instance().getTableTimingChunk().getModel();

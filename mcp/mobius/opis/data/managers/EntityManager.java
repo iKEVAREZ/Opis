@@ -15,6 +15,7 @@ import net.minecraft.network.packet.Packet3Chat;
 import net.minecraft.util.ChatMessageComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
+import mcp.mobius.opis.data.holders.AmountHolder;
 import mcp.mobius.opis.data.holders.CoordinatesBlock;
 import mcp.mobius.opis.data.holders.CoordinatesChunk;
 import mcp.mobius.opis.data.holders.EntityStats;
@@ -148,7 +149,8 @@ public class EntityManager {
 	}
 	
 	/* Returns a hashmap with the entity name and amount of it on the server */
-	public static HashMap<String, Integer> getCumulativeEntities(boolean filtered){
+	public static ArrayList<AmountHolder> getCumulativeEntities(boolean filtered){
+		ArrayList<AmountHolder>  cumData  = new ArrayList<AmountHolder>();
 		HashMap<String, Integer> entities = new HashMap<String, Integer>();
 		
 		for (int dim : DimensionManager.getIDs()){
@@ -169,7 +171,10 @@ public class EntityManager {
 			}
 		}		
 		
-		return entities;
+		for (String key : entities.keySet())
+			cumData.add(new AmountHolder(key, entities.get(key)));
+		
+		return cumData;
 	}
 	
 	public static CoordinatesBlock getTeleportTarget(CoordinatesBlock coord){

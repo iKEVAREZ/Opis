@@ -7,6 +7,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import mcp.mobius.opis.data.holders.AmountHolder;
 import mcp.mobius.opis.data.holders.ChunkStats;
 import mcp.mobius.opis.data.holders.EntityStats;
 import mcp.mobius.opis.data.holders.ISerializable;
@@ -23,7 +24,7 @@ public class Packet_DataList {
 	public DataReq maintype;
 	public DataReq subtype;
 	public DataReq target;	
-	public ArrayList<StatAbstract> data = new ArrayList<StatAbstract>(); 
+	public ArrayList<ISerializable> data = new ArrayList<ISerializable>(); 
 	
 	public Packet_DataList(Packet250CustomPayload packet) {
 		DataInputStream istream = new DataInputStream(new ByteArrayInputStream(packet.data));
@@ -39,7 +40,7 @@ public class Packet_DataList {
 		} catch (IOException e){}				
 	}
 
-	public static Packet250CustomPayload create(DataReq maintype, DataReq subtype, DataReq target, ArrayList<? extends StatAbstract> stats){
+	public static Packet250CustomPayload create(DataReq maintype, DataReq subtype, DataReq target, ArrayList<? extends ISerializable> stats){
 		Packet250CustomPayload packet      = new Packet250CustomPayload();
 		ByteArrayOutputStream bos     = new ByteArrayOutputStream(1);
 		DataOutputStream outputStream = new DataOutputStream(bos);
@@ -61,7 +62,7 @@ public class Packet_DataList {
 		return packet;
 	}	
 	
-	private StatAbstract dataRead(DataReq maintype, DataReq subtype, DataReq target, DataInputStream istream){
+	private ISerializable dataRead(DataReq maintype, DataReq subtype, DataReq target, DataInputStream istream){
 		try{
 			if ((maintype == DataReq.LIST) && (subtype == DataReq.TIMING) && (target == DataReq.TILETENTS))
 				return TileEntityStats.readFromStream(istream);
@@ -74,6 +75,9 @@ public class Packet_DataList {
 
 			if ((maintype == DataReq.LIST) && (subtype == DataReq.TIMING) && (target == DataReq.CHUNK))
 				return ChunkStats.readFromStream(istream);			
+
+			if ((maintype == DataReq.LIST) && (subtype == DataReq.AMOUNT) && (target == DataReq.ENTITIES))
+				return AmountHolder.readFromStream(istream);				
 			
 		} catch (Exception e) {
 			throw new RuntimeException(e);

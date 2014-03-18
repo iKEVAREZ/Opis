@@ -1,10 +1,13 @@
 package mcp.mobius.opis.commands.server;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import mcp.mobius.opis.commands.IOpisCommand;
+import mcp.mobius.opis.data.holders.AmountHolder;
 import mcp.mobius.opis.data.managers.EntityManager;
-import mcp.mobius.opis.network.server.Packet_DataListAmountEntities;
+import mcp.mobius.opis.network.enums.DataReq;
+import mcp.mobius.opis.network.server.Packet_DataList;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
@@ -34,7 +37,7 @@ public class CommandAmountEntities extends CommandBase implements IOpisCommand{
 
 	@Override
 	public void processCommand(ICommandSender icommandsender, String[] astring) {
-		HashMap<String, Integer> ents;
+		ArrayList<AmountHolder> ents;
 		
 		if (astring.length == 1 && astring[0].equals("all"))
 			ents = EntityManager.getCumulativeEntities(false);
@@ -42,10 +45,10 @@ public class CommandAmountEntities extends CommandBase implements IOpisCommand{
 			ents = EntityManager.getCumulativeEntities(true);
 		
 		if (icommandsender instanceof EntityPlayer)
-			((EntityPlayerMP)icommandsender).playerNetServerHandler.sendPacketToPlayer(Packet_DataListAmountEntities.create(ents));
+			((EntityPlayerMP)icommandsender).playerNetServerHandler.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST, DataReq.AMOUNT, DataReq.ENTITIES,  ents));
 		else{
-			for (String s : ents.keySet())
-				icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText(String.format("%s : %s", s, ents.get(s))));
+			for (AmountHolder s : ents)
+				icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText(String.format("%s : %s", s.key, s.value)));
 		}
 		
 	}

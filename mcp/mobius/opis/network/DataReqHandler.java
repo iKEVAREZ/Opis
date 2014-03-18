@@ -9,6 +9,7 @@ import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
 import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.commands.server.CommandAmountEntities;
+import mcp.mobius.opis.data.holders.AmountHolder;
 import mcp.mobius.opis.data.holders.ChunkStats;
 import mcp.mobius.opis.data.holders.CoordinatesChunk;
 import mcp.mobius.opis.data.holders.EntityStats;
@@ -22,7 +23,6 @@ import mcp.mobius.opis.network.enums.DataReq;
 import mcp.mobius.opis.network.server.Packet_DataList;
 import mcp.mobius.opis.network.server.Packet_DataListChunkEntities;
 import mcp.mobius.opis.network.server.Packet_DataOverlayChunkEntities;
-import mcp.mobius.opis.network.server.Packet_DataListAmountEntities;
 import mcp.mobius.opis.server.PlayerTracker;
 
 public class DataReqHandler {
@@ -87,8 +87,8 @@ public class DataReqHandler {
 					if (PlayerTracker.instance().filteredAmount.containsKey(name))
 						filtered = PlayerTracker.instance().filteredAmount.get(name);
 					
-					HashMap<String, Integer> ents = EntityManager.getCumulativeEntities(filtered);
-					PacketDispatcher.sendPacketToPlayer(Packet_DataListAmountEntities.create(ents), player);
+					ArrayList<AmountHolder> ents = EntityManager.getCumulativeEntities(filtered);
+					PacketDispatcher.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST, DataReq.AMOUNT, DataReq.ENTITIES,  ents), (Player)player);
 					return;
 				}
 			}

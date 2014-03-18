@@ -10,6 +10,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.packet.Packet3Chat;
 import net.minecraft.util.ChatMessageComponent;
 import mcp.mobius.opis.modOpis;
+import mcp.mobius.opis.data.holders.AmountHolder;
 import mcp.mobius.opis.data.holders.ChunkStats;
 import mcp.mobius.opis.data.holders.EntityStats;
 import mcp.mobius.opis.data.holders.TickHandlerStats;
@@ -20,7 +21,6 @@ import mcp.mobius.opis.data.managers.TickHandlerManager;
 import mcp.mobius.opis.data.managers.TileEntityManager;
 import mcp.mobius.opis.network.enums.DataReq;
 import mcp.mobius.opis.network.server.Packet_DataList;
-import mcp.mobius.opis.network.server.Packet_DataListAmountEntities;
 import mcp.mobius.opis.network.server.Packet_LoadedChunks;
 import mcp.mobius.opis.network.server.Packet_MeanTime;
 import mcp.mobius.opis.overlay.OverlayStatus;
@@ -80,10 +80,10 @@ public class OpisServerTickHandler implements ITickHandler {
 					boolean filtered = false;
 					if (PlayerTracker.instance().filteredAmount.containsKey(name))
 						filtered = PlayerTracker.instance().filteredAmount.get(name);
-					HashMap<String, Integer> ents = EntityManager.getCumulativeEntities(filtered);
+					ArrayList<AmountHolder> amountEntities = EntityManager.getCumulativeEntities(filtered);
 
 					// Here we send a full update to the player
-					PacketDispatcher.sendPacketToPlayer(Packet_DataListAmountEntities.create(ents), (Player)player); 					
+					PacketDispatcher.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST, DataReq.AMOUNT, DataReq.ENTITIES,  amountEntities), (Player)player); 					
 					PacketDispatcher.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST, DataReq.TIMING, DataReq.HANDLERS,  timingHandlers), (Player)player);
 					PacketDispatcher.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST, DataReq.TIMING, DataReq.ENTITIES,  timingEntities), (Player)player);
 					PacketDispatcher.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST, DataReq.TIMING, DataReq.TILETENTS, timingTileEnts), (Player)player);
