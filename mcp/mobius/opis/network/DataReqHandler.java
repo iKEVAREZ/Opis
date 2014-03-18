@@ -21,7 +21,6 @@ import mcp.mobius.opis.data.managers.TickHandlerManager;
 import mcp.mobius.opis.data.managers.TileEntityManager;
 import mcp.mobius.opis.network.enums.DataReq;
 import mcp.mobius.opis.network.server.Packet_DataList;
-import mcp.mobius.opis.network.server.Packet_DataListChunkEntities;
 import mcp.mobius.opis.network.server.Packet_DataOverlayChunkEntities;
 import mcp.mobius.opis.server.PlayerTracker;
 
@@ -48,10 +47,9 @@ public class DataReqHandler {
 			}
 		}
 		else if (maintype == DataReq.LIST){
-			
 			if (subtype == DataReq.CHUNK){
 				if (target == DataReq.ENTITIES){
-					PacketDispatcher.sendPacketToPlayer(Packet_DataListChunkEntities.create(EntityManager.getEntitiesInChunk(coord)), player);
+					PacketDispatcher.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST, DataReq.CHUNK, DataReq.ENTITIES,  EntityManager.getEntitiesInChunk(coord)), (Player)player);					
 					return;
 				}
 			}

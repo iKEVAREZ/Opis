@@ -79,6 +79,9 @@ public class Packet_DataList {
 			if ((maintype == DataReq.LIST) && (subtype == DataReq.AMOUNT) && (target == DataReq.ENTITIES))
 				return AmountHolder.readFromStream(istream);				
 			
+			if ((maintype == DataReq.LIST) && (subtype == DataReq.CHUNK) && (target == DataReq.ENTITIES))
+				return EntityStats.readFromStream(istream);			
+			
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}

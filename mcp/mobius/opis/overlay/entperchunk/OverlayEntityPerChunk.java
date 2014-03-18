@@ -18,6 +18,7 @@ import mapwriter.map.mapmode.MapMode;
 import mcp.mobius.opis.data.holders.CoordinatesBlock;
 import mcp.mobius.opis.data.holders.CoordinatesChunk;
 import mcp.mobius.opis.data.holders.EntityStats;
+import mcp.mobius.opis.data.holders.ISerializable;
 import mcp.mobius.opis.gui.events.MouseEvent;
 import mcp.mobius.opis.gui.interfaces.CType;
 import mcp.mobius.opis.gui.interfaces.IWidget;
@@ -65,6 +66,12 @@ public class OverlayEntityPerChunk implements IMwDataProvider {
 			_instance = new OverlayEntityPerChunk();			
 		return _instance;
 	}	
+	
+	public void setEntStats(ArrayList<ISerializable> data){
+		this.entStats.clear();
+		for (ISerializable stat : data)
+			this.entStats.add((EntityStats)stat);
+	}
 	
 	public void reduceData(){
 		this.reducedData.clear();

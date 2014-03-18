@@ -29,7 +29,6 @@ import mcp.mobius.opis.network.enums.DataReq;
 import mcp.mobius.opis.network.server.Packet_Chunks;
 import mcp.mobius.opis.network.server.Packet_ClientCommand;
 import mcp.mobius.opis.network.server.Packet_DataList;
-import mcp.mobius.opis.network.server.Packet_DataListChunkEntities;
 import mcp.mobius.opis.network.server.Packet_DataOverlayChunkEntities;
 import mcp.mobius.opis.network.server.Packet_LoadedChunks;
 import mcp.mobius.opis.network.server.Packet_MeanTime;
@@ -120,12 +119,6 @@ public class OpisPacketHandler implements IPacketHandler {
 			OverlayEntityPerChunk.instance().setupChunkTable();
 		}
 		
-		else if (header == Packets.DATA_LIST_CHUNK_ENTITIES){
-			Packet_DataListChunkEntities castedPacket = new Packet_DataListChunkEntities(packet);
-			OverlayEntityPerChunk.instance().entStats = castedPacket.stats;
-			OverlayEntityPerChunk.instance().setupEntTable();
-		}		
-		
 		else if (header == Packets.CLIENT_CMD){
 			Packet_ClientCommand castedPacket = new Packet_ClientCommand(packet);
 			ClientCommandHandler.instance().handle(castedPacket.cmd);
@@ -134,20 +127,25 @@ public class OpisPacketHandler implements IPacketHandler {
 		else if (header == Packets.DATA_LIST_GENERAL){
 			Packet_DataList castedPacket = new Packet_DataList(packet);
 
-			if ((castedPacket.maintype == DataReq.LIST) && (castedPacket.subtype == DataReq.TIMING) && (castedPacket.target == DataReq.TILETENTS))
+			     if ((castedPacket.maintype == DataReq.LIST) && (castedPacket.subtype == DataReq.TIMING) && (castedPacket.target == DataReq.TILETENTS))
 				DataCache.instance().setTimingTileEnts(castedPacket.data);
 			
-			if ((castedPacket.maintype == DataReq.LIST) && (castedPacket.subtype == DataReq.TIMING) && (castedPacket.target == DataReq.ENTITIES))
+			else if ((castedPacket.maintype == DataReq.LIST) && (castedPacket.subtype == DataReq.TIMING) && (castedPacket.target == DataReq.ENTITIES))
 				DataCache.instance().setTimingEntities(castedPacket.data);
 			
-			if ((castedPacket.maintype == DataReq.LIST) && (castedPacket.subtype == DataReq.TIMING) && (castedPacket.target == DataReq.HANDLERS))
+			else if ((castedPacket.maintype == DataReq.LIST) && (castedPacket.subtype == DataReq.TIMING) && (castedPacket.target == DataReq.HANDLERS))
 				DataCache.instance().setTimingHandlers(castedPacket.data);		
 			
-			if ((castedPacket.maintype == DataReq.LIST) && (castedPacket.subtype == DataReq.TIMING) && (castedPacket.target == DataReq.CHUNK))
+			else if ((castedPacket.maintype == DataReq.LIST) && (castedPacket.subtype == DataReq.TIMING) && (castedPacket.target == DataReq.CHUNK))
 				DataCache.instance().setTimingChunks(castedPacket.data);
 			
-			if ((castedPacket.maintype == DataReq.LIST) && (castedPacket.subtype == DataReq.AMOUNT) && (castedPacket.target == DataReq.ENTITIES))
+			else if ((castedPacket.maintype == DataReq.LIST) && (castedPacket.subtype == DataReq.AMOUNT) && (castedPacket.target == DataReq.ENTITIES))
 				DataCache.instance().setAmountEntities(castedPacket.data);			
+
+			else if ((castedPacket.maintype == DataReq.LIST) && (castedPacket.subtype == DataReq.CHUNK)  && (castedPacket.target == DataReq.ENTITIES)){
+				OverlayEntityPerChunk.instance().setEntStats(castedPacket.data);
+				OverlayEntityPerChunk.instance().setupEntTable();		
+			}
 			
 		}		
 	}
