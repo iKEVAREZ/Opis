@@ -6,6 +6,7 @@ import java.util.HashMap;
 import javax.swing.table.DefaultTableModel;
 
 import net.minecraft.item.ItemStack;
+import mcp.mobius.opis.data.holders.ChunkStats;
 import mcp.mobius.opis.data.holders.EntityStats;
 import mcp.mobius.opis.data.holders.StatAbstract;
 import mcp.mobius.opis.data.holders.TickHandlerStats;
@@ -21,7 +22,8 @@ public class DataCache {
 	private HashMap<String, Integer>    amountEntities = new HashMap<String, Integer>();
 	private ArrayList<TickHandlerStats> timingHandlers = new ArrayList<TickHandlerStats>(); 
 	private ArrayList<EntityStats>      timingEntities = new ArrayList<EntityStats>(); 
-	private ArrayList<TileEntityStats>  timingTileEnts = new ArrayList<TileEntityStats>(); 
+	private ArrayList<TileEntityStats>  timingTileEnts = new ArrayList<TileEntityStats>();
+	private ArrayList<ChunkStats>       timingChunks   = new ArrayList<ChunkStats>();
 	
 	public HashMap<String, Integer> getAmountEntities(){
 		return this.amountEntities;
@@ -37,6 +39,10 @@ public class DataCache {
 
 	public ArrayList<TileEntityStats> getTimingTileEnts(){
 		return this.timingTileEnts;
+	}		
+	
+	public ArrayList<ChunkStats> getTimingChunks(){
+		return this.timingChunks;
 	}		
 	
 	public void setAmountEntities(HashMap<String, Integer> stats){
@@ -56,7 +62,7 @@ public class DataCache {
 		model.fireTableDataChanged();		
 	}
 	
-	public void setTimingHandler(ArrayList<StatAbstract> timingHandlers_){
+	public void setTimingHandlers(ArrayList<StatAbstract> timingHandlers_){
 		this.timingHandlers.clear();
 		for (StatAbstract stat : timingHandlers_)
 			this.timingHandlers.add((TickHandlerStats)stat);			
@@ -121,6 +127,26 @@ public class DataCache {
 		
 		model.fireTableDataChanged();				
 	}
+	
+	public void setTimingChunks(ArrayList<StatAbstract> timingChunks_){
+		this.timingChunks.clear();
+		for (StatAbstract stat : timingChunks_)
+			this.timingChunks.add((ChunkStats)stat);
+		
+		DefaultTableModel model = (DefaultTableModel)SwingUI.instance().getTableTimingChunk().getModel();
+		this.clearRows(model);
+		
+		for (ChunkStats stat : DataCache.instance().getTimingChunks()){
+			model.addRow(new Object[]  {
+					 stat.getChunk().dim,
+					 String.format("[ %4d %4d ]", 	stat.getChunk().x, stat.getChunk().z),
+					 stat.tileEntities,
+				     stat.entities,
+				     String.format("%.3f \u00B5s",stat.getDataSum())});
+		}
+		
+		model.fireTableDataChanged();				
+	}	
 	
 	private void clearRows(DefaultTableModel model){
 		if (model.getRowCount() > 0)

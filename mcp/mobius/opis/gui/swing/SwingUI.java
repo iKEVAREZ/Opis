@@ -56,6 +56,9 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener{
 	private JScrollPane scrollPaneTimingHandler;
 	private JTable tableTimingHandler;
 	private JTable tableTimingTE;
+	private JPanel panelTimingChunk;
+	private JScrollPane scrollPaneTimingChunk;
+	private JTable tableTimingChunk;
 	
 	public void showUI(){
 		EventQueue.invokeLater(new Runnable() {
@@ -75,7 +78,7 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener{
 	private SwingUI() {
 		setTitle("Opis Control Panel");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 571, 383);
+		setBounds(100, 100, 664, 401);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
@@ -257,6 +260,38 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener{
 		});
 		tableTimingHandler.setAutoCreateRowSorter(true);
 		scrollPaneTimingHandler.setViewportView(tableTimingHandler);
+		
+		panelTimingChunk = new JPanel();
+		tabbedPane.addTab("Chunk Timing", null, panelTimingChunk, null);
+		panelTimingChunk.setLayout(new GridLayout(0, 1, 0, 0));
+		
+		scrollPaneTimingChunk = new JScrollPane();
+		panelTimingChunk.add(scrollPaneTimingChunk);
+		
+		tableTimingChunk = new JTable();
+		tableTimingChunk.setModel(new DefaultTableModel(
+			new Object[][] {
+				{null, null, null, null, null},
+			},
+			new String[] {
+				"Dimension", "Position", "TileEntities", "Entities", "Update Time"
+			}
+		) {
+			Class[] columnTypes = new Class[] {
+				Integer.class, String.class, Integer.class, Integer.class, String.class
+			};
+			public Class getColumnClass(int columnIndex) {
+				return columnTypes[columnIndex];
+			}
+			boolean[] columnEditables = new boolean[] {
+				false, false, false, false, false
+			};
+			public boolean isCellEditable(int row, int column) {
+				return columnEditables[column];
+			}
+		});
+		tableTimingChunk.setAutoCreateRowSorter(true);		
+		scrollPaneTimingChunk.setViewportView(tableTimingChunk);
 	}
 
 	public JTable getTableEntityList() {
@@ -300,4 +335,7 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener{
 		PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.LIST, DataReq.AMOUNT, DataReq.ENTITIES));
 	}
 
+	public JTable getTableTimingChunk() {
+		return tableTimingChunk;
+	}
 }

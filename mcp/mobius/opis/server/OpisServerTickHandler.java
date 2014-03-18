@@ -10,6 +10,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.packet.Packet3Chat;
 import net.minecraft.util.ChatMessageComponent;
 import mcp.mobius.opis.modOpis;
+import mcp.mobius.opis.data.holders.ChunkStats;
 import mcp.mobius.opis.data.holders.EntityStats;
 import mcp.mobius.opis.data.holders.TickHandlerStats;
 import mcp.mobius.opis.data.holders.TileEntityStats;
@@ -69,7 +70,8 @@ public class OpisServerTickHandler implements ITickHandler {
 				ArrayList<TickHandlerStats> timingHandlers = TickHandlerManager.getCumulatedStats();
 				ArrayList<EntityStats>      timingEntities = EntityManager.getTopEntities(100);
 				ArrayList<TileEntityStats>  timingTileEnts = TileEntityManager.getTopEntities(100);
-				
+				ArrayList<ChunkStats>         timingChunks = ChunkManager.getTopChunks(100);
+
 				
 				for (EntityPlayer player : PlayerTracker.instance().playersSwing){
 
@@ -85,6 +87,7 @@ public class OpisServerTickHandler implements ITickHandler {
 					PacketDispatcher.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST, DataReq.TIMING, DataReq.HANDLERS,  timingHandlers), (Player)player);
 					PacketDispatcher.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST, DataReq.TIMING, DataReq.ENTITIES,  timingEntities), (Player)player);
 					PacketDispatcher.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST, DataReq.TIMING, DataReq.TILETENTS, timingTileEnts), (Player)player);
+					PacketDispatcher.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST, DataReq.TIMING, DataReq.CHUNK,       timingChunks), (Player)player);					
 				}
 				
 				for (EntityPlayer player : PlayerTracker.instance().playersOpis)

@@ -5,7 +5,8 @@ import java.util.ArrayList;
 import mcp.mobius.opis.commands.IOpisCommand;
 import mcp.mobius.opis.data.holders.ChunkStats;
 import mcp.mobius.opis.data.managers.ChunkManager;
-import mcp.mobius.opis.network.server.Packet_ChunkTopList;
+import mcp.mobius.opis.network.enums.DataReq;
+import mcp.mobius.opis.network.server.Packet_DataList;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
@@ -50,7 +51,7 @@ public class CommandChunkList extends CommandBase implements IOpisCommand {
 		}
 		*/
 		if (icommandsender instanceof EntityPlayer)		
-			((EntityPlayerMP)icommandsender).playerNetServerHandler.sendPacketToPlayer(Packet_ChunkTopList.create(chunks));
+			((EntityPlayerMP)icommandsender).playerNetServerHandler.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST, DataReq.TIMING, DataReq.CHUNK, chunks));
 		else {
 			icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText("[DIM X Z] Time NTEs"));
 			for (ChunkStats stat : chunks){

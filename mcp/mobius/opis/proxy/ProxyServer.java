@@ -16,6 +16,5 @@ public class ProxyServer {
 	public HashMap<Player, Integer>       playerDimension     = new HashMap<Player, Integer>();
 	
 	public void init(){}
-	public void displayChunkList(ArrayList<ChunkStats> stats){}
 	public void displayModList(ArrayList<ModStats> stats){}
 }
