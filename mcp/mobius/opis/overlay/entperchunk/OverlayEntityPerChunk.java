@@ -237,7 +237,7 @@ public class OverlayEntityPerChunk implements IMwDataProvider {
 			
 			String name = data.getName();
 			
-			table.addRow(data, name, String.format("[ %d %d %d ]", data.getCoord().x, data.getCoord().y, data.getCoord().z));
+			table.addRow(data, name, String.format("[ %d %d %d ]", data.getCoordinates().x, data.getCoordinates().y, data.getCoordinates().z));
 			nrows++;
 			if (nrows > 100) break;
 		}

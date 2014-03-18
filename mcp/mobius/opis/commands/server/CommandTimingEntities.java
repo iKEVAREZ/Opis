@@ -7,7 +7,8 @@ import mcp.mobius.opis.commands.IOpisCommand;
 import mcp.mobius.opis.data.holders.CoordinatesChunk;
 import mcp.mobius.opis.data.holders.EntityStats;
 import mcp.mobius.opis.data.managers.EntityManager;
-import mcp.mobius.opis.network.server.Packet_DataListTimingEntities;
+import mcp.mobius.opis.network.enums.DataReq;
+import mcp.mobius.opis.network.server.Packet_DataList;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
@@ -47,7 +48,7 @@ public class CommandTimingEntities extends CommandBase implements IOpisCommand {
 		}
 		
 		if (icommandsender instanceof EntityPlayer)		
-			((EntityPlayerMP)icommandsender).playerNetServerHandler.sendPacketToPlayer(Packet_DataListTimingEntities.create(ents));
+			((EntityPlayerMP)icommandsender).playerNetServerHandler.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST, DataReq.TIMING, DataReq.ENTITIES,  ents));
 		else{
 			icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText("[DIM X Z] Time NTEs"));
 			for (EntityStats stat : ents){

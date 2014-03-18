@@ -7,7 +7,8 @@ import java.util.HashMap;
 import mcp.mobius.opis.commands.IOpisCommand;
 import mcp.mobius.opis.data.holders.TickHandlerStats;
 import mcp.mobius.opis.data.managers.TickHandlerManager;
-import mcp.mobius.opis.network.server.Packet_DataListTimingHandlers;
+import mcp.mobius.opis.network.enums.DataReq;
+import mcp.mobius.opis.network.server.Packet_DataList;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -39,7 +40,7 @@ public class CommandHandler extends CommandBase  implements IOpisCommand {
 		//((EntityPlayerMP)icommandsender).playerNetServerHandler.sendPacketToPlayer(Packet_DataScreenTimingHandlers.create(stats));
 		
 		if (icommandsender instanceof EntityPlayerMP)
-			((EntityPlayerMP)icommandsender).playerNetServerHandler.sendPacketToPlayer(Packet_DataListTimingHandlers.create(stats));
+			((EntityPlayerMP)icommandsender).playerNetServerHandler.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST, DataReq.TIMING, DataReq.HANDLERS, stats));
 		else{
 			for (TickHandlerStats s : stats)
 				icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText(String.format("%s : %.2f", s.getName(), s.getGeometricMean())));

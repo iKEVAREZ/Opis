@@ -9,6 +9,7 @@ public enum DataReq {
 	OVERLAY("overlay"),
 	LIST("list"),
 	COMMAND("cmd"),
+	VALUE("value"),
 	
 	// First subtype
 	CHUNK("chunk"),

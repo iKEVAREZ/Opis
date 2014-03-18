@@ -7,6 +7,7 @@ import javax.swing.table.DefaultTableModel;
 
 import net.minecraft.item.ItemStack;
 import mcp.mobius.opis.data.holders.EntityStats;
+import mcp.mobius.opis.data.holders.StatAbstract;
 import mcp.mobius.opis.data.holders.TickHandlerStats;
 import mcp.mobius.opis.data.holders.TileEntityStats;
 import mcp.mobius.opis.gui.swing.SwingUI;
@@ -55,8 +56,10 @@ public class DataCache {
 		model.fireTableDataChanged();		
 	}
 	
-	public void setTimingHandler(ArrayList<TickHandlerStats> timingHandlers){
-		this.timingHandlers = timingHandlers;
+	public void setTimingHandler(ArrayList<StatAbstract> timingHandlers_){
+		this.timingHandlers.clear();
+		for (StatAbstract stat : timingHandlers_)
+			this.timingHandlers.add((TickHandlerStats)stat);			
 		
 		DefaultTableModel model = (DefaultTableModel)SwingUI.instance().getTableTimingHandler().getModel();
 		this.clearRows(model);
@@ -68,8 +71,10 @@ public class DataCache {
 		model.fireTableDataChanged();		
 	}
 	
-	public void setTimingEntities(ArrayList<EntityStats> timingEntities){
-		this.timingEntities = timingEntities;
+	public void setTimingEntities(ArrayList<StatAbstract> timingEntities_){
+		this.timingEntities.clear();
+		for (StatAbstract stat : timingEntities_)
+			this.timingEntities.add((EntityStats)stat);		
 		
 		DefaultTableModel model = (DefaultTableModel)SwingUI.instance().getTableTimingEnt().getModel();
 		this.clearRows(model);
@@ -77,18 +82,20 @@ public class DataCache {
 		for (EntityStats stat : DataCache.instance().getTimingEntities()){
 			model.addRow(new Object[]  {stat.getName(), 
 										stat.getID(),
-										stat.getCoord().dim,
-										String.format("[ %4d %4d %4d ]", 	stat.getCoord().x, stat.getCoord().y, stat.getCoord().z), 
+										stat.getCoordinates().dim,
+										String.format("[ %4d %4d %4d ]", 	stat.getCoordinates().x, stat.getCoordinates().y, stat.getCoordinates().z), 
 										String.format("%.3f \u00B5s", stat.getGeometricMean()),
-										String.valueOf(stat.getNData())});
+										String.valueOf(stat.getDataPoints())});
 		}
 		
 		model.fireTableDataChanged();			
 		
 	}
 	
-	public void setTimingTileEnts(ArrayList<TileEntityStats> timingTileEnts){
-		this.timingTileEnts = timingTileEnts;
+	public void setTimingTileEnts(ArrayList<StatAbstract> timingTileEnts_){
+		this.timingTileEnts.clear();
+		for (StatAbstract stat : timingTileEnts_)
+			this.timingTileEnts.add((TileEntityStats)stat);
 		
 		DefaultTableModel model = (DefaultTableModel)SwingUI.instance().getTableTimingTE().getModel();
 		this.clearRows(model);

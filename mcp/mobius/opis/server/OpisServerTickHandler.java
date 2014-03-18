@@ -17,10 +17,9 @@ import mcp.mobius.opis.data.managers.ChunkManager;
 import mcp.mobius.opis.data.managers.EntityManager;
 import mcp.mobius.opis.data.managers.TickHandlerManager;
 import mcp.mobius.opis.data.managers.TileEntityManager;
+import mcp.mobius.opis.network.enums.DataReq;
+import mcp.mobius.opis.network.server.Packet_DataList;
 import mcp.mobius.opis.network.server.Packet_DataListAmountEntities;
-import mcp.mobius.opis.network.server.Packet_DataListTimingEntities;
-import mcp.mobius.opis.network.server.Packet_DataListTimingHandlers;
-import mcp.mobius.opis.network.server.Packet_DataListTimingTileEnts;
 import mcp.mobius.opis.network.server.Packet_LoadedChunks;
 import mcp.mobius.opis.network.server.Packet_MeanTime;
 import mcp.mobius.opis.overlay.OverlayStatus;
@@ -82,10 +81,10 @@ public class OpisServerTickHandler implements ITickHandler {
 					HashMap<String, Integer> ents = EntityManager.getCumulativeEntities(filtered);
 
 					// Here we send a full update to the player
-					PacketDispatcher.sendPacketToPlayer(Packet_DataListAmountEntities.create(ents), (Player)player);					
-					PacketDispatcher.sendPacketToPlayer(Packet_DataListTimingHandlers.create(timingHandlers), (Player)player);
-					PacketDispatcher.sendPacketToPlayer(Packet_DataListTimingEntities.create(timingEntities), (Player)player);
-					PacketDispatcher.sendPacketToPlayer(Packet_DataListTimingTileEnts.create(timingTileEnts), (Player)player);
+					PacketDispatcher.sendPacketToPlayer(Packet_DataListAmountEntities.create(ents), (Player)player); 					
+					PacketDispatcher.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST, DataReq.TIMING, DataReq.HANDLERS,  timingHandlers), (Player)player);
+					PacketDispatcher.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST, DataReq.TIMING, DataReq.ENTITIES,  timingEntities), (Player)player);
+					PacketDispatcher.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST, DataReq.TIMING, DataReq.TILETENTS, timingTileEnts), (Player)player);
 				}
 				
 				for (EntityPlayer player : PlayerTracker.instance().playersOpis)

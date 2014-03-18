@@ -10,14 +10,9 @@ import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 
 import mcp.mobius.opis.modOpis;
 
-public class EntityStats implements ISerializable, Comparable {
+public class EntityStats extends StatAbstract implements ISerializable {
 
-	//public  DescriptiveStatistics dstat = new DescriptiveStatistics(modOpis.profilerMaxTicks);	// Stored in microseconds !
-	public  DescriptiveStatistics dstat = new DescriptiveStatistics();	// Stored in microseconds !
-	private String name;
-	private int    entId;
-	private Double geomMean = null;
-	private Long   ndata    = null;
+	private int entId;
 	private int dim;
 	private double cachedMedian = -1.0;	
 	private double x, y, z;
@@ -31,35 +26,9 @@ public class EntityStats implements ISerializable, Comparable {
 		this.z     = z;
 	}
 	
-	public void addMeasure(long timing){
-		dstat.addValue((double)timing/1000.0);
-	}	
 
-	public void setGeometricMean(double value){
-		this.geomMean = value;
-	}	
-	
-	public String getName(){ return this.name; };
 	
 	public int getID(){ return this.entId; }
-	
-	public double getGeometricMean(){
-		if (geomMean != null)
-			return geomMean;
-		else
-			return dstat.getGeometricMean();
-	}	
-	
-	public long getNData(){
-		if (this.ndata != null)
-			return this.ndata;
-		else
-			return this.dstat.getN();
-	}
-	
-	public void setNData(long ndata){
-		this.ndata = ndata;
-	}
 	
 	public double getMedian(){
 		if (this.cachedMedian < 0.0){
@@ -76,21 +45,12 @@ public class EntityStats implements ISerializable, Comparable {
 		return this.cachedMedian;
 	}	
 
-	@Override
-	public int compareTo(Object arg0) {
-		double value = ((EntityStats)arg0).getGeometricMean() - this.getGeometricMean();
-		if (value > 0)
-			return 1;
-		if (value < 0)
-			return -1;
-		return 0;
-	}	
-
 	public String toString(){
 		return String.format("[%d] %50s %.3f \u00B5s", this.entId, this.name, this.getGeometricMean());
 	}
 
-	public CoordinatesBlock getCoord(){
+	@Override
+	public CoordinatesBlock getCoordinates(){
 		return new CoordinatesBlock(this.dim, this.x, this.y, this.z);
 	}
 	
@@ -103,14 +63,14 @@ public class EntityStats implements ISerializable, Comparable {
 		stream.writeDouble(this.y);
 		stream.writeDouble(this.z);
 		stream.writeDouble(this.getGeometricMean());
-		stream.writeLong(this.getNData());
+		stream.writeLong(this.getDataPoints());
 	}
 
 	public static  EntityStats readFromStream(DataInputStream stream) throws IOException {
 		EntityStats stats = new EntityStats(stream.readInt(), Packet.readString(stream, 255), stream.readInt(),
 											stream.readDouble(), stream.readDouble(), stream.readDouble());
 		stats.setGeometricMean(stream.readDouble());
-		stats.setNData(stream.readLong());
+		stats.setDataPoints(stream.readLong());
 		return stats;
 	}		
 	

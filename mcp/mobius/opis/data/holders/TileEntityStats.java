@@ -9,54 +9,19 @@ import net.minecraft.network.packet.Packet;
 
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 
-public class TileEntityStats implements ISerializable, Comparable {
+public class TileEntityStats extends StatAbstract implements ISerializable {
 
-	public  DescriptiveStatistics dstat = new DescriptiveStatistics();	// Stored in microseconds !
-	private CoordinatesBlock coord;
-	private String name;
 	private int    blockID;
 	private short  blockMeta;
-	private Double geomMean = null;
 	private double cachedMedian = -1.0;
 	
 	
 	public TileEntityStats(CoordinatesBlock coord, int blockID, short blockMeta){
 		this.coord = coord;
-		//this.name  = teclass;
+		//this.name    = teclass;
 		this.blockID   = blockID;
 		this.blockMeta = blockMeta;
 	}
-	
-	public void addMeasure(long timing){
-		dstat.addValue((double)timing/1000.0);
-	}
-	
-	public double getGeometricMean(){
-		if (geomMean != null)
-			return geomMean;
-		else
-			return dstat.getGeometricMean();
-	}
-	
-	public void setGeometricMean(double value){
-		this.geomMean = value;
-	}
-	
-	public CoordinatesBlock getCoordinates(){
-		return this.coord;
-	}
-	
-	public CoordinatesChunk getChunk(){
-		return new CoordinatesChunk(this.coord);
-	}
-	
-	//public String getType(){
-	//	return this.name;
-	//}
-	
-	//public void setType(String name){
-	//	this.name = name;
-	//}
 	
 	public int getID(){
 		return this.blockID;
@@ -105,16 +70,6 @@ public class TileEntityStats implements ISerializable, Comparable {
 		return stat;
 	}
 
-	@Override
-	public int compareTo(Object arg0) {
-		double value = ((TileEntityStats)arg0).getGeometricMean() - this.getGeometricMean();
-		if (value > 0)
-			return 1;
-		if (value < 0)
-			return -1;
-		return 0;
-	}
-	
 	public String toString(){
 		return String.format("[%d:%d] %s %s", this.blockID, this.blockMeta, this.coord, this.getGeometricMean());
 	}

@@ -38,7 +38,7 @@ public class TableEntities extends ViewTable {
 			//CoordinatesBlock coord = ((EntityStats)row.getObject()).getCoord();
 			//PacketDispatcher.sendPacketToServer(Packet_ReqTeleport.create(coord));
 			int eid = ((EntityStats)row.getObject()).getID();
-			int dim = ((EntityStats)row.getObject()).getCoord().dim;
+			int dim = ((EntityStats)row.getObject()).getCoordinates().dim;
 			PacketDispatcher.sendPacketToServer(Packet_ReqTeleportEID.create(eid, dim));
 			Minecraft.getMinecraft().setIngameFocus();			
 		}

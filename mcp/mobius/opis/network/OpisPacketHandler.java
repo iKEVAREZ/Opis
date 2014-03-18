@@ -10,7 +10,9 @@ import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.data.client.DataCache;
 import mcp.mobius.opis.data.holders.CoordinatesChunk;
 import mcp.mobius.opis.data.holders.EntityStats;
+import mcp.mobius.opis.data.holders.TickHandlerStats;
 import mcp.mobius.opis.data.holders.TicketData;
+import mcp.mobius.opis.data.holders.TileEntityStats;
 import mcp.mobius.opis.data.managers.ChunkManager;
 import mcp.mobius.opis.data.managers.EntityManager;
 import mcp.mobius.opis.data.managers.TileEntityManager;
@@ -23,22 +25,21 @@ import mcp.mobius.opis.network.client.Packet_ReqTeleport;
 import mcp.mobius.opis.network.client.Packet_ReqTeleportEID;
 import mcp.mobius.opis.network.client.Packet_ReqTickets;
 import mcp.mobius.opis.network.client.Packet_UnregisterPlayer;
+import mcp.mobius.opis.network.enums.DataReq;
 import mcp.mobius.opis.network.server.Packet_ChunkTopList;
 import mcp.mobius.opis.network.server.Packet_Chunks;
 import mcp.mobius.opis.network.server.Packet_ClearSelection;
 import mcp.mobius.opis.network.server.Packet_ClientCommand;
+import mcp.mobius.opis.network.server.Packet_DataList;
 import mcp.mobius.opis.network.server.Packet_DataListChunkEntities;
 import mcp.mobius.opis.network.server.Packet_DataOverlayChunkEntities;
 import mcp.mobius.opis.network.server.Packet_DataListAmountEntities;
-import mcp.mobius.opis.network.server.Packet_DataListTimingEntities;
-import mcp.mobius.opis.network.server.Packet_DataListTimingHandlers;
 import mcp.mobius.opis.network.server.Packet_LoadedChunks;
 import mcp.mobius.opis.network.server.Packet_MeanTime;
 import mcp.mobius.opis.network.server.Packet_ModMeanTime;
 import mcp.mobius.opis.network.server.Packet_TPS;
 import mcp.mobius.opis.network.server.Packet_Tickets;
 import mcp.mobius.opis.network.server.Packet_TileEntitiesChunkList;
-import mcp.mobius.opis.network.server.Packet_DataListTimingTileEnts;
 import mcp.mobius.opis.overlay.OverlayLoadedChunks;
 import mcp.mobius.opis.overlay.OverlayMeanTime;
 import mcp.mobius.opis.overlay.OverlayStatus;
@@ -133,6 +134,7 @@ public class OpisPacketHandler implements IPacketHandler {
 			OverlayEntityPerChunk.instance().setupEntTable();
 		}		
 		
+		/*
 		else if (header == Packets.DATA_LIST_TIMING_TILEENTS){
 			Packet_DataListTimingTileEnts castedPacket = new Packet_DataListTimingTileEnts(packet);
 			DataCache.instance().setTimingTileEnts(castedPacket.entities);
@@ -146,7 +148,8 @@ public class OpisPacketHandler implements IPacketHandler {
 		else if (header == Packets.DATA_LIST_TIMING_HANDLERS){
 			Packet_DataListTimingHandlers castedPacket = new Packet_DataListTimingHandlers(packet);
 			DataCache.instance().setTimingHandler(castedPacket.stats);
-		}					
+		}
+		*/					
 		
 		else if (header == Packets.DATA_LIST_AMOUNT_ENTITIES){
 			Packet_DataListAmountEntities castedPacket = new Packet_DataListAmountEntities(packet);
@@ -163,6 +166,19 @@ public class OpisPacketHandler implements IPacketHandler {
 			ClientCommandHandler.instance().handle(castedPacket.cmd);
 		}		
 		
+		else if (header == Packets.DATA_LIST_GENERAL){
+			Packet_DataList castedPacket = new Packet_DataList(packet);
+
+			if ((castedPacket.maintype == DataReq.LIST) && (castedPacket.subtype == DataReq.TIMING) && (castedPacket.target == DataReq.TILETENTS))
+				DataCache.instance().setTimingTileEnts(castedPacket.data);
+			
+			if ((castedPacket.maintype == DataReq.LIST) && (castedPacket.subtype == DataReq.TIMING) && (castedPacket.target == DataReq.ENTITIES))
+				DataCache.instance().setTimingEntities(castedPacket.data);
+			
+			if ((castedPacket.maintype == DataReq.LIST) && (castedPacket.subtype == DataReq.TIMING) && (castedPacket.target == DataReq.HANDLERS))
+				DataCache.instance().setTimingHandler(castedPacket.data);			
+			
+		}		
 	}
 
 	void onPacketToServer(INetworkManager manager, Packet250CustomPayload packet, Player player, Byte header) {

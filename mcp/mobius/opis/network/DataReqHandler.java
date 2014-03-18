@@ -17,10 +17,8 @@ import mcp.mobius.opis.data.managers.EntityManager;
 import mcp.mobius.opis.data.managers.TickHandlerManager;
 import mcp.mobius.opis.data.managers.TileEntityManager;
 import mcp.mobius.opis.network.enums.DataReq;
+import mcp.mobius.opis.network.server.Packet_DataList;
 import mcp.mobius.opis.network.server.Packet_DataListChunkEntities;
-import mcp.mobius.opis.network.server.Packet_DataListTimingEntities;
-import mcp.mobius.opis.network.server.Packet_DataListTimingHandlers;
-import mcp.mobius.opis.network.server.Packet_DataListTimingTileEnts;
 import mcp.mobius.opis.network.server.Packet_DataOverlayChunkEntities;
 import mcp.mobius.opis.network.server.Packet_DataListAmountEntities;
 import mcp.mobius.opis.server.PlayerTracker;
@@ -60,17 +58,17 @@ public class DataReqHandler {
 				
 				if (target == DataReq.TILETENTS){
 					ArrayList<TileEntityStats>  timingTileEnts = TileEntityManager.getTopEntities(100);
-					PacketDispatcher.sendPacketToPlayer(Packet_DataListTimingTileEnts.create(timingTileEnts), (Player)player);		
+					PacketDispatcher.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST, DataReq.TIMING, DataReq.TILETENTS, timingTileEnts), (Player)player);	
 					return;
 				}
 				else if (target == DataReq.ENTITIES){
 					ArrayList<EntityStats>      timingEntities = EntityManager.getTopEntities(100);
-					PacketDispatcher.sendPacketToPlayer(Packet_DataListTimingEntities.create(timingEntities), (Player)player);
+					PacketDispatcher.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST, DataReq.TIMING, DataReq.ENTITIES,  timingEntities), (Player)player);
 					return;
 				}
 				else if (target == DataReq.HANDLERS){
 					ArrayList<TickHandlerStats> timingHandlers = TickHandlerManager.getCumulatedStats();
-					PacketDispatcher.sendPacketToPlayer(Packet_DataListTimingHandlers.create(timingHandlers), (Player)player);
+					PacketDispatcher.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST, DataReq.TIMING, DataReq.HANDLERS,  timingHandlers), (Player)player);
 					return;
 				}
 			}

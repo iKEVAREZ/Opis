@@ -51,7 +51,7 @@ public class TickHandlerManager {
 		for (String key : startStats.keySet()){
 			totalStats.put(key, new TickHandlerStats(key));
 			totalStats.get(key).setGeometricMean(startStats.get(key).getGeometricMean() + endStats.get(key).getGeometricMean());
-			totalStats.get(key).npoints = startStats.get(key).npoints + endStats.get(key).npoints;
+			totalStats.get(key).dataPoints = startStats.get(key).getDataPoints() + endStats.get(key).getDataPoints();
 		}
 		
 		ArrayList<TickHandlerStats> sortedStats   = new ArrayList(totalStats.values());

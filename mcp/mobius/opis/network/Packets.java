@@ -32,7 +32,7 @@ public class Packets {
 	public static byte DATA_LIST_TIMING_ENTITIES = 0x42;
 	public static byte DATA_LIST_AMOUNT_ENTITIES = 0x43;
 	public static byte DATA_LIST_TIMING_HANDLERS = 0x44;		
-	
+	public static byte DATA_LIST_GENERAL         = 0x45;
 	
 	public static byte REQ_DATA      = 0x50; // C => S
 	public static byte CLR_SELECTION = 0x51; // S => C
