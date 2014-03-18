@@ -10,6 +10,7 @@ import java.util.Set;
 
 import mcp.mobius.opis.data.holders.ChunkStats;
 import mcp.mobius.opis.data.holders.CoordinatesChunk;
+import mcp.mobius.opis.data.holders.EntityStats;
 import mcp.mobius.opis.data.holders.TicketData;
 import mcp.mobius.opis.data.holders.TileEntityStats;
 import net.minecraft.world.ChunkCoordIntPair;
@@ -63,11 +64,19 @@ public class ChunkManager {
 		
 		for (TileEntityStats stat : TileEntityManager.stats.values()){
 			if (!chunks.containsKey(stat.getChunk()))
-				chunks.put(stat.getChunk(), new ChunkStats(stat.getChunk(), 0, 0));
+				chunks.put(stat.getChunk(), new ChunkStats(stat.getChunk()));
 			
-			chunks.get(stat.getChunk()).nentities += 1;
-			chunks.get(stat.getChunk()).updateTime += stat.getGeometricMean();
+			chunks.get(stat.getChunk()).addTileEntity();
+			chunks.get(stat.getChunk()).addMeasure(stat.getGeometricMean());
 		}
+		
+		for (EntityStats stat : EntityManager.stats.values()){
+			if (!chunks.containsKey(stat.getChunk()))
+				chunks.put(stat.getChunk(), new ChunkStats(stat.getChunk()));
+			
+			chunks.get(stat.getChunk()).addEntity();
+			chunks.get(stat.getChunk()).addMeasure(stat.getGeometricMean());
+		}		
 		
 		ArrayList<ChunkStats> chunksUpdate = new ArrayList<ChunkStats>(chunks.values());
 		return chunksUpdate;

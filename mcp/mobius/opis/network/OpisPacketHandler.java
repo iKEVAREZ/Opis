@@ -134,23 +134,6 @@ public class OpisPacketHandler implements IPacketHandler {
 			OverlayEntityPerChunk.instance().setupEntTable();
 		}		
 		
-		/*
-		else if (header == Packets.DATA_LIST_TIMING_TILEENTS){
-			Packet_DataListTimingTileEnts castedPacket = new Packet_DataListTimingTileEnts(packet);
-			DataCache.instance().setTimingTileEnts(castedPacket.entities);
-		}			
-		
-		else if (header == Packets.DATA_LIST_TIMING_ENTITIES){
-			Packet_DataListTimingEntities castedPacket = new Packet_DataListTimingEntities(packet);
-			DataCache.instance().setTimingEntities(castedPacket.entities);
-		}		
-
-		else if (header == Packets.DATA_LIST_TIMING_HANDLERS){
-			Packet_DataListTimingHandlers castedPacket = new Packet_DataListTimingHandlers(packet);
-			DataCache.instance().setTimingHandler(castedPacket.stats);
-		}
-		*/					
-		
 		else if (header == Packets.DATA_LIST_AMOUNT_ENTITIES){
 			Packet_DataListAmountEntities castedPacket = new Packet_DataListAmountEntities(packet);
 			DataCache.instance().setAmountEntities(castedPacket.entities);

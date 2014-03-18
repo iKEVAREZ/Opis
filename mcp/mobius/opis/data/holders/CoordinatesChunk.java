@@ -13,7 +13,7 @@ public final class CoordinatesChunk implements ISerializable {
 	//public boolean isChunk;
 	
 	public CoordinatesChunk(CoordinatesBlock coord){
-		this.dim = coord.dim;
+		this.dim    = coord.dim;
 		this.chunkX = coord.chunkX;
 		this.chunkZ = coord.chunkZ;
 		

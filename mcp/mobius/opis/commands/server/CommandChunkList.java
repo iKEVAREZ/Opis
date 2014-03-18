@@ -37,7 +37,7 @@ public class CommandChunkList extends CommandBase implements IOpisCommand {
 		ArrayList<ChunkStats> chunks = new ArrayList<ChunkStats>();
 		
 		if (astring.length == 0)
-			chunks = ChunkManager.getTopChunks(20);
+			chunks = ChunkManager.getTopChunks(100);
 		else
 			try{
 				chunks = ChunkManager.getTopChunks(Integer.valueOf(astring.length));	

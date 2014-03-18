@@ -69,8 +69,8 @@ public class TileEntityManager {
 				if (!(chunks.containsKey(coordC)))
 					chunks.put(coordC, new ChunkStats());
 				
-				chunks.get(coordC).nentities  += 1;
-				chunks.get(coordC).updateTime += stats.get(coord).getGeometricMean();
+				chunks.get(coordC).addEntity();
+				chunks.get(coordC).addMeasure(stats.get(coord).getGeometricMean());
 			}
 		}
 		return chunks;

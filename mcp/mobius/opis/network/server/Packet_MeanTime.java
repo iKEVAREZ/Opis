@@ -28,7 +28,7 @@ public class Packet_MeanTime {
 			
 			for (int i = 0; i <= nchunks; i++){
 				CoordinatesChunk coord = new CoordinatesChunk(dim, inputStream.readInt(), inputStream.readInt()); 
-				this.chunkStatus.put(coord, new ChunkStats(coord, inputStream.readInt(), inputStream.readDouble()));
+				this.chunkStatus.put(coord, new ChunkStats(coord, inputStream.readInt(), inputStream.readInt(), inputStream.readDouble()));
 			}
 				
 			
@@ -48,8 +48,9 @@ public class Packet_MeanTime {
 			for (CoordinatesChunk chunk : chunks.keySet()){
 				outputStream.writeInt(chunk.chunkX);
 				outputStream.writeInt(chunk.chunkZ);
-				outputStream.writeInt(chunks.get(chunk).nentities);
-				outputStream.writeDouble(chunks.get(chunk).updateTime);
+				outputStream.writeInt(chunks.get(chunk).tileEntities);
+				outputStream.writeInt(chunks.get(chunk).entities);
+				outputStream.writeDouble(chunks.get(chunk).getDataSum());
 			}
 			
 		}catch(IOException e){}

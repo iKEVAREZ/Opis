@@ -145,15 +145,15 @@ public class OverlayMeanTime implements IMwDataProvider {
 		double maxTime = 0;
 
 		for (CoordinatesChunk chunk : ChunkManager.chunkMeanTime.keySet()){
-			minTime = Math.min(minTime, ChunkManager.chunkMeanTime.get(chunk).updateTime);
-			maxTime = Math.max(maxTime, ChunkManager.chunkMeanTime.get(chunk).updateTime);
+			minTime = Math.min(minTime, ChunkManager.chunkMeanTime.get(chunk).getDataSum());
+			maxTime = Math.max(maxTime, ChunkManager.chunkMeanTime.get(chunk).getDataSum());
 		}
 		
 		for (CoordinatesChunk chunk : ChunkManager.chunkMeanTime.keySet()){
 			if (this.selectedChunk != null)
-				overlays.add(new ChunkOverlay(chunk.chunkX, chunk.chunkZ, ChunkManager.chunkMeanTime.get(chunk).nentities, ChunkManager.chunkMeanTime.get(chunk).updateTime, minTime, maxTime, chunk.equals(this.selectedChunk)));
+				overlays.add(new ChunkOverlay(chunk.chunkX, chunk.chunkZ, ChunkManager.chunkMeanTime.get(chunk).tileEntities, ChunkManager.chunkMeanTime.get(chunk).getDataSum(), minTime, maxTime, chunk.equals(this.selectedChunk)));
 			else
-				overlays.add(new ChunkOverlay(chunk.chunkX, chunk.chunkZ, ChunkManager.chunkMeanTime.get(chunk).nentities, ChunkManager.chunkMeanTime.get(chunk).updateTime, minTime, maxTime, false));
+				overlays.add(new ChunkOverlay(chunk.chunkX, chunk.chunkZ, ChunkManager.chunkMeanTime.get(chunk).tileEntities, ChunkManager.chunkMeanTime.get(chunk).getDataSum(), minTime, maxTime, false));
 		}
 		return overlays;
 	}
@@ -166,9 +166,9 @@ public class OverlayMeanTime implements IMwDataProvider {
 		
 		if (ChunkManager.chunkMeanTime.containsKey(chunkCoord))
 			if (modOpis.microseconds)
-				return String.format("%.3f \u00B5s", ChunkManager.chunkMeanTime.get(chunkCoord).updateTime);
+				return String.format("%.3f \u00B5s", ChunkManager.chunkMeanTime.get(chunkCoord).getDataSum());
 			else
-				return String.format(", %.5f ms", ChunkManager.chunkMeanTime.get(chunkCoord).updateTime/1000.0);
+				return String.format(", %.5f ms", ChunkManager.chunkMeanTime.get(chunkCoord).getDataSum()/1000.0);
 
 		else
 			return "";
