@@ -108,11 +108,11 @@ public class OpisServerTickHandler implements ITickHandler {
 	}
 
 	private void updatePlayers(){
-		for (Player player : modOpis.proxy.playerOverlayStatus.keySet()){
-			if (modOpis.proxy.playerOverlayStatus.get(player) == OverlayStatus.CHUNKSTATUS)
-				PacketDispatcher.sendPacketToPlayer( Packet_LoadedChunks.create(ChunkManager.getLoadedChunks(modOpis.proxy.playerDimension.get(player))), player);
-			if (modOpis.proxy.playerOverlayStatus.get(player) == OverlayStatus.MEANTIME)
-				PacketDispatcher.sendPacketToPlayer( Packet_MeanTime.create(TileEntityManager.getTimes(modOpis.proxy.playerDimension.get(player)), modOpis.proxy.playerDimension.get(player)), player);
+		for (Player player : PlayerTracker.instance().playerOverlayStatus.keySet()){
+			if (PlayerTracker.instance().playerOverlayStatus.get(player) == OverlayStatus.CHUNKSTATUS)
+				PacketDispatcher.sendPacketToPlayer( Packet_LoadedChunks.create(ChunkManager.getLoadedChunks(PlayerTracker.instance().playerDimension.get(player))), player);
+			if (PlayerTracker.instance().playerOverlayStatus.get(player) == OverlayStatus.MEANTIME)
+				PacketDispatcher.sendPacketToPlayer( Packet_MeanTime.create(TileEntityManager.getTimes(PlayerTracker.instance().playerDimension.get(player)), PlayerTracker.instance().playerDimension.get(player)), player);
 		}
 	}
 	

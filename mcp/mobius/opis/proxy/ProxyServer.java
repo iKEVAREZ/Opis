@@ -12,8 +12,6 @@ import mcp.mobius.opis.data.holders.TileEntityStats;
 import mcp.mobius.opis.overlay.OverlayStatus;
 
 public class ProxyServer {
-	public HashMap<Player, OverlayStatus> playerOverlayStatus = new HashMap<Player, OverlayStatus>();
-	public HashMap<Player, Integer>       playerDimension     = new HashMap<Player, Integer>();
 	
 	public void init(){}
 	public void displayModList(ArrayList<ModStats> stats){}

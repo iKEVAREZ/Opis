@@ -24,7 +24,6 @@ import mcp.mobius.opis.network.client.Packet_ReqTEsInChunk;
 import mcp.mobius.opis.network.client.Packet_ReqTeleport;
 import mcp.mobius.opis.network.client.Packet_ReqTeleportEID;
 import mcp.mobius.opis.network.client.Packet_ReqTickets;
-import mcp.mobius.opis.network.client.Packet_UnregisterPlayer;
 import mcp.mobius.opis.network.enums.DataReq;
 import mcp.mobius.opis.network.server.Packet_Chunks;
 import mcp.mobius.opis.network.server.Packet_ClientCommand;
@@ -40,6 +39,7 @@ import mcp.mobius.opis.overlay.OverlayLoadedChunks;
 import mcp.mobius.opis.overlay.OverlayMeanTime;
 import mcp.mobius.opis.overlay.OverlayStatus;
 import mcp.mobius.opis.overlay.entperchunk.OverlayEntityPerChunk;
+import mcp.mobius.opis.server.PlayerTracker;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet250CustomPayload;
@@ -151,24 +151,18 @@ public class OpisPacketHandler implements IPacketHandler {
 	}
 
 	void onPacketToServer(INetworkManager manager, Packet250CustomPayload packet, Player player, Byte header) {
-		if (header == Packets.UNREGISTER_USER){
-			Packet_UnregisterPlayer castedPacket = new Packet_UnregisterPlayer(packet);
-			modOpis.proxy.playerOverlayStatus.remove(player);
-			modOpis.proxy.playerDimension.remove(player);
-		}			
-		
-		else if (header == Packets.REQ_CHUNKS_IN_DIM){
+		if (header == Packets.REQ_CHUNKS_IN_DIM){
 			Packet_ReqChunksInDim castedPacket = new Packet_ReqChunksInDim(packet);
-			modOpis.proxy.playerOverlayStatus.put(player, OverlayStatus.CHUNKSTATUS);
-			modOpis.proxy.playerDimension.put(player, castedPacket.dimension);
+			PlayerTracker.instance().playerOverlayStatus.put(player, OverlayStatus.CHUNKSTATUS);
+			PlayerTracker.instance().playerDimension.put(player, castedPacket.dimension);
 			PacketDispatcher.sendPacketToPlayer(Packet_LoadedChunks.create(ChunkManager.getLoadedChunks(castedPacket.dimension)), player);
 		}
 	
 		else if (header == Packets.REQ_MEANTIME_IN_DIM){
 			Packet_ReqMeanTimeInDim castedPacket = new Packet_ReqMeanTimeInDim(packet);
 			if (this.isOp(player)){
-				modOpis.proxy.playerOverlayStatus.put(player, OverlayStatus.MEANTIME);
-				modOpis.proxy.playerDimension.put(player, castedPacket.dimension);
+				PlayerTracker.instance().playerOverlayStatus.put(player, OverlayStatus.MEANTIME);
+				PlayerTracker.instance().playerDimension.put(player, castedPacket.dimension);
 				PacketDispatcher.sendPacketToPlayer(Packet_MeanTime.create(TileEntityManager.getTimes(castedPacket.dimension), castedPacket.dimension), player);
 			}
 		}		

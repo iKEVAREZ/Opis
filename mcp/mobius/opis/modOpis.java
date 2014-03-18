@@ -38,9 +38,9 @@ import mcp.mobius.opis.network.OpisConnectionHandler;
 import mcp.mobius.opis.network.OpisPacketHandler;
 import mcp.mobius.opis.network.Packet251Extended;
 import mcp.mobius.opis.proxy.ProxyServer;
-import mcp.mobius.opis.server.OpisPlayerTracker;
 import mcp.mobius.opis.server.OpisServerEventHandler;
 import mcp.mobius.opis.server.OpisServerTickHandler;
+import mcp.mobius.opis.server.PlayerTracker;
 import mcp.mobius.opis.tools.ModIdentification;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
@@ -142,6 +142,6 @@ public class modOpis {
 		
 		//event.registerServerCommand(new CommandTPS());		
 		
-		GameRegistry.registerPlayerTracker(new OpisPlayerTracker());
+		GameRegistry.registerPlayerTracker(PlayerTracker.instance());
 	}	
 }

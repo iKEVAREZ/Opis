@@ -102,6 +102,11 @@ public class DataReqHandler {
 					return;
 				}
 			}
+			
+			if (subtype == DataReq.UNREGISTER){
+				PlayerTracker.instance().playerOverlayStatus.remove(player);
+				PlayerTracker.instance().playerDimension.remove(player);				
+			}
 		}
 		
 		modOpis.log.log(Level.WARNING, String.format("Unknown data request : %s / %s / %s", maintype, subtype, target));		

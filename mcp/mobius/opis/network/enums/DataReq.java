@@ -15,7 +15,9 @@ public enum DataReq {
 	CHUNK("chunk"),
 	TIMING("timing"),
 	AMOUNT("amount"),
+	
 	FILTERING("filtering"),
+	UNREGISTER("unregister"),
 	
 	// Final Target
 	ENTITIES("entities"),

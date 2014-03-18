@@ -33,10 +33,11 @@ import mcp.mobius.opis.gui.widgets.WidgetGeometry;
 import mcp.mobius.opis.gui.widgets.tableview.TableRow;
 import mcp.mobius.opis.gui.widgets.tableview.ViewTable;
 import mcp.mobius.opis.network.client.Packet_ReqChunks;
+import mcp.mobius.opis.network.client.Packet_ReqData;
 import mcp.mobius.opis.network.client.Packet_ReqMeanTimeInDim;
 import mcp.mobius.opis.network.client.Packet_ReqTEsInChunk;
 import mcp.mobius.opis.network.client.Packet_ReqTeleport;
-import mcp.mobius.opis.network.client.Packet_UnregisterPlayer;
+import mcp.mobius.opis.network.enums.DataReq;
 
 public class OverlayMeanTime implements IMwDataProvider {
 
@@ -234,7 +235,7 @@ public class OverlayMeanTime implements IMwDataProvider {
 	public void onOverlayDeactivated(MapView mapview) {
 		this.showList = false;
 		this.selectedChunk = null;
-		PacketDispatcher.sendPacketToServer(Packet_UnregisterPlayer.create());		
+		PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.COMMAND, DataReq.UNREGISTER, DataReq.NONE));		
 	}
 
 	@Override
