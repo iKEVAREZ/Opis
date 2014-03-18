@@ -83,9 +83,6 @@ public class DataCache {
 										String.valueOf(stat.getNData())});
 		}
 		
-		for (int i = model.getRowCount() - 1; i >= 0; i--)
-			model.removeRow(i);
-		
 		model.fireTableDataChanged();			
 		
 	}

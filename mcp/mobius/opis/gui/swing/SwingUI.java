@@ -133,6 +133,12 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener{
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
 			}
+			boolean[] columnEditables = new boolean[] {
+				false, false
+			};
+			public boolean isCellEditable(int row, int column) {
+				return columnEditables[column];
+			}
 		});
 		tableEntityList.getColumnModel().getColumn(0).setPreferredWidth(231);
 		tableEntityList.getColumnModel().getColumn(1).setPreferredWidth(237);
@@ -178,6 +184,12 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener{
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
 			}
+			boolean[] columnEditables = new boolean[] {
+				false, false, false, false, false
+			};
+			public boolean isCellEditable(int row, int column) {
+				return columnEditables[column];
+			}
 		});
 		tableTimingTE.setAutoCreateRowSorter(true);
 		scrollPaneTimingTE.setViewportView(tableTimingTE);
@@ -204,6 +216,12 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener{
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
 			}
+			boolean[] columnEditables = new boolean[] {
+				false, false, false, false, false, false
+			};
+			public boolean isCellEditable(int row, int column) {
+				return columnEditables[column];
+			}
 		});
 		tableTimingEnt.setAutoCreateRowSorter(true);
 		scrollPaneTimingEnt.setViewportView(tableTimingEnt);
@@ -229,6 +247,12 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener{
 			};
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
+			}
+			boolean[] columnEditables = new boolean[] {
+				false, false
+			};
+			public boolean isCellEditable(int row, int column) {
+				return columnEditables[column];
 			}
 		});
 		tableTimingHandler.setAutoCreateRowSorter(true);
