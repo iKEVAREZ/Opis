@@ -8,34 +8,35 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import net.minecraft.network.packet.Packet250CustomPayload;
-import mcp.mobius.opis.data.holders.EntityStats;
+import mcp.mobius.opis.data.holders.TickHandlerStats;
 import mcp.mobius.opis.network.Packets;
 
-public class Packet_DataScreenTimingEntities {
+public class Packet_DataListTimingHandlers {
+
 
 	public byte header;
-	public ArrayList<EntityStats> entities = new ArrayList<EntityStats>(); 
+	public ArrayList<TickHandlerStats> stats = new ArrayList<TickHandlerStats>(); 
 	
-	public Packet_DataScreenTimingEntities(Packet250CustomPayload packet) {
+	public Packet_DataListTimingHandlers(Packet250CustomPayload packet) {
 		DataInputStream inputStream = new DataInputStream(new ByteArrayInputStream(packet.data));
 		
 		try{
 			this.header  = inputStream.readByte();
 			int ndata    = inputStream.readInt();
 			for (int i = 0; i < ndata; i++)
-				entities.add(EntityStats.readFromStream(inputStream));
+				stats.add(TickHandlerStats.readFromStream(inputStream));
 		} catch (IOException e){}				
 	}
 
-	public static Packet250CustomPayload create(ArrayList<EntityStats> stats){
+	public static Packet250CustomPayload create(ArrayList<TickHandlerStats> stats){
 		Packet250CustomPayload packet      = new Packet250CustomPayload();
 		ByteArrayOutputStream bos     = new ByteArrayOutputStream(1);
 		DataOutputStream outputStream = new DataOutputStream(bos);
 
 		try{
-			outputStream.writeByte(Packets.DATA_SCREEN_TIMING_ENTITIES);
+			outputStream.writeByte(Packets.DATA_LIST_TIMING_HANDLERS);
 			outputStream.writeInt(stats.size());
-			for (EntityStats data : stats)
+			for (TickHandlerStats data : stats)
 				data.writeToStream(outputStream);
 		}catch(IOException e){}
 		
@@ -45,5 +46,6 @@ public class Packet_DataScreenTimingEntities {
 		
 		return packet;
 	}	
-	
+		
+
 }

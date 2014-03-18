@@ -5,43 +5,39 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.Collections;
 
+import mcp.mobius.opis.data.holders.TileEntityStats;
 import mcp.mobius.opis.network.Packets;
-import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
 
-public class Packet_DataScreenAmountEntities {
+public class Packet_DataListTimingTileEnts {
 
 	public byte header;
-	public HashMap<String, Integer> entities = new HashMap<String, Integer>(); 
+	public ArrayList<TileEntityStats> entities = new ArrayList<TileEntityStats>(); 
 	
-	public Packet_DataScreenAmountEntities(Packet250CustomPayload packet) {
+	public Packet_DataListTimingTileEnts(Packet250CustomPayload packet) {
 		DataInputStream inputStream = new DataInputStream(new ByteArrayInputStream(packet.data));
 		
 		try{
 			this.header  = inputStream.readByte();
 			int ndata    = inputStream.readInt();
-			for (int i = 0; i < ndata; i++){
-				String name = Packet.readString(inputStream, 255);
-				int    amount = inputStream.readInt();
-				entities.put(name, amount);
-			}
+			for (int i = 0; i < ndata; i++)
+				entities.add(TileEntityStats.readFromStream(inputStream));
 		} catch (IOException e){}				
 	}
 
-	public static Packet250CustomPayload create(HashMap<String, Integer> entities){
+	public static Packet250CustomPayload create(ArrayList<TileEntityStats> stats){
 		Packet250CustomPayload packet      = new Packet250CustomPayload();
 		ByteArrayOutputStream bos     = new ByteArrayOutputStream(1);
 		DataOutputStream outputStream = new DataOutputStream(bos);
 
 		try{
-			outputStream.writeByte(Packets.DATA_SCREEN_AMOUNT_ENTITIES);
-			outputStream.writeInt(entities.keySet().size());
-			for (String name : entities.keySet()){
-				packet.writeString(name, outputStream);
-				outputStream.writeInt(entities.get(name));
-			}
+			outputStream.writeByte(Packets.DATA_LIST_TIMING_TILEENTS);
+			outputStream.writeInt(stats.size());
+			for (TileEntityStats data : stats)
+				data.writeToStream(outputStream);
 		}catch(IOException e){}
 		
 		packet.channel = "Opis";

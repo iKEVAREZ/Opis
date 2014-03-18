@@ -13,7 +13,7 @@ import mcp.mobius.opis.data.holders.EntityStats;
 import mcp.mobius.opis.data.managers.EntityManager;
 import mcp.mobius.opis.network.server.Packet_DataListChunkEntities;
 import mcp.mobius.opis.network.server.Packet_DataOverlayChunkEntities;
-import mcp.mobius.opis.network.server.Packet_DataScreenAmountEntities;
+import mcp.mobius.opis.network.server.Packet_DataListAmountEntities;
 
 public class DataReqHandler {
 
@@ -47,11 +47,11 @@ public class DataReqHandler {
 			} else if (data[1].equals("amount_ent")){
 				if (data[2].equals("filtered")){
 					HashMap<String, Integer> ents = EntityManager.getCumulativeEntities(false);
-					PacketDispatcher.sendPacketToPlayer(Packet_DataScreenAmountEntities.create(ents), player);
+					PacketDispatcher.sendPacketToPlayer(Packet_DataListAmountEntities.create(ents), player);
 					return;
 				} else if (data[2].equals("unfiltered")){
 					HashMap<String, Integer> ents = EntityManager.getCumulativeEntities(true);
-					PacketDispatcher.sendPacketToPlayer(Packet_DataScreenAmountEntities.create(ents), player);
+					PacketDispatcher.sendPacketToPlayer(Packet_DataListAmountEntities.create(ents), player);
 					return;
 				}
 			}

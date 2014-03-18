@@ -18,11 +18,7 @@ import mcp.mobius.opis.gui.font.Fonts;
 import mcp.mobius.opis.gui.font.TrueTypeFont;
 import mcp.mobius.opis.gui.screens.ScreenBase;
 import mcp.mobius.opis.gui.screens.ScreenChunks;
-import mcp.mobius.opis.gui.screens.ScreenEntity;
-import mcp.mobius.opis.gui.screens.ScreenEntityAmount;
 import mcp.mobius.opis.gui.screens.ScreenMods;
-import mcp.mobius.opis.gui.screens.ScreenTickHandler;
-import mcp.mobius.opis.gui.screens.ScreenTileEntity;
 import mcp.mobius.opis.overlay.OverlayLoadedChunks;
 import mcp.mobius.opis.overlay.OverlayMeanTime;
 import mcp.mobius.opis.overlay.entperchunk.OverlayEntityPerChunk;
@@ -49,31 +45,6 @@ public class ProxyClient extends ProxyServer {
 		fontMC8 = Fonts.createFont(new ResourceLocation("opis", "fonts/LiberationMono-Bold.ttf"), 14, true);
 	}
 
-	@Override	
-	public void displayTileEntityList(ArrayList<TileEntityStats> stats){
-		ScreenBase screenTEs = new ScreenTileEntity(null, stats);
-		screenTEs.display();		
-	}
-	
-	@Override	
-	public void displayEntityList(ArrayList<EntityStats> stats){
-		ScreenBase screenEnts = new ScreenEntity(null, stats);
-		screenEnts.display();		
-	}	
-	
-	@Override	
-	public void displayHandlerList(ArrayList<TickHandlerStats> stats){
-		ScreenBase screenHandlers = new ScreenTickHandler(null, stats);
-		screenHandlers.display();		
-	}
-	
-	
-	@Override	
-	public void displayEntityAmount(HashMap<String, Integer> stats){
-		ScreenBase screenEnts = new ScreenEntityAmount(null, stats);
-		screenEnts.display();		
-	}	
-	
 	@Override
 	public void displayChunkList(ArrayList<ChunkStats> stats){
 		ScreenBase screenChunks = new ScreenChunks(null, stats);

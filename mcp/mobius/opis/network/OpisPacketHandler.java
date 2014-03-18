@@ -29,16 +29,16 @@ import mcp.mobius.opis.network.server.Packet_ClearSelection;
 import mcp.mobius.opis.network.server.Packet_ClientCommand;
 import mcp.mobius.opis.network.server.Packet_DataListChunkEntities;
 import mcp.mobius.opis.network.server.Packet_DataOverlayChunkEntities;
-import mcp.mobius.opis.network.server.Packet_DataScreenAmountEntities;
-import mcp.mobius.opis.network.server.Packet_DataScreenTimingEntities;
-import mcp.mobius.opis.network.server.Packet_DataScreenTimingHandlers;
+import mcp.mobius.opis.network.server.Packet_DataListAmountEntities;
+import mcp.mobius.opis.network.server.Packet_DataListTimingEntities;
+import mcp.mobius.opis.network.server.Packet_DataListTimingHandlers;
 import mcp.mobius.opis.network.server.Packet_LoadedChunks;
 import mcp.mobius.opis.network.server.Packet_MeanTime;
 import mcp.mobius.opis.network.server.Packet_ModMeanTime;
 import mcp.mobius.opis.network.server.Packet_TPS;
 import mcp.mobius.opis.network.server.Packet_Tickets;
 import mcp.mobius.opis.network.server.Packet_TileEntitiesChunkList;
-import mcp.mobius.opis.network.server.Packet_TileEntitiesTopList;
+import mcp.mobius.opis.network.server.Packet_DataListTimingTileEnts;
 import mcp.mobius.opis.overlay.OverlayLoadedChunks;
 import mcp.mobius.opis.overlay.OverlayMeanTime;
 import mcp.mobius.opis.overlay.OverlayStatus;
@@ -90,11 +90,6 @@ public class OpisPacketHandler implements IPacketHandler {
 			OverlayMeanTime.instance().setupTable(castedPacket.entities);
 		}
 
-		else if (header == Packets.TILEENTITIES_TOPLIST){
-			Packet_TileEntitiesTopList castedPacket = new Packet_TileEntitiesTopList(packet);
-			modOpis.proxy.displayTileEntityList(castedPacket.entities);
-		}			
-		
 		else if (header == Packets.TICKETS){
 			Packet_Tickets castedPacket = new Packet_Tickets(packet);
 			OverlayLoadedChunks.instance().setupTable(castedPacket.tickets);
@@ -138,20 +133,25 @@ public class OpisPacketHandler implements IPacketHandler {
 			OverlayEntityPerChunk.instance().setupEntTable();
 		}		
 		
-		else if (header == Packets.DATA_SCREEN_TIMING_ENTITIES){
-			Packet_DataScreenTimingEntities castedPacket = new Packet_DataScreenTimingEntities(packet);
-			modOpis.proxy.displayEntityList(castedPacket.entities);
+		else if (header == Packets.DATA_LIST_TIMING_TILEENTS){
+			Packet_DataListTimingTileEnts castedPacket = new Packet_DataListTimingTileEnts(packet);
+			DataCache.instance().setTimingTileEnts(castedPacket.entities);
+		}			
+		
+		else if (header == Packets.DATA_LIST_TIMING_ENTITIES){
+			Packet_DataListTimingEntities castedPacket = new Packet_DataListTimingEntities(packet);
+			DataCache.instance().setTimingEntities(castedPacket.entities);
 		}		
 
-		else if (header == Packets.DATA_SCREEN_AMOUNT_ENTITIES){
-			Packet_DataScreenAmountEntities castedPacket = new Packet_DataScreenAmountEntities(packet);
-			DataCache.instance().setAmountEntities(castedPacket.entities);
-		}			
-
-		else if (header == Packets.DATA_SCREEN_TIMING_HANDLERS){
-			Packet_DataScreenTimingHandlers castedPacket = new Packet_DataScreenTimingHandlers(packet);
-			modOpis.proxy.displayHandlerList(castedPacket.stats);
+		else if (header == Packets.DATA_LIST_TIMING_HANDLERS){
+			Packet_DataListTimingHandlers castedPacket = new Packet_DataListTimingHandlers(packet);
+			DataCache.instance().setTimingHandler(castedPacket.stats);
 		}					
+		
+		else if (header == Packets.DATA_LIST_AMOUNT_ENTITIES){
+			Packet_DataListAmountEntities castedPacket = new Packet_DataListAmountEntities(packet);
+			DataCache.instance().setAmountEntities(castedPacket.entities);
+		}	
 		
 		else if (header == Packets.CLR_SELECTION){
 			Packet_ClearSelection castedPacket = new Packet_ClearSelection(packet);

@@ -166,12 +166,20 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener{
 		tableTimingTE = new JTable();
 		tableTimingTE.setModel(new DefaultTableModel(
 			new Object[][] {
-				{null, null},
+				{null, null, null, null, null},
 			},
 			new String[] {
-				"New column", "New column"
+				"Type", "Mod", "Dim", "Pos", "Update Time"
 			}
-		));
+		) {
+			Class[] columnTypes = new Class[] {
+				String.class, String.class, Integer.class, Object.class, String.class
+			};
+			public Class getColumnClass(int columnIndex) {
+				return columnTypes[columnIndex];
+			}
+		});
+		tableTimingTE.setAutoCreateRowSorter(true);
 		scrollPaneTimingTE.setViewportView(tableTimingTE);
 		
 		panelTimingEnt = new JPanel();
@@ -184,12 +192,20 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener{
 		tableTimingEnt = new JTable();
 		tableTimingEnt.setModel(new DefaultTableModel(
 			new Object[][] {
-				{null, null},
+				{null, null, null, null, null, null},
 			},
 			new String[] {
-				"New column", "New column"
+				"Type", "ID", "Dim", "Pos", "Update Time", "Data"
 			}
-		));
+		) {
+			Class[] columnTypes = new Class[] {
+				String.class, Integer.class, Integer.class, Object.class, String.class, Integer.class
+			};
+			public Class getColumnClass(int columnIndex) {
+				return columnTypes[columnIndex];
+			}
+		});
+		tableTimingEnt.setAutoCreateRowSorter(true);
 		scrollPaneTimingEnt.setViewportView(tableTimingEnt);
 		
 		panelTimingHandler = new JPanel();
@@ -205,9 +221,17 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener{
 				{null, null},
 			},
 			new String[] {
-				"New column", "New column"
+				"Name", "Update Time"
 			}
-		));
+		) {
+			Class[] columnTypes = new Class[] {
+				String.class, String.class
+			};
+			public Class getColumnClass(int columnIndex) {
+				return columnTypes[columnIndex];
+			}
+		});
+		tableTimingHandler.setAutoCreateRowSorter(true);
 		scrollPaneTimingHandler.setViewportView(tableTimingHandler);
 	}
 

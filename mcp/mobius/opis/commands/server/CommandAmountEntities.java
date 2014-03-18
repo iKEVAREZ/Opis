@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 import mcp.mobius.opis.commands.IOpisCommand;
 import mcp.mobius.opis.data.managers.EntityManager;
-import mcp.mobius.opis.network.server.Packet_DataScreenAmountEntities;
+import mcp.mobius.opis.network.server.Packet_DataListAmountEntities;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
@@ -42,7 +42,7 @@ public class CommandAmountEntities extends CommandBase implements IOpisCommand{
 			ents = EntityManager.getCumulativeEntities(false);
 		
 		if (icommandsender instanceof EntityPlayer)
-			((EntityPlayerMP)icommandsender).playerNetServerHandler.sendPacketToPlayer(Packet_DataScreenAmountEntities.create(ents));
+			((EntityPlayerMP)icommandsender).playerNetServerHandler.sendPacketToPlayer(Packet_DataListAmountEntities.create(ents));
 		else{
 			for (String s : ents.keySet())
 				icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText(String.format("%s : %s", s, ents.get(s))));

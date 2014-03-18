@@ -5,39 +5,43 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.HashMap;
 
-import net.minecraft.network.packet.Packet250CustomPayload;
-import mcp.mobius.opis.data.holders.TickHandlerStats;
 import mcp.mobius.opis.network.Packets;
+import net.minecraft.network.packet.Packet;
+import net.minecraft.network.packet.Packet250CustomPayload;
 
-public class Packet_DataScreenTimingHandlers {
-
+public class Packet_DataListAmountEntities {
 
 	public byte header;
-	public ArrayList<TickHandlerStats> stats = new ArrayList<TickHandlerStats>(); 
+	public HashMap<String, Integer> entities = new HashMap<String, Integer>(); 
 	
-	public Packet_DataScreenTimingHandlers(Packet250CustomPayload packet) {
+	public Packet_DataListAmountEntities(Packet250CustomPayload packet) {
 		DataInputStream inputStream = new DataInputStream(new ByteArrayInputStream(packet.data));
 		
 		try{
 			this.header  = inputStream.readByte();
 			int ndata    = inputStream.readInt();
-			for (int i = 0; i < ndata; i++)
-				stats.add(TickHandlerStats.readFromStream(inputStream));
+			for (int i = 0; i < ndata; i++){
+				String name = Packet.readString(inputStream, 255);
+				int    amount = inputStream.readInt();
+				entities.put(name, amount);
+			}
 		} catch (IOException e){}				
 	}
 
-	public static Packet250CustomPayload create(ArrayList<TickHandlerStats> stats){
+	public static Packet250CustomPayload create(HashMap<String, Integer> entities){
 		Packet250CustomPayload packet      = new Packet250CustomPayload();
 		ByteArrayOutputStream bos     = new ByteArrayOutputStream(1);
 		DataOutputStream outputStream = new DataOutputStream(bos);
 
 		try{
-			outputStream.writeByte(Packets.DATA_SCREEN_TIMING_HANDLERS);
-			outputStream.writeInt(stats.size());
-			for (TickHandlerStats data : stats)
-				data.writeToStream(outputStream);
+			outputStream.writeByte(Packets.DATA_LIST_AMOUNT_ENTITIES);
+			outputStream.writeInt(entities.keySet().size());
+			for (String name : entities.keySet()){
+				packet.writeString(name, outputStream);
+				outputStream.writeInt(entities.get(name));
+			}
 		}catch(IOException e){}
 		
 		packet.channel = "Opis";
@@ -46,6 +50,5 @@ public class Packet_DataScreenTimingHandlers {
 		
 		return packet;
 	}	
-		
-
+	
 }

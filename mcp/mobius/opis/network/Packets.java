@@ -17,7 +17,7 @@ public class Packets {
 
 	public static byte REQ_TES_IN_CHUNK    = 0x20;  // C => S
 	public static byte TILEENTITIES_CHUNKLIST = 0x21;  // S => C
-	public static byte TILEENTITIES_TOPLIST   = 0x22;  // S => C	
+	public static byte DATA_LIST_TIMING_TILEENTS   = 0x22;  // S => C	
 	
 	public static byte TPS                    = 0x23;
 	public static byte MODMEANTIME            = 0x24;  // S => C	
@@ -29,9 +29,9 @@ public class Packets {
 	
 	public static byte DATA_OVERLAY_CHUNK_ENTITIES = 0x40;
 	public static byte DATA_LIST_CHUNK_ENTITIES    = 0x41;
-	public static byte DATA_SCREEN_TIMING_ENTITIES = 0x42;
-	public static byte DATA_SCREEN_AMOUNT_ENTITIES = 0x43;
-	public static byte DATA_SCREEN_TIMING_HANDLERS = 0x44;		
+	public static byte DATA_LIST_TIMING_ENTITIES = 0x42;
+	public static byte DATA_LIST_AMOUNT_ENTITIES = 0x43;
+	public static byte DATA_LIST_TIMING_HANDLERS = 0x44;		
 	
 	
 	public static byte REQ_DATA      = 0x50; // C => S

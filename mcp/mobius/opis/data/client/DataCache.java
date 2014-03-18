@@ -1,36 +1,31 @@
 package mcp.mobius.opis.data.client;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.swing.table.DefaultTableModel;
 
+import net.minecraft.item.ItemStack;
+import mcp.mobius.opis.data.holders.EntityStats;
+import mcp.mobius.opis.data.holders.TickHandlerStats;
+import mcp.mobius.opis.data.holders.TileEntityStats;
 import mcp.mobius.opis.gui.swing.SwingUI;
+import mcp.mobius.opis.tools.ModIdentification;
 
 public class DataCache {
 
 	private static DataCache _instance = new DataCache();
 	public  static DataCache instance() { return _instance; };
 	
-	private HashMap<String, Integer> amountEntities = new HashMap<String, Integer>();
+	private HashMap<String, Integer>    amountEntities = new HashMap<String, Integer>();
+	private ArrayList<TickHandlerStats> timingHandlers = new ArrayList<TickHandlerStats>(); 
+	private ArrayList<EntityStats>      timingEntities = new ArrayList<EntityStats>(); 
+	private ArrayList<TileEntityStats>  timingTileEnts = new ArrayList<TileEntityStats>(); 
 	
 	public void setAmountEntities(HashMap<String, Integer> stats){
 		this.amountEntities = stats;
-		
-		DefaultTableModel model = new DefaultTableModel(
-				new Object[][] {
-					{null, null},
-				},
-				new String[] {
-					"Type", "Amount"
-				}
-			) {
-				Class[] columnTypes = new Class[] {
-					String.class, Integer.class
-				};
-				public Class getColumnClass(int columnIndex) {
-					return columnTypes[columnIndex];
-				}
-			};
+
+		DefaultTableModel model = (DefaultTableModel)SwingUI.instance().getTableEntityList().getModel();
 		
 		for (int i = 0; i < model.getRowCount(); i++)
 			model.removeRow(i);
@@ -42,7 +37,6 @@ public class DataCache {
 			totalEntities += DataCache.instance().getAmountEntities().get(type);
 		}
 
-		SwingUI.instance().getTableEntityList().setModel(model);
 		SwingUI.instance().getLabelAmountValue().setText(String.valueOf(totalEntities));
 		model.fireTableDataChanged();		
 	}
@@ -51,5 +45,84 @@ public class DataCache {
 		return this.amountEntities;
 	}
 	
+	public void setTimingHandler(ArrayList<TickHandlerStats> timingHandlers){
+		this.timingHandlers = timingHandlers;
+		
+		DefaultTableModel model = (DefaultTableModel)SwingUI.instance().getTableTimingHandler().getModel();
+			
+		for (int i = 0; i < model.getRowCount(); i++)
+			model.removeRow(i);
+		
+		for (TickHandlerStats stat : DataCache.instance().getTimingHandlers()){
+			model.addRow(new Object[] {stat.getName(), String.format("%.3f \u00B5s", stat.getGeometricMean())});
+		}
+
+		model.fireTableDataChanged();		
+	}
 	
+	public ArrayList<TickHandlerStats> getTimingHandlers(){
+		return this.timingHandlers;
+	}
+	
+	public void setTimingEntities(ArrayList<EntityStats> timingEntities){
+		this.timingEntities = timingEntities;
+		
+		DefaultTableModel model = (DefaultTableModel)SwingUI.instance().getTableTimingEnt().getModel();
+		
+		for (int i = 0; i < model.getRowCount(); i++)
+			model.removeRow(i);
+		
+		for (EntityStats stat : DataCache.instance().getTimingEntities()){
+			model.addRow(new Object[]  {stat.getName(), 
+										stat.getID(),
+										stat.getCoord().dim,
+										String.format("[ %4d %4d %4d ]", 	stat.getCoord().x, stat.getCoord().y, stat.getCoord().z), 
+										String.format("%.3f \u00B5s", stat.getGeometricMean()),
+										String.valueOf(stat.getNData())});
+		}
+		
+		for (int i = 0; i < model.getRowCount(); i++)
+			model.removeRow(i);
+		
+		model.fireTableDataChanged();			
+		
+	}
+	
+	public ArrayList<EntityStats> getTimingEntities(){
+		return this.timingEntities;
+	}	
+
+	public void setTimingTileEnts(ArrayList<TileEntityStats> timingTileEnts){
+		this.timingTileEnts = timingTileEnts;
+		
+		DefaultTableModel model = (DefaultTableModel)SwingUI.instance().getTableTimingTE().getModel();
+		
+		for (int i = 0; i < model.getRowCount(); i++)
+			model.removeRow(i);
+		
+		for (TileEntityStats stat : DataCache.instance().getTimingTileEnts()){
+			ItemStack is;
+			String name  = String.format("te.%d.%d", stat.getID(), stat.getMeta());
+			String modID = "<UNKNOWN>";
+			
+			try{
+				is = new ItemStack(stat.getID(), 1, stat.getMeta());
+				name  = is.getDisplayName();
+				modID = ModIdentification.idFromStack(is);
+			}  catch (Exception e) {	}			
+			
+			model.addRow(new Object[]  {
+					 name,
+					 modID,
+				     stat.getCoordinates().dim,
+				     String.format("[ %4d %4d %4d ]", 	stat.getCoordinates().x, stat.getCoordinates().y, stat.getCoordinates().z),  
+				     String.format("%.3f \u00B5s",stat.getGeometricMean())});
+		}
+		
+		model.fireTableDataChanged();				
+	}
+	
+	public ArrayList<TileEntityStats> getTimingTileEnts(){
+		return this.timingTileEnts;
+	}		
 }
