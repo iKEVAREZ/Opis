@@ -79,5 +79,14 @@ public class TickHandlerManager {
 				name = handler.getClass().getName();
 		
 		return name;
+	}
+	
+	public static double getTotalUpdateTime(){
+		ArrayList<TickHandlerStats> tickCumul = getCumulatedStats();
+		double updateTime = 0D;
+		for (TickHandlerStats data : tickCumul){
+			updateTime += data.getGeometricMean();
+		}
+		return updateTime;
 	}	
 }

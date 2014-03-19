@@ -141,32 +141,19 @@ public class TileEntityManager {
 		
 		for (int i = 0; i < Math.min(quantity, sortedEntities.size()); i++){
 			TileEntityStats testats = sortedEntities.get(i);
-
-			/*
-			int x = testats.getCoordinates().x;
-			int y = testats.getCoordinates().y;
-			int z = testats.getCoordinates().z;
-			
-			World world = DimensionManager.getWorld(testats.getCoordinates().dim);
-	        Block mouseoverBlock = Block.blocksList[world.getBlockId(x, y, z)];
-	        //MovingObjectPosition mop = new MovingObjectPosition(x, y, z, 0, Vec3.createVectorHelper(0, 0, 0));
-	        
-	        try{
-        		ItemStack stack = new ItemStack(mouseoverBlock, 1, world.getBlockMetadata(x, y, z));
-	            testats.setType(stack.getDisplayName());
-	        }catch (Exception e){
-	        	try{
-		            ItemStack stack = mouseoverBlock.getBlockDropped(world, x, y, z, world.getBlockMetadata(x, y, z), 0).get(0);
-	        		testats.setType(stack.getDisplayName());
-	        	}catch (Exception f){}
-	        }			
-			*/
-			
 			topEntities.add(testats);
 		}
 		
 		return topEntities;
-		
+	}
+
+	public static double getTotalUpdateTime(){
+		ArrayList<TileEntityStats> entities = new ArrayList(TileEntityManager.stats.values());
+		double updateTime = 0D;
+		for (TileEntityStats data : entities){
+			updateTime += data.getGeometricMean();
+		}
+		return updateTime;
 	}
 	
 	public static ArrayList<ModStats> getModStats(){

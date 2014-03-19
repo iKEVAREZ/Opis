@@ -13,9 +13,11 @@ import mcp.mobius.opis.data.holders.EntityStats;
 import mcp.mobius.opis.data.holders.TickHandlerStats;
 import mcp.mobius.opis.data.holders.TicketData;
 import mcp.mobius.opis.data.holders.TileEntityStats;
+import mcp.mobius.opis.data.holders.basetypes.SerialDouble;
 import mcp.mobius.opis.data.managers.ChunkManager;
 import mcp.mobius.opis.data.managers.EntityManager;
 import mcp.mobius.opis.data.managers.TileEntityManager;
+import mcp.mobius.opis.gui.swing.SwingUI;
 import mcp.mobius.opis.network.client.Packet_ReqChunks;
 import mcp.mobius.opis.network.client.Packet_ReqData;
 import mcp.mobius.opis.network.enums.DataReq;
@@ -23,6 +25,7 @@ import mcp.mobius.opis.network.server.Packet_Chunks;
 import mcp.mobius.opis.network.server.Packet_ClientCommand;
 import mcp.mobius.opis.network.server.Packet_DataList;
 import mcp.mobius.opis.network.server.Packet_DataOverlayChunkEntities;
+import mcp.mobius.opis.network.server.Packet_DataValue;
 import mcp.mobius.opis.network.server.Packet_LoadedChunks;
 import mcp.mobius.opis.network.server.Packet_MeanTime;
 import mcp.mobius.opis.network.server.Packet_ModMeanTime;
@@ -138,7 +141,22 @@ public class OpisPacketHandler implements IPacketHandler {
 				OverlayMeanTime.instance().setupTable(castedPacket.data);	 
 			}			     
 			
-		}		
+		}
+		
+		else if (header == Packets.DATA_VALUE_GENERAL){
+			Packet_DataValue castedPacket = new Packet_DataValue(packet);
+			
+			if ((castedPacket.maintype == DataReq.VALUE) && (castedPacket.subtype == DataReq.TIMING) && (castedPacket.target == DataReq.TILETENTS))
+				SwingUI.instance().getLblTimingTEValue().setText(String.format("Total update time : %.3f µs", ((SerialDouble)castedPacket.data).value));
+			
+			else if ((castedPacket.maintype == DataReq.VALUE) && (castedPacket.subtype == DataReq.TIMING) && (castedPacket.target == DataReq.ENTITIES))
+				SwingUI.instance().getLblTimingEntValue().setText(String.format("Total update time : %.3f µs", ((SerialDouble)castedPacket.data).value));	
+			
+			else if ((castedPacket.maintype == DataReq.VALUE) && (castedPacket.subtype == DataReq.TIMING) && (castedPacket.target == DataReq.HANDLERS))
+				SwingUI.instance().getLblTimingHandlerValue().setText(String.format("Total update time : %.3f µs", ((SerialDouble)castedPacket.data).value));	
+			
+				
+		}
 	}
 
 	void onPacketToServer(INetworkManager manager, Packet250CustomPayload packet, Player player, Byte header) {

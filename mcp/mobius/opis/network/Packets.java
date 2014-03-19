@@ -12,5 +12,6 @@ public class Packets {
 	public static byte CLIENT_CMD    = 0x08;
 	public static byte DATA_OVERLAY_CHUNK_ENTITIES = 0x09;
 	public static byte DATA_LIST_GENERAL           = 0x10;
-	public static byte REQ_DATA                    = 0x11; // C => S
+	public static byte DATA_VALUE_GENERAL          = 0x11;
+	public static byte REQ_DATA                    = 0x12; // C => S
 }

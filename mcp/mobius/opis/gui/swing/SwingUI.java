@@ -91,6 +91,7 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener{
 	private JLabel lblTimingTEValue;
 	private JLabel lblTimingEntValue;
 	private JLabel lblTimingHandlerValue;
+	private JPanel panelSummary;
 	
 	public void showUI(){
 		EventQueue.invokeLater(new Runnable() {
@@ -110,7 +111,7 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener{
 	private SwingUI() {
 		setTitle("Opis Control Panel");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 664, 401);
+		setBounds(100, 100, 745, 413);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
@@ -118,6 +119,9 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener{
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		contentPane.add(tabbedPane, BorderLayout.CENTER);
+		
+		panelSummary = new JPanel();
+		tabbedPane.addTab("Summary", null, panelSummary, null);
 		
 		panelEntityAmount = new JPanel();
 		tabbedPane.addTab("Entity Amount", null, panelEntityAmount, null);

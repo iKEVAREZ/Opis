@@ -295,4 +295,13 @@ public class EntityManager {
 		return name;
 	}
 	
+	public static double getTotalUpdateTime(){
+		ArrayList<EntityStats> entities = new ArrayList(stats.values());
+		double updateTime = 0D;
+		for (EntityStats data : entities){
+			updateTime += data.getGeometricMean();
+		}
+		return updateTime;
+	}	
+	
 }

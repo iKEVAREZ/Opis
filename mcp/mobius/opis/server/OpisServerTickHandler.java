@@ -15,12 +15,14 @@ import mcp.mobius.opis.data.holders.ChunkStats;
 import mcp.mobius.opis.data.holders.EntityStats;
 import mcp.mobius.opis.data.holders.TickHandlerStats;
 import mcp.mobius.opis.data.holders.TileEntityStats;
+import mcp.mobius.opis.data.holders.basetypes.SerialDouble;
 import mcp.mobius.opis.data.managers.ChunkManager;
 import mcp.mobius.opis.data.managers.EntityManager;
 import mcp.mobius.opis.data.managers.TickHandlerManager;
 import mcp.mobius.opis.data.managers.TileEntityManager;
 import mcp.mobius.opis.network.enums.DataReq;
 import mcp.mobius.opis.network.server.Packet_DataList;
+import mcp.mobius.opis.network.server.Packet_DataValue;
 import mcp.mobius.opis.network.server.Packet_LoadedChunks;
 import mcp.mobius.opis.network.server.Packet_MeanTime;
 import mcp.mobius.opis.overlay.OverlayStatus;
@@ -71,6 +73,10 @@ public class OpisServerTickHandler implements ITickHandler {
 				ArrayList<EntityStats>      timingEntities = EntityManager.getTopEntities(100);
 				ArrayList<TileEntityStats>  timingTileEnts = TileEntityManager.getTopEntities(100);
 				ArrayList<ChunkStats>         timingChunks = ChunkManager.getTopChunks(100);
+				SerialDouble totalTimeTE      = new SerialDouble(TileEntityManager.getTotalUpdateTime());
+				SerialDouble totalTimeEnt     = new SerialDouble(EntityManager.getTotalUpdateTime());
+				SerialDouble totalTimeHandler = new SerialDouble(TickHandlerManager.getTotalUpdateTime());
+
 
 				
 				for (EntityPlayer player : PlayerTracker.instance().playersSwing){
@@ -87,7 +93,10 @@ public class OpisServerTickHandler implements ITickHandler {
 					PacketDispatcher.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST, DataReq.TIMING, DataReq.HANDLERS,  timingHandlers), (Player)player);
 					PacketDispatcher.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST, DataReq.TIMING, DataReq.ENTITIES,  timingEntities), (Player)player);
 					PacketDispatcher.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST, DataReq.TIMING, DataReq.TILETENTS, timingTileEnts), (Player)player);
-					PacketDispatcher.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST, DataReq.TIMING, DataReq.CHUNK,       timingChunks), (Player)player);					
+					PacketDispatcher.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST, DataReq.TIMING, DataReq.CHUNK,       timingChunks), (Player)player);
+					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE, DataReq.TIMING, DataReq.TILETENTS, totalTimeTE),    (Player)player);
+					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE, DataReq.TIMING, DataReq.ENTITIES, totalTimeEnt),    (Player)player);
+					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE, DataReq.TIMING, DataReq.HANDLERS, totalTimeHandler),    (Player)player);
 				}
 				
 				for (EntityPlayer player : PlayerTracker.instance().playersOpis)
