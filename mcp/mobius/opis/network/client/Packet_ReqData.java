@@ -5,6 +5,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Method;
 
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
@@ -33,11 +34,15 @@ public class Packet_ReqData {
 			this.subtype   = DataReq.values()[istream.readInt()];
 			this.target    = DataReq.values()[istream.readInt()];
 			
-			if (istream.readBoolean())
-				this.param1    = readParam1(this.maintype, this.subtype, this.target, istream);
+			if (istream.readBoolean()){
+				String datatype = Packet.readString(istream, 255);
+				this.param1    = readParam(this.maintype, this.subtype, this.target, datatype, istream);
+			}
 			
-			if (istream.readBoolean())
-				this.param2    = readParam2(this.maintype, this.subtype, this.target, istream);
+			if (istream.readBoolean()){
+				String datatype = Packet.readString(istream, 255);
+				this.param2    = readParam(this.maintype, this.subtype, this.target, datatype, istream);
+			}
 			
 		} catch (IOException e){}				
 	}
@@ -63,6 +68,7 @@ public class Packet_ReqData {
 			
 			if (param1 != null){
 				outputStream.writeBoolean(true);
+				Packet.writeString(param1.getClass().getCanonicalName(), outputStream);
 				param1.writeToStream(outputStream);
 			} else {
 				outputStream.writeBoolean(false);
@@ -70,6 +76,7 @@ public class Packet_ReqData {
 			
 			if (param2 != null){
 				outputStream.writeBoolean(true);
+				Packet.writeString(param2.getClass().getCanonicalName(), outputStream);				
 				param2.writeToStream(outputStream);
 			} else {
 				outputStream.writeBoolean(false);
@@ -84,34 +91,15 @@ public class Packet_ReqData {
 		return packet;
 	}
 	
-	private ISerializable readParam1(DataReq maintype, DataReq subtype, DataReq target, DataInputStream istream){
+	private ISerializable readParam(DataReq maintype, DataReq subtype, DataReq target, String datatypeStr, DataInputStream istream){
 		try{
-			if ((maintype == DataReq.OVERLAY) && (subtype == DataReq.CHUNK) && (target == DataReq.ENTITIES))
-				return CoordinatesChunk.readFromStream(istream);
-
-			if ((maintype == DataReq.LIST)    && (subtype == DataReq.CHUNK) && (target == DataReq.ENTITIES))
-				return CoordinatesChunk.readFromStream(istream);			
+			Class  datatype = Class.forName(datatypeStr);
+			Method readFromStream = datatype.getMethod("readFromStream", DataInputStream.class);
 			
-			if ((maintype == DataReq.COMMAND) && (subtype == DataReq.TELEPORT) && (target == DataReq.BLOCK))
-				return CoordinatesBlock.readFromStream(istream);
+			return (ISerializable)readFromStream.invoke(null, istream);
 
-			if ((maintype == DataReq.COMMAND) && (subtype == DataReq.TELEPORT) && (target == DataReq.ENTITIES))
-				return TargetEntity.readFromStream(istream);			
-			
 		} catch (Exception e) {
 			throw new RuntimeException(e);
-		}
-		
-		throw new RuntimeException(String.format("Unknown datatype for %s / %s / %s", maintype, subtype, target));
+		}		
 	}
-	
-	private ISerializable readParam2(DataReq maintype, DataReq subtype, DataReq target, DataInputStream istream){
-		try{
-			
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-		
-		throw new RuntimeException(String.format("Unknown datatype for %s / %s / %s", maintype, subtype, target));
-	}	
 }

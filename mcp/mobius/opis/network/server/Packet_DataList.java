@@ -5,6 +5,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 import mcp.mobius.opis.data.holders.AmountHolder;
@@ -16,6 +17,7 @@ import mcp.mobius.opis.data.holders.TickHandlerStats;
 import mcp.mobius.opis.data.holders.TileEntityStats;
 import mcp.mobius.opis.network.Packets;
 import mcp.mobius.opis.network.enums.DataReq;
+import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
 
 public class Packet_DataList {
@@ -35,24 +37,32 @@ public class Packet_DataList {
 			this.subtype   = DataReq.values()[istream.readInt()];
 			this.target    = DataReq.values()[istream.readInt()];			
 			int ndata      = istream.readInt();
+			String datatype = "";
+			if (ndata > 0)
+				datatype = Packet.readString(istream, 255);
+			
 			for (int i = 0; i < ndata; i++)
-				data.add(dataRead(this.maintype, this.subtype, this.target, istream));
+				data.add(dataRead(this.maintype, this.subtype, this.target, datatype, istream));
 		} catch (IOException e){}				
 	}
 
 	public static Packet250CustomPayload create(DataReq maintype, DataReq subtype, DataReq target, ArrayList<? extends ISerializable> stats){
 		Packet250CustomPayload packet      = new Packet250CustomPayload();
 		ByteArrayOutputStream bos     = new ByteArrayOutputStream(1);
-		DataOutputStream outputStream = new DataOutputStream(bos);
+		DataOutputStream ostream = new DataOutputStream(bos);
 
 		try{
-			outputStream.writeByte(Packets.DATA_LIST_GENERAL);
-			outputStream.writeInt(maintype.ordinal());
-			outputStream.writeInt(subtype.ordinal());
-			outputStream.writeInt(target.ordinal());			
-			outputStream.writeInt(stats.size());
+			ostream.writeByte(Packets.DATA_LIST_GENERAL);
+			ostream.writeInt(maintype.ordinal());
+			ostream.writeInt(subtype.ordinal());
+			ostream.writeInt(target.ordinal());
+			ostream.writeInt(stats.size());
+			
+			if (stats.size() > 0)
+				Packet.writeString(stats.get(0).getClass().getCanonicalName(), ostream);
+				
 			for (ISerializable data : stats)
-				data.writeToStream(outputStream);
+				data.writeToStream(ostream);
 		}catch(IOException e){}
 		
 		packet.channel = "Opis";
@@ -62,34 +72,16 @@ public class Packet_DataList {
 		return packet;
 	}	
 	
-	private ISerializable dataRead(DataReq maintype, DataReq subtype, DataReq target, DataInputStream istream){
+	private ISerializable dataRead(DataReq maintype, DataReq subtype, DataReq target, String datatypeStr, DataInputStream istream){
 		try{
-			if ((maintype == DataReq.LIST) && (subtype == DataReq.TIMING) && (target == DataReq.TILETENTS))
-				return TileEntityStats.readFromStream(istream);
+			Class  datatype = Class.forName(datatypeStr);
+			Method readFromStream = datatype.getMethod("readFromStream", DataInputStream.class);
 			
-			if ((maintype == DataReq.LIST) && (subtype == DataReq.TIMING) && (target == DataReq.ENTITIES))
-				return EntityStats.readFromStream(istream);
-			
-			if ((maintype == DataReq.LIST) && (subtype == DataReq.TIMING) && (target == DataReq.HANDLERS))
-				return TickHandlerStats.readFromStream(istream);			
+			return (ISerializable)readFromStream.invoke(null, istream);
 
-			if ((maintype == DataReq.LIST) && (subtype == DataReq.TIMING) && (target == DataReq.CHUNK))
-				return ChunkStats.readFromStream(istream);			
-
-			if ((maintype == DataReq.LIST) && (subtype == DataReq.AMOUNT) && (target == DataReq.ENTITIES))
-				return AmountHolder.readFromStream(istream);				
-			
-			if ((maintype == DataReq.LIST) && (subtype == DataReq.CHUNK) && (target == DataReq.ENTITIES))
-				return EntityStats.readFromStream(istream);		
-			
-			if ((maintype == DataReq.LIST) && (subtype == DataReq.CHUNK) && (target == DataReq.TILETENTS))
-				return TileEntityStats.readFromStream(istream);				
-			
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
-		
-		throw new RuntimeException(String.format("Unknown datatype for %s / %s / %s", maintype, subtype, target));
 	}
 	
 }
