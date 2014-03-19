@@ -36,7 +36,6 @@ import mcp.mobius.opis.gui.widgets.tableview.TableRow;
 import mcp.mobius.opis.gui.widgets.tableview.ViewTable;
 import mcp.mobius.opis.network.client.Packet_ReqChunks;
 import mcp.mobius.opis.network.client.Packet_ReqData;
-import mcp.mobius.opis.network.client.Packet_ReqTEsInChunk;
 import mcp.mobius.opis.network.enums.DataReq;
 
 public class OverlayMeanTime implements IMwDataProvider {
@@ -195,7 +194,7 @@ public class OverlayMeanTime implements IMwDataProvider {
 		}
 		
 		if (this.selectedChunk != null)
-			PacketDispatcher.sendPacketToServer(Packet_ReqTEsInChunk.create(this.selectedChunk));
+			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.LIST, DataReq.CHUNK, DataReq.TILETENTS, this.selectedChunk));
 		
 		//ArrayList<CoordinatesChunk> chunks = new ArrayList<CoordinatesChunk>();
 		//for (int x = -5; x <= 5; x++)
@@ -209,7 +208,7 @@ public class OverlayMeanTime implements IMwDataProvider {
 		this.selectedChunk = new CoordinatesChunk(dim, chunkX, chunkZ);
 		
 		if (this.selectedChunk != null)
-			PacketDispatcher.sendPacketToServer(Packet_ReqTEsInChunk.create(this.selectedChunk));		
+			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.LIST, DataReq.CHUNK, DataReq.TILETENTS, this.selectedChunk));		
 	}
 	
 	@Override

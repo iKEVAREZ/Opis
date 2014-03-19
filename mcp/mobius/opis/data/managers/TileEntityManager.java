@@ -95,7 +95,7 @@ public class TileEntityManager {
 		}
 	}
 	
-	public static ArrayList<TileEntityStats> getInChunk(CoordinatesChunk coord){
+	public static ArrayList<TileEntityStats> getTileEntitiesInChunk(CoordinatesChunk coord){
 		cleanUpStats();
 		
 		ArrayList<TileEntityStats> returnList = new ArrayList<TileEntityStats>();

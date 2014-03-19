@@ -18,7 +18,6 @@ import mcp.mobius.opis.data.managers.EntityManager;
 import mcp.mobius.opis.data.managers.TileEntityManager;
 import mcp.mobius.opis.network.client.Packet_ReqChunks;
 import mcp.mobius.opis.network.client.Packet_ReqData;
-import mcp.mobius.opis.network.client.Packet_ReqTEsInChunk;
 import mcp.mobius.opis.network.client.Packet_ReqTickets;
 import mcp.mobius.opis.network.enums.DataReq;
 import mcp.mobius.opis.network.server.Packet_Chunks;
@@ -144,14 +143,7 @@ public class OpisPacketHandler implements IPacketHandler {
 	}
 
 	void onPacketToServer(INetworkManager manager, Packet250CustomPayload packet, Player player, Byte header) {
-		if (header == Packets.REQ_TES_IN_CHUNK){
-			Packet_ReqTEsInChunk castedPacket = new Packet_ReqTEsInChunk(packet);
-			if (this.isOp(player)){				
-				PacketDispatcher.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST, DataReq.CHUNK, DataReq.TILETENTS, TileEntityManager.getInChunk(castedPacket.chunk)), player);
-			}
-		}
-		
-		else if (header == Packets.REQ_TICKETS){
+		if (header == Packets.REQ_TICKETS){
 			Packet_ReqTickets castedPacket = new Packet_ReqTickets(packet);
 			if (this.isOp(player)){
 				PacketDispatcher.sendPacketToPlayer(Packet_Tickets.create(ChunkManager.getTickets()), player);

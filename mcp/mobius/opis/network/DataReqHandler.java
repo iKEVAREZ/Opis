@@ -58,8 +58,12 @@ public class DataReqHandler {
 			PacketDispatcher.sendPacketToPlayer(Packet_MeanTime.create(TileEntityManager.getTimes(((SerializableInt)param1).value), ((SerializableInt)param1).value), player);
 		}		
 		
+		else if ((maintype == DataReq.LIST) && (subtype == DataReq.CHUNK) && (target == DataReq.TILETENTS)){
+			PacketDispatcher.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST, DataReq.CHUNK, DataReq.TILETENTS, TileEntityManager.getTileEntitiesInChunk((CoordinatesChunk)param1)), player);
+		}		
+		
 		else if ((maintype == DataReq.LIST) && (subtype == DataReq.CHUNK) && (target == DataReq.ENTITIES)){
-				PacketDispatcher.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST, DataReq.CHUNK, DataReq.ENTITIES,  EntityManager.getEntitiesInChunk((CoordinatesChunk)param1)), (Player)player);
+			PacketDispatcher.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST, DataReq.CHUNK, DataReq.ENTITIES,  EntityManager.getEntitiesInChunk((CoordinatesChunk)param1)), (Player)player);
 		}
 
 		else if ((maintype == DataReq.LIST) && (subtype == DataReq.CHUNK) && (target == DataReq.LOADED)){
