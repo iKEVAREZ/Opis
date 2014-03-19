@@ -22,8 +22,8 @@ import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.data.holders.CoordinatesBlock;
 import mcp.mobius.opis.data.holders.CoordinatesChunk;
 import mcp.mobius.opis.data.holders.ISerializable;
-import mcp.mobius.opis.data.holders.SerializableInt;
 import mcp.mobius.opis.data.holders.TileEntityStats;
+import mcp.mobius.opis.data.holders.basetypes.SerialInt;
 import mcp.mobius.opis.data.managers.ChunkManager;
 import mcp.mobius.opis.gui.events.MouseEvent;
 import mcp.mobius.opis.gui.interfaces.CType;
@@ -213,7 +213,7 @@ public class OverlayMeanTime implements IMwDataProvider {
 	
 	@Override
 	public void onDimensionChanged(int dimension, MapView mapview) {
-		PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.OVERLAY, DataReq.CHUNK, DataReq.TIMING, new SerializableInt(dimension)));
+		PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.OVERLAY, DataReq.CHUNK, DataReq.TIMING, new SerialInt(dimension)));
 	}
 
 	@Override
@@ -227,7 +227,7 @@ public class OverlayMeanTime implements IMwDataProvider {
 	@Override
 	public void onOverlayActivated(MapView mapview) {
 		this.selectedChunk = null;
-		PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.OVERLAY, DataReq.CHUNK, DataReq.TIMING, new SerializableInt(mapview.getDimension())));		
+		PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.OVERLAY, DataReq.CHUNK, DataReq.TIMING, new SerialInt(mapview.getDimension())));		
 	}
 
 	@Override

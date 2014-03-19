@@ -19,8 +19,8 @@ import mapwriter.map.MapView;
 import mapwriter.map.mapmode.MapMode;
 import mcp.mobius.opis.data.holders.CoordinatesBlock;
 import mcp.mobius.opis.data.holders.CoordinatesChunk;
-import mcp.mobius.opis.data.holders.SerializableInt;
 import mcp.mobius.opis.data.holders.TicketData;
+import mcp.mobius.opis.data.holders.basetypes.SerialInt;
 import mcp.mobius.opis.data.managers.ChunkManager;
 import mcp.mobius.opis.gui.events.MouseEvent;
 import mcp.mobius.opis.gui.interfaces.CType;
@@ -186,7 +186,7 @@ public class OverlayLoadedChunks implements IMwDataProvider {
 	
 	@Override
 	public void onDimensionChanged(int dimension, MapView mapview) {
-		PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.LIST, DataReq.CHUNK, DataReq.LOADED, new SerializableInt(dimension)));
+		PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.LIST, DataReq.CHUNK, DataReq.LOADED, new SerialInt(dimension)));
 	}
 
 	@Override
@@ -200,7 +200,7 @@ public class OverlayLoadedChunks implements IMwDataProvider {
 	@Override
 	public void onOverlayActivated(MapView mapview) {
 		this.selectedChunk = null;
-		PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.LIST, DataReq.CHUNK, DataReq.LOADED, new SerializableInt(mapview.getDimension())));		
+		PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.LIST, DataReq.CHUNK, DataReq.LOADED, new SerialInt(mapview.getDimension())));		
 		PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.LIST, DataReq.CHUNK, DataReq.TICKETS));		
 	}
 

@@ -17,10 +17,10 @@ import mcp.mobius.opis.data.holders.CoordinatesBlock;
 import mcp.mobius.opis.data.holders.CoordinatesChunk;
 import mcp.mobius.opis.data.holders.EntityStats;
 import mcp.mobius.opis.data.holders.ISerializable;
-import mcp.mobius.opis.data.holders.SerializableInt;
 import mcp.mobius.opis.data.holders.TargetEntity;
 import mcp.mobius.opis.data.holders.TickHandlerStats;
 import mcp.mobius.opis.data.holders.TileEntityStats;
+import mcp.mobius.opis.data.holders.basetypes.SerialInt;
 import mcp.mobius.opis.data.managers.ChunkManager;
 import mcp.mobius.opis.data.managers.EntityManager;
 import mcp.mobius.opis.data.managers.MetaManager;
@@ -55,8 +55,8 @@ public class DataReqHandler {
 		
 		else if ((maintype == DataReq.OVERLAY) && (subtype == DataReq.CHUNK) && (target == DataReq.TIMING)){
 			PlayerTracker.instance().playerOverlayStatus.put(player, OverlayStatus.MEANTIME);
-			PlayerTracker.instance().playerDimension.put(player, ((SerializableInt)param1).value);
-			PacketDispatcher.sendPacketToPlayer(Packet_MeanTime.create(TileEntityManager.getTimes(((SerializableInt)param1).value), ((SerializableInt)param1).value), player);
+			PlayerTracker.instance().playerDimension.put(player, ((SerialInt)param1).value);
+			PacketDispatcher.sendPacketToPlayer(Packet_MeanTime.create(TileEntityManager.getTimes(((SerialInt)param1).value), ((SerialInt)param1).value), player);
 		}		
 		
 		else if ((maintype == DataReq.LIST) && (subtype == DataReq.CHUNK) && (target == DataReq.TILETENTS)){
@@ -69,8 +69,8 @@ public class DataReqHandler {
 
 		else if ((maintype == DataReq.LIST) && (subtype == DataReq.CHUNK) && (target == DataReq.LOADED)){
 			PlayerTracker.instance().playerOverlayStatus.put(player, OverlayStatus.CHUNKSTATUS);
-			PlayerTracker.instance().playerDimension.put(player, ((SerializableInt)param1).value);
-			PacketDispatcher.sendPacketToPlayer(Packet_LoadedChunks.create(ChunkManager.getLoadedChunks(((SerializableInt)param1).value)), player);
+			PlayerTracker.instance().playerDimension.put(player, ((SerialInt)param1).value);
+			PacketDispatcher.sendPacketToPlayer(Packet_LoadedChunks.create(ChunkManager.getLoadedChunks(((SerialInt)param1).value)), player);
 		}		
 
 		else if ((maintype == DataReq.LIST) && (subtype == DataReq.CHUNK) && (target == DataReq.TICKETS)){
