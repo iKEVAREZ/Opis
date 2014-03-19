@@ -31,6 +31,7 @@ import mcp.mobius.opis.network.server.Packet_DataList;
 import mcp.mobius.opis.network.server.Packet_DataOverlayChunkEntities;
 import mcp.mobius.opis.network.server.Packet_LoadedChunks;
 import mcp.mobius.opis.network.server.Packet_MeanTime;
+import mcp.mobius.opis.network.server.Packet_Tickets;
 import mcp.mobius.opis.overlay.OverlayStatus;
 import mcp.mobius.opis.server.PlayerTracker;
 
@@ -70,6 +71,10 @@ public class DataReqHandler {
 			PlayerTracker.instance().playerOverlayStatus.put(player, OverlayStatus.CHUNKSTATUS);
 			PlayerTracker.instance().playerDimension.put(player, ((SerializableInt)param1).value);
 			PacketDispatcher.sendPacketToPlayer(Packet_LoadedChunks.create(ChunkManager.getLoadedChunks(((SerializableInt)param1).value)), player);
+		}		
+
+		else if ((maintype == DataReq.LIST) && (subtype == DataReq.CHUNK) && (target == DataReq.TICKETS)){
+			PacketDispatcher.sendPacketToPlayer(Packet_Tickets.create(ChunkManager.getTickets()), player);
 		}		
 		
 		else if ((maintype == DataReq.LIST) && (subtype == DataReq.TIMING) && (target == DataReq.TILETENTS)){

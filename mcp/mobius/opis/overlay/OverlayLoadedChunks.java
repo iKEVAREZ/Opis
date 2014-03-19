@@ -33,7 +33,6 @@ import mcp.mobius.opis.gui.widgets.tableview.TableRow;
 import mcp.mobius.opis.gui.widgets.tableview.ViewTable;
 import mcp.mobius.opis.network.client.Packet_ReqChunks;
 import mcp.mobius.opis.network.client.Packet_ReqData;
-import mcp.mobius.opis.network.client.Packet_ReqTickets;
 import mcp.mobius.opis.network.enums.DataReq;
 
 public class OverlayLoadedChunks implements IMwDataProvider {
@@ -202,7 +201,7 @@ public class OverlayLoadedChunks implements IMwDataProvider {
 	public void onOverlayActivated(MapView mapview) {
 		this.selectedChunk = null;
 		PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.LIST, DataReq.CHUNK, DataReq.LOADED, new SerializableInt(mapview.getDimension())));		
-		PacketDispatcher.sendPacketToServer(Packet_ReqTickets.create());		
+		PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.LIST, DataReq.CHUNK, DataReq.TICKETS));		
 	}
 
 	@Override

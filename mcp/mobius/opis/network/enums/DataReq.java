@@ -28,7 +28,8 @@ public enum DataReq {
 	HANDLERS("handlers"),
 	TRUE("true"),
 	FALSE("false"),
-	LOADED("loaded");
+	LOADED("loaded"),
+	TICKETS("tickets");
 	
 	private String text;
 	
