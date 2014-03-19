@@ -7,6 +7,7 @@ import java.util.logging.Level;
 import net.minecraft.entity.player.EntityPlayer;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
+import mcp.mobius.mobiuscore.profiler.ProfilerRegistrar;
 import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.commands.server.CommandAmountEntities;
 import mcp.mobius.opis.data.holders.AmountHolder;
@@ -17,6 +18,7 @@ import mcp.mobius.opis.data.holders.TickHandlerStats;
 import mcp.mobius.opis.data.holders.TileEntityStats;
 import mcp.mobius.opis.data.managers.ChunkManager;
 import mcp.mobius.opis.data.managers.EntityManager;
+import mcp.mobius.opis.data.managers.MetaManager;
 import mcp.mobius.opis.data.managers.TickHandlerManager;
 import mcp.mobius.opis.data.managers.TileEntityManager;
 import mcp.mobius.opis.network.enums.DataReq;
@@ -106,6 +108,12 @@ public class DataReqHandler {
 			if (subtype == DataReq.UNREGISTER){
 				PlayerTracker.instance().playerOverlayStatus.remove(player);
 				PlayerTracker.instance().playerDimension.remove(player);				
+			}
+			
+			if (subtype == DataReq.START){
+				MetaManager.reset();	
+				modOpis.profilerRun = true;
+				ProfilerRegistrar.turnOn();				
 			}
 		}
 		
