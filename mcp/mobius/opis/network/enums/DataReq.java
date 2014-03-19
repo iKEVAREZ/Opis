@@ -27,7 +27,8 @@ public enum DataReq {
 	TILETENTS("tileents"),
 	HANDLERS("handlers"),
 	TRUE("true"),
-	FALSE("false");
+	FALSE("false"),
+	LOADED("loaded");
 	
 	private String text;
 	

@@ -17,6 +17,7 @@ import mcp.mobius.opis.data.holders.CoordinatesBlock;
 import mcp.mobius.opis.data.holders.CoordinatesChunk;
 import mcp.mobius.opis.data.holders.EntityStats;
 import mcp.mobius.opis.data.holders.ISerializable;
+import mcp.mobius.opis.data.holders.SerializableInt;
 import mcp.mobius.opis.data.holders.TargetEntity;
 import mcp.mobius.opis.data.holders.TickHandlerStats;
 import mcp.mobius.opis.data.holders.TileEntityStats;
@@ -28,6 +29,8 @@ import mcp.mobius.opis.data.managers.TileEntityManager;
 import mcp.mobius.opis.network.enums.DataReq;
 import mcp.mobius.opis.network.server.Packet_DataList;
 import mcp.mobius.opis.network.server.Packet_DataOverlayChunkEntities;
+import mcp.mobius.opis.network.server.Packet_LoadedChunks;
+import mcp.mobius.opis.overlay.OverlayStatus;
 import mcp.mobius.opis.server.PlayerTracker;
 
 public class DataReqHandler {
@@ -51,6 +54,12 @@ public class DataReqHandler {
 		else if ((maintype == DataReq.LIST) && (subtype == DataReq.CHUNK) && (target == DataReq.ENTITIES)){
 				PacketDispatcher.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST, DataReq.CHUNK, DataReq.ENTITIES,  EntityManager.getEntitiesInChunk((CoordinatesChunk)param1)), (Player)player);
 		}
+
+		else if ((maintype == DataReq.LIST) && (subtype == DataReq.CHUNK) && (target == DataReq.LOADED)){
+			PlayerTracker.instance().playerOverlayStatus.put(player, OverlayStatus.CHUNKSTATUS);
+			PlayerTracker.instance().playerDimension.put(player, ((SerializableInt)param1).value);
+			PacketDispatcher.sendPacketToPlayer(Packet_LoadedChunks.create(ChunkManager.getLoadedChunks(((SerializableInt)param1).value)), player);
+	}		
 		
 		else if ((maintype == DataReq.LIST) && (subtype == DataReq.TIMING) && (target == DataReq.TILETENTS)){
 			ArrayList<TileEntityStats>  timingTileEnts = TileEntityManager.getTopEntities(100);

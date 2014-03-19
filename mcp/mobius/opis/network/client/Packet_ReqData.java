@@ -36,12 +36,12 @@ public class Packet_ReqData {
 			
 			if (istream.readBoolean()){
 				String datatype = Packet.readString(istream, 255);
-				this.param1    = readParam(this.maintype, this.subtype, this.target, datatype, istream);
+				this.param1    = dataRead(this.maintype, this.subtype, this.target, datatype, istream);
 			}
 			
 			if (istream.readBoolean()){
 				String datatype = Packet.readString(istream, 255);
-				this.param2    = readParam(this.maintype, this.subtype, this.target, datatype, istream);
+				this.param2    = dataRead(this.maintype, this.subtype, this.target, datatype, istream);
 			}
 			
 		} catch (IOException e){}				
@@ -91,7 +91,7 @@ public class Packet_ReqData {
 		return packet;
 	}
 	
-	private ISerializable readParam(DataReq maintype, DataReq subtype, DataReq target, String datatypeStr, DataInputStream istream){
+	private ISerializable dataRead(DataReq maintype, DataReq subtype, DataReq target, String datatypeStr, DataInputStream istream){
 		try{
 			Class  datatype = Class.forName(datatypeStr);
 			Method readFromStream = datatype.getMethod("readFromStream", DataInputStream.class);

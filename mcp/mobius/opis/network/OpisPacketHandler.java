@@ -17,7 +17,6 @@ import mcp.mobius.opis.data.managers.ChunkManager;
 import mcp.mobius.opis.data.managers.EntityManager;
 import mcp.mobius.opis.data.managers.TileEntityManager;
 import mcp.mobius.opis.network.client.Packet_ReqChunks;
-import mcp.mobius.opis.network.client.Packet_ReqChunksInDim;
 import mcp.mobius.opis.network.client.Packet_ReqData;
 import mcp.mobius.opis.network.client.Packet_ReqMeanTimeInDim;
 import mcp.mobius.opis.network.client.Packet_ReqTEsInChunk;
@@ -146,14 +145,7 @@ public class OpisPacketHandler implements IPacketHandler {
 	}
 
 	void onPacketToServer(INetworkManager manager, Packet250CustomPayload packet, Player player, Byte header) {
-		if (header == Packets.REQ_CHUNKS_IN_DIM){
-			Packet_ReqChunksInDim castedPacket = new Packet_ReqChunksInDim(packet);
-			PlayerTracker.instance().playerOverlayStatus.put(player, OverlayStatus.CHUNKSTATUS);
-			PlayerTracker.instance().playerDimension.put(player, castedPacket.dimension);
-			PacketDispatcher.sendPacketToPlayer(Packet_LoadedChunks.create(ChunkManager.getLoadedChunks(castedPacket.dimension)), player);
-		}
-	
-		else if (header == Packets.REQ_MEANTIME_IN_DIM){
+		if (header == Packets.REQ_MEANTIME_IN_DIM){
 			Packet_ReqMeanTimeInDim castedPacket = new Packet_ReqMeanTimeInDim(packet);
 			if (this.isOp(player)){
 				PlayerTracker.instance().playerOverlayStatus.put(player, OverlayStatus.MEANTIME);
