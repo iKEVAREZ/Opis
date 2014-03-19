@@ -33,7 +33,6 @@ import mcp.mobius.opis.gui.widgets.tableview.ViewTable;
 import mcp.mobius.opis.network.client.Packet_ReqChunks;
 import mcp.mobius.opis.network.client.Packet_ReqChunksInDim;
 import mcp.mobius.opis.network.client.Packet_ReqData;
-import mcp.mobius.opis.network.client.Packet_ReqTeleport;
 import mcp.mobius.opis.network.client.Packet_ReqTickets;
 import mcp.mobius.opis.network.enums.DataReq;
 
@@ -67,7 +66,7 @@ public class OverlayLoadedChunks implements IMwDataProvider {
 							MathHelper.ceiling_double_int(this.mapView.getX()) >> 4, 
 							MathHelper.ceiling_double_int(this.mapView.getZ()) >> 4);
 				} else {
-					PacketDispatcher.sendPacketToServer(Packet_ReqTeleport.create(new CoordinatesBlock(coord)));
+					PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.COMMAND, DataReq.TELEPORT, DataReq.BLOCK, new CoordinatesBlock(coord)));					
 					Minecraft.getMinecraft().setIngameFocus();
 				}
 			}

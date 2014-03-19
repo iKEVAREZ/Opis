@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.logging.Level;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
 import mcp.mobius.mobiuscore.profiler.ProfilerRegistrar;
@@ -12,9 +13,11 @@ import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.commands.server.CommandAmountEntities;
 import mcp.mobius.opis.data.holders.AmountHolder;
 import mcp.mobius.opis.data.holders.ChunkStats;
+import mcp.mobius.opis.data.holders.CoordinatesBlock;
 import mcp.mobius.opis.data.holders.CoordinatesChunk;
 import mcp.mobius.opis.data.holders.EntityStats;
 import mcp.mobius.opis.data.holders.ISerializable;
+import mcp.mobius.opis.data.holders.TargetEntity;
 import mcp.mobius.opis.data.holders.TickHandlerStats;
 import mcp.mobius.opis.data.holders.TileEntityStats;
 import mcp.mobius.opis.data.managers.ChunkManager;
@@ -118,6 +121,16 @@ public class DataReqHandler {
 				ProfilerRegistrar.turnOn();
 				return;
 			}
+			
+			if ((subtype == DataReq.TELEPORT) && (target == DataReq.BLOCK)){
+				EntityManager.teleportPlayer((CoordinatesBlock)param1, (EntityPlayerMP)player);
+				return;
+			}
+			
+			if ((subtype == DataReq.TELEPORT) && (target == DataReq.ENTITIES)){
+				EntityManager.teleportPlayer(((TargetEntity)param1).entityID, ((TargetEntity)param1).dim, (EntityPlayerMP)player);
+				return;
+			}			
 		}
 		
 		modOpis.log.log(Level.WARNING, String.format("Unknown data request : %s / %s / %s", maintype, subtype, target));		

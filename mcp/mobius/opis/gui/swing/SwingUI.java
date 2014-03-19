@@ -41,11 +41,10 @@ import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.data.client.DataCache;
 import mcp.mobius.opis.data.holders.CoordinatesBlock;
 import mcp.mobius.opis.data.holders.EntityStats;
+import mcp.mobius.opis.data.holders.TargetEntity;
 import mcp.mobius.opis.data.holders.TileEntityStats;
 import mcp.mobius.opis.data.managers.TileEntityManager;
 import mcp.mobius.opis.network.client.Packet_ReqData;
-import mcp.mobius.opis.network.client.Packet_ReqTeleport;
-import mcp.mobius.opis.network.client.Packet_ReqTeleportEID;
 import mcp.mobius.opis.network.enums.DataReq;
 import mcp.mobius.opis.overlay.OverlayMeanTime;
 import mcp.mobius.opis.overlay.entperchunk.OverlayEntityPerChunk;
@@ -496,7 +495,7 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener{
 			
 			CoordinatesBlock coord = data.getCoordinates();
 			modOpis.selectedBlock = coord;
-			PacketDispatcher.sendPacketToServer(Packet_ReqTeleport.create(coord));
+			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.COMMAND, DataReq.TELEPORT, DataReq.BLOCK, coord));
 			Minecraft.getMinecraft().setIngameFocus();			
 		}
 		
@@ -518,7 +517,7 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener{
 			
 			int eid = data.getID();
 			int dim = data.getCoordinates().dim;
-			PacketDispatcher.sendPacketToServer(Packet_ReqTeleportEID.create(eid, dim));
+			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.COMMAND, DataReq.TELEPORT, DataReq.ENTITIES, new TargetEntity(eid, dim)));
 			Minecraft.getMinecraft().setIngameFocus();			
 		}
 		

@@ -19,8 +19,10 @@ public enum DataReq {
 	FILTERING("filtering"),
 	UNREGISTER("unregister"),
 	START("start"),
+	TELEPORT("teleport"),
 	
 	// Final Target
+	BLOCK("block"),
 	ENTITIES("entities"),
 	TILETENTS("tileents"),
 	HANDLERS("handlers"),

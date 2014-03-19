@@ -37,7 +37,6 @@ import mcp.mobius.opis.network.client.Packet_ReqChunks;
 import mcp.mobius.opis.network.client.Packet_ReqData;
 import mcp.mobius.opis.network.client.Packet_ReqMeanTimeInDim;
 import mcp.mobius.opis.network.client.Packet_ReqTEsInChunk;
-import mcp.mobius.opis.network.client.Packet_ReqTeleport;
 import mcp.mobius.opis.network.enums.DataReq;
 
 public class OverlayMeanTime implements IMwDataProvider {
@@ -71,7 +70,7 @@ public class OverlayMeanTime implements IMwDataProvider {
 				}
 				else{
 					modOpis.selectedBlock = coord;
-					PacketDispatcher.sendPacketToServer(Packet_ReqTeleport.create(coord));
+					PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.COMMAND, DataReq.TELEPORT, DataReq.BLOCK, coord));
 					Minecraft.getMinecraft().setIngameFocus();
 				}
 			}

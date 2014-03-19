@@ -21,8 +21,6 @@ import mcp.mobius.opis.network.client.Packet_ReqChunksInDim;
 import mcp.mobius.opis.network.client.Packet_ReqData;
 import mcp.mobius.opis.network.client.Packet_ReqMeanTimeInDim;
 import mcp.mobius.opis.network.client.Packet_ReqTEsInChunk;
-import mcp.mobius.opis.network.client.Packet_ReqTeleport;
-import mcp.mobius.opis.network.client.Packet_ReqTeleportEID;
 import mcp.mobius.opis.network.client.Packet_ReqTickets;
 import mcp.mobius.opis.network.enums.DataReq;
 import mcp.mobius.opis.network.server.Packet_Chunks;
@@ -201,20 +199,6 @@ public class OpisPacketHandler implements IPacketHandler {
 				}
 			}
 		}
-		
-		else if (header == Packets.REQ_TELEPORT){
-			Packet_ReqTeleport castedPacket = new Packet_ReqTeleport(packet);
-			if (this.isOp(player)){		
-				EntityManager.teleportPlayer(castedPacket.coord, (EntityPlayerMP)player);
-			}
-		}
-
-		else if (header == Packets.REQ_TELEPORT_EID){
-			Packet_ReqTeleportEID castedPacket = new Packet_ReqTeleportEID(packet);
-			if (this.isOp(player)){		
-				EntityManager.teleportPlayer(castedPacket.eid, castedPacket.dim, (EntityPlayerMP)player);
-			}
-		}		
 		
 		else if (header == Packets.REQ_DATA){
 			Packet_ReqData castedPacket = new Packet_ReqData(packet);

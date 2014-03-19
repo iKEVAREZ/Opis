@@ -8,8 +8,10 @@ import java.io.IOException;
 
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
+import mcp.mobius.opis.data.holders.CoordinatesBlock;
 import mcp.mobius.opis.data.holders.CoordinatesChunk;
 import mcp.mobius.opis.data.holders.ISerializable;
+import mcp.mobius.opis.data.holders.TargetEntity;
 import mcp.mobius.opis.network.Packets;
 import mcp.mobius.opis.network.enums.DataReq;
 
@@ -47,18 +49,6 @@ public class Packet_ReqData {
 	public static Packet250CustomPayload create(DataReq maintype, DataReq subtype, DataReq target, ISerializable param1){
 		return Packet_ReqData.create(maintype, subtype, target, param1, null) ;
 	}			
-	
-	/*
-	public static Packet250CustomPayload create(int dim, int x, int z, DataReq maintype, DataReq subtype, DataReq target){
-		return Packet_ReqData.create(new CoordinatesChunk(dim, x, z), maintype, subtype, target);
-	}
-	*/	
-	
-	/*
-	public static Packet250CustomPayload create(int dim, DataReq maintype, DataReq subtype, DataReq target){
-		return Packet_ReqData.create(new CoordinatesChunk(dim, 0,0), maintype, subtype, target);
-	}
-	*/
 	
 	public static Packet250CustomPayload create(DataReq maintype, DataReq subtype, DataReq target, ISerializable param1, ISerializable param2){
 		Packet250CustomPayload packet = new Packet250CustomPayload();
@@ -101,6 +91,12 @@ public class Packet_ReqData {
 
 			if ((maintype == DataReq.LIST)    && (subtype == DataReq.CHUNK) && (target == DataReq.ENTITIES))
 				return CoordinatesChunk.readFromStream(istream);			
+			
+			if ((maintype == DataReq.COMMAND) && (subtype == DataReq.TELEPORT) && (target == DataReq.BLOCK))
+				return CoordinatesBlock.readFromStream(istream);
+
+			if ((maintype == DataReq.COMMAND) && (subtype == DataReq.TELEPORT) && (target == DataReq.ENTITIES))
+				return TargetEntity.readFromStream(istream);			
 			
 		} catch (Exception e) {
 			throw new RuntimeException(e);

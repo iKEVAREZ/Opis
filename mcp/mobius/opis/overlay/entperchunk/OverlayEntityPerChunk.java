@@ -30,7 +30,6 @@ import mcp.mobius.opis.gui.widgets.tableview.TableRow;
 import mcp.mobius.opis.gui.widgets.tableview.ViewTable;
 import mcp.mobius.opis.network.client.Packet_ReqChunks;
 import mcp.mobius.opis.network.client.Packet_ReqData;
-import mcp.mobius.opis.network.client.Packet_ReqTeleport;
 import mcp.mobius.opis.network.enums.DataReq;
 
 public class OverlayEntityPerChunk implements IMwDataProvider {
