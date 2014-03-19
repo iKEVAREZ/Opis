@@ -37,7 +37,7 @@ public class CommandAmountEntities extends CommandBase implements IOpisCommand{
 
 	@Override
 	public void processCommand(ICommandSender icommandsender, String[] astring) {
-		ArrayList<AmountHolder> ents;
+		ArrayList<AmountHolder> ents; 
 		
 		if (astring.length == 1 && astring[0].equals("all"))
 			ents = EntityManager.getCumulativeEntities(false);
