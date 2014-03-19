@@ -219,7 +219,7 @@ public class OpisPacketHandler implements IPacketHandler {
 		else if (header == Packets.REQ_DATA){
 			Packet_ReqData castedPacket = new Packet_ReqData(packet);
 			if (this.isOp(player)){	
-				DataReqHandler.instance().handle(castedPacket.coord, castedPacket.maintype, castedPacket.subtype, castedPacket.target, player);
+				DataReqHandler.instance().handle(castedPacket.maintype, castedPacket.subtype, castedPacket.target, castedPacket.param1, castedPacket.param2,  player);
 			}
 		}
 	}	

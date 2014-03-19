@@ -14,6 +14,7 @@ import mcp.mobius.opis.data.holders.AmountHolder;
 import mcp.mobius.opis.data.holders.ChunkStats;
 import mcp.mobius.opis.data.holders.CoordinatesChunk;
 import mcp.mobius.opis.data.holders.EntityStats;
+import mcp.mobius.opis.data.holders.ISerializable;
 import mcp.mobius.opis.data.holders.TickHandlerStats;
 import mcp.mobius.opis.data.holders.TileEntityStats;
 import mcp.mobius.opis.data.managers.ChunkManager;
@@ -37,13 +38,13 @@ public class DataReqHandler {
 		return _instance;
 	}	
 
-	public void handle(CoordinatesChunk coord, DataReq maintype, DataReq subtype, DataReq target, Player player){
+	public void handle(DataReq maintype, DataReq subtype, DataReq target, ISerializable param1, ISerializable param2, Player player){
 		String   name  = ((EntityPlayer)player).getEntityName();
 		
 		if (maintype == DataReq.OVERLAY){
 			if (subtype == DataReq.CHUNK){
 				if (target == DataReq.ENTITIES){
-					this.handleOverlayChunkEntities(coord, player);
+					this.handleOverlayChunkEntities((CoordinatesChunk)param1, player);
 					return;
 				}
 			}
@@ -51,7 +52,7 @@ public class DataReqHandler {
 		else if (maintype == DataReq.LIST){
 			if (subtype == DataReq.CHUNK){
 				if (target == DataReq.ENTITIES){
-					PacketDispatcher.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST, DataReq.CHUNK, DataReq.ENTITIES,  EntityManager.getEntitiesInChunk(coord)), (Player)player);					
+					PacketDispatcher.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST, DataReq.CHUNK, DataReq.ENTITIES,  EntityManager.getEntitiesInChunk((CoordinatesChunk)param1)), (Player)player);					
 					return;
 				}
 			}

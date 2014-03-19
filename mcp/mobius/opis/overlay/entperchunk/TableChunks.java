@@ -34,7 +34,7 @@ public class TableChunks extends ViewTable {
 		if (row != null){
 			CoordinatesBlock coord = ((ReducedData)row.getObject()).chunk.asCoordinatesBlock();
 			this.overlay.selectedChunk = ((ReducedData)row.getObject()).chunk;
-			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(this.overlay.selectedChunk, DataReq.LIST, DataReq.CHUNK, DataReq.ENTITIES));
+			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.LIST, DataReq.CHUNK, DataReq.ENTITIES, this.overlay.selectedChunk));
 			this.overlay.showList = false;
 			
 			this.mapView.setDimension(coord.dim);

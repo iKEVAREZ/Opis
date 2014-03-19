@@ -506,7 +506,7 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener{
 			
 			CoordinatesBlock coord = data.getCoordinates();
 			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.OVERLAY, DataReq.CHUNK, DataReq.ENTITIES));
-			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(data.getChunk(), DataReq.LIST, DataReq.CHUNK, DataReq.ENTITIES));			
+			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.LIST,    DataReq.CHUNK, DataReq.ENTITIES, data.getChunk()));			
 			OverlayMeanTime.instance().setSelectedChunk(coord.dim, coord.x >> 4, coord.z >> 4);
 			MwAPI.setCurrentDataProvider(OverlayEntityPerChunk.instance());
 			Minecraft.getMinecraft().displayGuiScreen(new MwGui(Mw.instance, coord.dim, coord.x, coord.z));			

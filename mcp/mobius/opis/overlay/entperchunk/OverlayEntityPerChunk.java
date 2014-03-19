@@ -135,10 +135,10 @@ public class OverlayEntityPerChunk implements IMwDataProvider {
 			this.showList = true;
 		
 		if (prevSelected == null && this.selectedChunk != null)
-			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(this.selectedChunk, DataReq.LIST, DataReq.CHUNK, DataReq.ENTITIES));
+			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.LIST, DataReq.CHUNK, DataReq.ENTITIES, this.selectedChunk));
 
 		else if (this.selectedChunk != null && !this.selectedChunk.equals(prevSelected))
-			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(this.selectedChunk, DataReq.LIST, DataReq.CHUNK, DataReq.ENTITIES));			
+			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.LIST, DataReq.CHUNK, DataReq.ENTITIES, this.selectedChunk));			
 		
 		else if (this.selectedChunk == null)
 			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.OVERLAY, DataReq.CHUNK, DataReq.ENTITIES));			
