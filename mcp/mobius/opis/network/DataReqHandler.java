@@ -107,13 +107,15 @@ public class DataReqHandler {
 			
 			if (subtype == DataReq.UNREGISTER){
 				PlayerTracker.instance().playerOverlayStatus.remove(player);
-				PlayerTracker.instance().playerDimension.remove(player);				
+				PlayerTracker.instance().playerDimension.remove(player);
+				return;				
 			}
 			
 			if (subtype == DataReq.START){
 				MetaManager.reset();	
 				modOpis.profilerRun = true;
-				ProfilerRegistrar.turnOn();				
+				ProfilerRegistrar.turnOn();
+				return;
 			}
 		}
 		

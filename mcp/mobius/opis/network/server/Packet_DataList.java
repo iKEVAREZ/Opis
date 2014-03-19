@@ -80,7 +80,10 @@ public class Packet_DataList {
 				return AmountHolder.readFromStream(istream);				
 			
 			if ((maintype == DataReq.LIST) && (subtype == DataReq.CHUNK) && (target == DataReq.ENTITIES))
-				return EntityStats.readFromStream(istream);			
+				return EntityStats.readFromStream(istream);		
+			
+			if ((maintype == DataReq.LIST) && (subtype == DataReq.CHUNK) && (target == DataReq.TILETENTS))
+				return TileEntityStats.readFromStream(istream);				
 			
 		} catch (Exception e) {
 			throw new RuntimeException(e);

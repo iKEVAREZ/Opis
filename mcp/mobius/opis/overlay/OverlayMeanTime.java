@@ -21,6 +21,7 @@ import mapwriter.map.mapmode.MapMode;
 import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.data.holders.CoordinatesBlock;
 import mcp.mobius.opis.data.holders.CoordinatesChunk;
+import mcp.mobius.opis.data.holders.ISerializable;
 import mcp.mobius.opis.data.holders.TileEntityStats;
 import mcp.mobius.opis.data.managers.ChunkManager;
 import mcp.mobius.opis.gui.events.MouseEvent;
@@ -258,7 +259,7 @@ public class OverlayMeanTime implements IMwDataProvider {
 	}
 	
 	@SideOnly(Side.CLIENT)
-	public void setupTable(ArrayList<TileEntityStats> entities){
+	public void setupTable(ArrayList<ISerializable> entities){
 		if (this.canvas == null)
 			this.canvas = new LayoutCanvas();		
 		
@@ -276,9 +277,10 @@ public class OverlayMeanTime implements IMwDataProvider {
 			 .setColumnsWidth(50,25,25)
 			 .setRowColors(0xff808080, 0xff505050)
 			 .setFontSize(1.0f);
-
-		
-		for (TileEntityStats data : entities){
+	    
+		for (ISerializable uncasted : entities){
+			
+			TileEntityStats data = (TileEntityStats)uncasted;
 			
 			ItemStack is;
 			String name  = String.format("te.%d.%d", data.getID(), data.getMeta());

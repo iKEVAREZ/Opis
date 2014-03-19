@@ -34,7 +34,6 @@ import mcp.mobius.opis.network.server.Packet_MeanTime;
 import mcp.mobius.opis.network.server.Packet_ModMeanTime;
 import mcp.mobius.opis.network.server.Packet_TPS;
 import mcp.mobius.opis.network.server.Packet_Tickets;
-import mcp.mobius.opis.network.server.Packet_TileEntitiesChunkList;
 import mcp.mobius.opis.overlay.OverlayLoadedChunks;
 import mcp.mobius.opis.overlay.OverlayMeanTime;
 import mcp.mobius.opis.overlay.OverlayStatus;
@@ -81,11 +80,6 @@ public class OpisPacketHandler implements IPacketHandler {
 			Packet_MeanTime castedPacket = new Packet_MeanTime(packet);
 			ChunkManager.chunkMeanTime = castedPacket.chunkStatus;
 		}			
-
-		else if (header == Packets.TILEENTITIES_CHUNKLIST){
-			Packet_TileEntitiesChunkList castedPacket = new Packet_TileEntitiesChunkList(packet);
-			OverlayMeanTime.instance().setupTable(castedPacket.entities);
-		}
 
 		else if (header == Packets.TICKETS){
 			Packet_Tickets castedPacket = new Packet_Tickets(packet);
@@ -146,6 +140,9 @@ public class OpisPacketHandler implements IPacketHandler {
 				OverlayEntityPerChunk.instance().setEntStats(castedPacket.data);
 				OverlayEntityPerChunk.instance().setupEntTable();		
 			}
+			else if ((castedPacket.maintype == DataReq.LIST) && (castedPacket.subtype == DataReq.CHUNK)  && (castedPacket.target == DataReq.TILETENTS)){
+				OverlayMeanTime.instance().setupTable(castedPacket.data);	 
+			}			     
 			
 		}		
 	}
@@ -170,7 +167,7 @@ public class OpisPacketHandler implements IPacketHandler {
 		else if (header == Packets.REQ_TES_IN_CHUNK){
 			Packet_ReqTEsInChunk castedPacket = new Packet_ReqTEsInChunk(packet);
 			if (this.isOp(player)){				
-				PacketDispatcher.sendPacketToPlayer(Packet_TileEntitiesChunkList.create(TileEntityManager.getInChunk(castedPacket.chunk)), player);
+				PacketDispatcher.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST, DataReq.CHUNK, DataReq.TILETENTS, TileEntityManager.getInChunk(castedPacket.chunk)), player);
 			}
 		}
 		
