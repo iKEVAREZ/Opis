@@ -27,6 +27,47 @@ public class DataCache {
 	private ArrayList<TileEntityStats>  timingTileEnts = new ArrayList<TileEntityStats>();
 	private ArrayList<ChunkStats>       timingChunks   = new ArrayList<ChunkStats>();
 	
+	private double timingHandlersTotal = 0D;
+	private double timingEntitiesTotal = 0D;
+	private double timingTileEntsTotal = 0D;
+	
+	private int    amountHandlersTotal = 0;
+	private int    amountEntitiesTotal = 0;
+	private int    amountTileEntsTotal = 0;
+	
+	public void setTimingHandlersTotal(double value){
+		this.timingHandlersTotal = value;
+		SwingUI.instance().getLblSummaryTimingHandlers().setText(String.format("%.3f", value/1000.));
+		SwingUI.instance().getLblTimingHandlerValue().setText(String.format("Total update time : %.3f µs", value));
+		SwingUI.instance().getLblSummaryTimingTotal().setText(String.format("%.3f", (this.timingHandlersTotal + this.timingEntitiesTotal + this.timingTileEntsTotal)/1000.));
+	}
+	public void setTimingEntitiesTotal(double value){
+		this.timingEntitiesTotal = value;
+		SwingUI.instance().getLblSummaryTimingEntities().setText(String.format("%.3f", value/1000.));
+		SwingUI.instance().getLblTimingEntValue().setText(String.format("Total update time : %.3f µs", value));
+		SwingUI.instance().getLblSummaryTimingTotal().setText(String.format("%.3f", (this.timingHandlersTotal + this.timingEntitiesTotal + this.timingTileEntsTotal)/1000.));		
+	}
+	public void setTimingTileEntsTotal(double value){
+		this.timingTileEntsTotal = value;
+		SwingUI.instance().getLblSummaryTimingTileEnts().setText(String.format("%.3f", value/1000.));
+		SwingUI.instance().getLblTimingTEValue().setText(String.format("Total update time : %.3f µs", value));
+		SwingUI.instance().getLblSummaryTimingTotal().setText(String.format("%.3f", (this.timingHandlersTotal + this.timingEntitiesTotal + this.timingTileEntsTotal)/1000.));		
+	}	
+
+	public void setAmountHandlersTotal(int value){
+		this.amountHandlersTotal = value;
+		SwingUI.instance().getLblSummaryAmountHandlers().setText(String.valueOf(value));
+	}
+	public void setAmountEntitiesTotal(int value){
+		this.amountEntitiesTotal = value;
+		SwingUI.instance().getLblSummaryAmountEntities().setText(String.valueOf(value));		
+	}
+	public void setAmountTileEntsTotal(int value){
+		this.amountTileEntsTotal = value;
+		SwingUI.instance().getLblSummaryAmountTileEnts().setText(String.valueOf(value));
+	}		
+	
+	
 	public ArrayList<AmountHolder> getAmountEntities(){
 		return this.amountEntities;
 	}

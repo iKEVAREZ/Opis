@@ -14,6 +14,7 @@ import mcp.mobius.opis.data.holders.TickHandlerStats;
 import mcp.mobius.opis.data.holders.TicketData;
 import mcp.mobius.opis.data.holders.TileEntityStats;
 import mcp.mobius.opis.data.holders.basetypes.SerialDouble;
+import mcp.mobius.opis.data.holders.basetypes.SerialInt;
 import mcp.mobius.opis.data.managers.ChunkManager;
 import mcp.mobius.opis.data.managers.EntityManager;
 import mcp.mobius.opis.data.managers.TileEntityManager;
@@ -147,15 +148,22 @@ public class OpisPacketHandler implements IPacketHandler {
 			Packet_DataValue castedPacket = new Packet_DataValue(packet);
 			
 			if ((castedPacket.maintype == DataReq.VALUE) && (castedPacket.subtype == DataReq.TIMING) && (castedPacket.target == DataReq.TILETENTS))
-				SwingUI.instance().getLblTimingTEValue().setText(String.format("Total update time : %.3f µs", ((SerialDouble)castedPacket.data).value));
+				DataCache.instance().setTimingTileEntsTotal(((SerialDouble)castedPacket.data).value);
 			
 			else if ((castedPacket.maintype == DataReq.VALUE) && (castedPacket.subtype == DataReq.TIMING) && (castedPacket.target == DataReq.ENTITIES))
-				SwingUI.instance().getLblTimingEntValue().setText(String.format("Total update time : %.3f µs", ((SerialDouble)castedPacket.data).value));	
+				DataCache.instance().setTimingEntitiesTotal(((SerialDouble)castedPacket.data).value);	
 			
 			else if ((castedPacket.maintype == DataReq.VALUE) && (castedPacket.subtype == DataReq.TIMING) && (castedPacket.target == DataReq.HANDLERS))
-				SwingUI.instance().getLblTimingHandlerValue().setText(String.format("Total update time : %.3f µs", ((SerialDouble)castedPacket.data).value));	
+				DataCache.instance().setTimingHandlersTotal(((SerialDouble)castedPacket.data).value);	
 			
-				
+			else if ((castedPacket.maintype == DataReq.VALUE) && (castedPacket.subtype == DataReq.AMOUNT) && (castedPacket.target == DataReq.TILETENTS))
+				DataCache.instance().setAmountTileEntsTotal(((SerialInt)castedPacket.data).value);
+			
+			else if ((castedPacket.maintype == DataReq.VALUE) && (castedPacket.subtype == DataReq.AMOUNT) && (castedPacket.target == DataReq.ENTITIES))
+				DataCache.instance().setAmountEntitiesTotal(((SerialInt)castedPacket.data).value);	
+			
+			else if ((castedPacket.maintype == DataReq.VALUE) && (castedPacket.subtype == DataReq.AMOUNT) && (castedPacket.target == DataReq.HANDLERS))
+				DataCache.instance().setAmountHandlersTotal(((SerialInt)castedPacket.data).value);					
 		}
 	}
 
