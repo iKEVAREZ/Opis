@@ -1,13 +1,13 @@
 package mcp.mobius.opis.data.server;
 
 import mcp.mobius.mobiuscore.profiler.IProfilerWorldTick;
-import mcp.mobius.opis.data.holders.stats.StatsWorldTick;
+import mcp.mobius.opis.data.holders.stats.StatsBase;
 
 public class WorldTickProfiler extends AbstractProfiler implements IProfilerWorldTick {
 
 	private static WorldTickProfiler _instance = new WorldTickProfiler();
 	public  static WorldTickProfiler instance() {return _instance;}	
-	public  StatsWorldTick  stats = new StatsWorldTick();
+	public  StatsBase  stats = new StatsBase();
 	
 	@Override
 	public void WorldTickStart() {

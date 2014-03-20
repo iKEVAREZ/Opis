@@ -21,6 +21,7 @@ import mcp.mobius.opis.data.managers.ChunkManager;
 import mcp.mobius.opis.data.managers.EntityManager;
 import mcp.mobius.opis.data.managers.TickHandlerManager;
 import mcp.mobius.opis.data.managers.TileEntityManager;
+import mcp.mobius.opis.data.server.EntUpdateProfiler;
 import mcp.mobius.opis.data.server.WorldTickProfiler;
 import mcp.mobius.opis.data.server.TickProfiler;
 import mcp.mobius.opis.network.enums.DataReq;
@@ -87,7 +88,8 @@ public class OpisServerTickHandler implements ITickHandler {
 				SerialDouble totalTimeTE      = new SerialDouble(TileEntityManager.getTotalUpdateTime());
 				SerialDouble totalTimeEnt     = new SerialDouble(EntityManager.getTotalUpdateTime());
 				SerialDouble totalTimeHandler = new SerialDouble(TickHandlerManager.getTotalUpdateTime());
-				SerialDouble totalSubtick     = new SerialDouble(WorldTickProfiler.instance().stats.getGeometricMean());
+				SerialDouble totalWorldTick   = new SerialDouble(WorldTickProfiler.instance().stats.getGeometricMean());
+				SerialDouble totalEntUpdate   = new SerialDouble(EntUpdateProfiler.instance().stats.getGeometricMean());
 
 				
 				for (EntityPlayer player : PlayerTracker.instance().playersSwing){
@@ -108,7 +110,8 @@ public class OpisServerTickHandler implements ITickHandler {
 					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE, DataReq.TIMING, DataReq.TILETENTS, totalTimeTE),     (Player)player);
 					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE, DataReq.TIMING, DataReq.ENTITIES,  totalTimeEnt),    (Player)player);
 					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE, DataReq.TIMING, DataReq.HANDLERS,  totalTimeHandler),(Player)player);
-					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE, DataReq.TIMING, DataReq.WORLDTICK,  totalSubtick),(Player)player);					
+					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE, DataReq.TIMING, DataReq.WORLDTICK,  totalWorldTick),(Player)player);		
+					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE, DataReq.TIMING, DataReq.ENTUPDATE,  totalEntUpdate),(Player)player);					
 					
 					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE, DataReq.AMOUNT, DataReq.TILETENTS, new SerialInt(TileEntityManager.stats.size())),      (Player)player);
 					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE, DataReq.AMOUNT, DataReq.ENTITIES,  new SerialInt(EntityManager.stats.size())),          (Player)player);

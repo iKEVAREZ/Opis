@@ -32,7 +32,8 @@ public enum DataReq {
 	LOADED("loaded"),
 	TICKETS("tickets"),
 	TICK("tick"),
-	WORLDTICK("worldtick");
+	WORLDTICK("worldtick"),
+	ENTUPDATE("entupdate");
 	
 	private String text;
 	

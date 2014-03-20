@@ -6,7 +6,7 @@ import java.io.IOException;
 
 import mcp.mobius.opis.data.holders.ISerializable;
 
-public class StatsWorldTick extends StatAbstract implements ISerializable {
+public class StatsBase extends StatAbstract implements ISerializable {
 
 	@Override
 	public void writeToStream(DataOutputStream stream) throws IOException {

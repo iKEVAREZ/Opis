@@ -158,6 +158,9 @@ public class OpisPacketHandler implements IPacketHandler {
 
 			else if ((castedPacket.maintype == DataReq.VALUE) && (castedPacket.subtype == DataReq.TIMING) && (castedPacket.target == DataReq.WORLDTICK))
 				DataCache.instance().setTimingWorldTickTotal(((SerialDouble)castedPacket.data).value);			
+
+			else if ((castedPacket.maintype == DataReq.VALUE) && (castedPacket.subtype == DataReq.TIMING) && (castedPacket.target == DataReq.ENTUPDATE))
+				DataCache.instance().setTimingEntUpdateTotal(((SerialDouble)castedPacket.data).value);						
 			
 			else if ((castedPacket.maintype == DataReq.VALUE) && (castedPacket.subtype == DataReq.AMOUNT) && (castedPacket.target == DataReq.TILETENTS))
 				DataCache.instance().setAmountTileEntsTotal(((SerialInt)castedPacket.data).value);

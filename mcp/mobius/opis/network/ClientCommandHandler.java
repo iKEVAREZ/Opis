@@ -53,6 +53,7 @@ public class ClientCommandHandler {
 			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.LIST,  DataReq.TIMING, DataReq.HANDLERS));
 			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.LIST,  DataReq.TIMING, DataReq.CHUNK));
 			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.VALUE, DataReq.TIMING, DataReq.WORLDTICK));
+			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.VALUE, DataReq.TIMING, DataReq.ENTUPDATE));
 			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.LIST,  DataReq.AMOUNT, DataReq.ENTITIES));	
 			SwingUI.instance().showUI();		
 		}
