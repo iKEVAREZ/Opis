@@ -20,6 +20,7 @@ public enum DataReq {
 	UNREGISTER("unregister"),
 	START("start"),
 	TELEPORT("teleport"),
+	KILLALL("killall"),
 	
 	// Final Target
 	BLOCK("block"),

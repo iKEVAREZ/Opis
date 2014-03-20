@@ -22,6 +22,7 @@ import mcp.mobius.opis.data.holders.TickHandlerStats;
 import mcp.mobius.opis.data.holders.TileEntityStats;
 import mcp.mobius.opis.data.holders.basetypes.SerialDouble;
 import mcp.mobius.opis.data.holders.basetypes.SerialInt;
+import mcp.mobius.opis.data.holders.basetypes.SerialString;
 import mcp.mobius.opis.data.managers.ChunkManager;
 import mcp.mobius.opis.data.managers.EntityManager;
 import mcp.mobius.opis.data.managers.MetaManager;
@@ -139,6 +140,10 @@ public class DataReqHandler {
 		
 		else if ((maintype == DataReq.COMMAND) && (subtype == DataReq.TELEPORT) && (target == DataReq.ENTITIES)){
 			EntityManager.teleportPlayer(((TargetEntity)param1).entityID, ((TargetEntity)param1).dim, (EntityPlayerMP)player);
+		}			
+		
+		else if ((maintype == DataReq.COMMAND) && (subtype == DataReq.KILLALL)){
+			EntityManager.killAll(((SerialString)param1).value);
 		}			
 		
 		else{

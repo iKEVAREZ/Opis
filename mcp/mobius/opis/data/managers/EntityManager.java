@@ -303,5 +303,35 @@ public class EntityManager {
 		}
 		return updateTime;
 	}	
+
+	public static int killAll(String entName){
+		int nkilled = 0;
+		
+		if (entName.contains("Player")){
+			return -1; //Error msg for when trying to kill a player
+		}
+			
+		
+		for (int dim : DimensionManager.getIDs()){
+			World world = DimensionManager.getWorld(dim);
+			if (world == null) continue;
+			
+			ArrayList copyList = new ArrayList(world.loadedEntityList);
+			
+			for (Object o : copyList){
+				Entity ent  = (Entity)o;
+				String name = EntityManager.getEntityName(ent).toLowerCase(); 
+				
+				if (name.equals(entName.toLowerCase())){
+					ent.setDead();
+					nkilled += 1;
+				}
+			}
+		}
+
+		System.out.printf("Killed %d %s\n", nkilled, entName);		
+		
+		return nkilled;		
+	}
 	
 }

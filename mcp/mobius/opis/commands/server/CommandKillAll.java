@@ -43,29 +43,12 @@ public class CommandKillAll extends CommandBase implements IOpisCommand {
 		if (astring.length < 1) return;
 		
 		String searchname = StringUtils.join(astring, " ").toLowerCase();
-		int nkilled = 0;
 		
-		if (searchname.equals("Player")){
+		int nkilled = EntityManager.killAll(searchname);
+		
+		if (nkilled == -1){
 			icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText(String.format("\u00A7oSeriously ? I can't, seriously, I can't. I should remove you from the OP list !")));
 			return;
-		}
-			
-		
-		for (int dim : DimensionManager.getIDs()){
-			World world = DimensionManager.getWorld(dim);
-			if (world == null) continue;
-			
-			ArrayList copyList = new ArrayList(world.loadedEntityList);
-			
-			for (Object o : copyList){
-				Entity ent  = (Entity)o;
-				String name = EntityManager.getEntityName(ent).toLowerCase(); 
-				
-				if (name.equals(searchname)){
-					ent.setDead();
-					nkilled += 1;
-				}
-			}
 		}
 
 		icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText(String.format("\u00A7oKilled %d entities of type %s", nkilled, searchname)));		
