@@ -1,22 +1,24 @@
-package mcp.mobius.opis.data.holders;
+package mcp.mobius.opis.data.holders.stats;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
 import mcp.mobius.opis.modOpis;
+import mcp.mobius.opis.data.holders.ISerializable;
+import mcp.mobius.opis.data.holders.basetypes.CoordinatesBlock;
 import net.minecraft.network.packet.Packet;
 
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 
-public class TileEntityStats extends StatAbstract implements ISerializable {
+public class StatsTileEntity extends StatAbstract implements ISerializable {
 
 	private int    blockID;
 	private short  blockMeta;
 	private double cachedMedian = -1.0;
 	
 	
-	public TileEntityStats(CoordinatesBlock coord, int blockID, short blockMeta){
+	public StatsTileEntity(CoordinatesBlock coord, int blockID, short blockMeta){
 		this.coord = coord;
 		//this.name    = teclass;
 		this.blockID   = blockID;
@@ -60,12 +62,12 @@ public class TileEntityStats extends StatAbstract implements ISerializable {
 		stream.writeDouble(this.getGeometricMean());
 	}
 
-	public static  TileEntityStats readFromStream(DataInputStream stream) throws IOException {
+	public static  StatsTileEntity readFromStream(DataInputStream stream) throws IOException {
 		CoordinatesBlock coord   = CoordinatesBlock.readFromStream(stream);
 		int blockID     = stream.readInt();
 		short blockMeta = stream.readShort();
 		//String classname         = Packet.readString(stream, 255);
-		TileEntityStats stat = new TileEntityStats(coord, blockID, blockMeta);
+		StatsTileEntity stat = new StatsTileEntity(coord, blockID, blockMeta);
 		stat.setGeometricMean(stream.readDouble());
 		return stat;
 	}

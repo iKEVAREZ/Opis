@@ -10,8 +10,8 @@ import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
 import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.commands.IOpisCommand;
-import mcp.mobius.opis.data.holders.ModStats;
-import mcp.mobius.opis.data.holders.TileEntityStats;
+import mcp.mobius.opis.data.holders.stats.StatsMod;
+import mcp.mobius.opis.data.holders.stats.StatsTileEntity;
 import mcp.mobius.opis.data.managers.TileEntityManager;
 import mcp.mobius.opis.tools.ModIdentification;
 import net.minecraft.command.CommandBase;
@@ -43,13 +43,13 @@ public class CommandDataDump extends CommandBase implements IOpisCommand {
 
 	@Override
 	public void processCommand(ICommandSender icommandsender, String[] astring) {
-		ArrayList<ModStats> modStats = TileEntityManager.getModStats();
+		ArrayList<StatsMod> modStats = TileEntityManager.getModStats();
         try {
 			BufferedWriter out = new BufferedWriter(new FileWriter("mods.csv"));
 			
 			out.write(String.format("modid,ntes,mean,geommean,variance,min,max,sum,median\n"));
 			
-			for (ModStats stat: modStats)
+			for (StatsMod stat: modStats)
 				out.write(String.format("%s,%d,%f,%f,%f,%f,%f,%f,%f\n", stat.getModID(),
 																		stat.dstat.getN(),
 																		stat.dstat.getMean(),
@@ -77,13 +77,13 @@ public class CommandDataDump extends CommandBase implements IOpisCommand {
 		}	
         
         int nentities = TileEntityManager.stats.size();
-        ArrayList<TileEntityStats> entStats = TileEntityManager.getTopEntities(nentities);
+        ArrayList<StatsTileEntity> entStats = TileEntityManager.getTopEntities(nentities);
         try {
 			BufferedWriter out = new BufferedWriter(new FileWriter("tileentities.csv"));
 			
 			out.write(String.format("name,mod,dim,x,y,z,chunkX,chunkZ,npoints,mean,geommean,variance,min,max,sum,median\n"));
 
-			for (TileEntityStats stat: entStats){
+			for (StatsTileEntity stat: entStats){
 				
 				ItemStack is;
 				String name  = String.format("te.%d.%d", stat.getID(), stat.getMeta());

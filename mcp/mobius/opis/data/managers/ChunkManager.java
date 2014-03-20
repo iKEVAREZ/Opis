@@ -8,11 +8,11 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
-import mcp.mobius.opis.data.holders.ChunkStats;
-import mcp.mobius.opis.data.holders.CoordinatesChunk;
-import mcp.mobius.opis.data.holders.EntityStats;
-import mcp.mobius.opis.data.holders.TicketData;
-import mcp.mobius.opis.data.holders.TileEntityStats;
+import mcp.mobius.opis.data.holders.basetypes.CoordinatesChunk;
+import mcp.mobius.opis.data.holders.basetypes.TicketData;
+import mcp.mobius.opis.data.holders.stats.StatsChunk;
+import mcp.mobius.opis.data.holders.stats.StatsEntity;
+import mcp.mobius.opis.data.holders.stats.StatsTileEntity;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
@@ -23,7 +23,7 @@ public class ChunkManager {
 
 	
 	public static HashMap<ChunkCoordIntPair, Boolean>       chunksLoad    = new HashMap<ChunkCoordIntPair, Boolean>();
-	public static HashMap<CoordinatesChunk, ChunkStats> chunkMeanTime = new HashMap<CoordinatesChunk, ChunkStats>();
+	public static HashMap<CoordinatesChunk, StatsChunk> chunkMeanTime = new HashMap<CoordinatesChunk, StatsChunk>();
 	public static ArrayList<TicketData> tickets = new ArrayList<TicketData>();
 
 	public static HashMap<Integer, HashMap<ChunkCoordIntPair, Boolean>> getAllLoadedChunks(){
@@ -59,32 +59,32 @@ public class ChunkManager {
 		return tickets;
 	}
 	
-	public static ArrayList<ChunkStats> getChunksUpdateTime(){
-		HashMap<CoordinatesChunk, ChunkStats> chunks = new HashMap<CoordinatesChunk, ChunkStats>();
+	public static ArrayList<StatsChunk> getChunksUpdateTime(){
+		HashMap<CoordinatesChunk, StatsChunk> chunks = new HashMap<CoordinatesChunk, StatsChunk>();
 		
-		for (TileEntityStats stat : TileEntityManager.stats.values()){
+		for (StatsTileEntity stat : TileEntityManager.stats.values()){
 			if (!chunks.containsKey(stat.getChunk()))
-				chunks.put(stat.getChunk(), new ChunkStats(stat.getChunk()));
+				chunks.put(stat.getChunk(), new StatsChunk(stat.getChunk()));
 			
 			chunks.get(stat.getChunk()).addTileEntity();
 			chunks.get(stat.getChunk()).addMeasure(stat.getGeometricMean());
 		}
 		
-		for (EntityStats stat : EntityManager.stats.values()){
+		for (StatsEntity stat : EntityManager.stats.values()){
 			if (!chunks.containsKey(stat.getChunk()))
-				chunks.put(stat.getChunk(), new ChunkStats(stat.getChunk()));
+				chunks.put(stat.getChunk(), new StatsChunk(stat.getChunk()));
 			
 			chunks.get(stat.getChunk()).addEntity();
 			chunks.get(stat.getChunk()).addMeasure(stat.getGeometricMean());
 		}		
 		
-		ArrayList<ChunkStats> chunksUpdate = new ArrayList<ChunkStats>(chunks.values());
+		ArrayList<StatsChunk> chunksUpdate = new ArrayList<StatsChunk>(chunks.values());
 		return chunksUpdate;
 	}
 	
-	public static ArrayList<ChunkStats> getTopChunks(int quantity){
-		ArrayList<ChunkStats> chunks  = ChunkManager.getChunksUpdateTime();
-		ArrayList<ChunkStats> outList = new ArrayList<ChunkStats>();
+	public static ArrayList<StatsChunk> getTopChunks(int quantity){
+		ArrayList<StatsChunk> chunks  = ChunkManager.getChunksUpdateTime();
+		ArrayList<StatsChunk> outList = new ArrayList<StatsChunk>();
 		Collections.sort(chunks);
 		
 		for (int i = 0; i < Math.min(quantity, chunks.size()); i++)

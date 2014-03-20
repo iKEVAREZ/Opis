@@ -19,11 +19,11 @@ import mapwriter.api.IMwDataProvider;
 import mapwriter.map.MapView;
 import mapwriter.map.mapmode.MapMode;
 import mcp.mobius.opis.modOpis;
-import mcp.mobius.opis.data.holders.CoordinatesBlock;
-import mcp.mobius.opis.data.holders.CoordinatesChunk;
 import mcp.mobius.opis.data.holders.ISerializable;
-import mcp.mobius.opis.data.holders.TileEntityStats;
+import mcp.mobius.opis.data.holders.basetypes.CoordinatesBlock;
+import mcp.mobius.opis.data.holders.basetypes.CoordinatesChunk;
 import mcp.mobius.opis.data.holders.basetypes.SerialInt;
+import mcp.mobius.opis.data.holders.stats.StatsTileEntity;
 import mcp.mobius.opis.data.managers.ChunkManager;
 import mcp.mobius.opis.gui.events.MouseEvent;
 import mcp.mobius.opis.gui.interfaces.CType;
@@ -59,7 +59,7 @@ public class OverlayMeanTime implements IMwDataProvider {
 		public void onMouseClick(MouseEvent event){
 			TableRow row = this.getRow(event.x, event.y);
 			if (row != null){
-				CoordinatesBlock coord = ((TileEntityStats)row.getObject()).getCoordinates();
+				CoordinatesBlock coord = ((StatsTileEntity)row.getObject()).getCoordinates();
 				
 				if (this.mapView.getX() != coord.x || this.mapView.getZ() != coord.z){
 					this.mapView.setViewCentre(coord.x, coord.z);
@@ -278,7 +278,7 @@ public class OverlayMeanTime implements IMwDataProvider {
 	    
 		for (ISerializable uncasted : entities){
 			
-			TileEntityStats data = (TileEntityStats)uncasted;
+			StatsTileEntity data = (StatsTileEntity)uncasted;
 			
 			ItemStack is;
 			String name  = String.format("te.%d.%d", data.getID(), data.getMeta());

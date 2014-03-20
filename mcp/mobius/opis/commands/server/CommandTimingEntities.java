@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import mcp.mobius.opis.commands.IOpisCommand;
-import mcp.mobius.opis.data.holders.CoordinatesChunk;
-import mcp.mobius.opis.data.holders.EntityStats;
+import mcp.mobius.opis.data.holders.basetypes.CoordinatesChunk;
+import mcp.mobius.opis.data.holders.stats.StatsEntity;
 import mcp.mobius.opis.data.managers.EntityManager;
 import mcp.mobius.opis.network.enums.DataReq;
 import mcp.mobius.opis.network.server.Packet_DataList;
@@ -37,7 +37,7 @@ public class CommandTimingEntities extends CommandBase implements IOpisCommand {
 
 	@Override
 	public void processCommand(ICommandSender icommandsender, String[] astring) {
-		ArrayList<EntityStats> ents = new ArrayList<EntityStats>(); 
+		ArrayList<StatsEntity> ents = new ArrayList<StatsEntity>(); 
 		if (astring.length == 0){
 			ents = EntityManager.getTopEntities(100);
 		}
@@ -51,7 +51,7 @@ public class CommandTimingEntities extends CommandBase implements IOpisCommand {
 			((EntityPlayerMP)icommandsender).playerNetServerHandler.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST, DataReq.TIMING, DataReq.ENTITIES,  ents));
 		else{
 			icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText("[DIM X Z] Time NTEs"));
-			for (EntityStats stat : ents){
+			for (StatsEntity stat : ents){
 				icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText(stat.toString()));
 			}
 		}		

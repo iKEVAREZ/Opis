@@ -1,7 +1,11 @@
-package mcp.mobius.opis.data.holders;
+package mcp.mobius.opis.data.holders.stats;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
+
+import mcp.mobius.opis.data.holders.ISerializable;
+import mcp.mobius.opis.data.holders.basetypes.CoordinatesBlock;
+import mcp.mobius.opis.data.holders.basetypes.CoordinatesChunk;
 
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 

@@ -9,11 +9,11 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.util.ResourceLocation;
 import mapwriter.api.MwAPI;
 import mcp.mobius.opis.modOpis;
-import mcp.mobius.opis.data.holders.ChunkStats;
-import mcp.mobius.opis.data.holders.EntityStats;
-import mcp.mobius.opis.data.holders.TickHandlerStats;
-import mcp.mobius.opis.data.holders.TileEntityStats;
-import mcp.mobius.opis.data.holders.ModStats;
+import mcp.mobius.opis.data.holders.stats.StatsChunk;
+import mcp.mobius.opis.data.holders.stats.StatsEntity;
+import mcp.mobius.opis.data.holders.stats.StatsMod;
+import mcp.mobius.opis.data.holders.stats.StatsTickHandler;
+import mcp.mobius.opis.data.holders.stats.StatsTileEntity;
 import mcp.mobius.opis.gui.font.Fonts;
 import mcp.mobius.opis.gui.font.TrueTypeFont;
 import mcp.mobius.opis.gui.screens.ScreenBase;
@@ -45,7 +45,7 @@ public class ProxyClient extends ProxyServer {
 	}
 
 	@Override
-	public void displayModList(ArrayList<ModStats> stats){
+	public void displayModList(ArrayList<StatsMod> stats){
 		ScreenBase screenMods = new ScreenMods(null, stats);
 		screenMods.display();		
 	}		

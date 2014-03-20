@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import net.minecraft.network.packet.Packet250CustomPayload;
-import mcp.mobius.opis.data.holders.CoordinatesChunk;
+import mcp.mobius.opis.data.holders.basetypes.CoordinatesChunk;
 import mcp.mobius.opis.network.Packets;
 
 public class Packet_ReqChunks {

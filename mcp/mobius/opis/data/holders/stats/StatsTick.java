@@ -1,4 +1,4 @@
-package mcp.mobius.opis.data.holders;
+package mcp.mobius.opis.data.holders.stats;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -6,7 +6,7 @@ import java.io.IOException;
 
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 
-public class TickStats extends StatAbstract {
+public class StatsTick extends StatAbstract {
 
 	public DescriptiveStatistics dstat = new DescriptiveStatistics(20);
 	
@@ -15,8 +15,8 @@ public class TickStats extends StatAbstract {
 		stream.writeDouble(this.getGeometricMean());		
 	}
 	
-	public static  TickStats readFromStream(DataInputStream stream) throws IOException {
-		TickStats stat = new TickStats();
+	public static  StatsTick readFromStream(DataInputStream stream) throws IOException {
+		StatsTick stat = new StatsTick();
 		stat.setGeometricMean(stream.readDouble());
 		return stat;
 	}	

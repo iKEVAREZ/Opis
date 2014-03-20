@@ -5,7 +5,7 @@ import java.util.Collections;
 
 import net.minecraft.client.gui.GuiScreen;
 import mcp.mobius.opis.modOpis;
-import mcp.mobius.opis.data.holders.ModStats;
+import mcp.mobius.opis.data.holders.stats.StatsMod;
 import mcp.mobius.opis.gui.interfaces.CType;
 import mcp.mobius.opis.gui.interfaces.WAlign;
 import mcp.mobius.opis.gui.widgets.WidgetGeometry;
@@ -13,7 +13,7 @@ import mcp.mobius.opis.gui.widgets.tableview.ViewTable;
 
 public class ScreenMods extends ScreenBase {
 
-	public ScreenMods(GuiScreen parent, ArrayList<ModStats> mods) {
+	public ScreenMods(GuiScreen parent, ArrayList<StatsMod> mods) {
 		super(parent);
 		
 		Collections.sort(mods);
@@ -52,7 +52,7 @@ public class ScreenMods extends ScreenBase {
 		}
 		*/	    
 
-		for (ModStats data : mods){
+		for (StatsMod data : mods){
 			if (modOpis.microseconds)			
 				table.addRow(data, 
 				     	 String.format("%s", data.getModID()),

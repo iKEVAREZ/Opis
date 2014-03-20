@@ -5,9 +5,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.util.MathHelper;
 import mapwriter.map.MapView;
 import mapwriter.map.mapmode.MapMode;
-import mcp.mobius.opis.data.holders.CoordinatesBlock;
-import mcp.mobius.opis.data.holders.EntityStats;
-import mcp.mobius.opis.data.holders.TargetEntity;
+import mcp.mobius.opis.data.holders.basetypes.CoordinatesBlock;
+import mcp.mobius.opis.data.holders.basetypes.TargetEntity;
+import mcp.mobius.opis.data.holders.stats.StatsEntity;
 import mcp.mobius.opis.gui.events.MouseEvent;
 import mcp.mobius.opis.gui.interfaces.IWidget;
 import mcp.mobius.opis.gui.widgets.tableview.TableRow;
@@ -37,8 +37,8 @@ public class TableEntities extends ViewTable {
 		if (row != null){
 			//CoordinatesBlock coord = ((EntityStats)row.getObject()).getCoord();
 			//PacketDispatcher.sendPacketToServer(Packet_ReqTeleport.create(coord));
-			int eid = ((EntityStats)row.getObject()).getID();
-			int dim = ((EntityStats)row.getObject()).getCoordinates().dim;
+			int eid = ((StatsEntity)row.getObject()).getID();
+			int dim = ((StatsEntity)row.getObject()).getCoordinates().dim;
 			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.COMMAND, DataReq.TELEPORT, DataReq.ENTITIES, new TargetEntity(eid, dim)));
 			Minecraft.getMinecraft().setIngameFocus();			
 		}

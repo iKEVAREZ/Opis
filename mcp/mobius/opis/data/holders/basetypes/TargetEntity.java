@@ -1,8 +1,10 @@
-package mcp.mobius.opis.data.holders;
+package mcp.mobius.opis.data.holders.basetypes;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+
+import mcp.mobius.opis.data.holders.ISerializable;
 
 public class TargetEntity implements ISerializable {
 

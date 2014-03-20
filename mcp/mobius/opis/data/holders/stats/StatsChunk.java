@@ -1,26 +1,28 @@
-package mcp.mobius.opis.data.holders;
+package mcp.mobius.opis.data.holders.stats;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-public class ChunkStats extends StatAbstract{
+import mcp.mobius.opis.data.holders.basetypes.CoordinatesChunk;
+
+public class StatsChunk extends StatAbstract{
 	public int    tileEntities = 0;
 	public int    entities     = 0;
 	
-	public ChunkStats(){}
+	public StatsChunk(){}
 	
-	public ChunkStats(CoordinatesChunk chunk){
+	public StatsChunk(CoordinatesChunk chunk){
 		this.chunk = chunk;
 	}
 
-	public ChunkStats(CoordinatesChunk chunk, int tileEntities, int entities){
+	public StatsChunk(CoordinatesChunk chunk, int tileEntities, int entities){
 		this.chunk = chunk;
 		this.tileEntities = tileEntities;
 		this.entities     = entities;
 	}	
 	
-	public ChunkStats(CoordinatesChunk chunk, int tileEntities, int entities, double time){
+	public StatsChunk(CoordinatesChunk chunk, int tileEntities, int entities, double time){
 		this.chunk = chunk;
 		this.tileEntities = tileEntities;
 		this.entities     = entities;
@@ -48,9 +50,9 @@ public class ChunkStats extends StatAbstract{
 		stream.writeDouble(this.getDataSum());
 	}
 
-	public static  ChunkStats readFromStream(DataInputStream stream) throws IOException {
+	public static  StatsChunk readFromStream(DataInputStream stream) throws IOException {
 		CoordinatesChunk chunk   = CoordinatesChunk.readFromStream(stream);
-		ChunkStats chunkStats = new ChunkStats(chunk, stream.readInt(), stream.readInt());
+		StatsChunk chunkStats = new StatsChunk(chunk, stream.readInt(), stream.readInt());
 		chunkStats.setDataSum(stream.readDouble());
 		return chunkStats;
 	}

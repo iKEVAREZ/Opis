@@ -15,14 +15,14 @@ import net.minecraft.network.packet.Packet3Chat;
 import net.minecraft.util.ChatMessageComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
-import mcp.mobius.opis.data.holders.AmountHolder;
-import mcp.mobius.opis.data.holders.CoordinatesBlock;
-import mcp.mobius.opis.data.holders.CoordinatesChunk;
-import mcp.mobius.opis.data.holders.EntityStats;
+import mcp.mobius.opis.data.holders.basetypes.AmountHolder;
+import mcp.mobius.opis.data.holders.basetypes.CoordinatesBlock;
+import mcp.mobius.opis.data.holders.basetypes.CoordinatesChunk;
+import mcp.mobius.opis.data.holders.stats.StatsEntity;
 
 public class EntityManager {
 
-	public static HashMap<Integer, EntityStats> stats = new HashMap<Integer, EntityStats>();
+	public static HashMap<Integer, StatsEntity> stats = new HashMap<Integer, StatsEntity>();
 	
 	/* Add an entity to the stat array, with timing data */
 	public static void addEntity(Entity ent, long timing){
@@ -31,20 +31,20 @@ public class EntityManager {
 		entName = getEntityName(ent); //ent.getClass().getName();
 
 		if (!(stats.containsKey(entID)))
-			stats.put(entID, new EntityStats(entID, entName, ent.dimension, ent.posX, ent.posY, ent.posZ));
+			stats.put(entID, new StatsEntity(entID, entName, ent.dimension, ent.posX, ent.posY, ent.posZ));
 		stats.get(entID).addMeasure(timing);
 	}	
 
 	/* Returns the x slowest entities in all dimensions (with timing data) */
-	public static ArrayList<EntityStats> getTopEntities(int quantity){
-		ArrayList<EntityStats> sortedEntities = new ArrayList(EntityManager.stats.values());
-		ArrayList<EntityStats> topEntities    = new ArrayList<EntityStats>();
+	public static ArrayList<StatsEntity> getTopEntities(int quantity){
+		ArrayList<StatsEntity> sortedEntities = new ArrayList(EntityManager.stats.values());
+		ArrayList<StatsEntity> topEntities    = new ArrayList<StatsEntity>();
 		Collections.sort(sortedEntities);
 		
 		int i = 0;
 		while (topEntities.size() < Math.min(quantity, sortedEntities.size()) && (i < sortedEntities.size()) ){
 		//for (int i = 0; i < Math.min(quantity, sortedEntities.size()); i++){
-			EntityStats testats = sortedEntities.get(i);
+			StatsEntity testats = sortedEntities.get(i);
 			
 			if (testats.getDataPoints() < 40){
 				i++;
@@ -71,8 +71,8 @@ public class EntityManager {
 	}	
 	
 	/* Returns all the entities in all dimensions (without timing data) */
-	public static ArrayList<EntityStats> getAllEntities(){
-		ArrayList<EntityStats> entities    = new ArrayList<EntityStats>();
+	public static ArrayList<StatsEntity> getAllEntities(){
+		ArrayList<StatsEntity> entities    = new ArrayList<StatsEntity>();
 		for (int i : DimensionManager.getIDs()){
 			entities.addAll(EntityManager.getEntitiesInDim(i));
 		}
@@ -80,8 +80,8 @@ public class EntityManager {
 	}
 	
 	/* Returns all the entities in the given dimension (without timing data) */
-	public static ArrayList<EntityStats> getEntitiesInDim(int dim){
-		ArrayList<EntityStats> entities    = new ArrayList<EntityStats>();
+	public static ArrayList<StatsEntity> getEntitiesInDim(int dim){
+		ArrayList<StatsEntity> entities    = new ArrayList<StatsEntity>();
 		
 		World world = DimensionManager.getWorld(dim);
 		if (world == null) return entities;
@@ -91,15 +91,15 @@ public class EntityManager {
 		for (int i = 0; i < copyList.size(); i++){
 			Entity ent = (Entity)copyList.get(i);
 			//entities.add(new EntityStats(ent.entityId, ent.getClass().getName(), ent.dimension, ent.posX, ent.posY, ent.posZ));
-			entities.add(new EntityStats(ent.entityId, getEntityName(ent), ent.dimension, ent.posX, ent.posY, ent.posZ));
+			entities.add(new StatsEntity(ent.entityId, getEntityName(ent), ent.dimension, ent.posX, ent.posY, ent.posZ));
 		}
 		
 		return entities;
 	}		
 	
 	/* Returns a hashmap of all entities per chunk (not timing) */
-	public static HashMap<CoordinatesChunk, ArrayList<EntityStats>> getAllEntitiesPerChunk(){
-		HashMap<CoordinatesChunk, ArrayList<EntityStats>> entities = new HashMap<CoordinatesChunk, ArrayList<EntityStats>>();
+	public static HashMap<CoordinatesChunk, ArrayList<StatsEntity>> getAllEntitiesPerChunk(){
+		HashMap<CoordinatesChunk, ArrayList<StatsEntity>> entities = new HashMap<CoordinatesChunk, ArrayList<StatsEntity>>();
 		for (int i : DimensionManager.getIDs()){
 			entities.putAll(EntityManager.getEntitiesPerChunkInDim(i));
 		}
@@ -107,8 +107,8 @@ public class EntityManager {
 	}
 	
 	/* Returns a hashmap of entities in the given dimension (not timing) */
-	public static HashMap<CoordinatesChunk, ArrayList<EntityStats>> getEntitiesPerChunkInDim(int dim){
-		HashMap<CoordinatesChunk, ArrayList<EntityStats>> entities = new HashMap<CoordinatesChunk, ArrayList<EntityStats>>();
+	public static HashMap<CoordinatesChunk, ArrayList<StatsEntity>> getEntitiesPerChunkInDim(int dim){
+		HashMap<CoordinatesChunk, ArrayList<StatsEntity>> entities = new HashMap<CoordinatesChunk, ArrayList<StatsEntity>>();
 		World world = DimensionManager.getWorld(dim);
 		if (world == null) return entities;
 		
@@ -119,18 +119,18 @@ public class EntityManager {
 			CoordinatesChunk chunk = new CoordinatesBlock(ent.dimension, (int)ent.posX, (int)ent.posY, (int)ent.posZ).asCoordinatesChunk();
 			
 			if (!entities.containsKey(chunk))
-				entities.put(chunk, new ArrayList<EntityStats>());
+				entities.put(chunk, new ArrayList<StatsEntity>());
 			
 			//entities.get(chunk).add(new EntityStats(ent.entityId, ent.getClass().getName(), ent.dimension, ent.posX, ent.posY, ent.posZ));
-			entities.get(chunk).add(new EntityStats(ent.entityId, getEntityName(ent), ent.dimension, ent.posX, ent.posY, ent.posZ));
+			entities.get(chunk).add(new StatsEntity(ent.entityId, getEntityName(ent), ent.dimension, ent.posX, ent.posY, ent.posZ));
 		}
 		
 		return entities;
 	}
 	
 	/* Returns an array of all entities in a given chunk */
-	public static ArrayList<EntityStats> getEntitiesInChunk(CoordinatesChunk coord){
-		ArrayList<EntityStats> entities = new  ArrayList<EntityStats>();
+	public static ArrayList<StatsEntity> getEntitiesInChunk(CoordinatesChunk coord){
+		ArrayList<StatsEntity> entities = new  ArrayList<StatsEntity>();
 		
 		World world = DimensionManager.getWorld(coord.dim);
 		if (world == null) return entities;
@@ -142,7 +142,7 @@ public class EntityManager {
 			CoordinatesChunk chunk = new CoordinatesBlock(ent.dimension, (int)ent.posX, (int)ent.posY, (int)ent.posZ).asCoordinatesChunk();
 			if (chunk.equals(coord))
 				//entities.add(new EntityStats(ent.entityId, ent.getClass().getName(), ent.dimension, ent.posX, ent.posY, ent.posZ));
-				entities.add(new EntityStats(ent.entityId, getEntityName(ent), ent.dimension, ent.posX, ent.posY, ent.posZ));
+				entities.add(new StatsEntity(ent.entityId, getEntityName(ent), ent.dimension, ent.posX, ent.posY, ent.posZ));
 		}		
 		
 		return entities;
@@ -296,9 +296,9 @@ public class EntityManager {
 	}
 	
 	public static double getTotalUpdateTime(){
-		ArrayList<EntityStats> entities = new ArrayList(stats.values());
+		ArrayList<StatsEntity> entities = new ArrayList(stats.values());
 		double updateTime = 0D;
-		for (EntityStats data : entities){
+		for (StatsEntity data : entities){
 			updateTime += data.getGeometricMean();
 		}
 		return updateTime;

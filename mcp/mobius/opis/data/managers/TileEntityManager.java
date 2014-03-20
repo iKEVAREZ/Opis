@@ -6,11 +6,11 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 
-import mcp.mobius.opis.data.holders.ChunkStats;
-import mcp.mobius.opis.data.holders.CoordinatesBlock;
-import mcp.mobius.opis.data.holders.CoordinatesChunk;
-import mcp.mobius.opis.data.holders.ModStats;
-import mcp.mobius.opis.data.holders.TileEntityStats;
+import mcp.mobius.opis.data.holders.basetypes.CoordinatesBlock;
+import mcp.mobius.opis.data.holders.basetypes.CoordinatesChunk;
+import mcp.mobius.opis.data.holders.stats.StatsChunk;
+import mcp.mobius.opis.data.holders.stats.StatsMod;
+import mcp.mobius.opis.data.holders.stats.StatsTileEntity;
 import mcp.mobius.opis.tools.ModIdentification;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
@@ -22,7 +22,7 @@ import net.minecraftforge.common.DimensionManager;
 
 public class TileEntityManager {
 	public static HashMap<CoordinatesBlock, Class> references = new HashMap<CoordinatesBlock, Class>();
-	public static HashMap<CoordinatesBlock, TileEntityStats> stats = new HashMap<CoordinatesBlock, TileEntityStats>();
+	public static HashMap<CoordinatesBlock, StatsTileEntity> stats = new HashMap<CoordinatesBlock, StatsTileEntity>();
 	
 	public static void addTileEntity(TileEntity te, long timing){
 		CoordinatesBlock coord = new CoordinatesBlock(te);
@@ -51,7 +51,7 @@ public class TileEntityManager {
 			World world     = DimensionManager.getWorld(coord.dim);
 			int   blockID   = world.getBlockId(coord.x, coord.y, coord.z);
 			short blockMeta = (short)world.getBlockMetadata(coord.x, coord.y, coord.z);
-			stats.put(coord, new TileEntityStats(coord, blockID, blockMeta));
+			stats.put(coord, new StatsTileEntity(coord, blockID, blockMeta));
 			
 			//stats.put(coord, new TileEntityStats(coord, teName));
 		}
@@ -59,15 +59,15 @@ public class TileEntityManager {
 		stats.get(coord).addMeasure(timing);
 	}
 	
-	public static HashMap<CoordinatesChunk, ChunkStats> getTimes(int dim){
-		HashMap<CoordinatesChunk, ChunkStats> chunks = new HashMap<CoordinatesChunk, ChunkStats>();
+	public static HashMap<CoordinatesChunk, StatsChunk> getTimes(int dim){
+		HashMap<CoordinatesChunk, StatsChunk> chunks = new HashMap<CoordinatesChunk, StatsChunk>();
 		
 		for (CoordinatesBlock coord : TileEntityManager.stats.keySet()){
 			if (coord.dim == dim){
 
 				CoordinatesChunk coordC = new CoordinatesChunk(coord);
 				if (!(chunks.containsKey(coordC)))
-					chunks.put(coordC, new ChunkStats());
+					chunks.put(coordC, new StatsChunk());
 				
 				chunks.get(coordC).addEntity();
 				chunks.get(coordC).addMeasure(stats.get(coord).getGeometricMean());
@@ -95,14 +95,14 @@ public class TileEntityManager {
 		}
 	}
 	
-	public static ArrayList<TileEntityStats> getTileEntitiesInChunk(CoordinatesChunk coord){
+	public static ArrayList<StatsTileEntity> getTileEntitiesInChunk(CoordinatesChunk coord){
 		cleanUpStats();
 		
-		ArrayList<TileEntityStats> returnList = new ArrayList<TileEntityStats>();
+		ArrayList<StatsTileEntity> returnList = new ArrayList<StatsTileEntity>();
 		
 		for (CoordinatesBlock tecoord : TileEntityManager.stats.keySet()){
 			if (coord.equals(new CoordinatesChunk(tecoord))){
-		        TileEntityStats testats = TileEntityManager.stats.get(tecoord);
+		        StatsTileEntity testats = TileEntityManager.stats.get(tecoord);
 				
 		        /*
 				int x = testats.getCoordinates().x;
@@ -131,16 +131,16 @@ public class TileEntityManager {
 		return returnList;
 	}
 	
-	public static ArrayList<TileEntityStats> getTopEntities(int quantity){
+	public static ArrayList<StatsTileEntity> getTopEntities(int quantity){
 		cleanUpStats();	
 		
-		ArrayList<TileEntityStats> sortedEntities = new ArrayList(TileEntityManager.stats.values());
-		ArrayList<TileEntityStats> topEntities    = new ArrayList<TileEntityStats>();
+		ArrayList<StatsTileEntity> sortedEntities = new ArrayList(TileEntityManager.stats.values());
+		ArrayList<StatsTileEntity> topEntities    = new ArrayList<StatsTileEntity>();
 		Collections.sort(sortedEntities);
 		
 		
 		for (int i = 0; i < Math.min(quantity, sortedEntities.size()); i++){
-			TileEntityStats testats = sortedEntities.get(i);
+			StatsTileEntity testats = sortedEntities.get(i);
 			topEntities.add(testats);
 		}
 		
@@ -148,27 +148,27 @@ public class TileEntityManager {
 	}
 
 	public static double getTotalUpdateTime(){
-		ArrayList<TileEntityStats> entities = new ArrayList(TileEntityManager.stats.values());
+		ArrayList<StatsTileEntity> entities = new ArrayList(TileEntityManager.stats.values());
 		double updateTime = 0D;
-		for (TileEntityStats data : entities){
+		for (StatsTileEntity data : entities){
 			updateTime += data.getGeometricMean();
 		}
 		return updateTime;
 	}
 	
-	public static ArrayList<ModStats> getModStats(){
+	public static ArrayList<StatsMod> getModStats(){
 		cleanUpStats();
-		HashMap<String, ModStats> modStats = new HashMap<String, ModStats>();
+		HashMap<String, StatsMod> modStats = new HashMap<String, StatsMod>();
 		
-		for (TileEntityStats testat : TileEntityManager.stats.values()){
+		for (StatsTileEntity testat : TileEntityManager.stats.values()){
 			String modID = ModIdentification.idFromStack(new ItemStack(testat.getID(), 1, testat.getMeta()));
 			if (!modStats.containsKey(modID))
-				modStats.put(modID, new ModStats(modID));
+				modStats.put(modID, new StatsMod(modID));
 			
 			modStats.get(modID).addStat(testat);
 		}
 		
-		ArrayList<ModStats> outModStats = new ArrayList<ModStats>(modStats.values());
+		ArrayList<StatsMod> outModStats = new ArrayList<StatsMod>(modStats.values());
 		
 		//Collections.sort(outModStats);
 		

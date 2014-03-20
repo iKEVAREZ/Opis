@@ -11,18 +11,18 @@ import cpw.mods.fml.common.network.Player;
 import mcp.mobius.mobiuscore.profiler.ProfilerRegistrar;
 import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.commands.server.CommandAmountEntities;
-import mcp.mobius.opis.data.holders.AmountHolder;
-import mcp.mobius.opis.data.holders.ChunkStats;
-import mcp.mobius.opis.data.holders.CoordinatesBlock;
-import mcp.mobius.opis.data.holders.CoordinatesChunk;
-import mcp.mobius.opis.data.holders.EntityStats;
 import mcp.mobius.opis.data.holders.ISerializable;
-import mcp.mobius.opis.data.holders.TargetEntity;
-import mcp.mobius.opis.data.holders.TickHandlerStats;
-import mcp.mobius.opis.data.holders.TileEntityStats;
+import mcp.mobius.opis.data.holders.basetypes.AmountHolder;
+import mcp.mobius.opis.data.holders.basetypes.CoordinatesBlock;
+import mcp.mobius.opis.data.holders.basetypes.CoordinatesChunk;
 import mcp.mobius.opis.data.holders.basetypes.SerialDouble;
 import mcp.mobius.opis.data.holders.basetypes.SerialInt;
 import mcp.mobius.opis.data.holders.basetypes.SerialString;
+import mcp.mobius.opis.data.holders.basetypes.TargetEntity;
+import mcp.mobius.opis.data.holders.stats.StatsChunk;
+import mcp.mobius.opis.data.holders.stats.StatsEntity;
+import mcp.mobius.opis.data.holders.stats.StatsTickHandler;
+import mcp.mobius.opis.data.holders.stats.StatsTileEntity;
 import mcp.mobius.opis.data.managers.ChunkManager;
 import mcp.mobius.opis.data.managers.EntityManager;
 import mcp.mobius.opis.data.managers.MetaManager;
@@ -82,28 +82,28 @@ public class DataReqHandler {
 		}		
 		
 		else if ((maintype == DataReq.LIST) && (subtype == DataReq.TIMING) && (target == DataReq.TILETENTS)){
-			ArrayList<TileEntityStats>  timingTileEnts = TileEntityManager.getTopEntities(100);
+			ArrayList<StatsTileEntity>  timingTileEnts = TileEntityManager.getTopEntities(100);
 			SerialDouble totalTime = new SerialDouble(TileEntityManager.getTotalUpdateTime());
 			PacketDispatcher.sendPacketToPlayer(Packet_DataList.create (DataReq.LIST,  DataReq.TIMING, DataReq.TILETENTS, timingTileEnts), (Player)player);
 			PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE, DataReq.TIMING, DataReq.TILETENTS, totalTime),      (Player)player);
 		}
 		
 		else if ((maintype == DataReq.LIST) && (subtype == DataReq.TIMING) && (target == DataReq.ENTITIES)){
-			ArrayList<EntityStats>      timingEntities = EntityManager.getTopEntities(100);
+			ArrayList<StatsEntity>      timingEntities = EntityManager.getTopEntities(100);
 			SerialDouble totalTime = new SerialDouble(EntityManager.getTotalUpdateTime());			
 			PacketDispatcher.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST, DataReq.TIMING, DataReq.ENTITIES,  timingEntities), (Player)player);
 			PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE, DataReq.TIMING, DataReq.ENTITIES, totalTime),      (Player)player);			
 		}
 		
 		else if ((maintype == DataReq.LIST) && (subtype == DataReq.TIMING) && (target == DataReq.HANDLERS)){
-			ArrayList<TickHandlerStats> timingHandlers = TickHandlerManager.getCumulatedStats();
+			ArrayList<StatsTickHandler> timingHandlers = TickHandlerManager.getCumulatedStats();
 			SerialDouble totalTime = new SerialDouble(TickHandlerManager.getTotalUpdateTime());
 			PacketDispatcher.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST, DataReq.TIMING, DataReq.HANDLERS,  timingHandlers), (Player)player);
 			PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE, DataReq.TIMING, DataReq.HANDLERS, totalTime),      (Player)player);			
 		}
 		
 		else if ((maintype == DataReq.LIST) && (subtype == DataReq.TIMING) && (target == DataReq.CHUNK)){
-			ArrayList<ChunkStats> timingChunks = ChunkManager.getTopChunks(100);
+			ArrayList<StatsChunk> timingChunks = ChunkManager.getTopChunks(100);
 			PacketDispatcher.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST, DataReq.TIMING, DataReq.CHUNK,  timingChunks), (Player)player);
 		}
 
@@ -158,7 +158,7 @@ public class DataReqHandler {
 	
 	public void handleOverlayChunkEntities(CoordinatesChunk coord, Player player){
 		
-		HashMap<CoordinatesChunk, ArrayList<EntityStats>> entities = EntityManager.getAllEntitiesPerChunk();
+		HashMap<CoordinatesChunk, ArrayList<StatsEntity>> entities = EntityManager.getAllEntitiesPerChunk();
 		HashMap<CoordinatesChunk, Integer> perChunk = new HashMap<CoordinatesChunk, Integer>();
 		
 		for (CoordinatesChunk chunk : entities.keySet())

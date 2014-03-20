@@ -1,4 +1,4 @@
-package mcp.mobius.opis.data.holders;
+package mcp.mobius.opis.data.holders.basetypes;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -7,6 +7,7 @@ import java.util.LinkedHashSet;
 
 import com.google.common.collect.ImmutableSet;
 
+import mcp.mobius.opis.data.holders.ISerializable;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraftforge.common.ForgeChunkManager.Ticket;

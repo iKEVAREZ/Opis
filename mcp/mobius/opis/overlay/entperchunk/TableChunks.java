@@ -4,7 +4,7 @@ import net.minecraft.util.MathHelper;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import mapwriter.map.MapView;
 import mapwriter.map.mapmode.MapMode;
-import mcp.mobius.opis.data.holders.CoordinatesBlock;
+import mcp.mobius.opis.data.holders.basetypes.CoordinatesBlock;
 import mcp.mobius.opis.gui.events.MouseEvent;
 import mcp.mobius.opis.gui.interfaces.IWidget;
 import mcp.mobius.opis.gui.widgets.tableview.TableRow;

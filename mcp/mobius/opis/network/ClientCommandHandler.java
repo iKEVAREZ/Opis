@@ -12,7 +12,7 @@ import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.client.OpisClientTickHandler;
 import mcp.mobius.opis.data.client.DataCache;
 import mcp.mobius.opis.data.client.TickHandlerClientProfiler;
-import mcp.mobius.opis.data.holders.TickHandlerStats;
+import mcp.mobius.opis.data.holders.stats.StatsTickHandler;
 import mcp.mobius.opis.data.managers.MetaManager;
 import mcp.mobius.opis.data.managers.TickHandlerManager;
 import mcp.mobius.opis.gui.swing.SwingUI;
@@ -41,8 +41,8 @@ public class ClientCommandHandler {
 		}
 		else if (cmd == ClientCommand.SHOW_RENDER_TICK){
 			modOpis.log.log(Level.INFO, "=== RENDER TICK ===");
-			ArrayList<TickHandlerStats> stats = TickHandlerManager.getCumulatedStats();
-			for (TickHandlerStats stat : stats){
+			ArrayList<StatsTickHandler> stats = TickHandlerManager.getCumulatedStats();
+			for (StatsTickHandler stat : stats){
 				System.out.printf("%s \n", stat);
 			}
 		}

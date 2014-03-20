@@ -3,7 +3,7 @@ package mcp.mobius.opis.commands.server;
 import java.util.ArrayList;
 
 import mcp.mobius.opis.commands.IOpisCommand;
-import mcp.mobius.opis.data.holders.ModStats;
+import mcp.mobius.opis.data.holders.stats.StatsMod;
 import mcp.mobius.opis.data.managers.TileEntityManager;
 import mcp.mobius.opis.network.server.Packet_ModMeanTime;
 import net.minecraft.command.CommandBase;
@@ -34,13 +34,13 @@ public class CommandMeanModTime extends CommandBase implements IOpisCommand {
 
 	@Override
 	public void processCommand(ICommandSender icommandsender, String[] astring) {
-		ArrayList<ModStats> modStats = TileEntityManager.getModStats();
+		ArrayList<StatsMod> modStats = TileEntityManager.getModStats();
 		
 		if (icommandsender instanceof EntityPlayer)		
 			((EntityPlayerMP)icommandsender).playerNetServerHandler.sendPacketToPlayer(Packet_ModMeanTime.create(modStats));
 		else{
 			icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText("[Name] NTEs MeanTime"));
-			for (ModStats stat : modStats){
+			for (StatsMod stat : modStats){
 				icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText(
 						String.format("[ %s ] %3d %.2f", stat.getModID(), stat.ntes, stat.dstat.getMean())));
 			}

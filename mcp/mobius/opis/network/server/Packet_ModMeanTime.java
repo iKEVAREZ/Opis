@@ -8,13 +8,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import net.minecraft.network.packet.Packet250CustomPayload;
-import mcp.mobius.opis.data.holders.ModStats;
+import mcp.mobius.opis.data.holders.stats.StatsMod;
 import mcp.mobius.opis.network.Packets;
 
 public class Packet_ModMeanTime {
 
 	public byte header;
-	public ArrayList<ModStats> modStats = new ArrayList<ModStats>(); 	
+	public ArrayList<StatsMod> modStats = new ArrayList<StatsMod>(); 	
 	
 	public Packet_ModMeanTime(Packet250CustomPayload packet) {
 		DataInputStream inputStream = new DataInputStream(new ByteArrayInputStream(packet.data));
@@ -23,11 +23,11 @@ public class Packet_ModMeanTime {
 			this.header  = inputStream.readByte();
 			int ndata    = inputStream.readInt();
 			for (int i = 0; i < ndata; i++)
-				modStats.add(ModStats.readFromStream(inputStream));
+				modStats.add(StatsMod.readFromStream(inputStream));
 		} catch (IOException e){}				
 	}	
 
-	public static Packet250CustomPayload create(ArrayList<ModStats> stats){
+	public static Packet250CustomPayload create(ArrayList<StatsMod> stats){
 		Packet250CustomPayload packet      = new Packet250CustomPayload();
 		ByteArrayOutputStream bos     = new ByteArrayOutputStream(1);
 		DataOutputStream outputStream = new DataOutputStream(bos);
@@ -35,7 +35,7 @@ public class Packet_ModMeanTime {
 		try{
 			outputStream.writeByte(Packets.MODMEANTIME);
 			outputStream.writeInt(stats.size());
-			for (ModStats data : stats)
+			for (StatsMod data : stats)
 				data.writeToStream(outputStream);
 		}catch(IOException e){}
 		

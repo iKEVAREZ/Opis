@@ -1,4 +1,4 @@
-package mcp.mobius.opis.data.holders;
+package mcp.mobius.opis.data.holders.stats;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -9,15 +9,17 @@ import net.minecraft.network.packet.Packet;
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 
 import mcp.mobius.opis.modOpis;
+import mcp.mobius.opis.data.holders.ISerializable;
+import mcp.mobius.opis.data.holders.basetypes.CoordinatesBlock;
 
-public class EntityStats extends StatAbstract implements ISerializable {
+public class StatsEntity extends StatAbstract implements ISerializable {
 
 	private int entId;
 	private int dim;
 	private double cachedMedian = -1.0;	
 	private double x, y, z;
 	
-	public EntityStats(int entId, String name, int dim, double x, double y, double z){
+	public StatsEntity(int entId, String name, int dim, double x, double y, double z){
 		this.entId = entId;
 		this.name  = name;
 		this.dim   = dim;
@@ -66,8 +68,8 @@ public class EntityStats extends StatAbstract implements ISerializable {
 		stream.writeLong(this.getDataPoints());
 	}
 
-	public static  EntityStats readFromStream(DataInputStream stream) throws IOException {
-		EntityStats stats = new EntityStats(stream.readInt(), Packet.readString(stream, 255), stream.readInt(),
+	public static  StatsEntity readFromStream(DataInputStream stream) throws IOException {
+		StatsEntity stats = new StatsEntity(stream.readInt(), Packet.readString(stream, 255), stream.readInt(),
 											stream.readDouble(), stream.readDouble(), stream.readDouble());
 		stats.setGeometricMean(stream.readDouble());
 		stats.setDataPoints(stream.readLong());

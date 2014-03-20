@@ -15,10 +15,10 @@ import mapwriter.api.IMwChunkOverlay;
 import mapwriter.api.IMwDataProvider;
 import mapwriter.map.MapView;
 import mapwriter.map.mapmode.MapMode;
-import mcp.mobius.opis.data.holders.CoordinatesBlock;
-import mcp.mobius.opis.data.holders.CoordinatesChunk;
-import mcp.mobius.opis.data.holders.EntityStats;
 import mcp.mobius.opis.data.holders.ISerializable;
+import mcp.mobius.opis.data.holders.basetypes.CoordinatesBlock;
+import mcp.mobius.opis.data.holders.basetypes.CoordinatesChunk;
+import mcp.mobius.opis.data.holders.stats.StatsEntity;
 import mcp.mobius.opis.gui.events.MouseEvent;
 import mcp.mobius.opis.gui.interfaces.CType;
 import mcp.mobius.opis.gui.interfaces.IWidget;
@@ -55,7 +55,7 @@ public class OverlayEntityPerChunk implements IMwDataProvider {
 	public LayoutCanvas canvas = null;
 	public HashMap<CoordinatesChunk, Integer> overlayData = new HashMap<CoordinatesChunk, Integer>(); 
 	public ArrayList<ReducedData> reducedData = new ArrayList<ReducedData>();
-	public ArrayList<EntityStats> entStats    = new ArrayList<EntityStats>();
+	public ArrayList<StatsEntity> entStats    = new ArrayList<StatsEntity>();
 	CoordinatesChunk selectedChunk = null;
 	
 	private OverlayEntityPerChunk(){}
@@ -69,7 +69,7 @@ public class OverlayEntityPerChunk implements IMwDataProvider {
 	public void setEntStats(ArrayList<ISerializable> data){
 		this.entStats.clear();
 		for (ISerializable stat : data)
-			this.entStats.add((EntityStats)stat);
+			this.entStats.add((StatsEntity)stat);
 	}
 	
 	public void reduceData(){
@@ -237,7 +237,7 @@ public class OverlayEntityPerChunk implements IMwDataProvider {
 			 .setFontSize(1.0f);
 
 		int nrows = 0;
-		for (EntityStats data : this.entStats){
+		for (StatsEntity data : this.entStats){
 			//String[] namelst = data.getName().split("\\.");
 			//String name = namelst[namelst.length - 1];
 			

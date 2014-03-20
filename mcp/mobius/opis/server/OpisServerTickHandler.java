@@ -10,13 +10,13 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.packet.Packet3Chat;
 import net.minecraft.util.ChatMessageComponent;
 import mcp.mobius.opis.modOpis;
-import mcp.mobius.opis.data.holders.AmountHolder;
-import mcp.mobius.opis.data.holders.ChunkStats;
-import mcp.mobius.opis.data.holders.EntityStats;
-import mcp.mobius.opis.data.holders.TickHandlerStats;
-import mcp.mobius.opis.data.holders.TileEntityStats;
+import mcp.mobius.opis.data.holders.basetypes.AmountHolder;
 import mcp.mobius.opis.data.holders.basetypes.SerialDouble;
 import mcp.mobius.opis.data.holders.basetypes.SerialInt;
+import mcp.mobius.opis.data.holders.stats.StatsChunk;
+import mcp.mobius.opis.data.holders.stats.StatsEntity;
+import mcp.mobius.opis.data.holders.stats.StatsTickHandler;
+import mcp.mobius.opis.data.holders.stats.StatsTileEntity;
 import mcp.mobius.opis.data.managers.ChunkManager;
 import mcp.mobius.opis.data.managers.EntityManager;
 import mcp.mobius.opis.data.managers.TickHandlerManager;
@@ -80,10 +80,10 @@ public class OpisServerTickHandler implements ITickHandler {
 				
 				// Here we should send a full update to all the clients registered
 				
-				ArrayList<TickHandlerStats> timingHandlers = TickHandlerManager.getCumulatedStats();
-				ArrayList<EntityStats>      timingEntities = EntityManager.getTopEntities(100);
-				ArrayList<TileEntityStats>  timingTileEnts = TileEntityManager.getTopEntities(100);
-				ArrayList<ChunkStats>         timingChunks = ChunkManager.getTopChunks(100);
+				ArrayList<StatsTickHandler> timingHandlers = TickHandlerManager.getCumulatedStats();
+				ArrayList<StatsEntity>      timingEntities = EntityManager.getTopEntities(100);
+				ArrayList<StatsTileEntity>  timingTileEnts = TileEntityManager.getTopEntities(100);
+				ArrayList<StatsChunk>         timingChunks = ChunkManager.getTopChunks(100);
 				SerialDouble totalTimeTE      = new SerialDouble(TileEntityManager.getTotalUpdateTime());
 				SerialDouble totalTimeEnt     = new SerialDouble(EntityManager.getTotalUpdateTime());
 				SerialDouble totalTimeHandler = new SerialDouble(TickHandlerManager.getTotalUpdateTime());

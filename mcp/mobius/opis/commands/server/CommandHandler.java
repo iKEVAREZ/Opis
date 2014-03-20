@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.HashMap;
 
 import mcp.mobius.opis.commands.IOpisCommand;
-import mcp.mobius.opis.data.holders.TickHandlerStats;
+import mcp.mobius.opis.data.holders.stats.StatsTickHandler;
 import mcp.mobius.opis.data.managers.TickHandlerManager;
 import mcp.mobius.opis.network.enums.DataReq;
 import mcp.mobius.opis.network.server.Packet_DataList;
@@ -36,13 +36,13 @@ public class CommandHandler extends CommandBase  implements IOpisCommand {
 
 	@Override
 	public void processCommand(ICommandSender icommandsender, String[] astring) {
-		ArrayList<TickHandlerStats> stats = TickHandlerManager.getCumulatedStats();
+		ArrayList<StatsTickHandler> stats = TickHandlerManager.getCumulatedStats();
 		//((EntityPlayerMP)icommandsender).playerNetServerHandler.sendPacketToPlayer(Packet_DataScreenTimingHandlers.create(stats));
 		
 		if (icommandsender instanceof EntityPlayerMP)
 			((EntityPlayerMP)icommandsender).playerNetServerHandler.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST, DataReq.TIMING, DataReq.HANDLERS, stats));
 		else{
-			for (TickHandlerStats s : stats)
+			for (StatsTickHandler s : stats)
 				icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText(String.format("%s : %.2f", s.getName(), s.getGeometricMean())));
 		}		
 		

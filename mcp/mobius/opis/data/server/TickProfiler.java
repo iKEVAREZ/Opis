@@ -1,7 +1,7 @@
 package mcp.mobius.opis.data.server;
 
 import mcp.mobius.mobiuscore.profiler.IProfilerTick;
-import mcp.mobius.opis.data.holders.TickStats;
+import mcp.mobius.opis.data.holders.stats.StatsTick;
 
 public class TickProfiler extends AbstractProfiler implements IProfilerTick {
 
@@ -9,7 +9,7 @@ public class TickProfiler extends AbstractProfiler implements IProfilerTick {
 	public  static TickProfiler instance() {return _instance;}
 	
 	private Clock     clock = new Clock();		
-	public TickStats  stats = new TickStats();
+	public StatsTick  stats = new StatsTick();
 	public int        profiledTicks = 0;
 	
 	@Override

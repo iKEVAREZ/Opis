@@ -1,16 +1,17 @@
-package mcp.mobius.opis.data.holders;
+package mcp.mobius.opis.data.holders.stats;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import mcp.mobius.opis.data.holders.ISerializable;
 import net.minecraft.network.packet.Packet;
 
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 
-public class TickHandlerStats extends StatAbstract implements ISerializable{
+public class StatsTickHandler extends StatAbstract implements ISerializable{
 	
-	public TickHandlerStats(String name){
+	public StatsTickHandler(String name){
 		this.name  = name;
 	}
 
@@ -24,8 +25,8 @@ public class TickHandlerStats extends StatAbstract implements ISerializable{
 		stream.writeDouble(this.getGeometricMean());
 	}	
 	
-	public static  TickHandlerStats readFromStream(DataInputStream stream) throws IOException {
-		TickHandlerStats stats = new TickHandlerStats(Packet.readString(stream, 255));
+	public static  StatsTickHandler readFromStream(DataInputStream stream) throws IOException {
+		StatsTickHandler stats = new StatsTickHandler(Packet.readString(stream, 255));
 		stats.setGeometricMean(stream.readDouble());
 		return stats;
 	}	

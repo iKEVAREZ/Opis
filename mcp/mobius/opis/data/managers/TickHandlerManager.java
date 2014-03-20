@@ -7,12 +7,12 @@ import java.util.HashMap;
 
 import cpw.mods.fml.common.IScheduledTickHandler;
 import cpw.mods.fml.common.SingleIntervalHandler;
-import mcp.mobius.opis.data.holders.TickHandlerStats;
+import mcp.mobius.opis.data.holders.stats.StatsTickHandler;
 
 public class TickHandlerManager {
 
-	public static HashMap<String, TickHandlerStats> startStats = new HashMap<String, TickHandlerStats>();
-	public static HashMap<String, TickHandlerStats> endStats   = new HashMap<String, TickHandlerStats>();	
+	public static HashMap<String, StatsTickHandler> startStats = new HashMap<String, StatsTickHandler>();
+	public static HashMap<String, StatsTickHandler> endStats   = new HashMap<String, StatsTickHandler>();	
 	public static Class SingleIntervalHandlerReflect;
 	public static Field wrapped;
 	
@@ -33,7 +33,7 @@ public class TickHandlerManager {
 		String name = getHandlerName(handler);			
 		
 		if (!(startStats.containsKey(name)))
-			startStats.put(name, new TickHandlerStats(name));
+			startStats.put(name, new StatsTickHandler(name));
 		startStats.get(name).addMeasure(timing);		
 	}	
 	
@@ -41,20 +41,20 @@ public class TickHandlerManager {
 		String name = getHandlerName(handler);			
 		
 		if (!(endStats.containsKey(name)))
-			endStats.put(name, new TickHandlerStats(name));
+			endStats.put(name, new StatsTickHandler(name));
 		endStats.get(name).addMeasure(timing);
 	}	
 	
-	public static ArrayList<TickHandlerStats> getCumulatedStats(){
-		HashMap<String, TickHandlerStats> totalStats = new HashMap<String, TickHandlerStats>();
+	public static ArrayList<StatsTickHandler> getCumulatedStats(){
+		HashMap<String, StatsTickHandler> totalStats = new HashMap<String, StatsTickHandler>();
 		
 		for (String key : startStats.keySet()){
-			totalStats.put(key, new TickHandlerStats(key));
+			totalStats.put(key, new StatsTickHandler(key));
 			totalStats.get(key).setGeometricMean(startStats.get(key).getGeometricMean() + endStats.get(key).getGeometricMean());
 			totalStats.get(key).dataPoints = startStats.get(key).getDataPoints() + endStats.get(key).getDataPoints();
 		}
 		
-		ArrayList<TickHandlerStats> sortedStats   = new ArrayList(totalStats.values());
+		ArrayList<StatsTickHandler> sortedStats   = new ArrayList(totalStats.values());
 		Collections.sort(sortedStats);
 		
 		return sortedStats;
@@ -82,9 +82,9 @@ public class TickHandlerManager {
 	}
 	
 	public static double getTotalUpdateTime(){
-		ArrayList<TickHandlerStats> tickCumul = getCumulatedStats();
+		ArrayList<StatsTickHandler> tickCumul = getCumulatedStats();
 		double updateTime = 0D;
-		for (TickHandlerStats data : tickCumul){
+		for (StatsTickHandler data : tickCumul){
 			updateTime += data.getGeometricMean();
 		}
 		return updateTime;

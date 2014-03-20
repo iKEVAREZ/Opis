@@ -1,4 +1,4 @@
-package mcp.mobius.opis.data.holders;
+package mcp.mobius.opis.data.holders.stats;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -6,9 +6,10 @@ import java.io.IOException;
 
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 
+import mcp.mobius.opis.data.holders.ISerializable;
 import net.minecraft.network.packet.Packet;
 
-public class ModStats implements ISerializable, Comparable{
+public class StatsMod implements ISerializable, Comparable{
 	private String modID;
 	public  double meanTime;
 	public  double meanGeom;
@@ -23,14 +24,14 @@ public class ModStats implements ISerializable, Comparable{
 	
 	public DescriptiveStatistics dstat = new DescriptiveStatistics();
 	
-	public ModStats(String modID){
+	public StatsMod(String modID){
 		this.modID = modID;
 		
 		if (this.modID == null)
 			this.modID = "<Unknown>";
 	}
 	
-	public void addStat(TileEntityStats tes){
+	public void addStat(StatsTileEntity tes){
 		this.dstat.addValue(tes.getGeometricMean());
 	}
 	
@@ -61,7 +62,7 @@ public class ModStats implements ISerializable, Comparable{
 	public int compareTo(Object o) {
 		//return this.dstat.getMean() > ((ModStats)o).dstat.getMean() ? -1 : 1;
 		//return this.meanTime > ((ModStats)o).meanTime ? -1 : 1;
-		return this.getMedian() > ((ModStats)o).getMedian() ? -1 : 1;		
+		return this.getMedian() > ((StatsMod)o).getMedian() ? -1 : 1;		
 	}
 
 	@Override
@@ -78,9 +79,9 @@ public class ModStats implements ISerializable, Comparable{
 		stream.writeInt((int)dstat.getN());
 	}
 	
-	public static  ModStats readFromStream(DataInputStream stream) throws IOException {
+	public static  StatsMod readFromStream(DataInputStream stream) throws IOException {
 		String modID = Packet.readString(stream, 255);
-		ModStats modStats = new ModStats(modID);
+		StatsMod modStats = new StatsMod(modID);
 	
 		modStats.meanTime = stream.readDouble();
 		modStats.meanGeom = stream.readDouble();

@@ -39,12 +39,12 @@ import mapwriter.api.MwAPI;
 import mapwriter.gui.MwGui;
 import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.data.client.DataCache;
-import mcp.mobius.opis.data.holders.AmountHolder;
-import mcp.mobius.opis.data.holders.CoordinatesBlock;
-import mcp.mobius.opis.data.holders.EntityStats;
-import mcp.mobius.opis.data.holders.TargetEntity;
-import mcp.mobius.opis.data.holders.TileEntityStats;
+import mcp.mobius.opis.data.holders.basetypes.AmountHolder;
+import mcp.mobius.opis.data.holders.basetypes.CoordinatesBlock;
 import mcp.mobius.opis.data.holders.basetypes.SerialString;
+import mcp.mobius.opis.data.holders.basetypes.TargetEntity;
+import mcp.mobius.opis.data.holders.stats.StatsEntity;
+import mcp.mobius.opis.data.holders.stats.StatsTileEntity;
 import mcp.mobius.opis.data.managers.TileEntityManager;
 import mcp.mobius.opis.network.client.Packet_ReqData;
 import mcp.mobius.opis.network.enums.DataReq;
@@ -855,7 +855,7 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener{
 		
 		else if ((e.getSource() == btnTimingTECenterMap) && (tableTimingTE.getSelectedRow() != -1)){
 			int indexData = tableTimingTE.convertRowIndexToModel(tableTimingTE.getSelectedRow());
-			TileEntityStats data = DataCache.instance().getTimingTileEnts().get(indexData);
+			StatsTileEntity data = DataCache.instance().getTimingTileEnts().get(indexData);
 			
 			CoordinatesBlock coord = data.getCoordinates();
 			OverlayMeanTime.instance().setSelectedChunk(coord.dim, coord.x >> 4, coord.z >> 4);
@@ -865,7 +865,7 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener{
 		
 		else if ((e.getSource() == btnTimingTETeleport) && (tableTimingTE.getSelectedRow() != -1)){		
 			int indexData = tableTimingTE.convertRowIndexToModel(tableTimingTE.getSelectedRow());	
-			TileEntityStats data = DataCache.instance().getTimingTileEnts().get(indexData);
+			StatsTileEntity data = DataCache.instance().getTimingTileEnts().get(indexData);
 			
 			CoordinatesBlock coord = data.getCoordinates();
 			modOpis.selectedBlock = coord;
@@ -875,7 +875,7 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener{
 		
 		else if ((e.getSource() == btnTimingEntCenterMap) && (tableTimingEnt.getSelectedRow() != -1)){
 			int indexData = tableTimingEnt.convertRowIndexToModel(tableTimingEnt.getSelectedRow());
-			EntityStats data = DataCache.instance().getTimingEntities().get(indexData);
+			StatsEntity data = DataCache.instance().getTimingEntities().get(indexData);
 			
 			CoordinatesBlock coord = data.getCoordinates();
 			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.OVERLAY, DataReq.CHUNK, DataReq.ENTITIES));
@@ -887,7 +887,7 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener{
 		
 		else if ((e.getSource() == btnTimingEntTeleport) && (tableTimingEnt.getSelectedRow() != -1)){		
 			int indexData = tableTimingEnt.convertRowIndexToModel(tableTimingEnt.getSelectedRow());	
-			EntityStats data = DataCache.instance().getTimingEntities().get(indexData);
+			StatsEntity data = DataCache.instance().getTimingEntities().get(indexData);
 			
 			int eid = data.getID();
 			int dim = data.getCoordinates().dim;

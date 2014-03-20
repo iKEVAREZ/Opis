@@ -25,14 +25,14 @@ import org.jfree.data.xy.XYSeriesCollection;
 
 import codechicken.lib.math.MathHelper;
 import net.minecraft.item.ItemStack;
-import mcp.mobius.opis.data.holders.AmountHolder;
-import mcp.mobius.opis.data.holders.ChunkStats;
-import mcp.mobius.opis.data.holders.EntityStats;
 import mcp.mobius.opis.data.holders.ISerializable;
-import mcp.mobius.opis.data.holders.StatAbstract;
-import mcp.mobius.opis.data.holders.TickHandlerStats;
-import mcp.mobius.opis.data.holders.TickStats;
-import mcp.mobius.opis.data.holders.TileEntityStats;
+import mcp.mobius.opis.data.holders.basetypes.AmountHolder;
+import mcp.mobius.opis.data.holders.stats.StatAbstract;
+import mcp.mobius.opis.data.holders.stats.StatsChunk;
+import mcp.mobius.opis.data.holders.stats.StatsEntity;
+import mcp.mobius.opis.data.holders.stats.StatsTick;
+import mcp.mobius.opis.data.holders.stats.StatsTickHandler;
+import mcp.mobius.opis.data.holders.stats.StatsTileEntity;
 import mcp.mobius.opis.gui.swing.SwingUI;
 import mcp.mobius.opis.tools.ModIdentification;
 
@@ -42,10 +42,10 @@ public class DataCache {
 	public  static DataCache instance() { return _instance; };
 	
 	private ArrayList<AmountHolder>     amountEntities = new ArrayList<AmountHolder>();
-	private ArrayList<TickHandlerStats> timingHandlers = new ArrayList<TickHandlerStats>(); 
-	private ArrayList<EntityStats>      timingEntities = new ArrayList<EntityStats>(); 
-	private ArrayList<TileEntityStats>  timingTileEnts = new ArrayList<TileEntityStats>();
-	private ArrayList<ChunkStats>       timingChunks   = new ArrayList<ChunkStats>();
+	private ArrayList<StatsTickHandler> timingHandlers = new ArrayList<StatsTickHandler>(); 
+	private ArrayList<StatsEntity>      timingEntities = new ArrayList<StatsEntity>(); 
+	private ArrayList<StatsTileEntity>  timingTileEnts = new ArrayList<StatsTileEntity>();
+	private ArrayList<StatsChunk>       timingChunks   = new ArrayList<StatsChunk>();
 	
 	private double timingHandlersTotal = 0D;
 	private double timingEntitiesTotal = 0D;
@@ -56,7 +56,7 @@ public class DataCache {
 	private int    amountEntitiesTotal = 0;
 	private int    amountTileEntsTotal = 0;
 	
-	private TickStats timingTick = new TickStats();
+	private StatsTick timingTick = new StatsTick();
 	private ArrayList<Double> timingTickGraphData = new ArrayList<Double>();
 	//private DescriptiveStatistics timingTickGraphData = new DescriptiveStatistics(100);
 
@@ -103,7 +103,7 @@ public class DataCache {
 	}		
 	
 	public void setTimingTick(ISerializable tickStat){
-		this.timingTick = (TickStats)tickStat;
+		this.timingTick = (StatsTick)tickStat;
 		SwingUI.instance().getLblSummaryTimingTick().setText(String.valueOf(String.format("%.3f", this.timingTick.getGeometricMean()/1000.)));
 		
 		if (timingTickGraphData.size() > 100)
@@ -148,19 +148,19 @@ public class DataCache {
 		return this.amountEntities;
 	}
 	
-	public ArrayList<TickHandlerStats> getTimingHandlers(){
+	public ArrayList<StatsTickHandler> getTimingHandlers(){
 		return this.timingHandlers;
 	}
 	
-	public ArrayList<EntityStats> getTimingEntities(){
+	public ArrayList<StatsEntity> getTimingEntities(){
 		return this.timingEntities;
 	}	
 
-	public ArrayList<TileEntityStats> getTimingTileEnts(){
+	public ArrayList<StatsTileEntity> getTimingTileEnts(){
 		return this.timingTileEnts;
 	}		
 	
-	public ArrayList<ChunkStats> getTimingChunks(){
+	public ArrayList<StatsChunk> getTimingChunks(){
 		return this.timingChunks;
 	}		
 	
@@ -186,12 +186,12 @@ public class DataCache {
 	public void setTimingHandlers(ArrayList<ISerializable> timingHandlers_){
 		this.timingHandlers.clear();
 		for (ISerializable stat : timingHandlers_)
-			this.timingHandlers.add((TickHandlerStats)stat);			
+			this.timingHandlers.add((StatsTickHandler)stat);			
 		
 		DefaultTableModel model = (DefaultTableModel)SwingUI.instance().getTableTimingHandler().getModel();
 		this.clearRows(model);
 		
-		for (TickHandlerStats stat : DataCache.instance().getTimingHandlers()){
+		for (StatsTickHandler stat : DataCache.instance().getTimingHandlers()){
 			model.addRow(new Object[] {stat.getName(), String.format("%.3f \u00B5s", stat.getGeometricMean())});
 		}
 
@@ -201,12 +201,12 @@ public class DataCache {
 	public void setTimingEntities(ArrayList<ISerializable> timingEntities_){
 		this.timingEntities.clear();
 		for (ISerializable stat : timingEntities_)
-			this.timingEntities.add((EntityStats)stat);		
+			this.timingEntities.add((StatsEntity)stat);		
 		
 		DefaultTableModel model = (DefaultTableModel)SwingUI.instance().getTableTimingEnt().getModel();
 		this.clearRows(model);
 		
-		for (EntityStats stat : DataCache.instance().getTimingEntities()){
+		for (StatsEntity stat : DataCache.instance().getTimingEntities()){
 			model.addRow(new Object[]  {stat.getName(), 
 										stat.getID(),
 										stat.getCoordinates().dim,
@@ -222,12 +222,12 @@ public class DataCache {
 	public void setTimingTileEnts(ArrayList<ISerializable> timingTileEnts_){
 		this.timingTileEnts.clear();
 		for (ISerializable stat : timingTileEnts_)
-			this.timingTileEnts.add((TileEntityStats)stat);
+			this.timingTileEnts.add((StatsTileEntity)stat);
 		
 		DefaultTableModel model = (DefaultTableModel)SwingUI.instance().getTableTimingTE().getModel();
 		this.clearRows(model);
 		
-		for (TileEntityStats stat : DataCache.instance().getTimingTileEnts()){
+		for (StatsTileEntity stat : DataCache.instance().getTimingTileEnts()){
 			ItemStack is;
 			String name  = String.format("te.%d.%d", stat.getID(), stat.getMeta());
 			String modID = "<UNKNOWN>";
@@ -252,12 +252,12 @@ public class DataCache {
 	public void setTimingChunks(ArrayList<ISerializable> timingChunks_){
 		this.timingChunks.clear();
 		for (ISerializable stat : timingChunks_)
-			this.timingChunks.add((ChunkStats)stat);
+			this.timingChunks.add((StatsChunk)stat);
 		
 		DefaultTableModel model = (DefaultTableModel)SwingUI.instance().getTableTimingChunk().getModel();
 		this.clearRows(model);
 		
-		for (ChunkStats stat : DataCache.instance().getTimingChunks()){
+		for (StatsChunk stat : DataCache.instance().getTimingChunks()){
 			model.addRow(new Object[]  {
 					 stat.getChunk().dim,
 					 String.format("[ %4d %4d ]", 	stat.getChunk().x, stat.getChunk().z),
