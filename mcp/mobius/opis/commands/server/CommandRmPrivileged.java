@@ -1,5 +1,6 @@
 package mcp.mobius.opis.commands.server;
 
+import mcp.mobius.opis.commands.IOpisCommand;
 import mcp.mobius.opis.server.PlayerTracker;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
@@ -8,7 +9,7 @@ import net.minecraft.network.MemoryConnection;
 import net.minecraft.server.dedicated.DedicatedServer;
 import net.minecraft.util.ChatMessageComponent;
 
-public class CommandRmPrivileged extends CommandBase{
+public class CommandRmPrivileged extends CommandBase  implements IOpisCommand{
 
 	@Override
 	public String getCommandName() {
@@ -28,9 +29,6 @@ public class CommandRmPrivileged extends CommandBase{
 		} else {
 			icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText(String.format("Player %s not found in list.", astring[0])));			
 		}
-		
-
-		
 	}
 	
 	@Override
@@ -47,4 +45,14 @@ public class CommandRmPrivileged extends CommandBase{
 		if (!(sender instanceof DedicatedServer) && !(sender instanceof EntityPlayerMP)) return true;
 		return PlayerTracker.instance().isTrueOP(((EntityPlayerMP)sender).username);
     }
+	
+	@Override
+	public String getDescription() {
+		return "Remove a user from the privileged list of users.";
+	}
+
+	@Override
+	public String getCommandNameOpis() {
+		return "opis_rmpriv";
+	}	
 }

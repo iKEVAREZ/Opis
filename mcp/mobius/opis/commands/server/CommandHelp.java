@@ -51,7 +51,10 @@ public class CommandHelp extends CommandBase implements IOpisCommand {
 				new CommandKill(),
 				new CommandKillAll(),
 				
-				new CommandHandler()
+				new CommandHandler(),
+				
+				new CommandAddPrivileged(),
+				new CommandRmPrivileged()
 		};
 		
 		for (IOpisCommand cmd : commands)

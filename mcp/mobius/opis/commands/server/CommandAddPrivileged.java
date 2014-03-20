@@ -1,5 +1,6 @@
 package mcp.mobius.opis.commands.server;
 
+import mcp.mobius.opis.commands.IOpisCommand;
 import mcp.mobius.opis.server.PlayerTracker;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
@@ -8,7 +9,7 @@ import net.minecraft.network.MemoryConnection;
 import net.minecraft.server.dedicated.DedicatedServer;
 import net.minecraft.util.ChatMessageComponent;
 
-public class CommandAddPrivileged  extends CommandBase {
+public class CommandAddPrivileged  extends CommandBase  implements IOpisCommand{
 
 	@Override
 	public String getCommandName() {
@@ -40,4 +41,14 @@ public class CommandAddPrivileged  extends CommandBase {
 		if (!(sender instanceof DedicatedServer) && !(sender instanceof EntityPlayerMP)) return true;
 		return PlayerTracker.instance().isTrueOP(((EntityPlayerMP)sender).username);
     }
+
+	@Override
+	public String getDescription() {
+		return "Add a user to the privileged list of users.";
+	}
+
+	@Override
+	public String getCommandNameOpis() {
+		return "opis_addpriv";
+	}
 }
