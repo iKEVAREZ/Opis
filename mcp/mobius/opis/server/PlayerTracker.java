@@ -27,7 +27,7 @@ public class PlayerTracker implements IPlayerTracker{
 	public void addPrivilegedPlayer(String name, boolean save){
 		this.playerPrivileged.add(name);
 		if (save){
-			modOpis.instance.config.get(Configuration.CATEGORY_GENERAL, "privileged", new String[]{}).set((String[])playerPrivileged.toArray());
+			modOpis.instance.config.get(Configuration.CATEGORY_GENERAL, "privileged", new String[]{}).set(playerPrivileged.toArray(new String[]{}));
 			modOpis.instance.config.save();
 		}
 	}
@@ -38,7 +38,7 @@ public class PlayerTracker implements IPlayerTracker{
 	
 	public void rmPrivilegedPlayer(String name){
 		this.playerPrivileged.remove(name);
-		modOpis.instance.config.get(Configuration.CATEGORY_GENERAL, "privileged", new String[]{}).set((String[])playerPrivileged.toArray());
+		modOpis.instance.config.get(Configuration.CATEGORY_GENERAL, "privileged", new String[]{}).set(playerPrivileged.toArray(new String[]{}));
 		modOpis.instance.config.save();		
 	}
 	
@@ -52,8 +52,16 @@ public class PlayerTracker implements IPlayerTracker{
 			PlayerTracker.instance().addPrivilegedPlayer(s,false);		
 	}
 	
+	public boolean isTrueOP(Player player){
+		return this.isTrueOP(((EntityPlayerMP)player).username);
+	}
+	
+	public boolean isTrueOP(String name){
+		return MinecraftServer.getServer().getConfigurationManager().isPlayerOpped(name) || MinecraftServer.getServer().isSinglePlayer();
+	}		
+	
 	public boolean isOp(Player player){
-		return MinecraftServer.getServer().getConfigurationManager().isPlayerOpped(((EntityPlayerMP)player).username) || MinecraftServer.getServer().isSinglePlayer() || PlayerTracker.instance().isPlayerPrivileged(((EntityPlayerMP)player).username);
+		return this.isOp(((EntityPlayerMP)player).username);
 	}	
 	
 	public boolean isOp(String name){
