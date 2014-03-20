@@ -179,7 +179,7 @@ public class OpisPacketHandler implements IPacketHandler {
 	void onPacketToServer(INetworkManager manager, Packet250CustomPayload packet, Player player, Byte header) {
 		if (header == Packets.REQ_CHUNKS){
 			Packet_ReqChunks castedPacket = new Packet_ReqChunks(packet);
-			if (this.isOp(player)){				
+			if (PlayerTracker.instance().isOp(player)){				
 				ArrayList<Chunk> list = new ArrayList();
 				World world = DimensionManager.getWorld(castedPacket.dim);
 				
@@ -203,7 +203,7 @@ public class OpisPacketHandler implements IPacketHandler {
 		
 		else if (header == Packets.REQ_DATA){
 			Packet_ReqData castedPacket = new Packet_ReqData(packet);
-			if (this.isOp(player)){	
+			if (PlayerTracker.instance().isOp(player)){	
 				DataReqHandler.instance().handle(castedPacket.maintype, castedPacket.subtype, castedPacket.target, castedPacket.param1, castedPacket.param2,  player);
 			}
 		}
@@ -220,8 +220,6 @@ public class OpisPacketHandler implements IPacketHandler {
 		}
 	}        
 	
-	public boolean isOp(Player player){
-		return MinecraftServer.getServer().getConfigurationManager().isPlayerOpped(((EntityPlayerMP)player).username) || MinecraftServer.getServer().isSinglePlayer();
-	}
+
         
 }

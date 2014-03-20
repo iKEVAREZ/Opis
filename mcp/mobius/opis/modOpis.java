@@ -89,6 +89,9 @@ public class modOpis {
 		profilerDelay    = config.get(Configuration.CATEGORY_GENERAL, "profiler.delay", 1).getInt();
 		profilerMaxTicks = config.get(Configuration.CATEGORY_GENERAL, "profiler.maxpts", 250).getInt();
 		microseconds     = config.get(Configuration.CATEGORY_GENERAL, "display.microseconds", true).getBoolean(true);		
+		String[] users   = config.get(Configuration.CATEGORY_GENERAL, "privileged", new String[]{}).getStringList();
+		for (String s : users)
+			PlayerTracker.instance().addPrivilegedPlayer(s,false);
 		
 		config.save();
 		

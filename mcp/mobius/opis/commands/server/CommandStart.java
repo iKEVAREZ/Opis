@@ -65,7 +65,7 @@ public class CommandStart extends CommandBase implements IOpisCommand {
 		if (sender instanceof DedicatedServer) return true;
 		if ((sender instanceof EntityPlayerMP) && ((EntityPlayerMP)sender).playerNetServerHandler.netManager instanceof MemoryConnection) return true;
 		if (!(sender instanceof DedicatedServer) && !(sender instanceof EntityPlayerMP)) return true;
-        return MinecraftServer.getServer().getConfigurationManager().isPlayerOpped(((EntityPlayerMP)sender).username);
+		return PlayerTracker.instance().isOp(((EntityPlayerMP)sender).username);
     }
 
 	@Override

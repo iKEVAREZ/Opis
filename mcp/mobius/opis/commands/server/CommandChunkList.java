@@ -7,6 +7,7 @@ import mcp.mobius.opis.data.holders.stats.StatsChunk;
 import mcp.mobius.opis.data.managers.ChunkManager;
 import mcp.mobius.opis.network.enums.DataReq;
 import mcp.mobius.opis.network.server.Packet_DataList;
+import mcp.mobius.opis.server.PlayerTracker;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
@@ -73,7 +74,7 @@ public class CommandChunkList extends CommandBase implements IOpisCommand {
 		if (sender instanceof DedicatedServer) return true;
 		if ((sender instanceof EntityPlayerMP) && ((EntityPlayerMP)sender).playerNetServerHandler.netManager instanceof MemoryConnection) return true;
 		if (!(sender instanceof DedicatedServer) && !(sender instanceof EntityPlayerMP)) return true;		
-        return MinecraftServer.getServer().getConfigurationManager().isPlayerOpped(((EntityPlayerMP)sender).username);
+		return PlayerTracker.instance().isOp(((EntityPlayerMP)sender).username);
     }
 
 	@Override

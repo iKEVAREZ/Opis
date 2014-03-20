@@ -3,8 +3,12 @@ package mcp.mobius.opis.server;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.overlay.OverlayStatus;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.server.MinecraftServer;
+import net.minecraftforge.common.Configuration;
 import cpw.mods.fml.common.IPlayerTracker;
 import cpw.mods.fml.common.network.Player;
 
@@ -18,20 +22,43 @@ public class PlayerTracker implements IPlayerTracker{
 	public HashMap<String, Boolean> filteredAmount = new HashMap<String, Boolean>(); //Should the entity amount be filtered or not
 	public HashMap<Player, OverlayStatus> playerOverlayStatus = new HashMap<Player, OverlayStatus>();
 	public HashMap<Player, Integer>       playerDimension     = new HashMap<Player, Integer>();
-	private HashSet<String> playerPriviliged = new HashSet<String>();
+	private HashSet<String> playerPrivileged = new HashSet<String>();
 	
-	
-	public void addPriviligedPlayer(String name){
-		this.playerPriviliged.add(name);
+	public void addPrivilegedPlayer(String name, boolean save){
+		this.playerPrivileged.add(name);
+		if (save){
+			modOpis.instance.config.get(Configuration.CATEGORY_GENERAL, "privileged", new String[]{}).set((String[])playerPrivileged.toArray());
+			modOpis.instance.config.save();
+		}
 	}
 	
-	public void rmPriviligedPlayer(String name){
-		this.playerPriviliged.remove(name);
+	public void addPrivilegedPlayer(String name){
+		this.addPrivilegedPlayer(name, true);
 	}
 	
-	public boolean isPlayerPriviliged(String name){
-		return this.playerPriviliged.contains(name);
+	public void rmPrivilegedPlayer(String name){
+		this.playerPrivileged.remove(name);
+		modOpis.instance.config.get(Configuration.CATEGORY_GENERAL, "privileged", new String[]{}).set((String[])playerPrivileged.toArray());
+		modOpis.instance.config.save();		
 	}
+	
+	public boolean isPlayerPrivileged(String name){
+		return this.playerPrivileged.contains(name);
+	}
+	
+	public void reloeadPriviligedPlayers(){
+		String[] users   = modOpis.instance.config.get(Configuration.CATEGORY_GENERAL, "privileged", new String[]{}).getStringList();
+		for (String s : users)
+			PlayerTracker.instance().addPrivilegedPlayer(s,false);		
+	}
+	
+	public boolean isOp(Player player){
+		return MinecraftServer.getServer().getConfigurationManager().isPlayerOpped(((EntityPlayerMP)player).username) || MinecraftServer.getServer().isSinglePlayer() || PlayerTracker.instance().isPlayerPrivileged(((EntityPlayerMP)player).username);
+	}	
+	
+	public boolean isOp(String name){
+		return MinecraftServer.getServer().getConfigurationManager().isPlayerOpped(name) || MinecraftServer.getServer().isSinglePlayer() || PlayerTracker.instance().isPlayerPrivileged(name);
+	}	
 	
 	@Override
 	public void onPlayerLogin(EntityPlayer player) {
