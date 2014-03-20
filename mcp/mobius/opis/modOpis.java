@@ -32,7 +32,8 @@ import mcp.mobius.opis.commands.server.CommandTimingTileEntities;
 import mcp.mobius.opis.data.client.TickHandlerClientProfiler;
 import mcp.mobius.opis.data.holders.CoordinatesBlock;
 import mcp.mobius.opis.data.server.EntityProfiler;
-import mcp.mobius.opis.data.server.TickHandlerProfiler;
+import mcp.mobius.opis.data.server.HandlerProfiler;
+import mcp.mobius.opis.data.server.TickProfiler;
 import mcp.mobius.opis.data.server.TileEntityProfiler;
 import mcp.mobius.opis.network.OpisConnectionHandler;
 import mcp.mobius.opis.network.OpisPacketHandler;
@@ -104,7 +105,8 @@ public class modOpis {
 		} else {
 			ProfilerRegistrar.registerProfilerTileEntity(new TileEntityProfiler());
 			ProfilerRegistrar.registerProfilerEntity(new EntityProfiler());
-			ProfilerRegistrar.registerProfilerTick(new TickHandlerProfiler());			
+			ProfilerRegistrar.registerProfilerHandler(new HandlerProfiler());
+			ProfilerRegistrar.registerProfilerTick(TickProfiler.instance());
 		}
 			
 	}

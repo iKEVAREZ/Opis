@@ -21,6 +21,7 @@ import mcp.mobius.opis.data.managers.ChunkManager;
 import mcp.mobius.opis.data.managers.EntityManager;
 import mcp.mobius.opis.data.managers.TickHandlerManager;
 import mcp.mobius.opis.data.managers.TileEntityManager;
+import mcp.mobius.opis.data.server.TickProfiler;
 import mcp.mobius.opis.network.enums.DataReq;
 import mcp.mobius.opis.network.server.Packet_DataList;
 import mcp.mobius.opis.network.server.Packet_DataValue;
@@ -53,6 +54,14 @@ public class OpisServerTickHandler implements ITickHandler {
 	@Override
 	public void tickEnd(EnumSet<TickType> type, Object... tickData) {
 		if(type.contains(TickType.SERVER)){
+			if ((TickProfiler.instance().profiledTicks % 20) == 0){
+				TickProfiler.instance().profiledTicks = 0;
+				
+				for (EntityPlayer player : PlayerTracker.instance().playersSwing){
+					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE, DataReq.TIMING, DataReq.TICK, TickProfiler.instance().stats), (Player)player);					
+				}
+			}
+			
 			clientUpdateTickCounter++;
 			if (clientUpdateTickCounter % 100 == 0){
 				updatePlayers();

@@ -118,6 +118,12 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener{
 	private JButton btnSummaryReset;
 	private JButton btnTimingEntKillTarget;
 	private JButton btnAmountKillAll;
+	private JLabel lblSummary_11;
+	private JLabel lblSummary_12;
+	private JLabel lblSummaryTimingTick;
+	private JSeparator separator_3;
+	private JSeparator separator_4;
+	private JLabel lblSummaryTickChart;
 	
 	public void showUI(){
 		EventQueue.invokeLater(new Runnable() {
@@ -150,9 +156,9 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener{
 		tabbedPane.addTab("Summary", null, panelSummary, null);
 		GridBagLayout gbl_panelSummary = new GridBagLayout();
 		gbl_panelSummary.columnWidths = new int[]{0, 50, 0, 70, 23, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 53, 0, 0};
-		gbl_panelSummary.rowHeights = new int[]{0, -4, 0, 0, 0, 0, 0, 0};
+		gbl_panelSummary.rowHeights = new int[]{0, -4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 		gbl_panelSummary.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
-		gbl_panelSummary.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_panelSummary.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		panelSummary.setLayout(gbl_panelSummary);
 		
 		btnSummaryReset = new JButton("Reset");
@@ -166,7 +172,7 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener{
 		separator_1 = new JSeparator();
 		GridBagConstraints gbc_separator_1 = new GridBagConstraints();
 		gbc_separator_1.gridheight = 6;
-		gbc_separator_1.insets = new Insets(0, 0, 0, 5);
+		gbc_separator_1.insets = new Insets(0, 0, 5, 5);
 		gbc_separator_1.gridx = 2;
 		gbc_separator_1.gridy = 1;
 		panelSummary.add(separator_1, gbc_separator_1);
@@ -183,7 +189,7 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener{
 		separator_2 = new JSeparator();
 		GridBagConstraints gbc_separator_2 = new GridBagConstraints();
 		gbc_separator_2.gridheight = 6;
-		gbc_separator_2.insets = new Insets(0, 0, 0, 5);
+		gbc_separator_2.insets = new Insets(0, 0, 5, 5);
 		gbc_separator_2.gridx = 5;
 		gbc_separator_2.gridy = 1;
 		panelSummary.add(separator_2, gbc_separator_2);
@@ -297,7 +303,7 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener{
 		
 		lblSummary_6 = new JLabel("Total");
 		GridBagConstraints gbc_lblSummary_6 = new GridBagConstraints();
-		gbc_lblSummary_6.insets = new Insets(0, 0, 0, 5);
+		gbc_lblSummary_6.insets = new Insets(0, 0, 5, 5);
 		gbc_lblSummary_6.gridx = 1;
 		gbc_lblSummary_6.gridy = 6;
 		panelSummary.add(lblSummary_6, gbc_lblSummary_6);
@@ -305,17 +311,62 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener{
 		lblSummaryTimingTotal = new JLabel("0");
 		GridBagConstraints gbc_lblSummaryTimingTotal = new GridBagConstraints();
 		gbc_lblSummaryTimingTotal.anchor = GridBagConstraints.EAST;
-		gbc_lblSummaryTimingTotal.insets = new Insets(0, 0, 0, 5);
+		gbc_lblSummaryTimingTotal.insets = new Insets(0, 0, 5, 5);
 		gbc_lblSummaryTimingTotal.gridx = 3;
 		gbc_lblSummaryTimingTotal.gridy = 6;
 		panelSummary.add(lblSummaryTimingTotal, gbc_lblSummaryTimingTotal);
 		
 		lblSummary_10 = new JLabel("ms");
 		GridBagConstraints gbc_lblSummary_10 = new GridBagConstraints();
-		gbc_lblSummary_10.insets = new Insets(0, 0, 0, 5);
+		gbc_lblSummary_10.insets = new Insets(0, 0, 5, 5);
 		gbc_lblSummary_10.gridx = 4;
 		gbc_lblSummary_10.gridy = 6;
 		panelSummary.add(lblSummary_10, gbc_lblSummary_10);
+		
+		separator_3 = new JSeparator();
+		GridBagConstraints gbc_separator_3 = new GridBagConstraints();
+		gbc_separator_3.insets = new Insets(0, 0, 5, 5);
+		gbc_separator_3.gridx = 0;
+		gbc_separator_3.gridy = 7;
+		panelSummary.add(separator_3, gbc_separator_3);
+		
+		separator_4 = new JSeparator();
+		GridBagConstraints gbc_separator_4 = new GridBagConstraints();
+		gbc_separator_4.insets = new Insets(0, 0, 5, 5);
+		gbc_separator_4.gridx = 0;
+		gbc_separator_4.gridy = 8;
+		panelSummary.add(separator_4, gbc_separator_4);
+		
+		lblSummary_11 = new JLabel("Tick Time");
+		GridBagConstraints gbc_lblSummary_11 = new GridBagConstraints();
+		gbc_lblSummary_11.insets = new Insets(0, 0, 5, 5);
+		gbc_lblSummary_11.gridx = 1;
+		gbc_lblSummary_11.gridy = 9;
+		panelSummary.add(lblSummary_11, gbc_lblSummary_11);
+		
+		lblSummaryTimingTick = new JLabel("0");
+		GridBagConstraints gbc_lblSummaryTimingTick = new GridBagConstraints();
+		gbc_lblSummaryTimingTick.anchor = GridBagConstraints.LINE_END;
+		gbc_lblSummaryTimingTick.insets = new Insets(0, 0, 5, 5);
+		gbc_lblSummaryTimingTick.gridx = 3;
+		gbc_lblSummaryTimingTick.gridy = 9;
+		panelSummary.add(lblSummaryTimingTick, gbc_lblSummaryTimingTick);
+		
+		lblSummary_12 = new JLabel("ms");
+		GridBagConstraints gbc_lblSummary_12 = new GridBagConstraints();
+		gbc_lblSummary_12.insets = new Insets(0, 0, 5, 5);
+		gbc_lblSummary_12.gridx = 4;
+		gbc_lblSummary_12.gridy = 9;
+		panelSummary.add(lblSummary_12, gbc_lblSummary_12);
+		
+		lblSummaryTickChart = new JLabel("");
+		GridBagConstraints gbc_lblSummaryTickChart = new GridBagConstraints();
+		gbc_lblSummaryTickChart.fill = GridBagConstraints.BOTH;
+		gbc_lblSummaryTickChart.gridwidth = 18;
+		gbc_lblSummaryTickChart.insets = new Insets(0, 0, 0, 5);
+		gbc_lblSummaryTickChart.gridx = 1;
+		gbc_lblSummaryTickChart.gridy = 11;
+		panelSummary.add(lblSummaryTickChart, gbc_lblSummaryTickChart);
 		
 		panelEntityAmount = new JPanel();
 		tabbedPane.addTab("Entity Amount", null, panelEntityAmount, null);
@@ -520,6 +571,7 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener{
 		panelTimingEnt.add(btnTimingEntRefresh, gbc_btnTimingEntRefresh);
 		
 		btnTimingEntKillTarget = new JButton("Kill Target");
+		btnTimingEntKillTarget.setEnabled(false);
 		GridBagConstraints gbc_btnTimingEntKillTarget = new GridBagConstraints();
 		gbc_btnTimingEntKillTarget.insets = new Insets(0, 0, 5, 5);
 		gbc_btnTimingEntKillTarget.gridx = 2;
@@ -746,7 +798,12 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener{
 	public JLabel getLblSummaryTimingTotal() {
 		return lblSummaryTimingTotal;
 	}	
-	
+	public JLabel getLblSummaryTimingTick() {
+		return lblSummaryTimingTick;
+	}	
+	public JLabel getLblSummaryTickChart() {
+		return lblSummaryTickChart;
+	}	
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {

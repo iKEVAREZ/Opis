@@ -9,7 +9,7 @@ import mcp.mobius.opis.data.managers.MetaManager;
 import mcp.mobius.opis.data.managers.TickHandlerManager;
 import mcp.mobius.opis.data.managers.TileEntityManager;
 import mcp.mobius.opis.data.server.EntityProfiler;
-import mcp.mobius.opis.data.server.TickHandlerProfiler;
+import mcp.mobius.opis.data.server.HandlerProfiler;
 import mcp.mobius.opis.data.server.TileEntityProfiler;
 import mcp.mobius.opis.server.OpisServerTickHandler;
 import mcp.mobius.opis.server.PlayerTracker;

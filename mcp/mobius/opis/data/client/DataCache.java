@@ -1,10 +1,29 @@
 package mcp.mobius.opis.data.client;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.swing.ImageIcon;
 import javax.swing.table.DefaultTableModel;
 
+import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.plot.XYPlot;
+import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.xy.DefaultTableXYDataset;
+import org.jfree.data.xy.DefaultXYDataset;
+import org.jfree.data.xy.XYBarDataset;
+import org.jfree.data.xy.XYDataset;
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
+
+import codechicken.lib.math.MathHelper;
 import net.minecraft.item.ItemStack;
 import mcp.mobius.opis.data.holders.AmountHolder;
 import mcp.mobius.opis.data.holders.ChunkStats;
@@ -12,6 +31,7 @@ import mcp.mobius.opis.data.holders.EntityStats;
 import mcp.mobius.opis.data.holders.ISerializable;
 import mcp.mobius.opis.data.holders.StatAbstract;
 import mcp.mobius.opis.data.holders.TickHandlerStats;
+import mcp.mobius.opis.data.holders.TickStats;
 import mcp.mobius.opis.data.holders.TileEntityStats;
 import mcp.mobius.opis.gui.swing.SwingUI;
 import mcp.mobius.opis.tools.ModIdentification;
@@ -34,6 +54,10 @@ public class DataCache {
 	private int    amountHandlersTotal = 0;
 	private int    amountEntitiesTotal = 0;
 	private int    amountTileEntsTotal = 0;
+	
+	private TickStats timingTick = new TickStats();
+	private ArrayList<Double> timingTickGraphData = new ArrayList<Double>();
+	//private DescriptiveStatistics timingTickGraphData = new DescriptiveStatistics(100);
 	
 	public void setTimingHandlersTotal(double value){
 		this.timingHandlersTotal = value;
@@ -67,6 +91,47 @@ public class DataCache {
 		SwingUI.instance().getLblSummaryAmountTileEnts().setText(String.valueOf(value));
 	}		
 	
+	public void setTimingTick(ISerializable tickStat){
+		this.timingTick = (TickStats)tickStat;
+		SwingUI.instance().getLblSummaryTimingTick().setText(String.valueOf(String.format("%.3f", this.timingTick.getGeometricMean()/1000.)));
+		
+		if (timingTickGraphData.size() > 100)
+			timingTickGraphData.remove(0);
+		
+		timingTickGraphData.add(this.timingTick.getGeometricMean()/1000.);
+		//timingTickGraphData.addValue(this.timingTick.getGeometricMean()/1000.);
+		
+		XYSeries xyData = new XYSeries("Update time");
+		
+		double maxValue = 0D;
+		for (int i = 0; i < timingTickGraphData.size(); i++){
+			xyData.add(i, timingTickGraphData.get(i));
+		}
+		
+		/*
+		double[] values = this.timingTickGraphData.getValues();
+		for (int i = 0; i < values.length; i++)
+			xyData.add(i, values[i]);
+		*/
+		
+		XYSeriesCollection dataset = new XYSeriesCollection();
+		dataset.addSeries(xyData);
+		
+		
+		//JFreeChart chart = ChartFactory.createXYLineChart("", "Seconds", "Update Time [ms]", dataset, PlotOrientation.VERTICAL, false, false, false);
+		JFreeChart chart = ChartFactory.createXYAreaChart("", "Ticks * 20", "Update Time [ms]", dataset, PlotOrientation.VERTICAL, false, false, false);
+		chart.setBackgroundPaint(new Color(0,255,255,255));
+		XYPlot xyPlot = chart.getXYPlot();
+		xyPlot.getRendererForDataset(dataset).setSeriesPaint(0, Color.BLUE);
+		((NumberAxis)xyPlot.getRangeAxis()).setRange(0.0, 50.0 * (MathHelper.floor_double(xyData.getMaxY() / 50.0D) + 1));
+		
+		Dimension dim = SwingUI.instance().getLblSummaryTickChart().getSize();
+		
+		//System.out.printf("%s %s\n", dim.height, dim.width);
+		
+		BufferedImage image = chart.createBufferedImage(dim.width,dim.height);
+		SwingUI.instance().getLblSummaryTickChart().setIcon(new ImageIcon(image));
+	}
 	
 	public ArrayList<AmountHolder> getAmountEntities(){
 		return this.amountEntities;

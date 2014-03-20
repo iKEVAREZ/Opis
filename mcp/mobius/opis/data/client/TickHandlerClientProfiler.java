@@ -2,7 +2,7 @@ package mcp.mobius.opis.data.client;
 
 import java.util.EnumSet;
 
-import mcp.mobius.mobiuscore.profiler.IProfilerTick;
+import mcp.mobius.mobiuscore.profiler.IProfilerHandler;
 import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.client.OpisClientTickHandler;
 import mcp.mobius.opis.data.managers.TickHandlerManager;
@@ -10,7 +10,7 @@ import mcp.mobius.opis.server.OpisServerTickHandler;
 import cpw.mods.fml.common.IScheduledTickHandler;
 import cpw.mods.fml.common.TickType;
 
-public class TickHandlerClientProfiler implements IProfilerTick {
+public class TickHandlerClientProfiler implements IProfilerHandler {
 
 	public class Clock{
 		public long startTime = 0;

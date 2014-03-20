@@ -4,12 +4,12 @@ import java.util.EnumSet;
 
 import cpw.mods.fml.common.IScheduledTickHandler;
 import cpw.mods.fml.common.TickType;
-import mcp.mobius.mobiuscore.profiler.IProfilerTick;
+import mcp.mobius.mobiuscore.profiler.IProfilerHandler;
 import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.data.managers.TickHandlerManager;
 import mcp.mobius.opis.server.OpisServerTickHandler;
 
-public class TickHandlerProfiler implements IProfilerTick {
+public class HandlerProfiler implements IProfilerHandler {
 
 	public class Clock{
 		public long startTime = 0;

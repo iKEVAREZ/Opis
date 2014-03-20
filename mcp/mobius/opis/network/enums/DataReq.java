@@ -30,7 +30,8 @@ public enum DataReq {
 	TRUE("true"),
 	FALSE("false"),
 	LOADED("loaded"),
-	TICKETS("tickets");
+	TICKETS("tickets"),
+	TICK("tick");
 	
 	private String text;
 	
