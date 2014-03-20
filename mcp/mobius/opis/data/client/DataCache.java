@@ -50,6 +50,7 @@ public class DataCache {
 	private double timingHandlersTotal = 0D;
 	private double timingEntitiesTotal = 0D;
 	private double timingTileEntsTotal = 0D;
+	private double timingWorldTickTotal= 0D;	
 	
 	private int    amountHandlersTotal = 0;
 	private int    amountEntitiesTotal = 0;
@@ -58,24 +59,34 @@ public class DataCache {
 	private TickStats timingTick = new TickStats();
 	private ArrayList<Double> timingTickGraphData = new ArrayList<Double>();
 	//private DescriptiveStatistics timingTickGraphData = new DescriptiveStatistics(100);
+
+	private double getProfiledTickTotalTime(){
+		return (timingWorldTickTotal + this.timingHandlersTotal + this.timingEntitiesTotal + this.timingTileEntsTotal)/1000.;
+	}
+	
+	public void setTimingWorldTickTotal(double value){
+		this.timingWorldTickTotal = value;
+		SwingUI.instance().getLblSummaryTimingWorldTick().setText(String.format("%.3f", value/1000.));
+		SwingUI.instance().getLblSummaryTimingTotal().setText(String.format("%.3f", this.getProfiledTickTotalTime() ));
+	}	
 	
 	public void setTimingHandlersTotal(double value){
 		this.timingHandlersTotal = value;
 		SwingUI.instance().getLblSummaryTimingHandlers().setText(String.format("%.3f", value/1000.));
 		SwingUI.instance().getLblTimingHandlerValue().setText(String.format("Total update time : %.3f µs", value));
-		SwingUI.instance().getLblSummaryTimingTotal().setText(String.format("%.3f", (this.timingHandlersTotal + this.timingEntitiesTotal + this.timingTileEntsTotal)/1000.));
+		SwingUI.instance().getLblSummaryTimingTotal().setText(String.format("%.3f",this.getProfiledTickTotalTime()));
 	}
 	public void setTimingEntitiesTotal(double value){
 		this.timingEntitiesTotal = value;
 		SwingUI.instance().getLblSummaryTimingEntities().setText(String.format("%.3f", value/1000.));
 		SwingUI.instance().getLblTimingEntValue().setText(String.format("Total update time : %.3f µs", value));
-		SwingUI.instance().getLblSummaryTimingTotal().setText(String.format("%.3f", (this.timingHandlersTotal + this.timingEntitiesTotal + this.timingTileEntsTotal)/1000.));		
+		SwingUI.instance().getLblSummaryTimingTotal().setText(String.format("%.3f",this.getProfiledTickTotalTime()));		
 	}
 	public void setTimingTileEntsTotal(double value){
 		this.timingTileEntsTotal = value;
 		SwingUI.instance().getLblSummaryTimingTileEnts().setText(String.format("%.3f", value/1000.));
 		SwingUI.instance().getLblTimingTEValue().setText(String.format("Total update time : %.3f µs", value));
-		SwingUI.instance().getLblSummaryTimingTotal().setText(String.format("%.3f", (this.timingHandlersTotal + this.timingEntitiesTotal + this.timingTileEntsTotal)/1000.));		
+		SwingUI.instance().getLblSummaryTimingTotal().setText(String.format("%.3f",this.getProfiledTickTotalTime()));		
 	}	
 
 	public void setAmountHandlersTotal(int value){
@@ -120,7 +131,7 @@ public class DataCache {
 		
 		//JFreeChart chart = ChartFactory.createXYLineChart("", "Seconds", "Update Time [ms]", dataset, PlotOrientation.VERTICAL, false, false, false);
 		JFreeChart chart = ChartFactory.createXYAreaChart("", "Ticks * 20", "Update Time [ms]", dataset, PlotOrientation.VERTICAL, false, false, false);
-		chart.setBackgroundPaint(new Color(0,255,255,255));
+		chart.setBackgroundPaint(new Color(255,255,255,0));
 		XYPlot xyPlot = chart.getXYPlot();
 		xyPlot.getRendererForDataset(dataset).setSeriesPaint(0, Color.BLUE);
 		((NumberAxis)xyPlot.getRangeAxis()).setRange(0.0, 50.0 * (MathHelper.floor_double(xyData.getMaxY() / 50.0D) + 1));

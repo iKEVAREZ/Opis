@@ -8,17 +8,9 @@ import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.data.managers.EntityManager;
 import mcp.mobius.opis.server.OpisServerTickHandler;
 
-public class EntityProfiler implements IProfilerEntity {
+public class EntityProfiler extends AbstractProfiler implements IProfilerEntity {
 
-	public class Clock{
-		public long startTime = 0;
-		public long timeDelta = 0;
-		public void start(){this.startTime = System.nanoTime();}
-		public void stop(){this.timeDelta = System.nanoTime() - this.startTime;} 
-	}	
-	
 	private Entity currentEntity = null;
-	private Clock          clock = new Clock();	
 	
 	@Override
 	public void FullEntityStart() {}

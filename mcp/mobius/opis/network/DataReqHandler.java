@@ -28,6 +28,7 @@ import mcp.mobius.opis.data.managers.EntityManager;
 import mcp.mobius.opis.data.managers.MetaManager;
 import mcp.mobius.opis.data.managers.TickHandlerManager;
 import mcp.mobius.opis.data.managers.TileEntityManager;
+import mcp.mobius.opis.data.server.WorldTickProfiler;
 import mcp.mobius.opis.network.enums.DataReq;
 import mcp.mobius.opis.network.server.Packet_DataList;
 import mcp.mobius.opis.network.server.Packet_DataOverlayChunkEntities;
@@ -105,6 +106,10 @@ public class DataReqHandler {
 			ArrayList<ChunkStats> timingChunks = ChunkManager.getTopChunks(100);
 			PacketDispatcher.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST, DataReq.TIMING, DataReq.CHUNK,  timingChunks), (Player)player);
 		}
+
+		else if ((maintype == DataReq.VALUE) && (subtype == DataReq.TIMING) && (target == DataReq.WORLDTICK)){
+			PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE, DataReq.TIMING, DataReq.WORLDTICK, new SerialDouble(WorldTickProfiler.instance().stats.getGeometricMean())), (Player)player);
+		}		
 		
 		else if ((maintype == DataReq.LIST) && (subtype == DataReq.AMOUNT) && (target == DataReq.ENTITIES)){
 			boolean filtered = false;

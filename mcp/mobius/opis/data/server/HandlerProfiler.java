@@ -9,17 +9,9 @@ import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.data.managers.TickHandlerManager;
 import mcp.mobius.opis.server.OpisServerTickHandler;
 
-public class HandlerProfiler implements IProfilerHandler {
-
-	public class Clock{
-		public long startTime = 0;
-		public long timeDelta = 0;
-		public void start(){this.startTime = System.nanoTime();}
-		public void stop(){this.timeDelta = System.nanoTime() - this.startTime;} 
-	}	
+public class HandlerProfiler extends AbstractProfiler implements IProfilerHandler {
 	
 	private String currentHandler = null;
-	private Clock          clock  = new Clock();		
 	
 	@Override
 	public void StartTickStart(IScheduledTickHandler ticker, EnumSet<TickType> ticksToRun) {

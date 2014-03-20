@@ -2,6 +2,7 @@ package mcp.mobius.opis.data.managers;
 
 import mcp.mobius.mobiuscore.profiler.ProfilerRegistrar;
 import mcp.mobius.opis.modOpis;
+import mcp.mobius.opis.data.server.WorldTickProfiler;
 import mcp.mobius.opis.server.OpisServerTickHandler;
 
 public class MetaManager {
@@ -15,6 +16,7 @@ public class MetaManager {
 		EntityManager.stats.clear();
 		TickHandlerManager.startStats.clear();
 		TickHandlerManager.endStats.clear();
+		WorldTickProfiler.instance().stats.dstat.clear();
 		ProfilerRegistrar.turnOff();				
 	}
 	
