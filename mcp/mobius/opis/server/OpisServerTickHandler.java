@@ -19,6 +19,7 @@ import mcp.mobius.opis.data.holders.stats.StatsTickHandler;
 import mcp.mobius.opis.data.holders.stats.StatsTileEntity;
 import mcp.mobius.opis.data.managers.ChunkManager;
 import mcp.mobius.opis.data.managers.EntityManager;
+import mcp.mobius.opis.data.managers.GlobalTimingManager;
 import mcp.mobius.opis.data.managers.TickHandlerManager;
 import mcp.mobius.opis.data.managers.TileEntityManager;
 import mcp.mobius.opis.data.server.EntUpdateProfiler;
@@ -88,8 +89,8 @@ public class OpisServerTickHandler implements ITickHandler {
 				SerialDouble totalTimeTE      = new SerialDouble(TileEntityManager.getTotalUpdateTime());
 				SerialDouble totalTimeEnt     = new SerialDouble(EntityManager.getTotalUpdateTime());
 				SerialDouble totalTimeHandler = new SerialDouble(TickHandlerManager.getTotalUpdateTime());
-				SerialDouble totalWorldTick   = new SerialDouble(WorldTickProfiler.instance().stats.getGeometricMean());
-				SerialDouble totalEntUpdate   = new SerialDouble(EntUpdateProfiler.instance().stats.getGeometricMean());
+				SerialDouble totalWorldTick   = new SerialDouble(GlobalTimingManager.getTotalWorldTickStats());
+				SerialDouble totalEntUpdate   = new SerialDouble(GlobalTimingManager.getTotalEntUpdateStats());
 
 				
 				for (EntityPlayer player : PlayerTracker.instance().playersSwing){

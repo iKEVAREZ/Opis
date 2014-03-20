@@ -108,9 +108,9 @@ public class modOpis {
 			ProfilerRegistrar.registerProfilerTileEntity(new TileEntityProfiler());
 			ProfilerRegistrar.registerProfilerEntity(new EntityProfiler());
 			ProfilerRegistrar.registerProfilerHandler(new HandlerProfiler());
-			ProfilerRegistrar.registerProfilerWorldTick(WorldTickProfiler.instance());
+			ProfilerRegistrar.registerProfilerWorldTick(new WorldTickProfiler());
 			ProfilerRegistrar.registerProfilerTick(TickProfiler.instance());
-			ProfilerRegistrar.registerProfilerEntUpdate(EntUpdateProfiler.instance());
+			ProfilerRegistrar.registerProfilerEntUpdate(new EntUpdateProfiler());
 		}
 			
 	}

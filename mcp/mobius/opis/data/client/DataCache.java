@@ -62,13 +62,13 @@ public class DataCache {
 	//private DescriptiveStatistics timingTickGraphData = new DescriptiveStatistics(100);
 
 	private double getProfiledTickTotalTime(){
-		return (timingWorldTickTotal + this.timingHandlersTotal + timingEntUpdateTotal)/1000.;
+		return (timingWorldTickTotal + this.timingHandlersTotal + timingTileEntsTotal + timingEntitiesTotal)/1000.;
 	}
 	
 	public void setTimingEntUpdateTotal(double value){
 		this.timingEntUpdateTotal = value;
-		SwingUI.instance().getLblSummaryTimingGlobalUpdate().setText(String.format("%.3f", value/1000.));
-		SwingUI.instance().getLblSummaryTimingTotal().setText(String.format("%.3f", this.getProfiledTickTotalTime() ));
+		//SwingUI.instance().getLblSummaryTimingGlobalUpdate().setText(String.format("%.3f", value/1000.));
+		//SwingUI.instance().getLblSummaryTimingTotal().setText(String.format("%.3f", this.getProfiledTickTotalTime() ));
 	}
 	
 	public void setTimingWorldTickTotal(double value){

@@ -17,8 +17,21 @@ public class PlayerTracker implements IPlayerTracker{
 	public HashSet<EntityPlayer> playersOpis  = new HashSet<EntityPlayer>();		 //This is the list of players who have opened the UI or used the command line
 	public HashMap<String, Boolean> filteredAmount = new HashMap<String, Boolean>(); //Should the entity amount be filtered or not
 	public HashMap<Player, OverlayStatus> playerOverlayStatus = new HashMap<Player, OverlayStatus>();
-	public HashMap<Player, Integer>       playerDimension     = new HashMap<Player, Integer>();	
+	public HashMap<Player, Integer>       playerDimension     = new HashMap<Player, Integer>();
+	private HashSet<String> playerPriviliged = new HashSet<String>();
 	
+	
+	public void addPriviligedPlayer(String name){
+		this.playerPriviliged.add(name);
+	}
+	
+	public void rmPriviligedPlayer(String name){
+		this.playerPriviliged.remove(name);
+	}
+	
+	public boolean isPlayerPriviliged(String name){
+		return this.playerPriviliged.contains(name);
+	}
 	
 	@Override
 	public void onPlayerLogin(EntityPlayer player) {

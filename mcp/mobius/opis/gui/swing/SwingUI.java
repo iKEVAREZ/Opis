@@ -122,9 +122,6 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener{
 	private JLabel lblSummary_13;
 	private JLabel lblSummaryTimingWorldTick;
 	private JLabel lblSummary_14;
-	private JLabel lblSummary_15;
-	private JLabel lblSummary_16;
-	private JLabel lblSummaryTimingGlobalUpdate;
 	
 	public void showUI(){
 		EventQueue.invokeLater(new Runnable() {
@@ -152,235 +149,6 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener{
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		contentPane.add(tabbedPane, BorderLayout.CENTER);
-		
-		panelSummary = new JPanel();
-		tabbedPane.addTab("Summary", null, panelSummary, null);
-		GridBagLayout gbl_panelSummary = new GridBagLayout();
-		gbl_panelSummary.columnWidths = new int[]{0, 50, 20, 0, 70, 0, 20, 50, 0, 0, 0, 0, 0, 0, 0, 0, 0, 53, 0, 0};
-		gbl_panelSummary.rowHeights = new int[]{0, -4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-		gbl_panelSummary.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
-		gbl_panelSummary.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
-		panelSummary.setLayout(gbl_panelSummary);
-		
-		lblSummary_1 = new JLabel("Update time");
-		GridBagConstraints gbc_lblSummary_1 = new GridBagConstraints();
-		gbc_lblSummary_1.anchor = GridBagConstraints.WEST;
-		gbc_lblSummary_1.gridwidth = 2;
-		gbc_lblSummary_1.insets = new Insets(0, 0, 5, 5);
-		gbc_lblSummary_1.gridx = 4;
-		gbc_lblSummary_1.gridy = 1;
-		panelSummary.add(lblSummary_1, gbc_lblSummary_1);
-		
-		btnSummaryReset = new JButton("Reset");
-		GridBagConstraints gbc_btnSummaryReset = new GridBagConstraints();
-		gbc_btnSummaryReset.insets = new Insets(0, 0, 5, 0);
-		gbc_btnSummaryReset.gridx = 18;
-		gbc_btnSummaryReset.gridy = 1;
-		btnSummaryReset.addActionListener(this);
-		
-		label = new JLabel("Amount");
-		GridBagConstraints gbc_label = new GridBagConstraints();
-		gbc_label.anchor = GridBagConstraints.LINE_END;
-		gbc_label.insets = new Insets(0, 0, 5, 5);
-		gbc_label.gridx = 7;
-		gbc_label.gridy = 1;
-		panelSummary.add(label, gbc_label);
-		panelSummary.add(btnSummaryReset, gbc_btnSummaryReset);
-		
-		lblSummary_13 = new JLabel("World Tick");
-		GridBagConstraints gbc_lblSummary_13 = new GridBagConstraints();
-		gbc_lblSummary_13.anchor = GridBagConstraints.LINE_START;
-		gbc_lblSummary_13.insets = new Insets(0, 0, 5, 5);
-		gbc_lblSummary_13.gridx = 1;
-		gbc_lblSummary_13.gridy = 2;
-		panelSummary.add(lblSummary_13, gbc_lblSummary_13);
-		
-		lblSummaryTimingWorldTick = new JLabel("0");
-		GridBagConstraints gbc_lblSummaryTimingWorldTick = new GridBagConstraints();
-		gbc_lblSummaryTimingWorldTick.anchor = GridBagConstraints.EAST;
-		gbc_lblSummaryTimingWorldTick.insets = new Insets(0, 0, 5, 5);
-		gbc_lblSummaryTimingWorldTick.gridx = 4;
-		gbc_lblSummaryTimingWorldTick.gridy = 2;
-		panelSummary.add(lblSummaryTimingWorldTick, gbc_lblSummaryTimingWorldTick);
-		
-		lblSummary_14 = new JLabel("ms");
-		GridBagConstraints gbc_lblSummary_14 = new GridBagConstraints();
-		gbc_lblSummary_14.insets = new Insets(0, 0, 5, 5);
-		gbc_lblSummary_14.gridx = 5;
-		gbc_lblSummary_14.gridy = 2;
-		panelSummary.add(lblSummary_14, gbc_lblSummary_14);
-		
-		lblSummary_15 = new JLabel("Ents Update");
-		GridBagConstraints gbc_lblSummary_15 = new GridBagConstraints();
-		gbc_lblSummary_15.insets = new Insets(0, 0, 5, 5);
-		gbc_lblSummary_15.gridx = 1;
-		gbc_lblSummary_15.gridy = 3;
-		panelSummary.add(lblSummary_15, gbc_lblSummary_15);
-		
-		lblSummaryTimingGlobalUpdate = new JLabel("0");
-		GridBagConstraints gbc_lblSummaryTimingGlobalUpdate = new GridBagConstraints();
-		gbc_lblSummaryTimingGlobalUpdate.anchor = GridBagConstraints.EAST;
-		gbc_lblSummaryTimingGlobalUpdate.insets = new Insets(0, 0, 5, 5);
-		gbc_lblSummaryTimingGlobalUpdate.gridx = 4;
-		gbc_lblSummaryTimingGlobalUpdate.gridy = 3;
-		panelSummary.add(lblSummaryTimingGlobalUpdate, gbc_lblSummaryTimingGlobalUpdate);
-		
-		lblSummary_16 = new JLabel("ms");
-		GridBagConstraints gbc_lblSummary_16 = new GridBagConstraints();
-		gbc_lblSummary_16.insets = new Insets(0, 0, 5, 5);
-		gbc_lblSummary_16.gridx = 5;
-		gbc_lblSummary_16.gridy = 3;
-		panelSummary.add(lblSummary_16, gbc_lblSummary_16);
-		
-		lblSummary_3 = new JLabel("Tile Entities");
-		GridBagConstraints gbc_lblSummary_3 = new GridBagConstraints();
-		gbc_lblSummary_3.anchor = GridBagConstraints.LINE_START;
-		gbc_lblSummary_3.insets = new Insets(0, 0, 5, 5);
-		gbc_lblSummary_3.gridx = 2;
-		gbc_lblSummary_3.gridy = 4;
-		panelSummary.add(lblSummary_3, gbc_lblSummary_3);
-		
-		lblSummaryTimingTileEnts = new JLabel("0");
-		lblSummaryTimingTileEnts.setHorizontalAlignment(SwingConstants.CENTER);
-		GridBagConstraints gbc_lblSummaryTimingTileEnts = new GridBagConstraints();
-		gbc_lblSummaryTimingTileEnts.anchor = GridBagConstraints.EAST;
-		gbc_lblSummaryTimingTileEnts.insets = new Insets(0, 0, 5, 5);
-		gbc_lblSummaryTimingTileEnts.gridx = 4;
-		gbc_lblSummaryTimingTileEnts.gridy = 4;
-		panelSummary.add(lblSummaryTimingTileEnts, gbc_lblSummaryTimingTileEnts);
-		
-		lblSummary_7 = new JLabel("ms");
-		GridBagConstraints gbc_lblSummary_7 = new GridBagConstraints();
-		gbc_lblSummary_7.insets = new Insets(0, 0, 5, 5);
-		gbc_lblSummary_7.gridx = 5;
-		gbc_lblSummary_7.gridy = 4;
-		panelSummary.add(lblSummary_7, gbc_lblSummary_7);
-		
-		lblSummaryAmountTileEnts = new JLabel("0");
-		GridBagConstraints gbc_lblSummaryAmountTileEnts = new GridBagConstraints();
-		gbc_lblSummaryAmountTileEnts.anchor = GridBagConstraints.LINE_END;
-		gbc_lblSummaryAmountTileEnts.insets = new Insets(0, 0, 5, 5);
-		gbc_lblSummaryAmountTileEnts.gridx = 7;
-		gbc_lblSummaryAmountTileEnts.gridy = 4;
-		panelSummary.add(lblSummaryAmountTileEnts, gbc_lblSummaryAmountTileEnts);
-		
-		lblSummary_4 = new JLabel("Entities");
-		GridBagConstraints gbc_lblSummary_4 = new GridBagConstraints();
-		gbc_lblSummary_4.anchor = GridBagConstraints.WEST;
-		gbc_lblSummary_4.insets = new Insets(0, 0, 5, 5);
-		gbc_lblSummary_4.gridx = 2;
-		gbc_lblSummary_4.gridy = 5;
-		panelSummary.add(lblSummary_4, gbc_lblSummary_4);
-		
-		lblSummaryTimingEntities = new JLabel("0");
-		GridBagConstraints gbc_lblSummaryTimingEntities = new GridBagConstraints();
-		gbc_lblSummaryTimingEntities.anchor = GridBagConstraints.EAST;
-		gbc_lblSummaryTimingEntities.insets = new Insets(0, 0, 5, 5);
-		gbc_lblSummaryTimingEntities.gridx = 4;
-		gbc_lblSummaryTimingEntities.gridy = 5;
-		panelSummary.add(lblSummaryTimingEntities, gbc_lblSummaryTimingEntities);
-		
-		lblSummary_8 = new JLabel("ms");
-		GridBagConstraints gbc_lblSummary_8 = new GridBagConstraints();
-		gbc_lblSummary_8.insets = new Insets(0, 0, 5, 5);
-		gbc_lblSummary_8.gridx = 5;
-		gbc_lblSummary_8.gridy = 5;
-		panelSummary.add(lblSummary_8, gbc_lblSummary_8);
-		
-		lblSummaryAmountEntities = new JLabel("0");
-		GridBagConstraints gbc_lblSummaryAmountEntities = new GridBagConstraints();
-		gbc_lblSummaryAmountEntities.anchor = GridBagConstraints.LINE_END;
-		gbc_lblSummaryAmountEntities.insets = new Insets(0, 0, 5, 5);
-		gbc_lblSummaryAmountEntities.gridx = 7;
-		gbc_lblSummaryAmountEntities.gridy = 5;
-		panelSummary.add(lblSummaryAmountEntities, gbc_lblSummaryAmountEntities);
-		
-		lblSummary_5 = new JLabel("Handlers");
-		GridBagConstraints gbc_lblSummary_5 = new GridBagConstraints();
-		gbc_lblSummary_5.anchor = GridBagConstraints.WEST;
-		gbc_lblSummary_5.insets = new Insets(0, 0, 5, 5);
-		gbc_lblSummary_5.gridx = 1;
-		gbc_lblSummary_5.gridy = 6;
-		panelSummary.add(lblSummary_5, gbc_lblSummary_5);
-		
-		lblSummaryTimingHandlers = new JLabel("0");
-		GridBagConstraints gbc_lblSummaryTimingHandlers = new GridBagConstraints();
-		gbc_lblSummaryTimingHandlers.anchor = GridBagConstraints.EAST;
-		gbc_lblSummaryTimingHandlers.insets = new Insets(0, 0, 5, 5);
-		gbc_lblSummaryTimingHandlers.gridx = 4;
-		gbc_lblSummaryTimingHandlers.gridy = 6;
-		panelSummary.add(lblSummaryTimingHandlers, gbc_lblSummaryTimingHandlers);
-		
-		lblSummary_9 = new JLabel("ms");
-		GridBagConstraints gbc_lblSummary_9 = new GridBagConstraints();
-		gbc_lblSummary_9.insets = new Insets(0, 0, 5, 5);
-		gbc_lblSummary_9.gridx = 5;
-		gbc_lblSummary_9.gridy = 6;
-		panelSummary.add(lblSummary_9, gbc_lblSummary_9);
-		
-		lblSummaryAmountHandlers = new JLabel("0");
-		GridBagConstraints gbc_lblSummaryAmountHandlers = new GridBagConstraints();
-		gbc_lblSummaryAmountHandlers.anchor = GridBagConstraints.LINE_END;
-		gbc_lblSummaryAmountHandlers.insets = new Insets(0, 0, 5, 5);
-		gbc_lblSummaryAmountHandlers.gridx = 7;
-		gbc_lblSummaryAmountHandlers.gridy = 6;
-		panelSummary.add(lblSummaryAmountHandlers, gbc_lblSummaryAmountHandlers);
-		
-		lblSummary_6 = new JLabel("Total");
-		GridBagConstraints gbc_lblSummary_6 = new GridBagConstraints();
-		gbc_lblSummary_6.anchor = GridBagConstraints.WEST;
-		gbc_lblSummary_6.insets = new Insets(0, 0, 5, 5);
-		gbc_lblSummary_6.gridx = 1;
-		gbc_lblSummary_6.gridy = 8;
-		panelSummary.add(lblSummary_6, gbc_lblSummary_6);
-		
-		lblSummaryTimingTotal = new JLabel("0");
-		GridBagConstraints gbc_lblSummaryTimingTotal = new GridBagConstraints();
-		gbc_lblSummaryTimingTotal.anchor = GridBagConstraints.EAST;
-		gbc_lblSummaryTimingTotal.insets = new Insets(0, 0, 5, 5);
-		gbc_lblSummaryTimingTotal.gridx = 4;
-		gbc_lblSummaryTimingTotal.gridy = 8;
-		panelSummary.add(lblSummaryTimingTotal, gbc_lblSummaryTimingTotal);
-		
-		lblSummary_10 = new JLabel("ms");
-		GridBagConstraints gbc_lblSummary_10 = new GridBagConstraints();
-		gbc_lblSummary_10.anchor = GridBagConstraints.WEST;
-		gbc_lblSummary_10.insets = new Insets(0, 0, 5, 5);
-		gbc_lblSummary_10.gridx = 5;
-		gbc_lblSummary_10.gridy = 8;
-		panelSummary.add(lblSummary_10, gbc_lblSummary_10);
-		
-		lblSummary_11 = new JLabel("Tick Time");
-		GridBagConstraints gbc_lblSummary_11 = new GridBagConstraints();
-		gbc_lblSummary_11.anchor = GridBagConstraints.WEST;
-		gbc_lblSummary_11.insets = new Insets(0, 0, 5, 5);
-		gbc_lblSummary_11.gridx = 1;
-		gbc_lblSummary_11.gridy = 10;
-		panelSummary.add(lblSummary_11, gbc_lblSummary_11);
-		
-		lblSummaryTimingTick = new JLabel("0");
-		GridBagConstraints gbc_lblSummaryTimingTick = new GridBagConstraints();
-		gbc_lblSummaryTimingTick.anchor = GridBagConstraints.EAST;
-		gbc_lblSummaryTimingTick.insets = new Insets(0, 0, 5, 5);
-		gbc_lblSummaryTimingTick.gridx = 4;
-		gbc_lblSummaryTimingTick.gridy = 10;
-		panelSummary.add(lblSummaryTimingTick, gbc_lblSummaryTimingTick);
-		
-		lblSummary_12 = new JLabel("ms");
-		GridBagConstraints gbc_lblSummary_12 = new GridBagConstraints();
-		gbc_lblSummary_12.anchor = GridBagConstraints.WEST;
-		gbc_lblSummary_12.insets = new Insets(0, 0, 5, 5);
-		gbc_lblSummary_12.gridx = 5;
-		gbc_lblSummary_12.gridy = 10;
-		panelSummary.add(lblSummary_12, gbc_lblSummary_12);
-		
-		lblSummaryTickChart = new JLabel("");
-		GridBagConstraints gbc_lblSummaryTickChart = new GridBagConstraints();
-		gbc_lblSummaryTickChart.fill = GridBagConstraints.BOTH;
-		gbc_lblSummaryTickChart.gridwidth = 18;
-		gbc_lblSummaryTickChart.gridx = 1;
-		gbc_lblSummaryTickChart.gridy = 12;
-		panelSummary.add(lblSummaryTickChart, gbc_lblSummaryTickChart);
 		
 		panelEntityAmount = new JPanel();
 		tabbedPane.addTab("Entity Amount", null, panelEntityAmount, null);
@@ -471,6 +239,215 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener{
 		gbc_labelAmountValue.gridx = 2;
 		gbc_labelAmountValue.gridy = 2;
 		panelEntityAmount.add(labelAmountValue, gbc_labelAmountValue);
+		
+		panelSummary = new JPanel();
+		tabbedPane.addTab("Summary", null, panelSummary, null);
+		GridBagLayout gbl_panelSummary = new GridBagLayout();
+		gbl_panelSummary.columnWidths = new int[]{0, 50, 20, 0, 70, 0, 20, 50, 0, 0, 0, 0, 0, 0, 0, 0, 0, 53, 0, 0};
+		gbl_panelSummary.rowHeights = new int[]{0, -4, 0, 0, 0, 0, 20, 10, 30, 0, 0, 0, 0, 0};
+		gbl_panelSummary.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
+		gbl_panelSummary.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
+		panelSummary.setLayout(gbl_panelSummary);
+		
+		lblSummary_1 = new JLabel("Update time");
+		GridBagConstraints gbc_lblSummary_1 = new GridBagConstraints();
+		gbc_lblSummary_1.anchor = GridBagConstraints.WEST;
+		gbc_lblSummary_1.gridwidth = 2;
+		gbc_lblSummary_1.insets = new Insets(0, 0, 5, 5);
+		gbc_lblSummary_1.gridx = 4;
+		gbc_lblSummary_1.gridy = 1;
+		panelSummary.add(lblSummary_1, gbc_lblSummary_1);
+		
+		btnSummaryReset = new JButton("Reset");
+		GridBagConstraints gbc_btnSummaryReset = new GridBagConstraints();
+		gbc_btnSummaryReset.insets = new Insets(0, 0, 5, 0);
+		gbc_btnSummaryReset.gridx = 18;
+		gbc_btnSummaryReset.gridy = 1;
+		btnSummaryReset.addActionListener(this);
+		
+		label = new JLabel("Amount");
+		GridBagConstraints gbc_label = new GridBagConstraints();
+		gbc_label.anchor = GridBagConstraints.LINE_END;
+		gbc_label.insets = new Insets(0, 0, 5, 5);
+		gbc_label.gridx = 7;
+		gbc_label.gridy = 1;
+		panelSummary.add(label, gbc_label);
+		panelSummary.add(btnSummaryReset, gbc_btnSummaryReset);
+		
+		lblSummary_13 = new JLabel("World Tick");
+		lblSummary_13.setToolTipText("This is the world tick profiling.\nThe server will update the time, do random block ticks\nand this kind of things while inside this code part.");
+		GridBagConstraints gbc_lblSummary_13 = new GridBagConstraints();
+		gbc_lblSummary_13.anchor = GridBagConstraints.LINE_START;
+		gbc_lblSummary_13.insets = new Insets(0, 0, 5, 5);
+		gbc_lblSummary_13.gridx = 1;
+		gbc_lblSummary_13.gridy = 2;
+		panelSummary.add(lblSummary_13, gbc_lblSummary_13);
+		
+		lblSummaryTimingWorldTick = new JLabel("0");
+		GridBagConstraints gbc_lblSummaryTimingWorldTick = new GridBagConstraints();
+		gbc_lblSummaryTimingWorldTick.anchor = GridBagConstraints.EAST;
+		gbc_lblSummaryTimingWorldTick.insets = new Insets(0, 0, 5, 5);
+		gbc_lblSummaryTimingWorldTick.gridx = 4;
+		gbc_lblSummaryTimingWorldTick.gridy = 2;
+		panelSummary.add(lblSummaryTimingWorldTick, gbc_lblSummaryTimingWorldTick);
+		
+		lblSummary_14 = new JLabel("ms");
+		GridBagConstraints gbc_lblSummary_14 = new GridBagConstraints();
+		gbc_lblSummary_14.insets = new Insets(0, 0, 5, 5);
+		gbc_lblSummary_14.gridx = 5;
+		gbc_lblSummary_14.gridy = 2;
+		panelSummary.add(lblSummary_14, gbc_lblSummary_14);
+		
+		lblSummary_3 = new JLabel("Tile Entities");
+		GridBagConstraints gbc_lblSummary_3 = new GridBagConstraints();
+		gbc_lblSummary_3.anchor = GridBagConstraints.LINE_START;
+		gbc_lblSummary_3.insets = new Insets(0, 0, 5, 5);
+		gbc_lblSummary_3.gridx = 1;
+		gbc_lblSummary_3.gridy = 3;
+		panelSummary.add(lblSummary_3, gbc_lblSummary_3);
+		
+		lblSummaryTimingTileEnts = new JLabel("0");
+		lblSummaryTimingTileEnts.setHorizontalAlignment(SwingConstants.CENTER);
+		GridBagConstraints gbc_lblSummaryTimingTileEnts = new GridBagConstraints();
+		gbc_lblSummaryTimingTileEnts.anchor = GridBagConstraints.EAST;
+		gbc_lblSummaryTimingTileEnts.insets = new Insets(0, 0, 5, 5);
+		gbc_lblSummaryTimingTileEnts.gridx = 4;
+		gbc_lblSummaryTimingTileEnts.gridy = 3;
+		panelSummary.add(lblSummaryTimingTileEnts, gbc_lblSummaryTimingTileEnts);
+		
+		lblSummary_9 = new JLabel("ms");
+		GridBagConstraints gbc_lblSummary_9 = new GridBagConstraints();
+		gbc_lblSummary_9.insets = new Insets(0, 0, 5, 5);
+		gbc_lblSummary_9.gridx = 5;
+		gbc_lblSummary_9.gridy = 3;
+		panelSummary.add(lblSummary_9, gbc_lblSummary_9);
+		
+		lblSummaryAmountTileEnts = new JLabel("0");
+		GridBagConstraints gbc_lblSummaryAmountTileEnts = new GridBagConstraints();
+		gbc_lblSummaryAmountTileEnts.anchor = GridBagConstraints.LINE_END;
+		gbc_lblSummaryAmountTileEnts.insets = new Insets(0, 0, 5, 5);
+		gbc_lblSummaryAmountTileEnts.gridx = 7;
+		gbc_lblSummaryAmountTileEnts.gridy = 3;
+		panelSummary.add(lblSummaryAmountTileEnts, gbc_lblSummaryAmountTileEnts);
+		
+		lblSummary_4 = new JLabel("Entities");
+		GridBagConstraints gbc_lblSummary_4 = new GridBagConstraints();
+		gbc_lblSummary_4.anchor = GridBagConstraints.WEST;
+		gbc_lblSummary_4.insets = new Insets(0, 0, 5, 5);
+		gbc_lblSummary_4.gridx = 1;
+		gbc_lblSummary_4.gridy = 4;
+		panelSummary.add(lblSummary_4, gbc_lblSummary_4);
+		
+		lblSummaryTimingEntities = new JLabel("0");
+		GridBagConstraints gbc_lblSummaryTimingEntities = new GridBagConstraints();
+		gbc_lblSummaryTimingEntities.anchor = GridBagConstraints.EAST;
+		gbc_lblSummaryTimingEntities.insets = new Insets(0, 0, 5, 5);
+		gbc_lblSummaryTimingEntities.gridx = 4;
+		gbc_lblSummaryTimingEntities.gridy = 4;
+		panelSummary.add(lblSummaryTimingEntities, gbc_lblSummaryTimingEntities);
+		
+		lblSummary_7 = new JLabel("ms");
+		GridBagConstraints gbc_lblSummary_7 = new GridBagConstraints();
+		gbc_lblSummary_7.insets = new Insets(0, 0, 5, 5);
+		gbc_lblSummary_7.gridx = 5;
+		gbc_lblSummary_7.gridy = 4;
+		panelSummary.add(lblSummary_7, gbc_lblSummary_7);
+		
+		lblSummaryAmountEntities = new JLabel("0");
+		GridBagConstraints gbc_lblSummaryAmountEntities = new GridBagConstraints();
+		gbc_lblSummaryAmountEntities.anchor = GridBagConstraints.LINE_END;
+		gbc_lblSummaryAmountEntities.insets = new Insets(0, 0, 5, 5);
+		gbc_lblSummaryAmountEntities.gridx = 7;
+		gbc_lblSummaryAmountEntities.gridy = 4;
+		panelSummary.add(lblSummaryAmountEntities, gbc_lblSummaryAmountEntities);
+		
+		lblSummary_5 = new JLabel("Handlers");
+		lblSummary_5.setToolTipText("This is a generic profiling of server side tickhandlers.\nTickHandlers are a part of Forge and used by mods to do specific\nthings at the start and end of every tick.");
+		GridBagConstraints gbc_lblSummary_5 = new GridBagConstraints();
+		gbc_lblSummary_5.anchor = GridBagConstraints.WEST;
+		gbc_lblSummary_5.insets = new Insets(0, 0, 5, 5);
+		gbc_lblSummary_5.gridx = 1;
+		gbc_lblSummary_5.gridy = 5;
+		panelSummary.add(lblSummary_5, gbc_lblSummary_5);
+		
+		lblSummaryTimingHandlers = new JLabel("0");
+		GridBagConstraints gbc_lblSummaryTimingHandlers = new GridBagConstraints();
+		gbc_lblSummaryTimingHandlers.anchor = GridBagConstraints.EAST;
+		gbc_lblSummaryTimingHandlers.insets = new Insets(0, 0, 5, 5);
+		gbc_lblSummaryTimingHandlers.gridx = 4;
+		gbc_lblSummaryTimingHandlers.gridy = 5;
+		panelSummary.add(lblSummaryTimingHandlers, gbc_lblSummaryTimingHandlers);
+		
+		lblSummary_8 = new JLabel("ms");
+		GridBagConstraints gbc_lblSummary_8 = new GridBagConstraints();
+		gbc_lblSummary_8.insets = new Insets(0, 0, 5, 5);
+		gbc_lblSummary_8.gridx = 5;
+		gbc_lblSummary_8.gridy = 5;
+		panelSummary.add(lblSummary_8, gbc_lblSummary_8);
+		
+		lblSummaryAmountHandlers = new JLabel("0");
+		GridBagConstraints gbc_lblSummaryAmountHandlers = new GridBagConstraints();
+		gbc_lblSummaryAmountHandlers.anchor = GridBagConstraints.LINE_END;
+		gbc_lblSummaryAmountHandlers.insets = new Insets(0, 0, 5, 5);
+		gbc_lblSummaryAmountHandlers.gridx = 7;
+		gbc_lblSummaryAmountHandlers.gridy = 5;
+		panelSummary.add(lblSummaryAmountHandlers, gbc_lblSummaryAmountHandlers);
+		
+		lblSummary_6 = new JLabel("Total");
+		GridBagConstraints gbc_lblSummary_6 = new GridBagConstraints();
+		gbc_lblSummary_6.anchor = GridBagConstraints.WEST;
+		gbc_lblSummary_6.insets = new Insets(0, 0, 5, 5);
+		gbc_lblSummary_6.gridx = 1;
+		gbc_lblSummary_6.gridy = 7;
+		panelSummary.add(lblSummary_6, gbc_lblSummary_6);
+		
+		lblSummaryTimingTotal = new JLabel("0");
+		GridBagConstraints gbc_lblSummaryTimingTotal = new GridBagConstraints();
+		gbc_lblSummaryTimingTotal.anchor = GridBagConstraints.EAST;
+		gbc_lblSummaryTimingTotal.insets = new Insets(0, 0, 5, 5);
+		gbc_lblSummaryTimingTotal.gridx = 4;
+		gbc_lblSummaryTimingTotal.gridy = 7;
+		panelSummary.add(lblSummaryTimingTotal, gbc_lblSummaryTimingTotal);
+		
+		lblSummary_10 = new JLabel("ms");
+		GridBagConstraints gbc_lblSummary_10 = new GridBagConstraints();
+		gbc_lblSummary_10.anchor = GridBagConstraints.WEST;
+		gbc_lblSummary_10.insets = new Insets(0, 0, 5, 5);
+		gbc_lblSummary_10.gridx = 5;
+		gbc_lblSummary_10.gridy = 7;
+		panelSummary.add(lblSummary_10, gbc_lblSummary_10);
+		
+		lblSummary_11 = new JLabel("Tick Time");
+		GridBagConstraints gbc_lblSummary_11 = new GridBagConstraints();
+		gbc_lblSummary_11.anchor = GridBagConstraints.WEST;
+		gbc_lblSummary_11.insets = new Insets(0, 0, 5, 5);
+		gbc_lblSummary_11.gridx = 1;
+		gbc_lblSummary_11.gridy = 9;
+		panelSummary.add(lblSummary_11, gbc_lblSummary_11);
+		
+		lblSummaryTimingTick = new JLabel("0");
+		GridBagConstraints gbc_lblSummaryTimingTick = new GridBagConstraints();
+		gbc_lblSummaryTimingTick.anchor = GridBagConstraints.EAST;
+		gbc_lblSummaryTimingTick.insets = new Insets(0, 0, 5, 5);
+		gbc_lblSummaryTimingTick.gridx = 4;
+		gbc_lblSummaryTimingTick.gridy = 9;
+		panelSummary.add(lblSummaryTimingTick, gbc_lblSummaryTimingTick);
+		
+		lblSummary_12 = new JLabel("ms");
+		GridBagConstraints gbc_lblSummary_12 = new GridBagConstraints();
+		gbc_lblSummary_12.anchor = GridBagConstraints.WEST;
+		gbc_lblSummary_12.insets = new Insets(0, 0, 5, 5);
+		gbc_lblSummary_12.gridx = 5;
+		gbc_lblSummary_12.gridy = 9;
+		panelSummary.add(lblSummary_12, gbc_lblSummary_12);
+		
+		lblSummaryTickChart = new JLabel("");
+		GridBagConstraints gbc_lblSummaryTickChart = new GridBagConstraints();
+		gbc_lblSummaryTickChart.fill = GridBagConstraints.BOTH;
+		gbc_lblSummaryTickChart.gridwidth = 18;
+		gbc_lblSummaryTickChart.gridx = 1;
+		gbc_lblSummaryTickChart.gridy = 12;
+		panelSummary.add(lblSummaryTickChart, gbc_lblSummaryTickChart);
 		
 		panelTimingTE = new JPanel();
 		tabbedPane.addTab("TileEntity Timing", null, panelTimingTE, null);
@@ -821,9 +798,9 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener{
 	public JLabel getLblSummaryTimingWorldTick() {
 		return lblSummaryTimingWorldTick;
 	}	
-	public JLabel getLblSummaryTimingGlobalUpdate() {
-		return lblSummaryTimingGlobalUpdate;
-	}
+	//public JLabel getLblSummaryTimingGlobalUpdate() {
+	//	return lblSummaryTimingGlobalUpdate;
+	//}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {

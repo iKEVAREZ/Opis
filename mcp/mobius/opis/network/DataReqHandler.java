@@ -25,6 +25,7 @@ import mcp.mobius.opis.data.holders.stats.StatsTickHandler;
 import mcp.mobius.opis.data.holders.stats.StatsTileEntity;
 import mcp.mobius.opis.data.managers.ChunkManager;
 import mcp.mobius.opis.data.managers.EntityManager;
+import mcp.mobius.opis.data.managers.GlobalTimingManager;
 import mcp.mobius.opis.data.managers.MetaManager;
 import mcp.mobius.opis.data.managers.TickHandlerManager;
 import mcp.mobius.opis.data.managers.TileEntityManager;
@@ -109,11 +110,11 @@ public class DataReqHandler {
 		}
 
 		else if ((maintype == DataReq.VALUE) && (subtype == DataReq.TIMING) && (target == DataReq.WORLDTICK)){
-			PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE, DataReq.TIMING, DataReq.WORLDTICK, new SerialDouble(WorldTickProfiler.instance().stats.getGeometricMean())), (Player)player);
+			PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE, DataReq.TIMING, DataReq.WORLDTICK, new SerialDouble(GlobalTimingManager.getTotalWorldTickStats())), (Player)player);
 		}		
 
 		else if ((maintype == DataReq.VALUE) && (subtype == DataReq.TIMING) && (target == DataReq.ENTUPDATE)){
-			PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE, DataReq.TIMING, DataReq.ENTUPDATE, new SerialDouble(EntUpdateProfiler.instance().stats.getGeometricMean())), (Player)player);
+			PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE, DataReq.TIMING, DataReq.ENTUPDATE, new SerialDouble(GlobalTimingManager.getTotalEntUpdateStats())), (Player)player);
 		}				
 		
 		else if ((maintype == DataReq.LIST) && (subtype == DataReq.AMOUNT) && (target == DataReq.ENTITIES)){

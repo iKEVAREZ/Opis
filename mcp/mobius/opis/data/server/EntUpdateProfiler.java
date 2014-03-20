@@ -1,23 +1,24 @@
 package mcp.mobius.opis.data.server;
 
 import mcp.mobius.mobiuscore.profiler.IProfilerEntUpdate;
-import mcp.mobius.opis.data.holders.stats.StatsBase;
+import mcp.mobius.opis.data.holders.stats.StatsWorld;
+import mcp.mobius.opis.data.managers.GlobalTimingManager;
 
 public class EntUpdateProfiler extends AbstractProfiler implements	IProfilerEntUpdate {
 
-	private static EntUpdateProfiler _instance = new EntUpdateProfiler();
-	public  static EntUpdateProfiler instance() {return _instance;}	
-	public  StatsBase  stats = new StatsBase();	
+	//private static EntUpdateProfiler _instance = new EntUpdateProfiler();
+	//public  static EntUpdateProfiler instance() {return _instance;}	
+	//public  StatsBase  stats = new StatsBase();	
 	
 	@Override
-	public void EntUpdateStart() {
+	public void EntUpdateStart(int id) {
 		this.clock.start();
 	}
 
 	@Override
-	public void EntUpdateEnd() {
+	public void EntUpdateEnd(int id) {
 		this.clock.stop();
-		this.stats.addMeasure(this.clock.timeDelta);
+		GlobalTimingManager.addEntUpdateStat(id, this.clock.timeDelta);
 	}
 
 }

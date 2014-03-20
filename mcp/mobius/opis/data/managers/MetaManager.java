@@ -17,8 +17,8 @@ public class MetaManager {
 		EntityManager.stats.clear();
 		TickHandlerManager.startStats.clear();
 		TickHandlerManager.endStats.clear();
-		WorldTickProfiler.instance().stats.dstat.clear();
-		EntUpdateProfiler.instance().stats.dstat.clear();
+		GlobalTimingManager.worldTickStats.clear();		
+		GlobalTimingManager.entUpdateStats.clear();
 		ProfilerRegistrar.turnOff();				
 	}
 	
