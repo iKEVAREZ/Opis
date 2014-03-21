@@ -789,6 +789,8 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 		centerRenderer.setHorizontalAlignment( JLabel.CENTER );
 		
+		this.addWindowListener(this);
+		
 		for (int i = 0; i < tableEntityList.getColumnCount(); i++)
 			tableEntityList.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
 
