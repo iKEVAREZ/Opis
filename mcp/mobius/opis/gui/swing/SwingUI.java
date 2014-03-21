@@ -28,6 +28,8 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 import javax.swing.SwingConstants;
 import javax.swing.JCheckBox;
@@ -55,7 +57,7 @@ import net.minecraft.client.Minecraft;
 import javax.swing.ListSelectionModel;
 import javax.swing.JSeparator;
 
-public class SwingUI extends JFrame implements  ActionListener, ItemListener{
+public class SwingUI extends JFrame implements  ActionListener, ItemListener, WindowListener{
 
 	private static SwingUI _instance = new SwingUI();
 	public  static SwingUI instance(){
@@ -954,6 +956,29 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener{
 	private void requestAmoutEntityUpdate(){
 		PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.LIST_AMOUNT_ENTITIES));
 	}
+
+	@Override
+	public void windowActivated(WindowEvent arg0) {}
+
+	@Override
+	public void windowClosed(WindowEvent arg0) {
+		PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.COMMAND_UNREGISTER_SWING));
+	}
+
+	@Override
+	public void windowClosing(WindowEvent arg0) {}
+
+	@Override
+	public void windowDeactivated(WindowEvent arg0) {}
+
+	@Override
+	public void windowDeiconified(WindowEvent arg0) {}
+
+	@Override
+	public void windowIconified(WindowEvent arg0) {}
+
+	@Override
+	public void windowOpened(WindowEvent arg0) {}
 
 
 

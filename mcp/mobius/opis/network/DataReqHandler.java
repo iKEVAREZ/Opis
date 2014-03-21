@@ -157,6 +157,10 @@ public class DataReqHandler {
 			EntityManager.killAll(((SerialString)param1).value);
 		}			
 		
+		else if(maintype == DataReq.COMMAND_UNREGISTER_SWING){
+			PlayerTracker.instance().playersSwing.remove(player);
+		}
+			
 		else{
 			modOpis.log.log(Level.WARNING, String.format("Unknown data request : %s ", maintype));
 		}
