@@ -10,7 +10,7 @@ public class TickProfiler extends AbstractProfiler implements IProfilerTick {
 	
 	private Clock     clock = new Clock();		
 	public StatsTick  stats = new StatsTick();
-	public int        profiledTicks = 0;
+	//public int        profiledTicks = 0;
 	
 	@Override
 	public void TickStart() {
@@ -21,7 +21,7 @@ public class TickProfiler extends AbstractProfiler implements IProfilerTick {
 	public void TickEnd() {
 		this.clock.stop();
 		this.stats.addMeasure(this.clock.timeDelta);
-		this.profiledTicks += 1;
+		//this.profiledTicks += 1;
 	}
 
 }

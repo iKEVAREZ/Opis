@@ -122,6 +122,13 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener{
 	private JLabel lblSummary_13;
 	private JLabel lblSummaryTimingWorldTick;
 	private JLabel lblSummary_14;
+	private JLabel lblNewLabel;
+	private JLabel lblSummary_15;
+	private JLabel lblSummaryDownload;
+	private JLabel lblSummaryUpload;
+	private JLabel lblNewLabel_4;
+	private JLabel lblNewLabel_5;
+	private JLabel lblNewLabel_6;
 	
 	public void showUI(){
 		EventQueue.invokeLater(new Runnable() {
@@ -141,7 +148,7 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener{
 	private SwingUI() {
 		setTitle("Opis Control Panel");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 745, 413);
+		setBounds(100, 100, 838, 449);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
@@ -150,120 +157,23 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener{
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		contentPane.add(tabbedPane, BorderLayout.CENTER);
 		
-		panelEntityAmount = new JPanel();
-		tabbedPane.addTab("Entity Amount", null, panelEntityAmount, null);
-		GridBagLayout gbl_panelEntityAmount = new GridBagLayout();
-		gbl_panelEntityAmount.columnWidths = new int[]{217, 407, 217, 0};
-		gbl_panelEntityAmount.rowHeights = new int[]{0, 402, 30, 0};
-		gbl_panelEntityAmount.columnWeights = new double[]{0.0, 0.0, 1.0, Double.MIN_VALUE};
-		gbl_panelEntityAmount.rowWeights = new double[]{0.0, 1.0, 0.0, Double.MIN_VALUE};
-		panelEntityAmount.setLayout(gbl_panelEntityAmount);
-		
-		chkBoxDisplayAll = new JCheckBox("Filter Entities");
-		GridBagConstraints gbc_chkBoxDisplayAll = new GridBagConstraints();
-		gbc_chkBoxDisplayAll.anchor = GridBagConstraints.WEST;
-		gbc_chkBoxDisplayAll.insets = new Insets(0, 0, 5, 5);
-		gbc_chkBoxDisplayAll.gridx = 0;
-		gbc_chkBoxDisplayAll.gridy = 0;
-		chkBoxDisplayAll.addItemListener(this);
-		panelEntityAmount.add(chkBoxDisplayAll, gbc_chkBoxDisplayAll);
-		
-		btnRefreshEntityAmount = new JButton("Refresh");
-		GridBagConstraints gbc_btnRefreshEntityAmount = new GridBagConstraints();
-		gbc_btnRefreshEntityAmount.anchor = GridBagConstraints.EAST;
-		gbc_btnRefreshEntityAmount.insets = new Insets(0, 0, 5, 0);
-		gbc_btnRefreshEntityAmount.gridx = 2;
-		gbc_btnRefreshEntityAmount.gridy = 0;
-		btnRefreshEntityAmount.addActionListener(this);
-		
-		btnAmountKillAll = new JButton("Kill All");
-		btnAmountKillAll.addActionListener(this);
-		GridBagConstraints gbc_btnAmountKillAll = new GridBagConstraints();
-		gbc_btnAmountKillAll.anchor = GridBagConstraints.EAST;
-		gbc_btnAmountKillAll.insets = new Insets(0, 0, 5, 5);
-		gbc_btnAmountKillAll.gridx = 1;
-		gbc_btnAmountKillAll.gridy = 0;
-		panelEntityAmount.add(btnAmountKillAll, gbc_btnAmountKillAll);
-		panelEntityAmount.add(btnRefreshEntityAmount, gbc_btnRefreshEntityAmount);
-		
-		scrollPaneEntityAmount = new JScrollPane();
-		GridBagConstraints gbc_scrollPaneEntityAmount = new GridBagConstraints();
-		gbc_scrollPaneEntityAmount.gridwidth = 3;
-		gbc_scrollPaneEntityAmount.fill = GridBagConstraints.BOTH;
-		gbc_scrollPaneEntityAmount.insets = new Insets(0, 0, 5, 0);
-		gbc_scrollPaneEntityAmount.gridx = 0;
-		gbc_scrollPaneEntityAmount.gridy = 1;
-		panelEntityAmount.add(scrollPaneEntityAmount, gbc_scrollPaneEntityAmount);
-		
-		tableEntityList = new JTable();
-		tableEntityList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		tableEntityList.setModel(new DefaultTableModel(
-			new Object[][] {
-				{null, null},
-			},
-			new String[] {
-				"Type", "Amount"
-			}
-		) {
-			Class[] columnTypes = new Class[] {
-				String.class, Integer.class
-			};
-			public Class getColumnClass(int columnIndex) {
-				return columnTypes[columnIndex];
-			}
-			boolean[] columnEditables = new boolean[] {
-				false, false
-			};
-			public boolean isCellEditable(int row, int column) {
-				return columnEditables[column];
-			}
-		});
-		tableEntityList.getColumnModel().getColumn(0).setPreferredWidth(231);
-		tableEntityList.getColumnModel().getColumn(1).setPreferredWidth(237);
-		tableEntityList.setAutoCreateRowSorter(true);
-		scrollPaneEntityAmount.setViewportView(tableEntityList);
-		
-		labelAmountTotal = new JLabel("Total");
-		labelAmountTotal.setHorizontalAlignment(SwingConstants.CENTER);
-		GridBagConstraints gbc_labelAmountTotal = new GridBagConstraints();
-		gbc_labelAmountTotal.fill = GridBagConstraints.BOTH;
-		gbc_labelAmountTotal.insets = new Insets(0, 0, 0, 5);
-		gbc_labelAmountTotal.gridx = 0;
-		gbc_labelAmountTotal.gridy = 2;
-		panelEntityAmount.add(labelAmountTotal, gbc_labelAmountTotal);
-		
-		labelAmountValue = new JLabel("0");
-		labelAmountValue.setHorizontalAlignment(SwingConstants.CENTER);
-		GridBagConstraints gbc_labelAmountValue = new GridBagConstraints();
-		gbc_labelAmountValue.fill = GridBagConstraints.BOTH;
-		gbc_labelAmountValue.gridx = 2;
-		gbc_labelAmountValue.gridy = 2;
-		panelEntityAmount.add(labelAmountValue, gbc_labelAmountValue);
-		
 		panelSummary = new JPanel();
 		tabbedPane.addTab("Summary", null, panelSummary, null);
 		GridBagLayout gbl_panelSummary = new GridBagLayout();
-		gbl_panelSummary.columnWidths = new int[]{0, 50, 20, 0, 70, 0, 20, 50, 0, 0, 0, 0, 0, 0, 0, 0, 0, 53, 0, 0};
+		gbl_panelSummary.columnWidths = new int[]{0, 50, 20, 0, 70, 0, 20, 50, 50, 0, 20, 70, 0, 0, 60, 0, 0};
 		gbl_panelSummary.rowHeights = new int[]{0, -4, 0, 0, 0, 0, 20, 10, 30, 0, 0, 0, 0, 0};
-		gbl_panelSummary.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
+		gbl_panelSummary.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		gbl_panelSummary.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		panelSummary.setLayout(gbl_panelSummary);
 		
 		lblSummary_1 = new JLabel("Update time");
 		GridBagConstraints gbc_lblSummary_1 = new GridBagConstraints();
-		gbc_lblSummary_1.anchor = GridBagConstraints.WEST;
+		gbc_lblSummary_1.anchor = GridBagConstraints.EAST;
 		gbc_lblSummary_1.gridwidth = 2;
 		gbc_lblSummary_1.insets = new Insets(0, 0, 5, 5);
 		gbc_lblSummary_1.gridx = 4;
 		gbc_lblSummary_1.gridy = 1;
 		panelSummary.add(lblSummary_1, gbc_lblSummary_1);
-		
-		btnSummaryReset = new JButton("Reset");
-		GridBagConstraints gbc_btnSummaryReset = new GridBagConstraints();
-		gbc_btnSummaryReset.insets = new Insets(0, 0, 5, 0);
-		gbc_btnSummaryReset.gridx = 18;
-		gbc_btnSummaryReset.gridy = 1;
-		btnSummaryReset.addActionListener(this);
 		
 		label = new JLabel("Amount");
 		GridBagConstraints gbc_label = new GridBagConstraints();
@@ -272,6 +182,23 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener{
 		gbc_label.gridx = 7;
 		gbc_label.gridy = 1;
 		panelSummary.add(label, gbc_label);
+		
+		lblNewLabel_6 = new JLabel("Amount");
+		GridBagConstraints gbc_lblNewLabel_6 = new GridBagConstraints();
+		gbc_lblNewLabel_6.anchor = GridBagConstraints.EAST;
+		gbc_lblNewLabel_6.gridwidth = 2;
+		gbc_lblNewLabel_6.insets = new Insets(0, 0, 5, 5);
+		gbc_lblNewLabel_6.gridx = 11;
+		gbc_lblNewLabel_6.gridy = 1;
+		panelSummary.add(lblNewLabel_6, gbc_lblNewLabel_6);
+		
+		btnSummaryReset = new JButton("Refresh");
+		GridBagConstraints gbc_btnSummaryReset = new GridBagConstraints();
+		gbc_btnSummaryReset.anchor = GridBagConstraints.EAST;
+		gbc_btnSummaryReset.insets = new Insets(0, 0, 5, 0);
+		gbc_btnSummaryReset.gridx = 15;
+		gbc_btnSummaryReset.gridy = 1;
+		btnSummaryReset.addActionListener(this);
 		panelSummary.add(btnSummaryReset, gbc_btnSummaryReset);
 		
 		lblSummary_13 = new JLabel("World Tick");
@@ -297,6 +224,29 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener{
 		gbc_lblSummary_14.gridx = 5;
 		gbc_lblSummary_14.gridy = 2;
 		panelSummary.add(lblSummary_14, gbc_lblSummary_14);
+		
+		lblNewLabel = new JLabel("Upload");
+		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
+		gbc_lblNewLabel.anchor = GridBagConstraints.WEST;
+		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
+		gbc_lblNewLabel.gridx = 9;
+		gbc_lblNewLabel.gridy = 2;
+		panelSummary.add(lblNewLabel, gbc_lblNewLabel);
+		
+		lblSummaryUpload = new JLabel("0");
+		GridBagConstraints gbc_lblSummaryUpload = new GridBagConstraints();
+		gbc_lblSummaryUpload.anchor = GridBagConstraints.EAST;
+		gbc_lblSummaryUpload.insets = new Insets(0, 0, 5, 5);
+		gbc_lblSummaryUpload.gridx = 11;
+		gbc_lblSummaryUpload.gridy = 2;
+		panelSummary.add(lblSummaryUpload, gbc_lblSummaryUpload);
+		
+		lblNewLabel_4 = new JLabel("kB/s");
+		GridBagConstraints gbc_lblNewLabel_4 = new GridBagConstraints();
+		gbc_lblNewLabel_4.insets = new Insets(0, 0, 5, 5);
+		gbc_lblNewLabel_4.gridx = 12;
+		gbc_lblNewLabel_4.gridy = 2;
+		panelSummary.add(lblNewLabel_4, gbc_lblNewLabel_4);
 		
 		lblSummary_3 = new JLabel("Tile Entities");
 		GridBagConstraints gbc_lblSummary_3 = new GridBagConstraints();
@@ -329,6 +279,29 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener{
 		gbc_lblSummaryAmountTileEnts.gridx = 7;
 		gbc_lblSummaryAmountTileEnts.gridy = 3;
 		panelSummary.add(lblSummaryAmountTileEnts, gbc_lblSummaryAmountTileEnts);
+		
+		lblSummary_15 = new JLabel("Download");
+		GridBagConstraints gbc_lblSummary_15 = new GridBagConstraints();
+		gbc_lblSummary_15.anchor = GridBagConstraints.WEST;
+		gbc_lblSummary_15.insets = new Insets(0, 0, 5, 5);
+		gbc_lblSummary_15.gridx = 9;
+		gbc_lblSummary_15.gridy = 3;
+		panelSummary.add(lblSummary_15, gbc_lblSummary_15);
+		
+		lblSummaryDownload = new JLabel("0");
+		GridBagConstraints gbc_lblSummaryDownload = new GridBagConstraints();
+		gbc_lblSummaryDownload.anchor = GridBagConstraints.EAST;
+		gbc_lblSummaryDownload.insets = new Insets(0, 0, 5, 5);
+		gbc_lblSummaryDownload.gridx = 11;
+		gbc_lblSummaryDownload.gridy = 3;
+		panelSummary.add(lblSummaryDownload, gbc_lblSummaryDownload);
+		
+		lblNewLabel_5 = new JLabel("kB/s");
+		GridBagConstraints gbc_lblNewLabel_5 = new GridBagConstraints();
+		gbc_lblNewLabel_5.insets = new Insets(0, 0, 5, 5);
+		gbc_lblNewLabel_5.gridx = 12;
+		gbc_lblNewLabel_5.gridy = 3;
+		panelSummary.add(lblNewLabel_5, gbc_lblNewLabel_5);
 		
 		lblSummary_4 = new JLabel("Entities");
 		GridBagConstraints gbc_lblSummary_4 = new GridBagConstraints();
@@ -444,10 +417,100 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener{
 		lblSummaryTickChart = new JLabel("");
 		GridBagConstraints gbc_lblSummaryTickChart = new GridBagConstraints();
 		gbc_lblSummaryTickChart.fill = GridBagConstraints.BOTH;
-		gbc_lblSummaryTickChart.gridwidth = 18;
-		gbc_lblSummaryTickChart.gridx = 1;
+		gbc_lblSummaryTickChart.gridwidth = 16;
+		gbc_lblSummaryTickChart.gridx = 0;
 		gbc_lblSummaryTickChart.gridy = 12;
 		panelSummary.add(lblSummaryTickChart, gbc_lblSummaryTickChart);
+		
+		panelEntityAmount = new JPanel();
+		tabbedPane.addTab("Entity Amount", null, panelEntityAmount, null);
+		GridBagLayout gbl_panelEntityAmount = new GridBagLayout();
+		gbl_panelEntityAmount.columnWidths = new int[]{217, 407, 217, 0};
+		gbl_panelEntityAmount.rowHeights = new int[]{0, 402, 30, 0};
+		gbl_panelEntityAmount.columnWeights = new double[]{0.0, 0.0, 1.0, Double.MIN_VALUE};
+		gbl_panelEntityAmount.rowWeights = new double[]{0.0, 1.0, 0.0, Double.MIN_VALUE};
+		panelEntityAmount.setLayout(gbl_panelEntityAmount);
+		
+		chkBoxDisplayAll = new JCheckBox("Filter Entities");
+		GridBagConstraints gbc_chkBoxDisplayAll = new GridBagConstraints();
+		gbc_chkBoxDisplayAll.anchor = GridBagConstraints.WEST;
+		gbc_chkBoxDisplayAll.insets = new Insets(0, 0, 5, 5);
+		gbc_chkBoxDisplayAll.gridx = 0;
+		gbc_chkBoxDisplayAll.gridy = 0;
+		chkBoxDisplayAll.addItemListener(this);
+		panelEntityAmount.add(chkBoxDisplayAll, gbc_chkBoxDisplayAll);
+		
+		btnRefreshEntityAmount = new JButton("Refresh");
+		GridBagConstraints gbc_btnRefreshEntityAmount = new GridBagConstraints();
+		gbc_btnRefreshEntityAmount.anchor = GridBagConstraints.EAST;
+		gbc_btnRefreshEntityAmount.insets = new Insets(0, 0, 5, 0);
+		gbc_btnRefreshEntityAmount.gridx = 2;
+		gbc_btnRefreshEntityAmount.gridy = 0;
+		btnRefreshEntityAmount.addActionListener(this);
+		
+		btnAmountKillAll = new JButton("Kill All");
+		btnAmountKillAll.addActionListener(this);
+		GridBagConstraints gbc_btnAmountKillAll = new GridBagConstraints();
+		gbc_btnAmountKillAll.anchor = GridBagConstraints.EAST;
+		gbc_btnAmountKillAll.insets = new Insets(0, 0, 5, 5);
+		gbc_btnAmountKillAll.gridx = 1;
+		gbc_btnAmountKillAll.gridy = 0;
+		panelEntityAmount.add(btnAmountKillAll, gbc_btnAmountKillAll);
+		panelEntityAmount.add(btnRefreshEntityAmount, gbc_btnRefreshEntityAmount);
+		
+		scrollPaneEntityAmount = new JScrollPane();
+		GridBagConstraints gbc_scrollPaneEntityAmount = new GridBagConstraints();
+		gbc_scrollPaneEntityAmount.gridwidth = 3;
+		gbc_scrollPaneEntityAmount.fill = GridBagConstraints.BOTH;
+		gbc_scrollPaneEntityAmount.insets = new Insets(0, 0, 5, 0);
+		gbc_scrollPaneEntityAmount.gridx = 0;
+		gbc_scrollPaneEntityAmount.gridy = 1;
+		panelEntityAmount.add(scrollPaneEntityAmount, gbc_scrollPaneEntityAmount);
+		
+		tableEntityList = new JTable();
+		tableEntityList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		tableEntityList.setModel(new DefaultTableModel(
+			new Object[][] {
+				{null, null},
+			},
+			new String[] {
+				"Type", "Amount"
+			}
+		) {
+			Class[] columnTypes = new Class[] {
+				String.class, Integer.class
+			};
+			public Class getColumnClass(int columnIndex) {
+				return columnTypes[columnIndex];
+			}
+			boolean[] columnEditables = new boolean[] {
+				false, false
+			};
+			public boolean isCellEditable(int row, int column) {
+				return columnEditables[column];
+			}
+		});
+		tableEntityList.getColumnModel().getColumn(0).setPreferredWidth(231);
+		tableEntityList.getColumnModel().getColumn(1).setPreferredWidth(237);
+		tableEntityList.setAutoCreateRowSorter(true);
+		scrollPaneEntityAmount.setViewportView(tableEntityList);
+		
+		labelAmountTotal = new JLabel("Total");
+		labelAmountTotal.setHorizontalAlignment(SwingConstants.CENTER);
+		GridBagConstraints gbc_labelAmountTotal = new GridBagConstraints();
+		gbc_labelAmountTotal.fill = GridBagConstraints.BOTH;
+		gbc_labelAmountTotal.insets = new Insets(0, 0, 0, 5);
+		gbc_labelAmountTotal.gridx = 0;
+		gbc_labelAmountTotal.gridy = 2;
+		panelEntityAmount.add(labelAmountTotal, gbc_labelAmountTotal);
+		
+		labelAmountValue = new JLabel("0");
+		labelAmountValue.setHorizontalAlignment(SwingConstants.CENTER);
+		GridBagConstraints gbc_labelAmountValue = new GridBagConstraints();
+		gbc_labelAmountValue.fill = GridBagConstraints.BOTH;
+		gbc_labelAmountValue.gridx = 2;
+		gbc_labelAmountValue.gridy = 2;
+		panelEntityAmount.add(labelAmountValue, gbc_labelAmountValue);
 		
 		panelTimingTE = new JPanel();
 		tabbedPane.addTab("TileEntity Timing", null, panelTimingTE, null);
@@ -798,6 +861,13 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener{
 	public JLabel getLblSummaryTimingWorldTick() {
 		return lblSummaryTimingWorldTick;
 	}	
+	public JLabel getLblSummaryUpload() {
+		return lblSummaryUpload;
+	}
+	public JLabel getLblSummaryDownload() {
+		return lblSummaryDownload;
+	}	
+	
 	//public JLabel getLblSummaryTimingGlobalUpdate() {
 	//	return lblSummaryTimingGlobalUpdate;
 	//}
@@ -884,6 +954,7 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener{
 	private void requestAmoutEntityUpdate(){
 		PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.LIST, DataReq.AMOUNT, DataReq.ENTITIES));
 	}
+
 
 
 

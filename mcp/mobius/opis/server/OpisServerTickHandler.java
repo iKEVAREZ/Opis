@@ -13,6 +13,7 @@ import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.data.holders.basetypes.AmountHolder;
 import mcp.mobius.opis.data.holders.basetypes.SerialDouble;
 import mcp.mobius.opis.data.holders.basetypes.SerialInt;
+import mcp.mobius.opis.data.holders.basetypes.SerialLong;
 import mcp.mobius.opis.data.holders.stats.StatsChunk;
 import mcp.mobius.opis.data.holders.stats.StatsEntity;
 import mcp.mobius.opis.data.holders.stats.StatsTickHandler;
@@ -23,6 +24,7 @@ import mcp.mobius.opis.data.managers.GlobalTimingManager;
 import mcp.mobius.opis.data.managers.TickHandlerManager;
 import mcp.mobius.opis.data.managers.TileEntityManager;
 import mcp.mobius.opis.data.server.EntUpdateProfiler;
+import mcp.mobius.opis.data.server.PacketProfiler;
 import mcp.mobius.opis.data.server.WorldTickProfiler;
 import mcp.mobius.opis.data.server.TickProfiler;
 import mcp.mobius.opis.network.enums.DataReq;
@@ -43,7 +45,8 @@ public class OpisServerTickHandler implements ITickHandler {
 	public long profilerUpdateTickCounter = 0;	
 	public long clientUpdateTickCounter = 0;
 	public long profilerRunningTicks;
-
+	public long timeLastUpdate = System.nanoTime();
+	
 	public static OpisServerTickHandler instance;
 	
 	public OpisServerTickHandler(){
@@ -57,12 +60,16 @@ public class OpisServerTickHandler implements ITickHandler {
 	@Override
 	public void tickEnd(EnumSet<TickType> type, Object... tickData) {
 		if(type.contains(TickType.SERVER)){
-			if ((TickProfiler.instance().profiledTicks % 20) == 0){
-				TickProfiler.instance().profiledTicks = 0;
-				
-				for (EntityPlayer player : PlayerTracker.instance().playersSwing){
+			
+			if (System.nanoTime() - timeLastUpdate > 1000000000){
+				timeLastUpdate = System.nanoTime();
+				for (EntityPlayer player : PlayerTracker.instance().playersSwing){				
+					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE, DataReq.AMOUNT, DataReq.UPLOAD,   new SerialLong(PacketProfiler.instance().dataSizeOut)), (Player)player);
+					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE, DataReq.AMOUNT, DataReq.DOWNLOAD, new SerialLong(PacketProfiler.instance().dataSizeIn)),  (Player)player);
 					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE, DataReq.TIMING, DataReq.TICK, TickProfiler.instance().stats), (Player)player);					
 				}
+				PacketProfiler.instance().dataSizeOut = 0L;
+				PacketProfiler.instance().dataSizeIn  = 0L;
 			}
 			
 			clientUpdateTickCounter++;

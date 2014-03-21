@@ -8,7 +8,7 @@ import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 
 public class StatsTick extends StatAbstract {
 
-	public DescriptiveStatistics dstat = new DescriptiveStatistics(20);
+	public DescriptiveStatistics dstat = new DescriptiveStatistics(30);
 	
 	@Override
 	public void writeToStream(DataOutputStream stream) throws IOException {

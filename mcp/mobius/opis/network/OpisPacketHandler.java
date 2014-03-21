@@ -11,6 +11,7 @@ import mcp.mobius.opis.data.client.DataCache;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesChunk;
 import mcp.mobius.opis.data.holders.basetypes.SerialDouble;
 import mcp.mobius.opis.data.holders.basetypes.SerialInt;
+import mcp.mobius.opis.data.holders.basetypes.SerialLong;
 import mcp.mobius.opis.data.holders.basetypes.TicketData;
 import mcp.mobius.opis.data.holders.stats.StatsEntity;
 import mcp.mobius.opis.data.holders.stats.StatsTickHandler;
@@ -172,7 +173,13 @@ public class OpisPacketHandler implements IPacketHandler {
 				DataCache.instance().setAmountHandlersTotal(((SerialInt)castedPacket.data).value);
 			
 			else if ((castedPacket.maintype == DataReq.VALUE) && (castedPacket.subtype == DataReq.TIMING) && (castedPacket.target == DataReq.TICK))
-				DataCache.instance().setTimingTick(castedPacket.data);				
+				DataCache.instance().setTimingTick(castedPacket.data);	
+			
+			else if ((castedPacket.maintype == DataReq.VALUE) && (castedPacket.subtype == DataReq.AMOUNT) && (castedPacket.target == DataReq.UPLOAD))
+				DataCache.instance().setAmountUpload(((SerialLong)castedPacket.data).value);		
+			
+			else if ((castedPacket.maintype == DataReq.VALUE) && (castedPacket.subtype == DataReq.AMOUNT) && (castedPacket.target == DataReq.DOWNLOAD))
+				DataCache.instance().setAmountDownload(((SerialLong)castedPacket.data).value);				
 		}
 	}
 

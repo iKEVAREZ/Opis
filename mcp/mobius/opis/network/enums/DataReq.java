@@ -33,7 +33,9 @@ public enum DataReq {
 	TICKETS("tickets"),
 	TICK("tick"),
 	WORLDTICK("worldtick"),
-	ENTUPDATE("entupdate");
+	ENTUPDATE("entupdate"),
+	UPLOAD("outdata"),
+	DOWNLOAD("indata");
 	
 	private String text;
 	

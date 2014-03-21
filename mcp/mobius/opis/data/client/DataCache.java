@@ -57,10 +57,25 @@ public class DataCache {
 	private int    amountEntitiesTotal = 0;
 	private int    amountTileEntsTotal = 0;
 	
+	private long   amountUpload        = 0;
+	private long   amountDownload      = 0;
+	
 	private StatsTick timingTick = new StatsTick();
 	private ArrayList<Double> timingTickGraphData = new ArrayList<Double>();
 	//private DescriptiveStatistics timingTickGraphData = new DescriptiveStatistics(100);
 
+	public void setAmountUpload(long value){
+		this.amountUpload = value;
+		double uploadKB = (value / 8.0) / 1024.0;
+		SwingUI.instance().getLblSummaryUpload().setText(String.format("%.3f", uploadKB));
+	}
+
+	public void setAmountDownload(long value){
+		this.amountDownload = value;
+		double downloadKB = (value / 8.0) / 1024.0;
+		SwingUI.instance().getLblSummaryDownload().setText(String.format("%.3f", downloadKB));
+	}	
+	
 	private double getProfiledTickTotalTime(){
 		return (timingWorldTickTotal + this.timingHandlersTotal + timingTileEntsTotal + timingEntitiesTotal)/1000.;
 	}
