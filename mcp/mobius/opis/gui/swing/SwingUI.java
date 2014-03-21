@@ -134,7 +134,8 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 	private JLabel lblNewLabel_4;
 	private JLabel lblNewLabel_5;
 	private JLabel lblNewLabel_6;
-	private JButton btnTimingChunkTeleportToChunk;
+	private JButton btnTimingChunkCenterMap;
+	private JButton btnTimingChunkTeleport;
 	
 	public void showUI(){
 		EventQueue.invokeLater(new Runnable() {
@@ -723,24 +724,33 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 		panelTimingChunk = new JPanel();
 		tabbedPane.addTab("Chunk Timing", null, panelTimingChunk, null);
 		GridBagLayout gbl_panelTimingChunk = new GridBagLayout();
-		gbl_panelTimingChunk.columnWidths = new int[]{649, 649, 0};
+		gbl_panelTimingChunk.columnWidths = new int[]{96, 416, 649, 0};
 		gbl_panelTimingChunk.rowHeights = new int[]{-15, 308, 0};
-		gbl_panelTimingChunk.columnWeights = new double[]{1.0, 1.0, Double.MIN_VALUE};
+		gbl_panelTimingChunk.columnWeights = new double[]{0.0, 0.0, 1.0, Double.MIN_VALUE};
 		gbl_panelTimingChunk.rowWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
 		panelTimingChunk.setLayout(gbl_panelTimingChunk);
 		
-		btnTimingChunkTeleportToChunk = new JButton("Teleport");
-		btnTimingChunkTeleportToChunk.addActionListener(this);
-		GridBagConstraints gbc_btnTimingChunkTeleportToChunk = new GridBagConstraints();
-		gbc_btnTimingChunkTeleportToChunk.anchor = GridBagConstraints.WEST;
-		gbc_btnTimingChunkTeleportToChunk.insets = new Insets(0, 0, 5, 5);
-		gbc_btnTimingChunkTeleportToChunk.gridx = 0;
-		gbc_btnTimingChunkTeleportToChunk.gridy = 0;
-		panelTimingChunk.add(btnTimingChunkTeleportToChunk, gbc_btnTimingChunkTeleportToChunk);
+		btnTimingChunkCenterMap = new JButton("Center Map");
+		GridBagConstraints gbc_btnTimingChunkCenterMap = new GridBagConstraints();
+		gbc_btnTimingChunkCenterMap.anchor = GridBagConstraints.WEST;
+		gbc_btnTimingChunkCenterMap.insets = new Insets(0, 0, 5, 5);
+		gbc_btnTimingChunkCenterMap.gridx = 0;
+		gbc_btnTimingChunkCenterMap.gridy = 0;
+		btnTimingChunkCenterMap.addActionListener(this);
+		panelTimingChunk.add(btnTimingChunkCenterMap, gbc_btnTimingChunkCenterMap);
+		
+		btnTimingChunkTeleport = new JButton("Teleport");
+		GridBagConstraints gbc_btnTimingChunkTeleport = new GridBagConstraints();
+		gbc_btnTimingChunkTeleport.anchor = GridBagConstraints.WEST;
+		gbc_btnTimingChunkTeleport.insets = new Insets(0, 0, 5, 5);
+		gbc_btnTimingChunkTeleport.gridx = 1;
+		gbc_btnTimingChunkTeleport.gridy = 0;
+		btnTimingChunkTeleport.addActionListener(this);		
+		panelTimingChunk.add(btnTimingChunkTeleport, gbc_btnTimingChunkTeleport);
 		
 		scrollPaneTimingChunk = new JScrollPane();
 		GridBagConstraints gbc_scrollPaneTimingChunk = new GridBagConstraints();
-		gbc_scrollPaneTimingChunk.gridwidth = 2;
+		gbc_scrollPaneTimingChunk.gridwidth = 3;
 		gbc_scrollPaneTimingChunk.fill = GridBagConstraints.BOTH;
 		gbc_scrollPaneTimingChunk.gridx = 0;
 		gbc_scrollPaneTimingChunk.gridy = 1;
@@ -768,7 +778,7 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 		
 		btnTimingChunkRefresh = new JButton("Run Opis");
 		GridBagConstraints gbc_btnTimingChunkRefresh = new GridBagConstraints();
-		gbc_btnTimingChunkRefresh.gridwidth = 2;
+		gbc_btnTimingChunkRefresh.gridwidth = 3;
 		gbc_btnTimingChunkRefresh.insets = new Insets(0, 0, 5, 0);
 		gbc_btnTimingChunkRefresh.anchor = GridBagConstraints.EAST;
 		gbc_btnTimingChunkRefresh.gridx = 0;
@@ -935,11 +945,20 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.LIST_AMOUNT_ENTITIES));
 		}
 		
-		else if ((e.getSource() == btnTimingChunkTeleportToChunk) && (tableTimingChunk.getSelectedRow() != -1)){
+		else if ((e.getSource() == btnTimingChunkTeleport) && (tableTimingChunk.getSelectedRow() != -1)){
 			int indexData = tableTimingChunk.convertRowIndexToModel(tableTimingChunk.getSelectedRow());
 			StatsChunk data = DataCache.instance().getTimingChunks().get(indexData);
 			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.COMMAND_TELEPORT_CHUNK, data.getChunk()));
 		}
+		
+		else if ((e.getSource() == btnTimingChunkCenterMap) && (tableTimingChunk.getSelectedRow() != -1)){
+			int indexData = tableTimingChunk.convertRowIndexToModel(tableTimingChunk.getSelectedRow());
+			StatsChunk data = DataCache.instance().getTimingChunks().get(indexData);
+			
+			OverlayMeanTime.instance().setSelectedChunk(data.getChunk().dim, data.getChunk().chunkX, data.getChunk().chunkZ);
+			MwAPI.setCurrentDataProvider(OverlayMeanTime.instance());
+			Minecraft.getMinecraft().displayGuiScreen(new MwGui(Mw.instance, data.getChunk().dim, data.getChunk().x + 8, data.getChunk().z + 8));			
+		}		
 		
 	}
 
