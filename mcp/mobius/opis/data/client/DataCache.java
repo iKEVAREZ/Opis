@@ -214,7 +214,7 @@ public class DataCache {
 		this.clearRows(model);
 		
 		for (StatsTickHandler stat : DataCache.instance().getTimingHandlers()){
-			model.addRow(new Object[] {stat.getName(), String.format("%.3f \u00B5s", stat.getGeometricMean())});
+			model.addRow(new Object[] {stat.getName(), stat});
 		}
 
 		model.fireTableDataChanged();		
@@ -233,7 +233,7 @@ public class DataCache {
 										stat.getID(),
 										stat.getCoordinates().dim,
 										String.format("[ %4d %4d %4d ]", 	stat.getCoordinates().x, stat.getCoordinates().y, stat.getCoordinates().z), 
-										String.format("%.3f \u00B5s", stat.getGeometricMean()),
+										stat,
 										String.valueOf(stat.getDataPoints())});
 		}
 		
@@ -265,7 +265,7 @@ public class DataCache {
 					 modID,
 				     stat.getCoordinates().dim,
 				     String.format("[ %4d %4d %4d ]", 	stat.getCoordinates().x, stat.getCoordinates().y, stat.getCoordinates().z),  
-				     String.format("%.3f \u00B5s",stat.getGeometricMean())});
+				     stat});
 		}
 		
 		model.fireTableDataChanged();				
@@ -285,7 +285,7 @@ public class DataCache {
 					 String.format("[ %4d %4d ]", 	stat.getChunk().x, stat.getChunk().z),
 					 stat.tileEntities,
 				     stat.entities,
-				     String.format("%.3f \u00B5s",stat.getDataSum())});
+				     stat});
 		}
 		
 		model.fireTableDataChanged();				

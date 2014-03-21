@@ -16,7 +16,7 @@ public class StatsTickHandler extends StatAbstract implements ISerializable{
 	}
 
 	public String toString(){
-		return String.format("[%50s] %.3f micros", this.name, this.getGeometricMean());
+		return String.format("%.3f µs", this.getGeometricMean());
 	}
 
 	@Override

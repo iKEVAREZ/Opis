@@ -71,8 +71,13 @@ public class StatsTileEntity extends StatAbstract implements ISerializable {
 		stat.setGeometricMean(stream.readDouble());
 		return stat;
 	}
-
+	
+	/*
 	public String toString(){
 		return String.format("[%d:%d] %s %s", this.blockID, this.blockMeta, this.coord, this.getGeometricMean());
+	}
+	*/
+	public String toString(){
+		return String.format("%.3f µs", this.getGeometricMean());
 	}
 }

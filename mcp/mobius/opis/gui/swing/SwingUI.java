@@ -45,6 +45,7 @@ import mcp.mobius.opis.data.holders.basetypes.AmountHolder;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesBlock;
 import mcp.mobius.opis.data.holders.basetypes.SerialString;
 import mcp.mobius.opis.data.holders.basetypes.TargetEntity;
+import mcp.mobius.opis.data.holders.stats.StatAbstract;
 import mcp.mobius.opis.data.holders.stats.StatsEntity;
 import mcp.mobius.opis.data.holders.stats.StatsTileEntity;
 import mcp.mobius.opis.data.managers.TileEntityManager;
@@ -568,16 +569,10 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 			}
 		) {
 			Class[] columnTypes = new Class[] {
-				String.class, String.class, Integer.class, Object.class, String.class
+				String.class, String.class, Integer.class, Object.class, StatAbstract.class
 			};
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
-			}
-			boolean[] columnEditables = new boolean[] {
-				false, false, false, false, false
-			};
-			public boolean isCellEditable(int row, int column) {
-				return columnEditables[column];
 			}
 		});
 		tableTimingTE.setAutoCreateRowSorter(true);
@@ -655,16 +650,10 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 			}
 		) {
 			Class[] columnTypes = new Class[] {
-				String.class, Integer.class, Integer.class, Object.class, String.class, Integer.class
+				String.class, Integer.class, Integer.class, Object.class, StatAbstract.class, Integer.class
 			};
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
-			}
-			boolean[] columnEditables = new boolean[] {
-				false, false, false, false, false, false
-			};
-			public boolean isCellEditable(int row, int column) {
-				return columnEditables[column];
 			}
 		});
 		tableTimingEnt.setAutoCreateRowSorter(true);
@@ -714,16 +703,10 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 			}
 		) {
 			Class[] columnTypes = new Class[] {
-				String.class, String.class
+				String.class, StatAbstract.class
 			};
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
-			}
-			boolean[] columnEditables = new boolean[] {
-				false, false
-			};
-			public boolean isCellEditable(int row, int column) {
-				return columnEditables[column];
 			}
 		});
 		tableTimingHandler.setAutoCreateRowSorter(true);
@@ -763,16 +746,10 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 			}
 		) {
 			Class[] columnTypes = new Class[] {
-				Integer.class, String.class, Integer.class, Integer.class, String.class
+				Integer.class, String.class, Integer.class, Integer.class, StatAbstract.class
 			};
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
-			}
-			boolean[] columnEditables = new boolean[] {
-				false, false, false, false, false
-			};
-			public boolean isCellEditable(int row, int column) {
-				return columnEditables[column];
 			}
 		});
 		tableTimingChunk.setAutoCreateRowSorter(true);		

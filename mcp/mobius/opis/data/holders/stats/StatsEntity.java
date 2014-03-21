@@ -48,7 +48,7 @@ public class StatsEntity extends StatAbstract implements ISerializable {
 	}	
 
 	public String toString(){
-		return String.format("[%d] %50s %.3f \u00B5s", this.entId, this.name, this.getGeometricMean());
+		return String.format("%.3f µs", this.getGeometricMean());
 	}
 
 	@Override
