@@ -116,7 +116,7 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 	private JLabel lblSummary_1;
 	private JLabel label;
 	private JButton btnSummaryReset;
-	private JButton btnTimingEntKillTarget;
+	private JButton btnTimingEntPull;
 	private JButton btnAmountKillAll;
 	private JLabel lblSummary_11;
 	private JLabel lblSummary_12;
@@ -621,14 +621,13 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 		btnTimingEntRefresh.addActionListener(this);
 		panelTimingEnt.add(btnTimingEntRefresh, gbc_btnTimingEntRefresh);
 		
-		btnTimingEntKillTarget = new JButton("Kill Target");
-		btnTimingEntKillTarget.setEnabled(false);
-		GridBagConstraints gbc_btnTimingEntKillTarget = new GridBagConstraints();
-		gbc_btnTimingEntKillTarget.insets = new Insets(0, 0, 5, 5);
-		gbc_btnTimingEntKillTarget.gridx = 2;
-		gbc_btnTimingEntKillTarget.gridy = 0;
-		btnTimingEntKillTarget.addActionListener(this);		
-		panelTimingEnt.add(btnTimingEntKillTarget, gbc_btnTimingEntKillTarget);
+		btnTimingEntPull = new JButton("Pull");
+		GridBagConstraints gbc_btnTimingPull = new GridBagConstraints();
+		gbc_btnTimingPull.insets = new Insets(0, 0, 5, 5);
+		gbc_btnTimingPull.gridx = 2;
+		gbc_btnTimingPull.gridy = 0;
+		btnTimingEntPull.addActionListener(this);		
+		panelTimingEnt.add(btnTimingEntPull, gbc_btnTimingPull);
 		
 		scrollPaneTimingEnt = new JScrollPane();
 		GridBagConstraints gbc_scrollPaneTimingEnt = new GridBagConstraints();
@@ -898,16 +897,21 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 			
 			int eid = data.getID();
 			int dim = data.getCoordinates().dim;
-			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.COMMAND_TELEPORT_ENTITIES, new TargetEntity(eid, dim)));
+			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.COMMAND_TELEPORT_TO_ENTITY, new TargetEntity(eid, dim)));
 			Minecraft.getMinecraft().setIngameFocus();			
 		}
 		
+		else if ((e.getSource() == btnTimingEntPull) && (tableTimingEnt.getSelectedRow() != -1)){		
+			int indexData = tableTimingEnt.convertRowIndexToModel(tableTimingEnt.getSelectedRow());	
+			StatsEntity data = DataCache.instance().getTimingEntities().get(indexData);
+			
+			int eid = data.getID();
+			int dim = data.getCoordinates().dim;
+			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.COMMAND_TELEPORT_PULL_ENTITY, new TargetEntity(eid, dim)));
+		}		
+		
 		else if ((e.getSource() == btnTimingTERefresh) || (e.getSource() == btnTimingEntRefresh) || (e.getSource() == btnTimingHandlerRefresh) || (e.getSource() == btnTimingChunkRefresh) || (e.getSource() == btnSummaryReset)){
 			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.COMMAND_START));
-		}
-		
-		else if ((e.getSource() == btnTimingEntKillTarget)){
-			
 		}
 		
 		else if ((e.getSource() == btnAmountKillAll) && (tableEntityList.getSelectedRow() != -1)){

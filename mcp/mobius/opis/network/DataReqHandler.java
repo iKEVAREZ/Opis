@@ -149,9 +149,13 @@ public class DataReqHandler {
 			EntityManager.teleportPlayer((CoordinatesBlock)param1, (EntityPlayerMP)player);
 		}	
 		
-		else if (maintype == DataReq.COMMAND_TELEPORT_ENTITIES){
-			EntityManager.teleportPlayer(((TargetEntity)param1).entityID, ((TargetEntity)param1).dim, (EntityPlayerMP)player);
+		else if (maintype == DataReq.COMMAND_TELEPORT_TO_ENTITY){
+			EntityManager.teleportEntity((EntityPlayerMP)player, EntityManager.getEntity(((TargetEntity)param1).entityID, ((TargetEntity)param1).dim), player);
 		}			
+		
+		else if (maintype == DataReq.COMMAND_TELEPORT_PULL_ENTITY){
+			EntityManager.teleportEntity(EntityManager.getEntity(((TargetEntity)param1).entityID, ((TargetEntity)param1).dim), (EntityPlayerMP)player, player);
+		}		
 		
 		else if (maintype == DataReq.COMMAND_KILLALL){
 			EntityManager.killAll(((SerialString)param1).value);

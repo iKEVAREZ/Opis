@@ -246,25 +246,34 @@ public class EntityManager {
 		
 		return true;
 	}
-	
-	public static boolean teleportPlayer(int eid, int dim, EntityPlayerMP player){
+
+	public static boolean teleportEntity(Entity src, Entity trg, Player msgtrg){
+		if ((src == null) && (msgtrg != null)) {
+			PacketDispatcher.sendPacketToPlayer(new Packet3Chat(ChatMessageComponent.createFromText(String.format("\u00A7oCannot find source entity %s", src))), (Player)msgtrg);
+			return false;
+		}		
+
+		if ((trg == null) && (msgtrg != null)) {
+			PacketDispatcher.sendPacketToPlayer(new Packet3Chat(ChatMessageComponent.createFromText(String.format("\u00A7oCannot find target entity %s", trg))), (Player)msgtrg);
+			return false;
+		}				
+		
+		if (src.worldObj.provider.dimensionId != trg.worldObj.provider.dimensionId) 
+			src.travelToDimension(trg.worldObj.provider.dimensionId);
+		
+		src.setLocationAndAngles(trg.posX, trg.posY, trg.posZ, src.rotationYaw, src.rotationPitch);
+		
+		return true;		
+		
+	}
+		
+	public static Entity getEntity(int eid, int dim){
 		World world = DimensionManager.getWorld(dim);
-		if (world == null) return false;
+		if (world == null) return null;
 		
 		Entity entity = world.getEntityByID(eid);
-		if (entity == null) {
-			PacketDispatcher.sendPacketToPlayer(
-				new Packet3Chat(ChatMessageComponent.createFromText(String.format("\u00A7oCannot find entity %d in world %d", eid, dim))), (Player)player);
-			return false;
-		}
-		
-		if (player.worldObj.provider.dimensionId != dim) 
-			player.travelToDimension(dim);
-		
-		player.setPositionAndUpdate(entity.posX, entity.posY, entity.posZ);
-		
-		return true;
-	}	
+		return entity;
+	}
 	
 	public static String getEntityName(Entity ent){
 		return getEntityName(ent, false);
