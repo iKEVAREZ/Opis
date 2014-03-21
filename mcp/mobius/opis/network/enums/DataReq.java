@@ -2,44 +2,51 @@ package mcp.mobius.opis.network.enums;
 
 public enum DataReq {
 	
-	INVALID("invalid"),
-	NONE("none"),
+	LIST_CHUNK_TILEENTS,
+	LIST_CHUNK_ENTITIES,
+	LIST_CHUNK_LOADED,
+	LIST_CHUNK_TICKETS,
+	LIST_TIMING_TILEENTS,
+	LIST_TIMING_ENTITIES,
+	LIST_TIMING_HANDLERS,
+	LIST_TIMING_CHUNK,
+	LIST_AMOUNT_ENTITIES,
 	
-	// General structure of the request
-	OVERLAY("overlay"),
-	LIST("list"),
-	COMMAND("cmd"),
-	VALUE("value"),
+	VALUE_TIMING_TILEENTS,
+	VALUE_TIMING_ENTITIES,
+	VALUE_TIMING_HANDLERS,
+	VALUE_TIMING_WORLDTICK,
+	VALUE_TIMING_ENTUPDATE,
+	VALUE_TIMING_TICK,
 	
-	// First subtype
-	CHUNK("chunk"),
-	TIMING("timing"),
-	AMOUNT("amount"),
+	VALUE_AMOUNT_TILEENTS,
+	VALUE_AMOUNT_ENTITIES,
+	VALUE_AMOUNT_HANDLERS,
+	VALUE_AMOUNT_UPLOAD,
+	VALUE_AMOUNT_DOWNLOAD,
 	
-	FILTERING("filtering"),
-	UNREGISTER("unregister"),
-	START("start"),
-	TELEPORT("teleport"),
-	KILLALL("killall"),
+	COMMAND_TELEPORT_BLOCK,
+	COMMAND_TELEPORT_ENTITIES,
+	COMMAND_START,
+	COMMAND_KILLALL,
+	COMMAND_FILTERING_TRUE,
+	COMMAND_FILTERING_FALSE,
+	COMMAND_UNREGISTER,
 	
-	// Final Target
-	BLOCK("block"),
-	ENTITIES("entities"),
-	TILETENTS("tileents"),
-	HANDLERS("handlers"),
-	TRUE("true"),
-	FALSE("false"),
-	LOADED("loaded"),
-	TICKETS("tickets"),
-	TICK("tick"),
-	WORLDTICK("worldtick"),
-	ENTUPDATE("entupdate"),
-	UPLOAD("outdata"),
-	DOWNLOAD("indata");
+	OVERLAY_CHUNK_ENTITIES,
+	OVERLAY_CHUNK_TIMING;
 	
-	private String text;
+	private int accessLevel = 0;
 	
-	private DataReq(String text){
-		this.text = text;
+	private DataReq(){
+		accessLevel = 0;
+	}
+
+	private DataReq(int level){
+		accessLevel = level;
+	}	
+	
+	public int getAccesLevel(){
+		return this.accessLevel;
 	}
 }

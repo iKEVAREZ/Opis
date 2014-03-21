@@ -69,7 +69,7 @@ public class OverlayMeanTime implements IMwDataProvider {
 				}
 				else{
 					modOpis.selectedBlock = coord;
-					PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.COMMAND, DataReq.TELEPORT, DataReq.BLOCK, coord));
+					PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.COMMAND_TELEPORT_BLOCK, coord));
 					Minecraft.getMinecraft().setIngameFocus();
 				}
 			}
@@ -194,7 +194,7 @@ public class OverlayMeanTime implements IMwDataProvider {
 		}
 		
 		if (this.selectedChunk != null)
-			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.LIST, DataReq.CHUNK, DataReq.TILETENTS, this.selectedChunk));
+			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.LIST_CHUNK_TILEENTS, this.selectedChunk));
 		
 		//ArrayList<CoordinatesChunk> chunks = new ArrayList<CoordinatesChunk>();
 		//for (int x = -5; x <= 5; x++)
@@ -208,12 +208,12 @@ public class OverlayMeanTime implements IMwDataProvider {
 		this.selectedChunk = new CoordinatesChunk(dim, chunkX, chunkZ);
 		
 		if (this.selectedChunk != null)
-			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.LIST, DataReq.CHUNK, DataReq.TILETENTS, this.selectedChunk));		
+			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.LIST_CHUNK_TILEENTS, this.selectedChunk));		
 	}
 	
 	@Override
 	public void onDimensionChanged(int dimension, MapView mapview) {
-		PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.OVERLAY, DataReq.CHUNK, DataReq.TIMING, new SerialInt(dimension)));
+		PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.OVERLAY_CHUNK_TIMING, new SerialInt(dimension)));
 	}
 
 	@Override
@@ -227,14 +227,14 @@ public class OverlayMeanTime implements IMwDataProvider {
 	@Override
 	public void onOverlayActivated(MapView mapview) {
 		this.selectedChunk = null;
-		PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.OVERLAY, DataReq.CHUNK, DataReq.TIMING, new SerialInt(mapview.getDimension())));		
+		PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.OVERLAY_CHUNK_TIMING, new SerialInt(mapview.getDimension())));		
 	}
 
 	@Override
 	public void onOverlayDeactivated(MapView mapview) {
 		this.showList = false;
 		this.selectedChunk = null;
-		PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.COMMAND, DataReq.UNREGISTER, DataReq.NONE));		
+		PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.COMMAND_UNREGISTER));		
 	}
 
 	@Override

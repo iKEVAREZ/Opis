@@ -19,9 +19,7 @@ import mcp.mobius.opis.network.enums.DataReq;
 public class Packet_ReqData {
 	
 	public byte     header;
-	public DataReq  maintype;
-	public DataReq  subtype;
-	public DataReq  target;
+	public DataReq  dataReq;
 	public ISerializable param1 = null;
 	public ISerializable param2 = null;
 	
@@ -30,41 +28,37 @@ public class Packet_ReqData {
 		
 		try{
 			this.header    = istream.readByte();
-			this.maintype  = DataReq.values()[istream.readInt()];
-			this.subtype   = DataReq.values()[istream.readInt()];
-			this.target    = DataReq.values()[istream.readInt()];
+			this.dataReq   = DataReq.values()[istream.readInt()];
 			
 			if (istream.readBoolean()){
 				String datatype = Packet.readString(istream, 255);
-				this.param1    = dataRead(this.maintype, this.subtype, this.target, datatype, istream);
+				this.param1    = dataRead(datatype, istream);
 			}
 			
 			if (istream.readBoolean()){
 				String datatype = Packet.readString(istream, 255);
-				this.param2    = dataRead(this.maintype, this.subtype, this.target, datatype, istream);
+				this.param2    = dataRead(datatype, istream);
 			}
 			
 		} catch (IOException e){}				
 	}
 
-	public static Packet250CustomPayload create(DataReq maintype, DataReq subtype, DataReq target){
-		return Packet_ReqData.create(maintype, subtype, target, null, null) ;
+	public static Packet250CustomPayload create(DataReq dataReq){
+		return Packet_ReqData.create(dataReq, null, null) ;
 	}		
 
-	public static Packet250CustomPayload create(DataReq maintype, DataReq subtype, DataReq target, ISerializable param1){
-		return Packet_ReqData.create(maintype, subtype, target, param1, null) ;
+	public static Packet250CustomPayload create(DataReq dataReq, ISerializable param1){
+		return Packet_ReqData.create(dataReq, param1, null) ;
 	}			
 	
-	public static Packet250CustomPayload create(DataReq maintype, DataReq subtype, DataReq target, ISerializable param1, ISerializable param2){
+	public static Packet250CustomPayload create(DataReq dataReq, ISerializable param1, ISerializable param2){
 		Packet250CustomPayload packet = new Packet250CustomPayload();
 		ByteArrayOutputStream bos     = new ByteArrayOutputStream(1);
 		DataOutputStream outputStream = new DataOutputStream(bos);
 
 		try{
 			outputStream.writeByte(Packets.REQ_DATA);
-			outputStream.writeInt(maintype.ordinal());
-			outputStream.writeInt(subtype.ordinal());
-			outputStream.writeInt(target.ordinal());
+			outputStream.writeInt(dataReq.ordinal());
 			
 			if (param1 != null){
 				outputStream.writeBoolean(true);
@@ -91,7 +85,7 @@ public class Packet_ReqData {
 		return packet;
 	}
 	
-	private ISerializable dataRead(DataReq maintype, DataReq subtype, DataReq target, String datatypeStr, DataInputStream istream){
+	private ISerializable dataRead(String datatypeStr, DataInputStream istream){
 		try{
 			Class  datatype = Class.forName(datatypeStr);
 			Method readFromStream = datatype.getMethod("readFromStream", DataInputStream.class);

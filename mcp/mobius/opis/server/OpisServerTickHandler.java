@@ -64,9 +64,9 @@ public class OpisServerTickHandler implements ITickHandler {
 			if (System.nanoTime() - timeLastUpdate > 1000000000){
 				timeLastUpdate = System.nanoTime();
 				for (EntityPlayer player : PlayerTracker.instance().playersSwing){				
-					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE, DataReq.AMOUNT, DataReq.UPLOAD,   new SerialLong(PacketProfiler.instance().dataSizeOut)), (Player)player);
-					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE, DataReq.AMOUNT, DataReq.DOWNLOAD, new SerialLong(PacketProfiler.instance().dataSizeIn)),  (Player)player);
-					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE, DataReq.TIMING, DataReq.TICK, TickProfiler.instance().stats), (Player)player);					
+					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE_AMOUNT_UPLOAD,   new SerialLong(PacketProfiler.instance().dataSizeOut)), (Player)player);
+					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE_AMOUNT_DOWNLOAD, new SerialLong(PacketProfiler.instance().dataSizeIn)),  (Player)player);
+					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE_TIMING_TICK,     TickProfiler.instance().stats), (Player)player);					
 				}
 				PacketProfiler.instance().dataSizeOut = 0L;
 				PacketProfiler.instance().dataSizeIn  = 0L;
@@ -110,20 +110,20 @@ public class OpisServerTickHandler implements ITickHandler {
 					ArrayList<AmountHolder> amountEntities = EntityManager.getCumulativeEntities(filtered);
 
 					// Here we send a full update to the player
-					PacketDispatcher.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST, DataReq.AMOUNT, DataReq.ENTITIES,  amountEntities), (Player)player); 					
-					PacketDispatcher.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST, DataReq.TIMING, DataReq.HANDLERS,  timingHandlers), (Player)player);
-					PacketDispatcher.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST, DataReq.TIMING, DataReq.ENTITIES,  timingEntities), (Player)player);
-					PacketDispatcher.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST, DataReq.TIMING, DataReq.TILETENTS, timingTileEnts), (Player)player);
-					PacketDispatcher.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST, DataReq.TIMING, DataReq.CHUNK,       timingChunks), (Player)player);
-					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE, DataReq.TIMING, DataReq.TILETENTS, totalTimeTE),     (Player)player);
-					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE, DataReq.TIMING, DataReq.ENTITIES,  totalTimeEnt),    (Player)player);
-					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE, DataReq.TIMING, DataReq.HANDLERS,  totalTimeHandler),(Player)player);
-					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE, DataReq.TIMING, DataReq.WORLDTICK,  totalWorldTick),(Player)player);		
-					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE, DataReq.TIMING, DataReq.ENTUPDATE,  totalEntUpdate),(Player)player);					
+					PacketDispatcher.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST_AMOUNT_ENTITIES,    amountEntities),  (Player)player); 					
+					PacketDispatcher.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST_TIMING_HANDLERS,    timingHandlers),  (Player)player);
+					PacketDispatcher.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST_TIMING_ENTITIES,    timingEntities),  (Player)player);
+					PacketDispatcher.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST_TIMING_TILEENTS,    timingTileEnts),  (Player)player);
+					PacketDispatcher.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST_TIMING_CHUNK,       timingChunks),    (Player)player);
+					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE_TIMING_TILEENTS,  totalTimeTE),     (Player)player);
+					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE_TIMING_ENTITIES,  totalTimeEnt),    (Player)player);
+					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE_TIMING_HANDLERS,  totalTimeHandler),(Player)player);
+					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE_TIMING_WORLDTICK, totalWorldTick),  (Player)player);		
+					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE_TIMING_ENTUPDATE, totalEntUpdate),  (Player)player);					
 					
-					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE, DataReq.AMOUNT, DataReq.TILETENTS, new SerialInt(TileEntityManager.stats.size())),      (Player)player);
-					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE, DataReq.AMOUNT, DataReq.ENTITIES,  new SerialInt(EntityManager.stats.size())),          (Player)player);
-					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE, DataReq.AMOUNT, DataReq.HANDLERS,  new SerialInt(TickHandlerManager.startStats.size())),(Player)player);					
+					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE_AMOUNT_TILEENTS, new SerialInt(TileEntityManager.stats.size())),      (Player)player);
+					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE_AMOUNT_ENTITIES, new SerialInt(EntityManager.stats.size())),          (Player)player);
+					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE_AMOUNT_HANDLERS, new SerialInt(TickHandlerManager.startStats.size())),(Player)player);					
 				}
 				
 				for (EntityPlayer player : PlayerTracker.instance().playersOpis)

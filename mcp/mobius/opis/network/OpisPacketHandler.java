@@ -120,26 +120,26 @@ public class OpisPacketHandler implements IPacketHandler {
 		else if (header == Packets.DATA_LIST_GENERAL){
 			Packet_DataList castedPacket = new Packet_DataList(packet);
 
-			     if ((castedPacket.maintype == DataReq.LIST) && (castedPacket.subtype == DataReq.TIMING) && (castedPacket.target == DataReq.TILETENTS))
+			     if (castedPacket.dataReq == DataReq.LIST_TIMING_TILEENTS)
 				DataCache.instance().setTimingTileEnts(castedPacket.data);
 			
-			else if ((castedPacket.maintype == DataReq.LIST) && (castedPacket.subtype == DataReq.TIMING) && (castedPacket.target == DataReq.ENTITIES))
+			else if (castedPacket.dataReq == DataReq.LIST_TIMING_ENTITIES)
 				DataCache.instance().setTimingEntities(castedPacket.data);
 			
-			else if ((castedPacket.maintype == DataReq.LIST) && (castedPacket.subtype == DataReq.TIMING) && (castedPacket.target == DataReq.HANDLERS))
+			else if (castedPacket.dataReq == DataReq.LIST_TIMING_HANDLERS)
 				DataCache.instance().setTimingHandlers(castedPacket.data);		
 			
-			else if ((castedPacket.maintype == DataReq.LIST) && (castedPacket.subtype == DataReq.TIMING) && (castedPacket.target == DataReq.CHUNK))
+			else if (castedPacket.dataReq == DataReq.LIST_TIMING_CHUNK)
 				DataCache.instance().setTimingChunks(castedPacket.data);
 			
-			else if ((castedPacket.maintype == DataReq.LIST) && (castedPacket.subtype == DataReq.AMOUNT) && (castedPacket.target == DataReq.ENTITIES))
+			else if (castedPacket.dataReq == DataReq.LIST_AMOUNT_ENTITIES)
 				DataCache.instance().setAmountEntities(castedPacket.data);			
 
-			else if ((castedPacket.maintype == DataReq.LIST) && (castedPacket.subtype == DataReq.CHUNK)  && (castedPacket.target == DataReq.ENTITIES)){
+			else if (castedPacket.dataReq == DataReq.LIST_CHUNK_ENTITIES){
 				OverlayEntityPerChunk.instance().setEntStats(castedPacket.data);
 				OverlayEntityPerChunk.instance().setupEntTable();		
 			}
-			else if ((castedPacket.maintype == DataReq.LIST) && (castedPacket.subtype == DataReq.CHUNK)  && (castedPacket.target == DataReq.TILETENTS)){
+			else if (castedPacket.dataReq == DataReq.LIST_CHUNK_TILEENTS){
 				OverlayMeanTime.instance().setupTable(castedPacket.data);	 
 			}			     
 			
@@ -148,37 +148,37 @@ public class OpisPacketHandler implements IPacketHandler {
 		else if (header == Packets.DATA_VALUE_GENERAL){
 			Packet_DataValue castedPacket = new Packet_DataValue(packet);
 			
-			if ((castedPacket.maintype == DataReq.VALUE) && (castedPacket.subtype == DataReq.TIMING) && (castedPacket.target == DataReq.TILETENTS))
+			     if (castedPacket.dataReq == DataReq.VALUE_TIMING_TILEENTS)
 				DataCache.instance().setTimingTileEntsTotal(((SerialDouble)castedPacket.data).value);
 			
-			else if ((castedPacket.maintype == DataReq.VALUE) && (castedPacket.subtype == DataReq.TIMING) && (castedPacket.target == DataReq.ENTITIES))
+			else if (castedPacket.dataReq == DataReq.VALUE_TIMING_ENTITIES)
 				DataCache.instance().setTimingEntitiesTotal(((SerialDouble)castedPacket.data).value);	
 			
-			else if ((castedPacket.maintype == DataReq.VALUE) && (castedPacket.subtype == DataReq.TIMING) && (castedPacket.target == DataReq.HANDLERS))
+			else if (castedPacket.dataReq == DataReq.VALUE_TIMING_HANDLERS)
 				DataCache.instance().setTimingHandlersTotal(((SerialDouble)castedPacket.data).value);	
 
-			else if ((castedPacket.maintype == DataReq.VALUE) && (castedPacket.subtype == DataReq.TIMING) && (castedPacket.target == DataReq.WORLDTICK))
+			else if (castedPacket.dataReq == DataReq.VALUE_TIMING_WORLDTICK)
 				DataCache.instance().setTimingWorldTickTotal(((SerialDouble)castedPacket.data).value);			
 
-			else if ((castedPacket.maintype == DataReq.VALUE) && (castedPacket.subtype == DataReq.TIMING) && (castedPacket.target == DataReq.ENTUPDATE))
+			else if (castedPacket.dataReq == DataReq.VALUE_TIMING_ENTUPDATE)
 				DataCache.instance().setTimingEntUpdateTotal(((SerialDouble)castedPacket.data).value);						
 			
-			else if ((castedPacket.maintype == DataReq.VALUE) && (castedPacket.subtype == DataReq.AMOUNT) && (castedPacket.target == DataReq.TILETENTS))
+			else if (castedPacket.dataReq == DataReq.VALUE_AMOUNT_TILEENTS)
 				DataCache.instance().setAmountTileEntsTotal(((SerialInt)castedPacket.data).value);
 			
-			else if ((castedPacket.maintype == DataReq.VALUE) && (castedPacket.subtype == DataReq.AMOUNT) && (castedPacket.target == DataReq.ENTITIES))
+			else if (castedPacket.dataReq == DataReq.VALUE_AMOUNT_ENTITIES)
 				DataCache.instance().setAmountEntitiesTotal(((SerialInt)castedPacket.data).value);	
 			
-			else if ((castedPacket.maintype == DataReq.VALUE) && (castedPacket.subtype == DataReq.AMOUNT) && (castedPacket.target == DataReq.HANDLERS))
+			else if (castedPacket.dataReq == DataReq.VALUE_AMOUNT_HANDLERS)
 				DataCache.instance().setAmountHandlersTotal(((SerialInt)castedPacket.data).value);
 			
-			else if ((castedPacket.maintype == DataReq.VALUE) && (castedPacket.subtype == DataReq.TIMING) && (castedPacket.target == DataReq.TICK))
+			else if (castedPacket.dataReq == DataReq.VALUE_TIMING_TICK)
 				DataCache.instance().setTimingTick(castedPacket.data);	
 			
-			else if ((castedPacket.maintype == DataReq.VALUE) && (castedPacket.subtype == DataReq.AMOUNT) && (castedPacket.target == DataReq.UPLOAD))
+			else if (castedPacket.dataReq == DataReq.VALUE_AMOUNT_UPLOAD)
 				DataCache.instance().setAmountUpload(((SerialLong)castedPacket.data).value);		
 			
-			else if ((castedPacket.maintype == DataReq.VALUE) && (castedPacket.subtype == DataReq.AMOUNT) && (castedPacket.target == DataReq.DOWNLOAD))
+			else if (castedPacket.dataReq == DataReq.VALUE_AMOUNT_DOWNLOAD)
 				DataCache.instance().setAmountDownload(((SerialLong)castedPacket.data).value);				
 		}
 	}
@@ -211,7 +211,7 @@ public class OpisPacketHandler implements IPacketHandler {
 		else if (header == Packets.REQ_DATA){
 			Packet_ReqData castedPacket = new Packet_ReqData(packet);
 			if (PlayerTracker.instance().isOp(player)){	
-				DataReqHandler.instance().handle(castedPacket.maintype, castedPacket.subtype, castedPacket.target, castedPacket.param1, castedPacket.param2,  player);
+				DataReqHandler.instance().handle(castedPacket.dataReq, castedPacket.param1, castedPacket.param2,  player);
 			}
 		}
 	}	

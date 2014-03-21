@@ -895,7 +895,7 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener{
 			
 			CoordinatesBlock coord = data.getCoordinates();
 			modOpis.selectedBlock = coord;
-			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.COMMAND, DataReq.TELEPORT, DataReq.BLOCK, coord));
+			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.COMMAND_TELEPORT_BLOCK, coord));
 			Minecraft.getMinecraft().setIngameFocus();			
 		}
 		
@@ -904,8 +904,8 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener{
 			StatsEntity data = DataCache.instance().getTimingEntities().get(indexData);
 			
 			CoordinatesBlock coord = data.getCoordinates();
-			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.OVERLAY, DataReq.CHUNK, DataReq.ENTITIES));
-			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.LIST,    DataReq.CHUNK, DataReq.ENTITIES, data.getChunk()));			
+			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.OVERLAY_CHUNK_ENTITIES));
+			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.LIST_CHUNK_ENTITIES, data.getChunk()));			
 			OverlayMeanTime.instance().setSelectedChunk(coord.dim, coord.x >> 4, coord.z >> 4);
 			MwAPI.setCurrentDataProvider(OverlayEntityPerChunk.instance());
 			Minecraft.getMinecraft().displayGuiScreen(new MwGui(Mw.instance, coord.dim, coord.x, coord.z));			
@@ -917,12 +917,12 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener{
 			
 			int eid = data.getID();
 			int dim = data.getCoordinates().dim;
-			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.COMMAND, DataReq.TELEPORT, DataReq.ENTITIES, new TargetEntity(eid, dim)));
+			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.COMMAND_TELEPORT_ENTITIES, new TargetEntity(eid, dim)));
 			Minecraft.getMinecraft().setIngameFocus();			
 		}
 		
 		else if ((e.getSource() == btnTimingTERefresh) || (e.getSource() == btnTimingEntRefresh) || (e.getSource() == btnTimingHandlerRefresh) || (e.getSource() == btnTimingChunkRefresh) || (e.getSource() == btnSummaryReset)){
-			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.COMMAND, DataReq.START, DataReq.NONE));
+			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.COMMAND_START));
 		}
 		
 		else if ((e.getSource() == btnTimingEntKillTarget)){
@@ -932,8 +932,8 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener{
 		else if ((e.getSource() == btnAmountKillAll) && (tableEntityList.getSelectedRow() != -1)){
 			int indexData = tableEntityList.convertRowIndexToModel(tableEntityList.getSelectedRow());
 			AmountHolder data = DataCache.instance().getAmountEntities().get(indexData);
-			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.COMMAND, DataReq.KILLALL, DataReq.NONE, new SerialString(data.key)));
-			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.LIST, DataReq.AMOUNT, DataReq.ENTITIES));
+			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.COMMAND_KILLALL, new SerialString(data.key)));
+			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.LIST_AMOUNT_ENTITIES));
 		}
 	}
 
@@ -941,18 +941,18 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener{
 	public void itemStateChanged(ItemEvent e) {
 		if (e.getItem() == chkBoxDisplayAll){
 			if      (e.getStateChange() == ItemEvent.SELECTED){
-				PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.COMMAND, DataReq.FILTERING, DataReq.TRUE));
+				PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.COMMAND_FILTERING_TRUE));
 				this.requestAmoutEntityUpdate();
 			}
 			else if (e.getStateChange() == ItemEvent.DESELECTED){
-				PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.COMMAND, DataReq.FILTERING, DataReq.FALSE));
+				PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.COMMAND_FILTERING_FALSE));
 				this.requestAmoutEntityUpdate();				
 			}
 		}
 	}
 	
 	private void requestAmoutEntityUpdate(){
-		PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.LIST, DataReq.AMOUNT, DataReq.ENTITIES));
+		PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.LIST_AMOUNT_ENTITIES));
 	}
 
 

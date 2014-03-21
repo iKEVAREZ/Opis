@@ -134,13 +134,13 @@ public class OverlayEntityPerChunk implements IMwDataProvider {
 			this.showList = true;
 		
 		if (prevSelected == null && this.selectedChunk != null)
-			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.LIST, DataReq.CHUNK, DataReq.ENTITIES, this.selectedChunk));
+			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.LIST_CHUNK_ENTITIES, this.selectedChunk));
 
 		else if (this.selectedChunk != null && !this.selectedChunk.equals(prevSelected))
-			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.LIST, DataReq.CHUNK, DataReq.ENTITIES, this.selectedChunk));			
+			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.LIST_CHUNK_ENTITIES, this.selectedChunk));			
 		
 		else if (this.selectedChunk == null)
-			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.OVERLAY, DataReq.CHUNK, DataReq.ENTITIES));			
+			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.OVERLAY_CHUNK_ENTITIES));			
 	}
 
 	@Override
@@ -156,7 +156,7 @@ public class OverlayEntityPerChunk implements IMwDataProvider {
 
 	@Override
 	public void onOverlayActivated(MapView mapview) {
-		PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.OVERLAY, DataReq.CHUNK, DataReq.ENTITIES));
+		PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.OVERLAY_CHUNK_ENTITIES));
 	}
 
 	@Override

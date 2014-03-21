@@ -65,7 +65,7 @@ public class OverlayLoadedChunks implements IMwDataProvider {
 							MathHelper.ceiling_double_int(this.mapView.getX()) >> 4, 
 							MathHelper.ceiling_double_int(this.mapView.getZ()) >> 4);
 				} else {
-					PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.COMMAND, DataReq.TELEPORT, DataReq.BLOCK, new CoordinatesBlock(coord)));					
+					PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.COMMAND_TELEPORT_BLOCK, new CoordinatesBlock(coord)));					
 					Minecraft.getMinecraft().setIngameFocus();
 				}
 			}
@@ -186,7 +186,7 @@ public class OverlayLoadedChunks implements IMwDataProvider {
 	
 	@Override
 	public void onDimensionChanged(int dimension, MapView mapview) {
-		PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.LIST, DataReq.CHUNK, DataReq.LOADED, new SerialInt(dimension)));
+		PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.LIST_CHUNK_LOADED, new SerialInt(dimension)));
 	}
 
 	@Override
@@ -200,15 +200,15 @@ public class OverlayLoadedChunks implements IMwDataProvider {
 	@Override
 	public void onOverlayActivated(MapView mapview) {
 		this.selectedChunk = null;
-		PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.LIST, DataReq.CHUNK, DataReq.LOADED, new SerialInt(mapview.getDimension())));		
-		PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.LIST, DataReq.CHUNK, DataReq.TICKETS));		
+		PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.LIST_CHUNK_LOADED, new SerialInt(mapview.getDimension())));		
+		PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.LIST_CHUNK_TICKETS));		
 	}
 
 	@Override
 	public void onOverlayDeactivated(MapView mapview) {
 		this.showList = false;
 		this.selectedChunk = null;		
-		PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.COMMAND, DataReq.UNREGISTER, DataReq.NONE));
+		PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.COMMAND_UNREGISTER));
 	}
 
 	@Override

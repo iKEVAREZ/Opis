@@ -39,7 +39,7 @@ public class TableEntities extends ViewTable {
 			//PacketDispatcher.sendPacketToServer(Packet_ReqTeleport.create(coord));
 			int eid = ((StatsEntity)row.getObject()).getID();
 			int dim = ((StatsEntity)row.getObject()).getCoordinates().dim;
-			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.COMMAND, DataReq.TELEPORT, DataReq.ENTITIES, new TargetEntity(eid, dim)));
+			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.COMMAND_TELEPORT_ENTITIES, new TargetEntity(eid, dim)));
 			Minecraft.getMinecraft().setIngameFocus();			
 		}
 	}

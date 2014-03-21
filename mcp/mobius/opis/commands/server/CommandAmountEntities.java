@@ -46,7 +46,7 @@ public class CommandAmountEntities extends CommandBase implements IOpisCommand{
 			ents = EntityManager.getCumulativeEntities(true);
 		
 		if (icommandsender instanceof EntityPlayer)
-			((EntityPlayerMP)icommandsender).playerNetServerHandler.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST, DataReq.AMOUNT, DataReq.ENTITIES,  ents));
+			((EntityPlayerMP)icommandsender).playerNetServerHandler.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST_AMOUNT_ENTITIES,  ents));
 		else{
 			for (AmountHolder s : ents)
 				icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText(String.format("%s : %s", s.key, s.value)));

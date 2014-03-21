@@ -47,7 +47,7 @@ public class CommandTimingTileEntities extends CommandBase implements IOpisComma
 		}
 		
 		if (icommandsender instanceof EntityPlayer)		
-			((EntityPlayerMP)icommandsender).playerNetServerHandler.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST, DataReq.TIMING, DataReq.TILETENTS, tes));
+			((EntityPlayerMP)icommandsender).playerNetServerHandler.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST_TIMING_TILEENTS, tes));
 		else{
 			for (StatsTileEntity stat : tes){
 				icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText(stat.toString()));
