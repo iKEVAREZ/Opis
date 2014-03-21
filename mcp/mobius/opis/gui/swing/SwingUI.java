@@ -60,6 +60,7 @@ import net.minecraft.client.Minecraft;
 import javax.swing.ListSelectionModel;
 import javax.swing.JSeparator;
 import javax.swing.JProgressBar;
+import net.miginfocom.swing.MigLayout;
 
 public class SwingUI extends JFrame implements  ActionListener, ItemListener, WindowListener{
 
@@ -138,6 +139,14 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 	private JButton btnTimingChunkCenterMap;
 	private JButton btnTimingChunkTeleport;
 	private JProgressBar progBarSummaryOpis;
+	private JPanel panelPlayers;
+	private JButton btnPlayersCenterMap;
+	private JButton btnPlayersTeleport;
+	private JButton btnPlayersPull;
+	private JScrollPane scrollPanePlayers;
+	private JTable tablePlayers;
+	private JButton btnPlayers_Dummy1;
+	private JButton btnPlayers_Dummy2;
 	
 	public void showUI(){
 		EventQueue.invokeLater(new Runnable() {
@@ -439,50 +448,73 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 		gbc_lblSummaryTickChart.gridy = 12;
 		panelSummary.add(lblSummaryTickChart, gbc_lblSummaryTickChart);
 		
+		panelPlayers = new JPanel();
+		tabbedPane.addTab("Players", null, panelPlayers, null);
+		panelPlayers.setLayout(new MigLayout("", "[][][][][][grow][]", "[][grow]"));
+		
+		btnPlayersCenterMap = new JButton("Center Map");
+		panelPlayers.add(btnPlayersCenterMap, "cell 0 0,alignx left");
+		
+		btnPlayersTeleport = new JButton("Teleport");
+		panelPlayers.add(btnPlayersTeleport, "cell 1 0,alignx left");
+		
+		btnPlayersPull = new JButton("Pull");
+		panelPlayers.add(btnPlayersPull, "cell 2 0,alignx left");
+		
+		btnPlayers_Dummy1 = new JButton("Kill");
+		btnPlayers_Dummy1.setEnabled(false);
+		panelPlayers.add(btnPlayers_Dummy1, "cell 3 0");
+		
+		btnPlayers_Dummy2 = new JButton("Morph");
+		btnPlayers_Dummy2.setEnabled(false);
+		panelPlayers.add(btnPlayers_Dummy2, "cell 4 0");
+		
+		scrollPanePlayers = new JScrollPane();
+		panelPlayers.add(scrollPanePlayers, "cell 0 1 7 1,grow");
+		
+		tablePlayers = new JTable();
+		tablePlayers.setModel(new DefaultTableModel(
+			new Object[][] {
+				{null, null, null},
+			},
+			new String[] {
+				"Name", "Dimension", "Coordinates"
+			}
+		) {
+			Class[] columnTypes = new Class[] {
+				String.class, Integer.class, Object.class
+			};
+			public Class getColumnClass(int columnIndex) {
+				return columnTypes[columnIndex];
+			}
+			boolean[] columnEditables = new boolean[] {
+				false, false, false
+			};
+			public boolean isCellEditable(int row, int column) {
+				return columnEditables[column];
+			}
+		});
+		tablePlayers.getColumnModel().getColumn(2).setPreferredWidth(96);
+		scrollPanePlayers.setViewportView(tablePlayers);
+		
 		panelEntityAmount = new JPanel();
 		tabbedPane.addTab("Entity Amount", null, panelEntityAmount, null);
-		GridBagLayout gbl_panelEntityAmount = new GridBagLayout();
-		gbl_panelEntityAmount.columnWidths = new int[]{138, 489, 217, 0};
-		gbl_panelEntityAmount.rowHeights = new int[]{0, 402, 30, 0};
-		gbl_panelEntityAmount.columnWeights = new double[]{0.0, 0.0, 1.0, Double.MIN_VALUE};
-		gbl_panelEntityAmount.rowWeights = new double[]{0.0, 1.0, 0.0, Double.MIN_VALUE};
-		panelEntityAmount.setLayout(gbl_panelEntityAmount);
 		
 		chkBoxDisplayAll = new JCheckBox("Filter Entities");
-		GridBagConstraints gbc_chkBoxDisplayAll = new GridBagConstraints();
-		gbc_chkBoxDisplayAll.anchor = GridBagConstraints.WEST;
-		gbc_chkBoxDisplayAll.insets = new Insets(0, 0, 5, 5);
-		gbc_chkBoxDisplayAll.gridx = 0;
-		gbc_chkBoxDisplayAll.gridy = 0;
 		chkBoxDisplayAll.addItemListener(this);
-		panelEntityAmount.add(chkBoxDisplayAll, gbc_chkBoxDisplayAll);
+		panelEntityAmount.setLayout(new MigLayout("", "[left][left][481.00px,grow][right]", "[][324px,grow][]"));
+		panelEntityAmount.add(chkBoxDisplayAll, "cell 0 0,alignx left,aligny center");
 		
 		btnRefreshEntityAmount = new JButton("Refresh");
-		GridBagConstraints gbc_btnRefreshEntityAmount = new GridBagConstraints();
-		gbc_btnRefreshEntityAmount.anchor = GridBagConstraints.EAST;
-		gbc_btnRefreshEntityAmount.insets = new Insets(0, 0, 5, 0);
-		gbc_btnRefreshEntityAmount.gridx = 2;
-		gbc_btnRefreshEntityAmount.gridy = 0;
 		btnRefreshEntityAmount.addActionListener(this);
 		
 		btnAmountKillAll = new JButton("Kill All");
 		btnAmountKillAll.addActionListener(this);
-		GridBagConstraints gbc_btnAmountKillAll = new GridBagConstraints();
-		gbc_btnAmountKillAll.anchor = GridBagConstraints.WEST;
-		gbc_btnAmountKillAll.insets = new Insets(0, 0, 5, 5);
-		gbc_btnAmountKillAll.gridx = 1;
-		gbc_btnAmountKillAll.gridy = 0;
-		panelEntityAmount.add(btnAmountKillAll, gbc_btnAmountKillAll);
-		panelEntityAmount.add(btnRefreshEntityAmount, gbc_btnRefreshEntityAmount);
+		panelEntityAmount.add(btnAmountKillAll, "cell 1 0,alignx left,aligny center");
+		panelEntityAmount.add(btnRefreshEntityAmount, "cell 3 0,alignx right,aligny center");
 		
 		scrollPaneEntityAmount = new JScrollPane();
-		GridBagConstraints gbc_scrollPaneEntityAmount = new GridBagConstraints();
-		gbc_scrollPaneEntityAmount.gridwidth = 3;
-		gbc_scrollPaneEntityAmount.fill = GridBagConstraints.BOTH;
-		gbc_scrollPaneEntityAmount.insets = new Insets(0, 0, 5, 0);
-		gbc_scrollPaneEntityAmount.gridx = 0;
-		gbc_scrollPaneEntityAmount.gridy = 1;
-		panelEntityAmount.add(scrollPaneEntityAmount, gbc_scrollPaneEntityAmount);
+		panelEntityAmount.add(scrollPaneEntityAmount, "cell 0 1 4 1,grow");
 		
 		tableEntityList = new JTable();
 		tableEntityList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -514,63 +546,30 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 		
 		labelAmountTotal = new JLabel("Total");
 		labelAmountTotal.setHorizontalAlignment(SwingConstants.CENTER);
-		GridBagConstraints gbc_labelAmountTotal = new GridBagConstraints();
-		gbc_labelAmountTotal.fill = GridBagConstraints.BOTH;
-		gbc_labelAmountTotal.insets = new Insets(0, 0, 0, 5);
-		gbc_labelAmountTotal.gridx = 0;
-		gbc_labelAmountTotal.gridy = 2;
-		panelEntityAmount.add(labelAmountTotal, gbc_labelAmountTotal);
+		panelEntityAmount.add(labelAmountTotal, "cell 0 2,grow");
 		
 		labelAmountValue = new JLabel("0");
 		labelAmountValue.setHorizontalAlignment(SwingConstants.CENTER);
-		GridBagConstraints gbc_labelAmountValue = new GridBagConstraints();
-		gbc_labelAmountValue.fill = GridBagConstraints.BOTH;
-		gbc_labelAmountValue.gridx = 2;
-		gbc_labelAmountValue.gridy = 2;
-		panelEntityAmount.add(labelAmountValue, gbc_labelAmountValue);
+		panelEntityAmount.add(labelAmountValue, "cell 3 2,grow");
 		
 		panelTimingTE = new JPanel();
 		tabbedPane.addTab("TileEntity Timing", null, panelTimingTE, null);
-		GridBagLayout gbl_panelTimingTE = new GridBagLayout();
-		gbl_panelTimingTE.columnWidths = new int[]{63, 58, 0, 0};
-		gbl_panelTimingTE.rowHeights = new int[]{-12, 288, 20, 0};
-		gbl_panelTimingTE.columnWeights = new double[]{0.0, 0.0, 1.0, Double.MIN_VALUE};
-		gbl_panelTimingTE.rowWeights = new double[]{0.0, 1.0, 0.0, Double.MIN_VALUE};
-		panelTimingTE.setLayout(gbl_panelTimingTE);
 		
 		btnTimingTECenterMap = new JButton("Center Map");
-		GridBagConstraints gbc_btnTimingTECenterMap = new GridBagConstraints();
-		gbc_btnTimingTECenterMap.insets = new Insets(0, 0, 5, 5);
-		gbc_btnTimingTECenterMap.gridx = 0;
-		gbc_btnTimingTECenterMap.gridy = 0;
 		btnTimingTECenterMap.addActionListener(this);
-		panelTimingTE.add(btnTimingTECenterMap, gbc_btnTimingTECenterMap);
+		panelTimingTE.setLayout(new MigLayout("", "[left][left][233px,grow][right]", "[][334px,grow][]"));
+		panelTimingTE.add(btnTimingTECenterMap, "cell 0 0,alignx center,aligny center");
 		
 		btnTimingTETeleport = new JButton("Teleport");
-		GridBagConstraints gbc_btnTimingTETeleport = new GridBagConstraints();
-		gbc_btnTimingTETeleport.insets = new Insets(0, 0, 5, 5);
-		gbc_btnTimingTETeleport.gridx = 1;
-		gbc_btnTimingTETeleport.gridy = 0;
 		btnTimingTETeleport.addActionListener(this);
-		panelTimingTE.add(btnTimingTETeleport, gbc_btnTimingTETeleport);
+		panelTimingTE.add(btnTimingTETeleport, "cell 1 0,alignx center,aligny center");
 		
 		btnTimingTERefresh = new JButton("Run Opis");
-		GridBagConstraints gbc_btnTimingTERefresh = new GridBagConstraints();
-		gbc_btnTimingTERefresh.anchor = GridBagConstraints.EAST;
-		gbc_btnTimingTERefresh.insets = new Insets(0, 0, 5, 0);
-		gbc_btnTimingTERefresh.gridx = 2;
-		gbc_btnTimingTERefresh.gridy = 0;
 		btnTimingTERefresh.addActionListener(this);
-		panelTimingTE.add(btnTimingTERefresh, gbc_btnTimingTERefresh);
+		panelTimingTE.add(btnTimingTERefresh, "cell 3 0,alignx right,aligny center");
 		
 		JScrollPane scrollPaneTimingTE = new JScrollPane();
-		GridBagConstraints gbc_scrollPaneTimingTE = new GridBagConstraints();
-		gbc_scrollPaneTimingTE.insets = new Insets(0, 0, 5, 0);
-		gbc_scrollPaneTimingTE.gridwidth = 3;
-		gbc_scrollPaneTimingTE.fill = GridBagConstraints.BOTH;
-		gbc_scrollPaneTimingTE.gridx = 0;
-		gbc_scrollPaneTimingTE.gridy = 1;
-		panelTimingTE.add(scrollPaneTimingTE, gbc_scrollPaneTimingTE);
+		panelTimingTE.add(scrollPaneTimingTE, "cell 0 1 4 1,grow");
 		
 		tableTimingTE = new JTable();
 		tableTimingTE.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -594,63 +593,30 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 		scrollPaneTimingTE.setViewportView(tableTimingTE);
 		
 		lblTimingTEValue = new JLabel("Total update time : 0 µs");
-		GridBagConstraints gbc_lblTimingTEValue = new GridBagConstraints();
-		gbc_lblTimingTEValue.gridwidth = 3;
-		gbc_lblTimingTEValue.insets = new Insets(0, 0, 0, 5);
-		gbc_lblTimingTEValue.gridx = 0;
-		gbc_lblTimingTEValue.gridy = 2;
-		panelTimingTE.add(lblTimingTEValue, gbc_lblTimingTEValue);
+		panelTimingTE.add(lblTimingTEValue, "cell 0 2 4 1,alignx center,aligny center");
 		
 		panelTimingEnt = new JPanel();
 		tabbedPane.addTab("EntityTiming", null, panelTimingEnt, null);
-		GridBagLayout gbl_panelTimingEnt = new GridBagLayout();
-		gbl_panelTimingEnt.columnWidths = new int[]{89, 70, 0, 0, 0};
-		gbl_panelTimingEnt.rowHeights = new int[]{11, 0, 20, 0};
-		gbl_panelTimingEnt.columnWeights = new double[]{0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
-		gbl_panelTimingEnt.rowWeights = new double[]{0.0, 1.0, 0.0, Double.MIN_VALUE};
-		panelTimingEnt.setLayout(gbl_panelTimingEnt);
 		
 		btnTimingEntCenterMap = new JButton("Center Map");
-		GridBagConstraints gbc_btnTimingEntCenterMap = new GridBagConstraints();
-		gbc_btnTimingEntCenterMap.insets = new Insets(0, 0, 5, 5);
-		gbc_btnTimingEntCenterMap.gridx = 0;
-		gbc_btnTimingEntCenterMap.gridy = 0;
 		btnTimingEntCenterMap.addActionListener(this);
-		panelTimingEnt.add(btnTimingEntCenterMap, gbc_btnTimingEntCenterMap);
+		panelTimingEnt.setLayout(new MigLayout("", "[left][left][left][grow][right]", "[][334px,grow][]"));
+		panelTimingEnt.add(btnTimingEntCenterMap, "cell 0 0,alignx center,aligny center");
 		
 		btnTimingEntTeleport = new JButton("Teleport");
-		GridBagConstraints gbc_btnTimingEntTeleport = new GridBagConstraints();
-		gbc_btnTimingEntTeleport.insets = new Insets(0, 0, 5, 5);
-		gbc_btnTimingEntTeleport.gridx = 1;
-		gbc_btnTimingEntTeleport.gridy = 0;
 		btnTimingEntTeleport.addActionListener(this);
-		panelTimingEnt.add(btnTimingEntTeleport, gbc_btnTimingEntTeleport);
+		panelTimingEnt.add(btnTimingEntTeleport, "cell 1 0,alignx center,aligny center");
 		
 		btnTimingEntRefresh = new JButton("Run Opis");
-		GridBagConstraints gbc_btnTimingEntRefresh = new GridBagConstraints();
-		gbc_btnTimingEntRefresh.anchor = GridBagConstraints.EAST;
-		gbc_btnTimingEntRefresh.insets = new Insets(0, 0, 5, 0);
-		gbc_btnTimingEntRefresh.gridx = 3;
-		gbc_btnTimingEntRefresh.gridy = 0;
 		btnTimingEntRefresh.addActionListener(this);
-		panelTimingEnt.add(btnTimingEntRefresh, gbc_btnTimingEntRefresh);
+		panelTimingEnt.add(btnTimingEntRefresh, "cell 4 0,alignx right,aligny center");
 		
 		btnTimingEntPull = new JButton("Pull");
-		GridBagConstraints gbc_btnTimingPull = new GridBagConstraints();
-		gbc_btnTimingPull.insets = new Insets(0, 0, 5, 5);
-		gbc_btnTimingPull.gridx = 2;
-		gbc_btnTimingPull.gridy = 0;
 		btnTimingEntPull.addActionListener(this);		
-		panelTimingEnt.add(btnTimingEntPull, gbc_btnTimingPull);
+		panelTimingEnt.add(btnTimingEntPull, "cell 2 0,alignx center,aligny center");
 		
 		scrollPaneTimingEnt = new JScrollPane();
-		GridBagConstraints gbc_scrollPaneTimingEnt = new GridBagConstraints();
-		gbc_scrollPaneTimingEnt.insets = new Insets(0, 0, 5, 0);
-		gbc_scrollPaneTimingEnt.gridwidth = 4;
-		gbc_scrollPaneTimingEnt.fill = GridBagConstraints.BOTH;
-		gbc_scrollPaneTimingEnt.gridx = 0;
-		gbc_scrollPaneTimingEnt.gridy = 1;
-		panelTimingEnt.add(scrollPaneTimingEnt, gbc_scrollPaneTimingEnt);
+		panelTimingEnt.add(scrollPaneTimingEnt, "cell 0 1 5 1,grow");
 		
 		tableTimingEnt = new JTable();
 		tableTimingEnt.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -673,37 +639,18 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 		scrollPaneTimingEnt.setViewportView(tableTimingEnt);
 		
 		lblTimingEntValue = new JLabel("Total update time : 0 µs");
-		GridBagConstraints gbc_lblTimingEntValue = new GridBagConstraints();
-		gbc_lblTimingEntValue.gridwidth = 4;
-		gbc_lblTimingEntValue.gridx = 0;
-		gbc_lblTimingEntValue.gridy = 2;
-		panelTimingEnt.add(lblTimingEntValue, gbc_lblTimingEntValue);
+		panelTimingEnt.add(lblTimingEntValue, "cell 0 2 5 1,alignx center,aligny center");
 		
 		panelTimingHandler = new JPanel();
 		tabbedPane.addTab("Handlers Timing", null, panelTimingHandler, null);
-		GridBagLayout gbl_panelTimingHandler = new GridBagLayout();
-		gbl_panelTimingHandler.columnWidths = new int[]{649, 0};
-		gbl_panelTimingHandler.rowHeights = new int[]{-12, 341, 0, 0};
-		gbl_panelTimingHandler.columnWeights = new double[]{1.0, Double.MIN_VALUE};
-		gbl_panelTimingHandler.rowWeights = new double[]{0.0, 1.0, 0.0, Double.MIN_VALUE};
-		panelTimingHandler.setLayout(gbl_panelTimingHandler);
 		
 		btnTimingHandlerRefresh = new JButton("Run Opis");
-		GridBagConstraints gbc_btnTimingHandlerRefresh = new GridBagConstraints();
-		gbc_btnTimingHandlerRefresh.anchor = GridBagConstraints.EAST;
-		gbc_btnTimingHandlerRefresh.insets = new Insets(0, 0, 5, 0);
-		gbc_btnTimingHandlerRefresh.gridx = 0;
-		gbc_btnTimingHandlerRefresh.gridy = 0;
 		btnTimingHandlerRefresh.addActionListener(this);
-		panelTimingHandler.add(btnTimingHandlerRefresh, gbc_btnTimingHandlerRefresh);
+		panelTimingHandler.setLayout(new MigLayout("", "[495px,grow][]", "[][339px,grow][]"));
+		panelTimingHandler.add(btnTimingHandlerRefresh, "cell 1 0,alignx right,aligny center");
 		
 		scrollPaneTimingHandler = new JScrollPane();
-		GridBagConstraints gbc_scrollPaneTimingHandler = new GridBagConstraints();
-		gbc_scrollPaneTimingHandler.insets = new Insets(0, 0, 5, 0);
-		gbc_scrollPaneTimingHandler.fill = GridBagConstraints.BOTH;
-		gbc_scrollPaneTimingHandler.gridx = 0;
-		gbc_scrollPaneTimingHandler.gridy = 1;
-		panelTimingHandler.add(scrollPaneTimingHandler, gbc_scrollPaneTimingHandler);
+		panelTimingHandler.add(scrollPaneTimingHandler, "cell 0 1 2 1,grow");
 		
 		tableTimingHandler = new JTable();
 		tableTimingHandler.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -726,45 +673,22 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 		scrollPaneTimingHandler.setViewportView(tableTimingHandler);
 		
 		lblTimingHandlerValue = new JLabel("Total update time : 0 µs");
-		GridBagConstraints gbc_lblTimingHandlerValue = new GridBagConstraints();
-		gbc_lblTimingHandlerValue.gridx = 0;
-		gbc_lblTimingHandlerValue.gridy = 2;
-		panelTimingHandler.add(lblTimingHandlerValue, gbc_lblTimingHandlerValue);
+		panelTimingHandler.add(lblTimingHandlerValue, "cell 0 2 2 1,alignx center,aligny center");
 		
 		panelTimingChunk = new JPanel();
 		tabbedPane.addTab("Chunk Timing", null, panelTimingChunk, null);
-		GridBagLayout gbl_panelTimingChunk = new GridBagLayout();
-		gbl_panelTimingChunk.columnWidths = new int[]{96, 416, 649, 0};
-		gbl_panelTimingChunk.rowHeights = new int[]{-15, 308, 0};
-		gbl_panelTimingChunk.columnWeights = new double[]{0.0, 0.0, 1.0, Double.MIN_VALUE};
-		gbl_panelTimingChunk.rowWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
-		panelTimingChunk.setLayout(gbl_panelTimingChunk);
 		
 		btnTimingChunkCenterMap = new JButton("Center Map");
-		GridBagConstraints gbc_btnTimingChunkCenterMap = new GridBagConstraints();
-		gbc_btnTimingChunkCenterMap.anchor = GridBagConstraints.WEST;
-		gbc_btnTimingChunkCenterMap.insets = new Insets(0, 0, 5, 5);
-		gbc_btnTimingChunkCenterMap.gridx = 0;
-		gbc_btnTimingChunkCenterMap.gridy = 0;
 		btnTimingChunkCenterMap.addActionListener(this);
-		panelTimingChunk.add(btnTimingChunkCenterMap, gbc_btnTimingChunkCenterMap);
+		panelTimingChunk.setLayout(new MigLayout("", "[left][left][97px,grow][right]", "[][359px,grow]"));
+		panelTimingChunk.add(btnTimingChunkCenterMap, "cell 0 0,alignx left,aligny center");
 		
 		btnTimingChunkTeleport = new JButton("Teleport");
-		GridBagConstraints gbc_btnTimingChunkTeleport = new GridBagConstraints();
-		gbc_btnTimingChunkTeleport.anchor = GridBagConstraints.WEST;
-		gbc_btnTimingChunkTeleport.insets = new Insets(0, 0, 5, 5);
-		gbc_btnTimingChunkTeleport.gridx = 1;
-		gbc_btnTimingChunkTeleport.gridy = 0;
 		btnTimingChunkTeleport.addActionListener(this);		
-		panelTimingChunk.add(btnTimingChunkTeleport, gbc_btnTimingChunkTeleport);
+		panelTimingChunk.add(btnTimingChunkTeleport, "cell 1 0,alignx left,aligny center");
 		
 		scrollPaneTimingChunk = new JScrollPane();
-		GridBagConstraints gbc_scrollPaneTimingChunk = new GridBagConstraints();
-		gbc_scrollPaneTimingChunk.gridwidth = 3;
-		gbc_scrollPaneTimingChunk.fill = GridBagConstraints.BOTH;
-		gbc_scrollPaneTimingChunk.gridx = 0;
-		gbc_scrollPaneTimingChunk.gridy = 1;
-		panelTimingChunk.add(scrollPaneTimingChunk, gbc_scrollPaneTimingChunk);
+		panelTimingChunk.add(scrollPaneTimingChunk, "cell 0 1 4 1,grow");
 		
 		tableTimingChunk = new JTable();
 		tableTimingChunk.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -787,14 +711,8 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 		scrollPaneTimingChunk.setViewportView(tableTimingChunk);
 		
 		btnTimingChunkRefresh = new JButton("Run Opis");
-		GridBagConstraints gbc_btnTimingChunkRefresh = new GridBagConstraints();
-		gbc_btnTimingChunkRefresh.gridwidth = 3;
-		gbc_btnTimingChunkRefresh.insets = new Insets(0, 0, 5, 0);
-		gbc_btnTimingChunkRefresh.anchor = GridBagConstraints.EAST;
-		gbc_btnTimingChunkRefresh.gridx = 0;
-		gbc_btnTimingChunkRefresh.gridy = 0;
 		btnTimingChunkRefresh.addActionListener(this);
-		panelTimingChunk.add(btnTimingChunkRefresh, gbc_btnTimingChunkRefresh);
+		panelTimingChunk.add(btnTimingChunkRefresh, "cell 3 0,alignx right,aligny center");
 		
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 		centerRenderer.setHorizontalAlignment( JLabel.CENTER );
@@ -1031,5 +949,8 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 
 	public JProgressBar getProgBarSummaryOpis() {
 		return progBarSummaryOpis;
+	}
+	public JTable getTablePlayers() {
+		return tablePlayers;
 	}
 }
