@@ -59,6 +59,7 @@ import net.minecraft.client.Minecraft;
 
 import javax.swing.ListSelectionModel;
 import javax.swing.JSeparator;
+import javax.swing.JProgressBar;
 
 public class SwingUI extends JFrame implements  ActionListener, ItemListener, WindowListener{
 
@@ -136,6 +137,7 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 	private JLabel lblNewLabel_6;
 	private JButton btnTimingChunkCenterMap;
 	private JButton btnTimingChunkTeleport;
+	private JProgressBar progBarSummaryOpis;
 	
 	public void showUI(){
 		EventQueue.invokeLater(new Runnable() {
@@ -254,6 +256,14 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 		gbc_lblNewLabel_4.gridx = 12;
 		gbc_lblNewLabel_4.gridy = 2;
 		panelSummary.add(lblNewLabel_4, gbc_lblNewLabel_4);
+		
+		progBarSummaryOpis = new JProgressBar();
+		GridBagConstraints gbc_progBarSummaryOpis = new GridBagConstraints();
+		gbc_progBarSummaryOpis.fill = GridBagConstraints.HORIZONTAL;
+		gbc_progBarSummaryOpis.insets = new Insets(0, 0, 5, 0);
+		gbc_progBarSummaryOpis.gridx = 15;
+		gbc_progBarSummaryOpis.gridy = 2;
+		panelSummary.add(progBarSummaryOpis, gbc_progBarSummaryOpis);
 		
 		lblSummary_3 = new JLabel("Tile Entities");
 		GridBagConstraints gbc_lblSummary_3 = new GridBagConstraints();
@@ -1019,4 +1029,7 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 	@Override
 	public void windowOpened(WindowEvent arg0) {}
 
+	public JProgressBar getProgBarSummaryOpis() {
+		return progBarSummaryOpis;
+	}
 }

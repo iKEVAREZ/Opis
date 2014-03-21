@@ -191,6 +191,10 @@ public class OpisPacketHandler implements IPacketHandler {
 				SwingUI.instance().getBtnTimingEntRefresh().setText("Running...");
 				SwingUI.instance().getBtnTimingHandlerRefresh().setText("Running...");
 				SwingUI.instance().getBtnTimingTERefresh().setText("Running...");
+				
+				SwingUI.instance().getProgBarSummaryOpis().setValue(0);
+				SwingUI.instance().getProgBarSummaryOpis().setMinimum(0);
+				SwingUI.instance().getProgBarSummaryOpis().setMaximum(((SerialInt)castedPacket.data).value);
 			}
 			     
 			else if (castedPacket.dataReq == DataReq.STATUS_STOP){
@@ -199,7 +203,15 @@ public class OpisPacketHandler implements IPacketHandler {
 				SwingUI.instance().getBtnTimingEntRefresh().setText("Run Opis");
 				SwingUI.instance().getBtnTimingHandlerRefresh().setText("Run Opis");
 				SwingUI.instance().getBtnTimingTERefresh().setText("Run Opis");
-			}			     
+				
+				SwingUI.instance().getProgBarSummaryOpis().setValue(((SerialInt)castedPacket.data).value);
+				SwingUI.instance().getProgBarSummaryOpis().setMinimum(0);
+				SwingUI.instance().getProgBarSummaryOpis().setMaximum(((SerialInt)castedPacket.data).value);				
+			}
+			     
+			else if (castedPacket.dataReq == DataReq.STATUS_RUN_UPDATE){
+				SwingUI.instance().getProgBarSummaryOpis().setValue(((SerialInt)castedPacket.data).value);
+			}
 		}
 	}
 

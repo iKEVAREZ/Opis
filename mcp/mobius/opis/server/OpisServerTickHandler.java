@@ -43,7 +43,7 @@ public class OpisServerTickHandler implements ITickHandler {
 
 	public long profilerUpdateTickCounter = 0;	
 	public long clientUpdateTickCounter = 0;
-	public long profilerRunningTicks;
+	public int  profilerRunningTicks;
 	public long timeLastUpdate = System.nanoTime();
 	
 	public static OpisServerTickHandler instance;
@@ -65,7 +65,9 @@ public class OpisServerTickHandler implements ITickHandler {
 				for (Player player : PlayerTracker.instance().playersSwing){				
 					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE_AMOUNT_UPLOAD,   new SerialLong(PacketProfiler.instance().dataSizeOut)), player);
 					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE_AMOUNT_DOWNLOAD, new SerialLong(PacketProfiler.instance().dataSizeIn)),  player);
-					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE_TIMING_TICK,     TickProfiler.instance().stats), player);					
+					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE_TIMING_TICK,     TickProfiler.instance().stats), player);
+					
+					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.STATUS_RUN_UPDATE,     new SerialInt(profilerRunningTicks)), player);
 				}
 				PacketProfiler.instance().dataSizeOut = 0L;
 				PacketProfiler.instance().dataSizeIn  = 0L;
@@ -124,7 +126,7 @@ public class OpisServerTickHandler implements ITickHandler {
 					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE_AMOUNT_ENTITIES, new SerialInt(EntityManager.stats.size())),          (Player)player);
 					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE_AMOUNT_HANDLERS, new SerialInt(TickHandlerManager.startStats.size())),(Player)player);
 					
-					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.STATUS_STOP, new SerialInt(0)), player);
+					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.STATUS_STOP, new SerialInt(modOpis.profilerMaxTicks)), player);
 				}
 				
 				for (Player player : PlayerTracker.instance().playersOpis)
