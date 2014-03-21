@@ -4,6 +4,7 @@ import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
 import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.commands.IOpisCommand;
+import mcp.mobius.opis.data.holders.basetypes.SerialInt;
 import mcp.mobius.opis.data.managers.EntityManager;
 import mcp.mobius.opis.data.managers.MetaManager;
 import mcp.mobius.opis.data.managers.TickHandlerManager;
@@ -11,6 +12,8 @@ import mcp.mobius.opis.data.managers.TileEntityManager;
 import mcp.mobius.opis.data.server.EntityProfiler;
 import mcp.mobius.opis.data.server.HandlerProfiler;
 import mcp.mobius.opis.data.server.TileEntityProfiler;
+import mcp.mobius.opis.network.enums.DataReq;
+import mcp.mobius.opis.network.server.Packet_DataValue;
 import mcp.mobius.opis.server.OpisServerTickHandler;
 import mcp.mobius.opis.server.PlayerTracker;
 import net.minecraft.command.CommandBase;
@@ -47,9 +50,12 @@ public class CommandStart extends CommandBase implements IOpisCommand {
 		modOpis.profilerRun = true;
 		ProfilerRegistrar.turnOn();
 		
-		if (icommandsender instanceof EntityPlayer)
+		if (icommandsender instanceof EntityPlayer){
 			PlayerTracker.instance().playersOpis.add((Player)icommandsender);
+			((EntityPlayerMP)icommandsender).playerNetServerHandler.sendPacketToPlayer(Packet_DataValue.create(DataReq.STATUS_START, new SerialInt(modOpis.profilerMaxTicks)));			
+		}
 		icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText(String.format("\u00A7oOpis started with a tick delay %s.", modOpis.profilerDelay)));
+
 		
 	}
 

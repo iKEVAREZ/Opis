@@ -183,7 +183,23 @@ public class OpisPacketHandler implements IPacketHandler {
 				DataCache.instance().setAmountUpload(((SerialLong)castedPacket.data).value);		
 			
 			else if (castedPacket.dataReq == DataReq.VALUE_AMOUNT_DOWNLOAD)
-				DataCache.instance().setAmountDownload(((SerialLong)castedPacket.data).value);				
+				DataCache.instance().setAmountDownload(((SerialLong)castedPacket.data).value);	
+			     
+			else if (castedPacket.dataReq == DataReq.STATUS_START){
+				SwingUI.instance().getBtnTimingChunkRefresh().setText("Running...");
+				SwingUI.instance().getBtnSummaryRefresh().setText("Running...");
+				SwingUI.instance().getBtnTimingEntRefresh().setText("Running...");
+				SwingUI.instance().getBtnTimingHandlerRefresh().setText("Running...");
+				SwingUI.instance().getBtnTimingTERefresh().setText("Running...");
+			}
+			     
+			else if (castedPacket.dataReq == DataReq.STATUS_STOP){
+				SwingUI.instance().getBtnTimingChunkRefresh().setText("Run Opis");
+				SwingUI.instance().getBtnSummaryRefresh().setText("Run Opis");
+				SwingUI.instance().getBtnTimingEntRefresh().setText("Run Opis");
+				SwingUI.instance().getBtnTimingHandlerRefresh().setText("Run Opis");
+				SwingUI.instance().getBtnTimingTERefresh().setText("Run Opis");
+			}			     
 		}
 	}
 

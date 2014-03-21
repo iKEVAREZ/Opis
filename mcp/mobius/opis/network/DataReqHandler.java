@@ -143,6 +143,7 @@ public class DataReqHandler {
 			MetaManager.reset();	
 			modOpis.profilerRun = true;
 			ProfilerRegistrar.turnOn();
+			PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.STATUS_START, new SerialInt(modOpis.profilerMaxTicks)), (Player)player);			
 		}		
 		
 		else if (maintype == DataReq.COMMAND_TELEPORT_BLOCK){

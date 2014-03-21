@@ -117,7 +117,7 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 	private JLabel lblSummaryAmountHandlers;
 	private JLabel lblSummary_1;
 	private JLabel label;
-	private JButton btnSummaryReset;
+	private JButton btnSummaryRefresh;
 	private JButton btnTimingEntPull;
 	private JButton btnAmountKillAll;
 	private JLabel lblSummary_11;
@@ -199,14 +199,14 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 		gbc_lblNewLabel_6.gridy = 1;
 		panelSummary.add(lblNewLabel_6, gbc_lblNewLabel_6);
 		
-		btnSummaryReset = new JButton("Run Opis");
+		btnSummaryRefresh = new JButton("Run Opis");
 		GridBagConstraints gbc_btnSummaryReset = new GridBagConstraints();
 		gbc_btnSummaryReset.anchor = GridBagConstraints.EAST;
 		gbc_btnSummaryReset.insets = new Insets(0, 0, 5, 0);
 		gbc_btnSummaryReset.gridx = 15;
 		gbc_btnSummaryReset.gridy = 1;
-		btnSummaryReset.addActionListener(this);
-		panelSummary.add(btnSummaryReset, gbc_btnSummaryReset);
+		btnSummaryRefresh.addActionListener(this);
+		panelSummary.add(btnSummaryRefresh, gbc_btnSummaryReset);
 		
 		lblSummary_13 = new JLabel("World Tick");
 		lblSummary_13.setToolTipText("This is the world tick profiling.\nThe server will update the time, do random block ticks\nand this kind of things while inside this code part.");
@@ -872,6 +872,22 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 		return lblSummaryDownload;
 	}	
 	
+	public JButton getBtnSummaryRefresh() {
+		return btnSummaryRefresh;
+	}
+	public JButton getBtnTimingTERefresh() {
+		return btnTimingTERefresh;
+	}
+	public JButton getBtnTimingEntRefresh() {
+		return btnTimingEntRefresh;
+	}
+	public JButton getBtnTimingHandlerRefresh() {
+		return btnTimingHandlerRefresh;
+	}
+	public JButton getBtnTimingChunkRefresh() {
+		return btnTimingChunkRefresh;
+	}	
+	
 	//public JLabel getLblSummaryTimingGlobalUpdate() {
 	//	return lblSummaryTimingGlobalUpdate;
 	//}
@@ -934,7 +950,7 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.COMMAND_TELEPORT_PULL_ENTITY, new TargetEntity(eid, dim)));
 		}		
 		
-		else if ((e.getSource() == btnTimingTERefresh) || (e.getSource() == btnTimingEntRefresh) || (e.getSource() == btnTimingHandlerRefresh) || (e.getSource() == btnTimingChunkRefresh) || (e.getSource() == btnSummaryReset)){
+		else if ((e.getSource() == btnTimingTERefresh) || (e.getSource() == btnTimingEntRefresh) || (e.getSource() == btnTimingHandlerRefresh) || (e.getSource() == btnTimingChunkRefresh) || (e.getSource() == btnSummaryRefresh)){
 			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.COMMAND_START));
 		}
 		
@@ -1002,8 +1018,5 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 
 	@Override
 	public void windowOpened(WindowEvent arg0) {}
-
-
-
 
 }

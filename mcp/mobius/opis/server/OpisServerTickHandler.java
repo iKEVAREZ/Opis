@@ -122,7 +122,9 @@ public class OpisServerTickHandler implements ITickHandler {
 					
 					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE_AMOUNT_TILEENTS, new SerialInt(TileEntityManager.stats.size())),      (Player)player);
 					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE_AMOUNT_ENTITIES, new SerialInt(EntityManager.stats.size())),          (Player)player);
-					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE_AMOUNT_HANDLERS, new SerialInt(TickHandlerManager.startStats.size())),(Player)player);					
+					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE_AMOUNT_HANDLERS, new SerialInt(TickHandlerManager.startStats.size())),(Player)player);
+					
+					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.STATUS_STOP, new SerialInt(0)), player);
 				}
 				
 				for (Player player : PlayerTracker.instance().playersOpis)
