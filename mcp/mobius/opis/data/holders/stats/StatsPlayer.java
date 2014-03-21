@@ -25,6 +25,10 @@ public class StatsPlayer extends StatAbstract {
 		this.coord = coord;
 		this.chunk = coord.asCoordinatesChunk();
 	}
+
+	public int getEID(){
+		return this.eid;
+	}
 	
 	@Override
 	public void writeToStream(DataOutputStream stream) throws IOException {

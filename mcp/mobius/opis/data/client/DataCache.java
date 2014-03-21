@@ -298,6 +298,8 @@ public class DataCache {
 	}
 	
 	public void setListPlayers(ArrayList<ISerializable> playerList){
+		int row = SwingUI.instance().getTablePlayers().getSelectedRow();
+		
 		this.listPlayers.clear();
 		for (ISerializable stat : playerList)
 			this.listPlayers.add((StatsPlayer)stat);
@@ -313,7 +315,13 @@ public class DataCache {
 					 });
 		}
 		
-		model.fireTableDataChanged();			
+		model.fireTableDataChanged();
+		
+		try{
+			SwingUI.instance().getTablePlayers().setRowSelectionInterval(row, row);
+		} catch (IllegalArgumentException e ){
+			
+		}		
 	}
 	
 	private void clearRows(DefaultTableModel model){
