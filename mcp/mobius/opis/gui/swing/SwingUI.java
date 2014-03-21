@@ -194,7 +194,7 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 		gbc_lblNewLabel_6.gridy = 1;
 		panelSummary.add(lblNewLabel_6, gbc_lblNewLabel_6);
 		
-		btnSummaryReset = new JButton("Refresh");
+		btnSummaryReset = new JButton("Run Opis");
 		GridBagConstraints gbc_btnSummaryReset = new GridBagConstraints();
 		gbc_btnSummaryReset.anchor = GridBagConstraints.EAST;
 		gbc_btnSummaryReset.insets = new Insets(0, 0, 5, 0);
@@ -217,7 +217,7 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 		gbc_lblSummaryTimingWorldTick.anchor = GridBagConstraints.EAST;
 		gbc_lblSummaryTimingWorldTick.insets = new Insets(0, 0, 5, 5);
 		gbc_lblSummaryTimingWorldTick.gridx = 4;
-		gbc_lblSummaryTimingWorldTick.gridy = 2;
+		gbc_lblSummaryTimingWorldTick.gridy = 2; 
 		panelSummary.add(lblSummaryTimingWorldTick, gbc_lblSummaryTimingWorldTick);
 		
 		lblSummary_14 = new JLabel("ms");
@@ -427,7 +427,7 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 		panelEntityAmount = new JPanel();
 		tabbedPane.addTab("Entity Amount", null, panelEntityAmount, null);
 		GridBagLayout gbl_panelEntityAmount = new GridBagLayout();
-		gbl_panelEntityAmount.columnWidths = new int[]{217, 407, 217, 0};
+		gbl_panelEntityAmount.columnWidths = new int[]{138, 489, 217, 0};
 		gbl_panelEntityAmount.rowHeights = new int[]{0, 402, 30, 0};
 		gbl_panelEntityAmount.columnWeights = new double[]{0.0, 0.0, 1.0, Double.MIN_VALUE};
 		gbl_panelEntityAmount.rowWeights = new double[]{0.0, 1.0, 0.0, Double.MIN_VALUE};
@@ -453,7 +453,7 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 		btnAmountKillAll = new JButton("Kill All");
 		btnAmountKillAll.addActionListener(this);
 		GridBagConstraints gbc_btnAmountKillAll = new GridBagConstraints();
-		gbc_btnAmountKillAll.anchor = GridBagConstraints.EAST;
+		gbc_btnAmountKillAll.anchor = GridBagConstraints.WEST;
 		gbc_btnAmountKillAll.insets = new Insets(0, 0, 5, 5);
 		gbc_btnAmountKillAll.gridx = 1;
 		gbc_btnAmountKillAll.gridy = 0;
@@ -539,7 +539,7 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 		btnTimingTETeleport.addActionListener(this);
 		panelTimingTE.add(btnTimingTETeleport, gbc_btnTimingTETeleport);
 		
-		btnTimingTERefresh = new JButton("Refresh");
+		btnTimingTERefresh = new JButton("Run Opis");
 		GridBagConstraints gbc_btnTimingTERefresh = new GridBagConstraints();
 		gbc_btnTimingTERefresh.anchor = GridBagConstraints.EAST;
 		gbc_btnTimingTERefresh.insets = new Insets(0, 0, 5, 0);
@@ -617,7 +617,7 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 		btnTimingEntTeleport.addActionListener(this);
 		panelTimingEnt.add(btnTimingEntTeleport, gbc_btnTimingEntTeleport);
 		
-		btnTimingEntRefresh = new JButton("Refresh");
+		btnTimingEntRefresh = new JButton("Run Opis");
 		GridBagConstraints gbc_btnTimingEntRefresh = new GridBagConstraints();
 		gbc_btnTimingEntRefresh.anchor = GridBagConstraints.EAST;
 		gbc_btnTimingEntRefresh.insets = new Insets(0, 0, 5, 0);
@@ -686,7 +686,7 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 		gbl_panelTimingHandler.rowWeights = new double[]{0.0, 1.0, 0.0, Double.MIN_VALUE};
 		panelTimingHandler.setLayout(gbl_panelTimingHandler);
 		
-		btnTimingHandlerRefresh = new JButton("Refresh");
+		btnTimingHandlerRefresh = new JButton("Run Opis");
 		GridBagConstraints gbc_btnTimingHandlerRefresh = new GridBagConstraints();
 		gbc_btnTimingHandlerRefresh.anchor = GridBagConstraints.EAST;
 		gbc_btnTimingHandlerRefresh.insets = new Insets(0, 0, 5, 0);
@@ -778,7 +778,7 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 		tableTimingChunk.setAutoCreateRowSorter(true);		
 		scrollPaneTimingChunk.setViewportView(tableTimingChunk);
 		
-		btnTimingChunkRefresh = new JButton("Refresh");
+		btnTimingChunkRefresh = new JButton("Run Opis");
 		GridBagConstraints gbc_btnTimingChunkRefresh = new GridBagConstraints();
 		gbc_btnTimingChunkRefresh.anchor = GridBagConstraints.EAST;
 		gbc_btnTimingChunkRefresh.gridx = 0;

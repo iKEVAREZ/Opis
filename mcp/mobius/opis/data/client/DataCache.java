@@ -152,7 +152,7 @@ public class DataCache {
 		
 		
 		//JFreeChart chart = ChartFactory.createXYLineChart("", "Seconds", "Update Time [ms]", dataset, PlotOrientation.VERTICAL, false, false, false);
-		JFreeChart chart = ChartFactory.createXYAreaChart("", "Ticks * 20", "Update Time [ms]", dataset, PlotOrientation.VERTICAL, false, false, false);
+		JFreeChart chart = ChartFactory.createXYAreaChart("", "Seconds", "Update Time [ms]", dataset, PlotOrientation.VERTICAL, false, false, false);
 		chart.setBackgroundPaint(new Color(255,255,255,0));
 		XYPlot xyPlot = chart.getXYPlot();
 		xyPlot.getRendererForDataset(dataset).setSeriesPaint(0, Color.BLUE);
