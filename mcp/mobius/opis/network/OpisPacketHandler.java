@@ -22,6 +22,7 @@ import mcp.mobius.opis.data.managers.TileEntityManager;
 import mcp.mobius.opis.gui.swing.SwingUI;
 import mcp.mobius.opis.network.client.Packet_ReqChunks;
 import mcp.mobius.opis.network.client.Packet_ReqData;
+import mcp.mobius.opis.network.enums.AccessLevel;
 import mcp.mobius.opis.network.enums.DataReq;
 import mcp.mobius.opis.network.server.Packet_Chunks;
 import mcp.mobius.opis.network.server.Packet_ClientCommand;
@@ -186,7 +187,7 @@ public class OpisPacketHandler implements IPacketHandler {
 	void onPacketToServer(INetworkManager manager, Packet250CustomPayload packet, Player player, Byte header) {
 		if (header == Packets.REQ_CHUNKS){
 			Packet_ReqChunks castedPacket = new Packet_ReqChunks(packet);
-			if (PlayerTracker.instance().isOp(player)){				
+			if (PlayerTracker.instance().getPlayerAccessLevel(player).ordinal() > AccessLevel.PRIVILEGED.ordinal()){				
 				ArrayList<Chunk> list = new ArrayList();
 				World world = DimensionManager.getWorld(castedPacket.dim);
 				
@@ -210,7 +211,7 @@ public class OpisPacketHandler implements IPacketHandler {
 		
 		else if (header == Packets.REQ_DATA){
 			Packet_ReqData castedPacket = new Packet_ReqData(packet);
-			if (PlayerTracker.instance().isOp(player)){	
+			if (castedPacket.dataReq.canPlayerUseCommand(player)){
 				DataReqHandler.instance().handle(castedPacket.dataReq, castedPacket.param1, castedPacket.param2,  player);
 			}
 		}

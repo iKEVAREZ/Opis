@@ -23,7 +23,7 @@ public class CommandRmPrivileged extends CommandBase  implements IOpisCommand{
 
 	@Override
 	public void processCommand(ICommandSender icommandsender, String[] astring) {
-		if (PlayerTracker.instance().isPlayerPrivileged(astring[0])){
+		if (PlayerTracker.instance().isPrivileged(astring[0])){
 			PlayerTracker.instance().rmPrivilegedPlayer(astring[0]);
 			icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText(String.format("Player %s removed from Opis user list.", astring[0])));			
 		} else {
@@ -43,7 +43,7 @@ public class CommandRmPrivileged extends CommandBase  implements IOpisCommand{
 		if (sender  instanceof DedicatedServer) return true;
 		if ((sender instanceof EntityPlayerMP) && ((EntityPlayerMP)sender).playerNetServerHandler.netManager instanceof MemoryConnection) return true;
 		if (!(sender instanceof DedicatedServer) && !(sender instanceof EntityPlayerMP)) return true;
-		return PlayerTracker.instance().isTrueOP(((EntityPlayerMP)sender).username);
+		return PlayerTracker.instance().isAdmin(((EntityPlayerMP)sender).username);
     }
 	
 	@Override

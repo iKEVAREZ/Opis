@@ -1,5 +1,9 @@
 package mcp.mobius.opis.network.enums;
 
+import static mcp.mobius.opis.network.enums.AccessLevel.*;
+import cpw.mods.fml.common.network.Player;
+import mcp.mobius.opis.server.PlayerTracker;
+
 public enum DataReq {
 	
 	LIST_CHUNK_TILEENTS,
@@ -25,10 +29,10 @@ public enum DataReq {
 	VALUE_AMOUNT_UPLOAD,
 	VALUE_AMOUNT_DOWNLOAD,
 	
-	COMMAND_TELEPORT_BLOCK,
-	COMMAND_TELEPORT_ENTITIES,
-	COMMAND_START,
-	COMMAND_KILLALL,
+	COMMAND_TELEPORT_BLOCK(PRIVILEGED),
+	COMMAND_TELEPORT_ENTITIES(PRIVILEGED),
+	COMMAND_START(PRIVILEGED),
+	COMMAND_KILLALL(PRIVILEGED),
 	COMMAND_FILTERING_TRUE,
 	COMMAND_FILTERING_FALSE,
 	COMMAND_UNREGISTER,
@@ -36,17 +40,29 @@ public enum DataReq {
 	OVERLAY_CHUNK_ENTITIES,
 	OVERLAY_CHUNK_TIMING;
 	
-	private int accessLevel = 0;
+	private AccessLevel accessLevel = AccessLevel.NONE;
 	
 	private DataReq(){
-		accessLevel = 0;
+		accessLevel = AccessLevel.NONE;
 	}
 
-	private DataReq(int level){
+	private DataReq(AccessLevel level){
 		accessLevel = level;
 	}	
 	
-	public int getAccesLevel(){
+	public AccessLevel getAccessLevel(){
 		return this.accessLevel;
 	}
+
+	public void setAccessLevel(AccessLevel level){
+		this.accessLevel = level;
+	}	
+	
+	public boolean canPlayerUseCommand(Player player){
+		return PlayerTracker.instance().getPlayerAccessLevel(player).ordinal() >= this.accessLevel.ordinal();
+	}
+	
+	public boolean canPlayerUseCommand(String name){
+		return PlayerTracker.instance().getPlayerAccessLevel(name).ordinal() >= this.accessLevel.ordinal();
+	}	
 }

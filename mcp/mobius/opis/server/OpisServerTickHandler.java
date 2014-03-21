@@ -63,10 +63,10 @@ public class OpisServerTickHandler implements ITickHandler {
 			
 			if (System.nanoTime() - timeLastUpdate > 1000000000){
 				timeLastUpdate = System.nanoTime();
-				for (EntityPlayer player : PlayerTracker.instance().playersSwing){				
-					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE_AMOUNT_UPLOAD,   new SerialLong(PacketProfiler.instance().dataSizeOut)), (Player)player);
-					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE_AMOUNT_DOWNLOAD, new SerialLong(PacketProfiler.instance().dataSizeIn)),  (Player)player);
-					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE_TIMING_TICK,     TickProfiler.instance().stats), (Player)player);					
+				for (Player player : PlayerTracker.instance().playersSwing){				
+					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE_AMOUNT_UPLOAD,   new SerialLong(PacketProfiler.instance().dataSizeOut)), player);
+					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE_AMOUNT_DOWNLOAD, new SerialLong(PacketProfiler.instance().dataSizeIn)),  player);
+					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE_TIMING_TICK,     TickProfiler.instance().stats), player);					
 				}
 				PacketProfiler.instance().dataSizeOut = 0L;
 				PacketProfiler.instance().dataSizeIn  = 0L;
@@ -100,34 +100,34 @@ public class OpisServerTickHandler implements ITickHandler {
 				SerialDouble totalEntUpdate   = new SerialDouble(GlobalTimingManager.getTotalEntUpdateStats());
 
 				
-				for (EntityPlayer player : PlayerTracker.instance().playersSwing){
+				for (Player player : PlayerTracker.instance().playersSwing){
 
 					// This portion is to get the proper filtered amounts depending on the player preferences.
-					String name = player.getEntityName();
+					String name = ((EntityPlayer)player).getEntityName();
 					boolean filtered = false;
 					if (PlayerTracker.instance().filteredAmount.containsKey(name))
 						filtered = PlayerTracker.instance().filteredAmount.get(name);
 					ArrayList<AmountHolder> amountEntities = EntityManager.getCumulativeEntities(filtered);
 
 					// Here we send a full update to the player
-					PacketDispatcher.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST_AMOUNT_ENTITIES,    amountEntities),  (Player)player); 					
-					PacketDispatcher.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST_TIMING_HANDLERS,    timingHandlers),  (Player)player);
-					PacketDispatcher.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST_TIMING_ENTITIES,    timingEntities),  (Player)player);
-					PacketDispatcher.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST_TIMING_TILEENTS,    timingTileEnts),  (Player)player);
-					PacketDispatcher.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST_TIMING_CHUNK,       timingChunks),    (Player)player);
-					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE_TIMING_TILEENTS,  totalTimeTE),     (Player)player);
-					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE_TIMING_ENTITIES,  totalTimeEnt),    (Player)player);
-					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE_TIMING_HANDLERS,  totalTimeHandler),(Player)player);
-					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE_TIMING_WORLDTICK, totalWorldTick),  (Player)player);		
-					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE_TIMING_ENTUPDATE, totalEntUpdate),  (Player)player);					
+					PacketDispatcher.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST_AMOUNT_ENTITIES,    amountEntities),  player); 					
+					PacketDispatcher.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST_TIMING_HANDLERS,    timingHandlers),  player);
+					PacketDispatcher.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST_TIMING_ENTITIES,    timingEntities),  player);
+					PacketDispatcher.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST_TIMING_TILEENTS,    timingTileEnts),  player);
+					PacketDispatcher.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST_TIMING_CHUNK,       timingChunks),    player);
+					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE_TIMING_TILEENTS,  totalTimeTE),     player);
+					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE_TIMING_ENTITIES,  totalTimeEnt),    player);
+					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE_TIMING_HANDLERS,  totalTimeHandler),player);
+					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE_TIMING_WORLDTICK, totalWorldTick),  player);		
+					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE_TIMING_ENTUPDATE, totalEntUpdate),  player);					
 					
 					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE_AMOUNT_TILEENTS, new SerialInt(TileEntityManager.stats.size())),      (Player)player);
 					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE_AMOUNT_ENTITIES, new SerialInt(EntityManager.stats.size())),          (Player)player);
 					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE_AMOUNT_HANDLERS, new SerialInt(TickHandlerManager.startStats.size())),(Player)player);					
 				}
 				
-				for (EntityPlayer player : PlayerTracker.instance().playersOpis)
-					PacketDispatcher.sendPacketToPlayer(new Packet3Chat(ChatMessageComponent.createFromText(String.format("\u00A7oOpis automaticly stopped after %d ticks.", modOpis.profilerMaxTicks))), (Player)player);
+				for (Player player : PlayerTracker.instance().playersOpis)
+					PacketDispatcher.sendPacketToPlayer(new Packet3Chat(ChatMessageComponent.createFromText(String.format("\u00A7oOpis automaticly stopped after %d ticks.", modOpis.profilerMaxTicks))), player);
 
 			}			
 		}

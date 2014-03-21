@@ -41,10 +41,10 @@ public class CommandStop extends CommandBase implements IOpisCommand {
 		ProfilerRegistrar.turnOff();
 
 		if (icommandsender instanceof EntityPlayer)
-			PlayerTracker.instance().playersOpis.add((EntityPlayer)icommandsender);
+			PlayerTracker.instance().playersOpis.add((Player)icommandsender);
 		
-		for (EntityPlayer player : PlayerTracker.instance().playersOpis)
-			PacketDispatcher.sendPacketToPlayer(new Packet3Chat(ChatMessageComponent.createFromText(String.format("\u00A7oOpis stopped."))), (Player)player);
+		for (Player player : PlayerTracker.instance().playersOpis)
+			PacketDispatcher.sendPacketToPlayer(new Packet3Chat(ChatMessageComponent.createFromText(String.format("\u00A7oOpis stopped."))), player);
 		
 		if (!(icommandsender instanceof EntityPlayer))
 			icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText(String.format("\u00A7oOpis stopped.")));
@@ -62,7 +62,7 @@ public class CommandStop extends CommandBase implements IOpisCommand {
 		if (sender instanceof DedicatedServer) return true;
 		if ((sender instanceof EntityPlayerMP) && ((EntityPlayerMP)sender).playerNetServerHandler.netManager instanceof MemoryConnection) return true;
 		if (!(sender instanceof DedicatedServer) && !(sender instanceof EntityPlayerMP)) return true;
-		return PlayerTracker.instance().isOp(((EntityPlayerMP)sender).username);
+		return PlayerTracker.instance().isPrivileged(((EntityPlayerMP)sender).username);
     }
 
 	@Override

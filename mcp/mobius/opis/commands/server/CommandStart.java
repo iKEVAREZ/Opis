@@ -48,7 +48,7 @@ public class CommandStart extends CommandBase implements IOpisCommand {
 		ProfilerRegistrar.turnOn();
 		
 		if (icommandsender instanceof EntityPlayer)
-			PlayerTracker.instance().playersOpis.add((EntityPlayer)icommandsender);
+			PlayerTracker.instance().playersOpis.add((Player)icommandsender);
 		icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText(String.format("\u00A7oOpis started with a tick delay %s.", modOpis.profilerDelay)));
 		
 	}
@@ -65,7 +65,7 @@ public class CommandStart extends CommandBase implements IOpisCommand {
 		if (sender instanceof DedicatedServer) return true;
 		if ((sender instanceof EntityPlayerMP) && ((EntityPlayerMP)sender).playerNetServerHandler.netManager instanceof MemoryConnection) return true;
 		if (!(sender instanceof DedicatedServer) && !(sender instanceof EntityPlayerMP)) return true;
-		return PlayerTracker.instance().isOp(((EntityPlayerMP)sender).username);
+		return PlayerTracker.instance().isPrivileged(((EntityPlayerMP)sender).username);
     }
 
 	@Override

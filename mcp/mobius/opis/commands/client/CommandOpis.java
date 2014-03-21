@@ -3,6 +3,7 @@ package mcp.mobius.opis.commands.client;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
+import cpw.mods.fml.common.network.Player;
 import mcp.mobius.opis.network.DataReqHandler;
 import mcp.mobius.opis.network.enums.ClientCommand;
 import mcp.mobius.opis.network.server.Packet_ClientCommand;
@@ -26,8 +27,8 @@ public class CommandOpis extends CommandBase {
 
 	@Override
 	public void processCommand(ICommandSender icommandsender, String[] astring) {
-		PlayerTracker.instance().playersSwing.add((EntityPlayer)icommandsender);
-		PlayerTracker.instance().playersOpis.add((EntityPlayer)icommandsender);
+		PlayerTracker.instance().playersSwing.add((Player)icommandsender);
+		PlayerTracker.instance().playersOpis.add((Player)icommandsender);
 		((EntityPlayerMP)icommandsender).playerNetServerHandler.sendPacketToPlayer(Packet_ClientCommand.create(ClientCommand.SHOW_SWING));
 	}
 	
