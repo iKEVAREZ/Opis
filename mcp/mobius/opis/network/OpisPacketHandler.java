@@ -30,7 +30,6 @@ import mcp.mobius.opis.network.server.Packet_DataList;
 import mcp.mobius.opis.network.server.Packet_DataOverlayChunkEntities;
 import mcp.mobius.opis.network.server.Packet_DataValue;
 import mcp.mobius.opis.network.server.Packet_LoadedChunks;
-import mcp.mobius.opis.network.server.Packet_MeanTime;
 import mcp.mobius.opis.network.server.Packet_ModMeanTime;
 import mcp.mobius.opis.network.server.Packet_TPS;
 import mcp.mobius.opis.network.server.Packet_Tickets;
@@ -76,10 +75,12 @@ public class OpisPacketHandler implements IPacketHandler {
 			ChunkManager.chunksLoad = castedPacket.chunkStatus;
 		}
 
+		/*
 		else if (header == Packets.MEANTIME){
 			Packet_MeanTime castedPacket = new Packet_MeanTime(packet);
 			ChunkManager.chunkMeanTime = castedPacket.chunkStatus;
-		}			
+		}
+		*/			
 
 		else if (header == Packets.TICKETS){
 			Packet_Tickets castedPacket = new Packet_Tickets(packet);
@@ -130,8 +131,10 @@ public class OpisPacketHandler implements IPacketHandler {
 			else if (castedPacket.dataReq == DataReq.LIST_TIMING_HANDLERS)
 				DataCache.instance().setTimingHandlers(castedPacket.data);		
 			
-			else if (castedPacket.dataReq == DataReq.LIST_TIMING_CHUNK)
+			else if (castedPacket.dataReq == DataReq.LIST_TIMING_CHUNK){
 				DataCache.instance().setTimingChunks(castedPacket.data);
+				ChunkManager.setChunkMeanTime(castedPacket.data);
+			}
 			
 			else if (castedPacket.dataReq == DataReq.LIST_AMOUNT_ENTITIES)
 				DataCache.instance().setAmountEntities(castedPacket.data);			

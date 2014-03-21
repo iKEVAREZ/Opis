@@ -31,7 +31,6 @@ import mcp.mobius.opis.network.enums.DataReq;
 import mcp.mobius.opis.network.server.Packet_DataList;
 import mcp.mobius.opis.network.server.Packet_DataValue;
 import mcp.mobius.opis.network.server.Packet_LoadedChunks;
-import mcp.mobius.opis.network.server.Packet_MeanTime;
 import mcp.mobius.opis.overlay.OverlayStatus;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.TickType;
@@ -147,8 +146,10 @@ public class OpisServerTickHandler implements ITickHandler {
 		for (Player player : PlayerTracker.instance().playerOverlayStatus.keySet()){
 			if (PlayerTracker.instance().playerOverlayStatus.get(player) == OverlayStatus.CHUNKSTATUS)
 				PacketDispatcher.sendPacketToPlayer( Packet_LoadedChunks.create(ChunkManager.getLoadedChunks(PlayerTracker.instance().playerDimension.get(player))), player);
-			if (PlayerTracker.instance().playerOverlayStatus.get(player) == OverlayStatus.MEANTIME)
-				PacketDispatcher.sendPacketToPlayer( Packet_MeanTime.create(TileEntityManager.getTimes(PlayerTracker.instance().playerDimension.get(player)), PlayerTracker.instance().playerDimension.get(player)), player);
+			if (PlayerTracker.instance().playerOverlayStatus.get(player) == OverlayStatus.MEANTIME){
+				ArrayList<StatsChunk> timingChunks = ChunkManager.getTopChunks(100);
+				PacketDispatcher.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST_TIMING_CHUNK, timingChunks), player);
+			}
 		}
 	}
 	

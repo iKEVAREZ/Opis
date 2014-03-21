@@ -14,16 +14,19 @@ public class StatsChunk extends StatAbstract{
 	
 	public StatsChunk(CoordinatesChunk chunk){
 		this.chunk = chunk;
+		this.coord = chunk.asCoordinatesBlock();
 	}
 
 	public StatsChunk(CoordinatesChunk chunk, int tileEntities, int entities){
 		this.chunk = chunk;
+		this.coord = chunk.asCoordinatesBlock();		
 		this.tileEntities = tileEntities;
 		this.entities     = entities;
 	}	
 	
 	public StatsChunk(CoordinatesChunk chunk, int tileEntities, int entities, double time){
 		this.chunk = chunk;
+		this.coord = chunk.asCoordinatesBlock();		
 		this.tileEntities = tileEntities;
 		this.entities     = entities;
 		this.setDataSum(time);
@@ -36,11 +39,6 @@ public class StatsChunk extends StatAbstract{
 	public void addEntity(){
 		this.entities += 1;
 	}
-	
-	@Override
-	public CoordinatesChunk getChunk(){
-		return this.chunk;
-	}	
 	
 	@Override
 	public   void writeToStream(DataOutputStream stream) throws IOException{

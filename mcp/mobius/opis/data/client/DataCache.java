@@ -282,7 +282,7 @@ public class DataCache {
 		for (StatsChunk stat : DataCache.instance().getTimingChunks()){
 			model.addRow(new Object[]  {
 					 stat.getChunk().dim,
-					 String.format("[ %4d %4d ]", 	stat.getChunk().x, stat.getChunk().z),
+					 String.format("[ %4d %4d ]", 	stat.getChunk().chunkX, stat.getChunk().chunkZ),
 					 stat.tileEntities,
 				     stat.entities,
 				     stat});

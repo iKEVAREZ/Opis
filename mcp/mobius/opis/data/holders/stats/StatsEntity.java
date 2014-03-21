@@ -15,20 +15,21 @@ import mcp.mobius.opis.data.holders.basetypes.CoordinatesBlock;
 public class StatsEntity extends StatAbstract implements ISerializable {
 
 	private int entId;
-	private int dim;
 	private double cachedMedian = -1.0;	
-	private double x, y, z;
 	
 	public StatsEntity(int entId, String name, int dim, double x, double y, double z){
 		this.entId = entId;
 		this.name  = name;
-		this.dim   = dim;
-		this.x     = x;
-		this.y     = y;
-		this.z     = z;
+		this.coord = new CoordinatesBlock(dim, x, y, z);
+		this.chunk = this.coord.asCoordinatesChunk();
 	}
-	
 
+	public StatsEntity(int entId, String name, CoordinatesBlock coord){
+		this.entId = entId;
+		this.name  = name;
+		this.coord = coord;
+		this.chunk = this.coord.asCoordinatesChunk();
+	}	
 	
 	public int getID(){ return this.entId; }
 	
@@ -52,25 +53,17 @@ public class StatsEntity extends StatAbstract implements ISerializable {
 	}
 
 	@Override
-	public CoordinatesBlock getCoordinates(){
-		return new CoordinatesBlock(this.dim, this.x, this.y, this.z);
-	}
-	
-	@Override
 	public   void writeToStream(DataOutputStream stream) throws IOException{
+		this.coord.writeToStream(stream);
 		stream.writeInt(this.entId);
 		Packet.writeString(this.name, stream);
-		stream.writeInt(this.dim);
-		stream.writeDouble(this.x);
-		stream.writeDouble(this.y);
-		stream.writeDouble(this.z);
 		stream.writeDouble(this.getGeometricMean());
 		stream.writeLong(this.getDataPoints());
 	}
 
 	public static  StatsEntity readFromStream(DataInputStream stream) throws IOException {
-		StatsEntity stats = new StatsEntity(stream.readInt(), Packet.readString(stream, 255), stream.readInt(),
-											stream.readDouble(), stream.readDouble(), stream.readDouble());
+		CoordinatesBlock coord = CoordinatesBlock.readFromStream(stream);
+		StatsEntity stats = new StatsEntity(stream.readInt(), Packet.readString(stream, 255), coord);
 		stats.setGeometricMean(stream.readDouble());
 		stats.setDataPoints(stream.readLong());
 		return stats;

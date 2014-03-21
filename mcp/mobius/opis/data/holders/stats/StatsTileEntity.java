@@ -20,6 +20,7 @@ public class StatsTileEntity extends StatAbstract implements ISerializable {
 	
 	public StatsTileEntity(CoordinatesBlock coord, int blockID, short blockMeta){
 		this.coord = coord;
+		this.chunk = coord.asCoordinatesChunk();
 		//this.name    = teclass;
 		this.blockID   = blockID;
 		this.blockMeta = blockMeta;

@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
+import mcp.mobius.opis.data.holders.ISerializable;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesChunk;
 import mcp.mobius.opis.data.holders.basetypes.TicketData;
 import mcp.mobius.opis.data.holders.stats.StatsChunk;
@@ -22,10 +23,20 @@ public class ChunkManager {
 	
 
 	
-	public static HashMap<ChunkCoordIntPair, Boolean>       chunksLoad    = new HashMap<ChunkCoordIntPair, Boolean>();
-	public static HashMap<CoordinatesChunk, StatsChunk> chunkMeanTime = new HashMap<CoordinatesChunk, StatsChunk>();
-	public static ArrayList<TicketData> tickets = new ArrayList<TicketData>();
+	public  static HashMap<ChunkCoordIntPair, Boolean>       chunksLoad = new HashMap<ChunkCoordIntPair, Boolean>();
+	private static HashMap<CoordinatesChunk, StatsChunk>  chunkMeanTime = new HashMap<CoordinatesChunk, StatsChunk>();
+	public  static ArrayList<TicketData> tickets = new ArrayList<TicketData>();
 
+	public static void setChunkMeanTime(ArrayList<ISerializable> stats){
+		chunkMeanTime.clear();
+		for (ISerializable stat : stats)
+			chunkMeanTime.put(((StatsChunk)stat).getChunk(), (StatsChunk)stat);
+	}
+	
+	public static HashMap<CoordinatesChunk, StatsChunk> getChunkMeanTime(){
+		return chunkMeanTime;
+	}
+	
 	public static HashMap<Integer, HashMap<ChunkCoordIntPair, Boolean>> getAllLoadedChunks(){
 		HashMap<Integer, HashMap<ChunkCoordIntPair, Boolean>> chunkStatus = new HashMap<Integer, HashMap<ChunkCoordIntPair, Boolean>>();
 		for (int dim : DimensionManager.getIDs())

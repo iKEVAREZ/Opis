@@ -43,9 +43,11 @@ import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.data.client.DataCache;
 import mcp.mobius.opis.data.holders.basetypes.AmountHolder;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesBlock;
+import mcp.mobius.opis.data.holders.basetypes.CoordinatesChunk;
 import mcp.mobius.opis.data.holders.basetypes.SerialString;
 import mcp.mobius.opis.data.holders.basetypes.TargetEntity;
 import mcp.mobius.opis.data.holders.stats.StatAbstract;
+import mcp.mobius.opis.data.holders.stats.StatsChunk;
 import mcp.mobius.opis.data.holders.stats.StatsEntity;
 import mcp.mobius.opis.data.holders.stats.StatsTileEntity;
 import mcp.mobius.opis.data.managers.TileEntityManager;
@@ -132,6 +134,7 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 	private JLabel lblNewLabel_4;
 	private JLabel lblNewLabel_5;
 	private JLabel lblNewLabel_6;
+	private JButton btnTimingChunkTeleportToChunk;
 	
 	public void showUI(){
 		EventQueue.invokeLater(new Runnable() {
@@ -720,15 +723,24 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 		panelTimingChunk = new JPanel();
 		tabbedPane.addTab("Chunk Timing", null, panelTimingChunk, null);
 		GridBagLayout gbl_panelTimingChunk = new GridBagLayout();
-		gbl_panelTimingChunk.columnWidths = new int[]{649, 0};
+		gbl_panelTimingChunk.columnWidths = new int[]{649, 649, 0};
 		gbl_panelTimingChunk.rowHeights = new int[]{-15, 308, 0};
-		gbl_panelTimingChunk.columnWeights = new double[]{1.0, Double.MIN_VALUE};
+		gbl_panelTimingChunk.columnWeights = new double[]{1.0, 1.0, Double.MIN_VALUE};
 		gbl_panelTimingChunk.rowWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
 		panelTimingChunk.setLayout(gbl_panelTimingChunk);
 		
+		btnTimingChunkTeleportToChunk = new JButton("Teleport");
+		btnTimingChunkTeleportToChunk.addActionListener(this);
+		GridBagConstraints gbc_btnTimingChunkTeleportToChunk = new GridBagConstraints();
+		gbc_btnTimingChunkTeleportToChunk.anchor = GridBagConstraints.WEST;
+		gbc_btnTimingChunkTeleportToChunk.insets = new Insets(0, 0, 5, 5);
+		gbc_btnTimingChunkTeleportToChunk.gridx = 0;
+		gbc_btnTimingChunkTeleportToChunk.gridy = 0;
+		panelTimingChunk.add(btnTimingChunkTeleportToChunk, gbc_btnTimingChunkTeleportToChunk);
+		
 		scrollPaneTimingChunk = new JScrollPane();
 		GridBagConstraints gbc_scrollPaneTimingChunk = new GridBagConstraints();
-		gbc_scrollPaneTimingChunk.insets = new Insets(0, 0, 5, 0);
+		gbc_scrollPaneTimingChunk.gridwidth = 2;
 		gbc_scrollPaneTimingChunk.fill = GridBagConstraints.BOTH;
 		gbc_scrollPaneTimingChunk.gridx = 0;
 		gbc_scrollPaneTimingChunk.gridy = 1;
@@ -756,6 +768,8 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 		
 		btnTimingChunkRefresh = new JButton("Run Opis");
 		GridBagConstraints gbc_btnTimingChunkRefresh = new GridBagConstraints();
+		gbc_btnTimingChunkRefresh.gridwidth = 2;
+		gbc_btnTimingChunkRefresh.insets = new Insets(0, 0, 5, 0);
 		gbc_btnTimingChunkRefresh.anchor = GridBagConstraints.EAST;
 		gbc_btnTimingChunkRefresh.gridx = 0;
 		gbc_btnTimingChunkRefresh.gridy = 0;
@@ -920,6 +934,13 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.COMMAND_KILLALL, new SerialString(data.key)));
 			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.LIST_AMOUNT_ENTITIES));
 		}
+		
+		else if ((e.getSource() == btnTimingChunkTeleportToChunk) && (tableTimingChunk.getSelectedRow() != -1)){
+			int indexData = tableTimingChunk.convertRowIndexToModel(tableTimingChunk.getSelectedRow());
+			StatsChunk data = DataCache.instance().getTimingChunks().get(indexData);
+			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.COMMAND_TELEPORT_CHUNK, data.getChunk()));
+		}
+		
 	}
 
 	@Override

@@ -6,6 +6,8 @@ import java.util.logging.Level;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.world.World;
+import net.minecraftforge.common.DimensionManager;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
 import mcp.mobius.mobiuscore.profiler.ProfilerRegistrar;
@@ -36,7 +38,6 @@ import mcp.mobius.opis.network.server.Packet_DataList;
 import mcp.mobius.opis.network.server.Packet_DataOverlayChunkEntities;
 import mcp.mobius.opis.network.server.Packet_DataValue;
 import mcp.mobius.opis.network.server.Packet_LoadedChunks;
-import mcp.mobius.opis.network.server.Packet_MeanTime;
 import mcp.mobius.opis.network.server.Packet_Tickets;
 import mcp.mobius.opis.overlay.OverlayStatus;
 import mcp.mobius.opis.server.PlayerTracker;
@@ -60,9 +61,8 @@ public class DataReqHandler {
 		}
 		
 		else if (maintype == DataReq.OVERLAY_CHUNK_TIMING){
-			PlayerTracker.instance().playerOverlayStatus.put(player, OverlayStatus.MEANTIME);
-			PlayerTracker.instance().playerDimension.put(player, ((SerialInt)param1).value);
-			PacketDispatcher.sendPacketToPlayer(Packet_MeanTime.create(TileEntityManager.getTimes(((SerialInt)param1).value), ((SerialInt)param1).value), player);
+			ArrayList<StatsChunk> timingChunks = ChunkManager.getTopChunks(100);
+			PacketDispatcher.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST_TIMING_CHUNK,  timingChunks), (Player)player);
 		}		
 		
 		else if (maintype == DataReq.LIST_CHUNK_TILEENTS){
@@ -156,6 +156,17 @@ public class DataReqHandler {
 		else if (maintype == DataReq.COMMAND_TELEPORT_PULL_ENTITY){
 			EntityManager.teleportEntity(EntityManager.getEntity(((TargetEntity)param1).entityID, ((TargetEntity)param1).dim), (EntityPlayerMP)player, player);
 		}		
+		
+		else if (maintype == DataReq.COMMAND_TELEPORT_CHUNK){
+			CoordinatesChunk chunkCoord = (CoordinatesChunk)param1;
+			World world = DimensionManager.getWorld(chunkCoord.dim);
+			if (world == null) return;
+			
+			CoordinatesBlock blockCoord = new CoordinatesBlock(chunkCoord.dim, chunkCoord.x + 8, world.getTopSolidOrLiquidBlock(chunkCoord.x, chunkCoord.z), chunkCoord.z + 8);
+			
+			EntityManager.teleportPlayer(blockCoord, (EntityPlayerMP)player);
+		}		
+				
 		
 		else if (maintype == DataReq.COMMAND_KILLALL){
 			EntityManager.killAll(((SerialString)param1).value);

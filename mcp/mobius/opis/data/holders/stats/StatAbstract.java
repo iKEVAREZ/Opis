@@ -14,8 +14,8 @@ public abstract class StatAbstract implements Comparable, ISerializable{
 	public    Long   dataPoints  = 0L;
 	protected Double geomMean        = null;
 	protected Double dataSum         = null;
-	protected CoordinatesBlock coord = null;
-	protected CoordinatesChunk chunk = null;
+	protected CoordinatesBlock coord = new CoordinatesBlock(0,0,0,0);
+	protected CoordinatesChunk chunk = new CoordinatesChunk(0,0,0);
 	protected String name;
 	
 	public void addMeasure(long timing){
@@ -71,7 +71,7 @@ public abstract class StatAbstract implements Comparable, ISerializable{
 	public String getName(){ return this.name; };
 	
 	public CoordinatesBlock getCoordinates(){return this.coord;}
-	public CoordinatesChunk getChunk(){return new CoordinatesChunk(this.getCoordinates());}	
+	public CoordinatesChunk getChunk(){return this.chunk;}	
 	
 	public abstract void  writeToStream(DataOutputStream stream) throws IOException;
 
