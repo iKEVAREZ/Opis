@@ -495,6 +495,7 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 			}
 		});
 		tablePlayers.getColumnModel().getColumn(2).setPreferredWidth(96);
+		tablePlayers.setAutoCreateRowSorter(true);
 		scrollPanePlayers.setViewportView(tablePlayers);
 		
 		panelEntityAmount = new JPanel();
@@ -733,6 +734,9 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 		
 		for (int i = 0; i < tableTimingChunk.getColumnCount(); i++)
 			tableTimingChunk.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+		
+		for (int i = 0; i < tablePlayers.getColumnCount(); i++)
+			tablePlayers.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);		
 	}
 
 	public JTable getTableEntityList() {

@@ -30,6 +30,7 @@ import mcp.mobius.opis.data.holders.basetypes.AmountHolder;
 import mcp.mobius.opis.data.holders.stats.StatAbstract;
 import mcp.mobius.opis.data.holders.stats.StatsChunk;
 import mcp.mobius.opis.data.holders.stats.StatsEntity;
+import mcp.mobius.opis.data.holders.stats.StatsPlayer;
 import mcp.mobius.opis.data.holders.stats.StatsTick;
 import mcp.mobius.opis.data.holders.stats.StatsTickHandler;
 import mcp.mobius.opis.data.holders.stats.StatsTileEntity;
@@ -46,6 +47,7 @@ public class DataCache {
 	private ArrayList<StatsEntity>      timingEntities = new ArrayList<StatsEntity>(); 
 	private ArrayList<StatsTileEntity>  timingTileEnts = new ArrayList<StatsTileEntity>();
 	private ArrayList<StatsChunk>       timingChunks   = new ArrayList<StatsChunk>();
+	private ArrayList<StatsPlayer>		listPlayers    = new ArrayList<StatsPlayer>();
 	
 	private double timingHandlersTotal = 0D;
 	private double timingEntitiesTotal = 0D;
@@ -290,6 +292,29 @@ public class DataCache {
 		
 		model.fireTableDataChanged();				
 	}	
+	
+	public ArrayList<StatsPlayer> getListPlayers(){
+		return this.listPlayers;
+	}
+	
+	public void setListPlayers(ArrayList<ISerializable> playerList){
+		this.listPlayers.clear();
+		for (ISerializable stat : playerList)
+			this.listPlayers.add((StatsPlayer)stat);
+		
+		DefaultTableModel model = (DefaultTableModel)SwingUI.instance().getTablePlayers().getModel();
+		this.clearRows(model);
+		
+		for (StatsPlayer stat : DataCache.instance().getListPlayers()){
+			model.addRow(new Object[]  {
+					stat.getName(),
+					stat.getCoordinates().dim,
+					String.format("[ %4d %4d %4d ]", 	stat.getCoordinates().x, stat.getCoordinates().y, stat.getCoordinates().z),  
+					 });
+		}
+		
+		model.fireTableDataChanged();			
+	}
 	
 	private void clearRows(DefaultTableModel model){
 		if (model.getRowCount() > 0)

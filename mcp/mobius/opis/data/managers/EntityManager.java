@@ -3,15 +3,18 @@ package mcp.mobius.opis.data.managers;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.network.packet.Packet3Chat;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatMessageComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
@@ -19,6 +22,7 @@ import mcp.mobius.opis.data.holders.basetypes.AmountHolder;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesBlock;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesChunk;
 import mcp.mobius.opis.data.holders.stats.StatsEntity;
+import mcp.mobius.opis.data.holders.stats.StatsPlayer;
 
 public class EntityManager {
 
@@ -341,6 +345,16 @@ public class EntityManager {
 		System.out.printf("Killed %d %s\n", nkilled, entName);		
 		
 		return nkilled;		
+	}
+	
+	public static ArrayList<StatsPlayer> getAllPlayers(){
+		List players = MinecraftServer.getServerConfigurationManager(MinecraftServer.getServer()).playerEntityList;
+		ArrayList<StatsPlayer> outList = new ArrayList<StatsPlayer>();
+		
+		for (Object p : players)
+			outList.add(new StatsPlayer((EntityPlayer) p));
+		
+		return outList;
 	}
 	
 }

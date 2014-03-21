@@ -147,6 +147,10 @@ public class OpisPacketHandler implements IPacketHandler {
 				OverlayMeanTime.instance().setupTable(castedPacket.data);	 
 			}			     
 			
+			else if (castedPacket.dataReq == DataReq.LIST_PLAYERS){
+				DataCache.instance().setListPlayers(castedPacket.data);	 
+			}			     
+			     
 		}
 		
 		else if (header == Packets.DATA_VALUE_GENERAL){
