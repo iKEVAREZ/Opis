@@ -246,6 +246,10 @@ public class OpisPacketHandler implements IPacketHandler {
 					SwingUI.instance().getLblSummaryTimeStampLastRun().setText(String.format("Last run : %s", sdf.format(resultdate)));
 				}
 
+			}	
+			     
+			else if(castedPacket.dataReq == DataReq.STATUS_ACCESS_LEVEL){
+				DataCache.instance().setAccessLevel( AccessLevel.values()[((SerialInt)castedPacket.data).value] );
 			}			     
 			     
 		}
@@ -342,6 +346,8 @@ public class OpisPacketHandler implements IPacketHandler {
 		OpisPacketHandler.validateAndSend(Packet_DataValue.create(DataReq.VALUE_AMOUNT_HANDLERS, new SerialInt(TickHandlerManager.startStats.size())), player);
 		
 		OpisPacketHandler.validateAndSend(Packet_DataValue.create(DataReq.STATUS_TIME_LAST_RUN, new SerialLong(ProfilerRegistrar.timeStampLastRun)), player);
+		
+		OpisPacketHandler.validateAndSend(Packet_DataValue.create(DataReq.STATUS_ACCESS_LEVEL, new SerialInt(PlayerTracker.instance().getPlayerAccessLevel(player).ordinal())), player);
 		
 		// This portion is to get the proper filtered amounts depending on the player preferences.
 		String name = ((EntityPlayer)player).getEntityName();

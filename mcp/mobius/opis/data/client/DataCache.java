@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.table.DefaultTableModel;
 
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
@@ -35,8 +36,10 @@ import mcp.mobius.opis.data.holders.stats.StatsPlayer;
 import mcp.mobius.opis.data.holders.stats.StatsTick;
 import mcp.mobius.opis.data.holders.stats.StatsTickHandler;
 import mcp.mobius.opis.data.holders.stats.StatsTileEntity;
+import mcp.mobius.opis.gui.swing.JButtonAccess;
 import mcp.mobius.opis.gui.swing.SwingUI;
 import mcp.mobius.opis.helpers.ModIdentification;
+import mcp.mobius.opis.network.enums.AccessLevel;
 
 public class DataCache {
 
@@ -65,10 +68,28 @@ public class DataCache {
 	
 	private long   clockScrew          = 0;
 	
+	private AccessLevel clientAccess   = AccessLevel.NONE;
+	
 	private StatsTick timingTick = new StatsTick();
 	private ArrayList<Double> timingTickGraphData = new ArrayList<Double>();
 	//private DescriptiveStatistics timingTickGraphData = new DescriptiveStatistics(100);
 
+	public void setAccessLevel(AccessLevel level){
+		this.clientAccess = level;
+		
+		for (JButtonAccess button : SwingUI.registeredButtons){
+			if (level.ordinal() < button.getAccessLevel().ordinal()){
+				button.setEnabled(false);
+			} else {
+				button.setEnabled(true);
+			}
+		}
+	}
+	
+	public AccessLevel getAccessLevel(){
+		return this.clientAccess;
+	}
+	
 	public void computeClockScrew(long value){
 		clockScrew = System.currentTimeMillis() - value;
 		System.out.printf("Adjusting clock screw. Server differential is %d ms.\n", clockScrew);

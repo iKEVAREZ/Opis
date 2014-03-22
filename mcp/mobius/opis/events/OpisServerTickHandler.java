@@ -80,6 +80,11 @@ public class OpisServerTickHandler implements ITickHandler {
 				OpisPacketHandler.sendPacketToAllSwing(Packet_DataValue.create(DataReq.VALUE_TIMING_TICK,     TickProfiler.instance().stats));
 				OpisPacketHandler.sendPacketToAllSwing(Packet_DataList.create(DataReq.LIST_PLAYERS,           EntityManager.getAllPlayers()));
 
+				for (Player player : PlayerTracker.instance().playersSwing){
+					OpisPacketHandler.validateAndSend(Packet_DataValue.create(DataReq.STATUS_ACCESS_LEVEL, new SerialInt(PlayerTracker.instance().getPlayerAccessLevel(player).ordinal())), player);
+				}
+				
+				
 				if (modOpis.profilerRun){
 					OpisPacketHandler.sendPacketToAllSwing(Packet_DataValue.create(DataReq.STATUS_RUNNING,   new SerialInt(modOpis.profilerMaxTicks)));
 					OpisPacketHandler.sendPacketToAllSwing(Packet_DataValue.create(DataReq.STATUS_RUN_UPDATE,     new SerialInt(profilerRunningTicks)));
