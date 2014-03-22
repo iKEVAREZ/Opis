@@ -2,10 +2,12 @@ package mcp.mobius.opis.commands.server;
 
 import java.util.ArrayList;
 
+import cpw.mods.fml.common.network.Player;
 import mcp.mobius.opis.commands.IOpisCommand;
 import mcp.mobius.opis.data.holders.stats.StatsChunk;
 import mcp.mobius.opis.data.managers.ChunkManager;
 import mcp.mobius.opis.events.PlayerTracker;
+import mcp.mobius.opis.network.OpisPacketHandler;
 import mcp.mobius.opis.network.enums.DataReq;
 import mcp.mobius.opis.network.server.Packet_DataList;
 import net.minecraft.command.CommandBase;
@@ -51,8 +53,8 @@ public class CommandChunkList extends CommandBase implements IOpisCommand {
 			System.out.printf("%s\n", stat);
 		}
 		*/
-		if (icommandsender instanceof EntityPlayer)		
-			((EntityPlayerMP)icommandsender).playerNetServerHandler.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST_TIMING_CHUNK, chunks));
+		if (icommandsender instanceof EntityPlayer)	
+			OpisPacketHandler.validateAndSend(Packet_DataList.create(DataReq.LIST_TIMING_CHUNK, chunks), (Player)icommandsender);
 		else {
 			icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText("[DIM X Z] Time NTEs"));
 			for (StatsChunk stat : chunks){

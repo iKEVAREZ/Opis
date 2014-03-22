@@ -3,11 +3,13 @@ package mcp.mobius.opis.commands.server;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import cpw.mods.fml.common.network.Player;
 import mcp.mobius.opis.commands.IOpisCommand;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesChunk;
 import mcp.mobius.opis.data.holders.stats.StatsEntity;
 import mcp.mobius.opis.data.managers.EntityManager;
 import mcp.mobius.opis.events.PlayerTracker;
+import mcp.mobius.opis.network.OpisPacketHandler;
 import mcp.mobius.opis.network.enums.DataReq;
 import mcp.mobius.opis.network.server.Packet_DataList;
 import net.minecraft.command.CommandBase;
@@ -48,8 +50,8 @@ public class CommandTimingEntities extends CommandBase implements IOpisCommand {
 			} catch (Exception e) {return;}
 		}
 		
-		if (icommandsender instanceof EntityPlayer)		
-			((EntityPlayerMP)icommandsender).playerNetServerHandler.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST_TIMING_ENTITIES,  ents));
+		if (icommandsender instanceof EntityPlayer)	
+			OpisPacketHandler.validateAndSend(Packet_DataList.create(DataReq.LIST_TIMING_ENTITIES,  ents), (Player)icommandsender);
 		else{
 			icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText("[DIM X Z] Time NTEs"));
 			for (StatsEntity stat : ents){

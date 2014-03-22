@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
+import cpw.mods.fml.common.network.Player;
 import mcp.mobius.opis.commands.IOpisCommand;
 import mcp.mobius.opis.data.holders.stats.StatsTickHandler;
 import mcp.mobius.opis.data.managers.TickHandlerManager;
 import mcp.mobius.opis.events.PlayerTracker;
+import mcp.mobius.opis.network.OpisPacketHandler;
 import mcp.mobius.opis.network.enums.DataReq;
 import mcp.mobius.opis.network.server.Packet_DataList;
 import net.minecraft.command.CommandBase;
@@ -41,7 +43,7 @@ public class CommandHandler extends CommandBase  implements IOpisCommand {
 		//((EntityPlayerMP)icommandsender).playerNetServerHandler.sendPacketToPlayer(Packet_DataScreenTimingHandlers.create(stats));
 		
 		if (icommandsender instanceof EntityPlayerMP)
-			((EntityPlayerMP)icommandsender).playerNetServerHandler.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST_TIMING_HANDLERS, stats));
+			OpisPacketHandler.validateAndSend(Packet_DataList.create(DataReq.LIST_TIMING_HANDLERS, stats), (Player)icommandsender);
 		else{
 			for (StatsTickHandler s : stats)
 				icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText(String.format("%s : %.2f", s.getName(), s.getGeometricMean())));

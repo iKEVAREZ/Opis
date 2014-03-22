@@ -13,11 +13,11 @@ import mcp.mobius.opis.data.holders.ISerializable;
 import mcp.mobius.opis.network.Packets;
 import mcp.mobius.opis.network.enums.DataReq;
 
-public class Packet_DataValue {
+public class Packet_DataValue extends Packet_DataAbstract{
 
-	public byte header;
-	public DataReq dataReq;
 	public ISerializable data; 
+	
+	public Packet_DataValue(){};
 	
 	public Packet_DataValue(Packet250CustomPayload packet) {
 		DataInputStream istream = new DataInputStream(new ByteArrayInputStream(packet.data));
@@ -33,7 +33,7 @@ public class Packet_DataValue {
 	}
 
 	//public static Packet250Metadata create(DataReq dataReq, ISerializable data){
-	public static Packet250CustomPayload create(DataReq dataReq, ISerializable data){
+	public static Packet_DataValue create(DataReq dataReq, ISerializable data){
 		//Packet250Metadata packet      = new Packet250Metadata();
 		Packet250CustomPayload packet = new Packet250CustomPayload();
 		ByteArrayOutputStream bos     = new ByteArrayOutputStream(1);
@@ -54,7 +54,12 @@ public class Packet_DataValue {
 		packet.data    = bos.toByteArray();
 		packet.length  = bos.size();		
 		
-		return packet;
+		Packet_DataValue capsule = new Packet_DataValue();
+		capsule.dataReq = dataReq;
+		capsule.header  = Packets.DATA_VALUE_GENERAL;
+		capsule.packet  = packet;
+		
+		return capsule;
 	}	
 	
 	private ISerializable dataRead(String datatypeStr, DataInputStream istream){

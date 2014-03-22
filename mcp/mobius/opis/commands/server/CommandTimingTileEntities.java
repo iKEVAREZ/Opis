@@ -2,10 +2,12 @@ package mcp.mobius.opis.commands.server;
 
 import java.util.ArrayList;
 
+import cpw.mods.fml.common.network.Player;
 import mcp.mobius.opis.commands.IOpisCommand;
 import mcp.mobius.opis.data.holders.stats.StatsTileEntity;
 import mcp.mobius.opis.data.managers.TileEntityManager;
 import mcp.mobius.opis.events.PlayerTracker;
+import mcp.mobius.opis.network.OpisPacketHandler;
 import mcp.mobius.opis.network.enums.DataReq;
 import mcp.mobius.opis.network.server.Packet_DataList;
 import net.minecraft.command.CommandBase;
@@ -47,7 +49,7 @@ public class CommandTimingTileEntities extends CommandBase implements IOpisComma
 		}
 		
 		if (icommandsender instanceof EntityPlayer)		
-			((EntityPlayerMP)icommandsender).playerNetServerHandler.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST_TIMING_TILEENTS, tes));
+			OpisPacketHandler.validateAndSend(Packet_DataList.create(DataReq.LIST_TIMING_TILEENTS,  tes), (Player)icommandsender);
 		else{
 			for (StatsTileEntity stat : tes){
 				icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText(stat.toString()));

@@ -62,15 +62,15 @@ public class DataReqHandler {
 		
 		else if (maintype == DataReq.OVERLAY_CHUNK_TIMING){
 			ArrayList<StatsChunk> timingChunks = ChunkManager.getTopChunks(100);
-			PacketDispatcher.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST_TIMING_CHUNK,  timingChunks), (Player)player);
+			OpisPacketHandler.validateAndSend(Packet_DataList.create(DataReq.LIST_TIMING_CHUNK,  timingChunks), (Player)player);
 		}		
 		
 		else if (maintype == DataReq.LIST_CHUNK_TILEENTS){
-			PacketDispatcher.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST_CHUNK_TILEENTS, TileEntityManager.getTileEntitiesInChunk((CoordinatesChunk)param1)), player);
+			OpisPacketHandler.validateAndSend(Packet_DataList.create(DataReq.LIST_CHUNK_TILEENTS, TileEntityManager.getTileEntitiesInChunk((CoordinatesChunk)param1)), player);
 		}		
 		
 		else if (maintype == DataReq.LIST_CHUNK_ENTITIES){
-			PacketDispatcher.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST_CHUNK_ENTITIES,  EntityManager.getEntitiesInChunk((CoordinatesChunk)param1)), (Player)player);
+			OpisPacketHandler.validateAndSend(Packet_DataList.create(DataReq.LIST_CHUNK_ENTITIES,  EntityManager.getEntitiesInChunk((CoordinatesChunk)param1)), (Player)player);
 		}
 
 		else if (maintype == DataReq.LIST_CHUNK_LOADED){
@@ -86,35 +86,35 @@ public class DataReqHandler {
 		else if (maintype == DataReq.LIST_TIMING_TILEENTS){
 			ArrayList<StatsTileEntity>  timingTileEnts = TileEntityManager.getTopEntities(100);
 			SerialDouble totalTime = new SerialDouble(TileEntityManager.getTotalUpdateTime());
-			PacketDispatcher.sendPacketToPlayer(Packet_DataList.create (DataReq.LIST_TIMING_TILEENTS, timingTileEnts), (Player)player);
-			PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE_TIMING_TILEENTS, totalTime),      (Player)player);
+			OpisPacketHandler.validateAndSend(Packet_DataList.create (DataReq.LIST_TIMING_TILEENTS, timingTileEnts), (Player)player);
+			OpisPacketHandler.validateAndSend(Packet_DataValue.create(DataReq.VALUE_TIMING_TILEENTS, totalTime),      (Player)player);
 		}
 		
 		else if (maintype == DataReq.LIST_TIMING_ENTITIES){
 			ArrayList<StatsEntity>      timingEntities = EntityManager.getTopEntities(100);
 			SerialDouble totalTime = new SerialDouble(EntityManager.getTotalUpdateTime());			
-			PacketDispatcher.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST_TIMING_ENTITIES,  timingEntities), (Player)player);
-			PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE_TIMING_ENTITIES, totalTime),      (Player)player);			
+			OpisPacketHandler.validateAndSend(Packet_DataList.create(DataReq.LIST_TIMING_ENTITIES,  timingEntities), (Player)player);
+			OpisPacketHandler.validateAndSend(Packet_DataValue.create(DataReq.VALUE_TIMING_ENTITIES, totalTime),      (Player)player);			
 		}
 		
 		else if (maintype == DataReq.LIST_TIMING_HANDLERS){
 			ArrayList<StatsTickHandler> timingHandlers = TickHandlerManager.getCumulatedStats();
 			SerialDouble totalTime = new SerialDouble(TickHandlerManager.getTotalUpdateTime());
-			PacketDispatcher.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST_TIMING_HANDLERS,  timingHandlers), (Player)player);
-			PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE_TIMING_HANDLERS, totalTime),      (Player)player);			
+			OpisPacketHandler.validateAndSend(Packet_DataList.create(DataReq.LIST_TIMING_HANDLERS,  timingHandlers), (Player)player);
+			OpisPacketHandler.validateAndSend(Packet_DataValue.create(DataReq.VALUE_TIMING_HANDLERS, totalTime),      (Player)player);			
 		}
 		
 		else if (maintype == DataReq.LIST_TIMING_CHUNK){
 			ArrayList<StatsChunk> timingChunks = ChunkManager.getTopChunks(100);
-			PacketDispatcher.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST_TIMING_CHUNK,  timingChunks), (Player)player);
+			OpisPacketHandler.validateAndSend(Packet_DataList.create(DataReq.LIST_TIMING_CHUNK,  timingChunks), (Player)player);
 		}
 
 		else if (maintype == DataReq.VALUE_TIMING_WORLDTICK){
-			PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE_TIMING_WORLDTICK, new SerialDouble(GlobalTimingManager.getTotalWorldTickStats())), (Player)player);
+			OpisPacketHandler.validateAndSend(Packet_DataValue.create(DataReq.VALUE_TIMING_WORLDTICK, new SerialDouble(GlobalTimingManager.getTotalWorldTickStats())), (Player)player);
 		}		
 
 		else if (maintype == DataReq.VALUE_TIMING_ENTUPDATE){
-			PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE_TIMING_ENTUPDATE, new SerialDouble(GlobalTimingManager.getTotalEntUpdateStats())), (Player)player);
+			OpisPacketHandler.validateAndSend(Packet_DataValue.create(DataReq.VALUE_TIMING_ENTUPDATE, new SerialDouble(GlobalTimingManager.getTotalEntUpdateStats())), (Player)player);
 		}				
 		
 		else if (maintype == DataReq.LIST_AMOUNT_ENTITIES){
@@ -123,7 +123,7 @@ public class DataReqHandler {
 				filtered = PlayerTracker.instance().filteredAmount.get(name);
 			
 			ArrayList<AmountHolder> ents = EntityManager.getCumulativeEntities(filtered);
-			PacketDispatcher.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST_AMOUNT_ENTITIES,  ents), (Player)player);
+			OpisPacketHandler.validateAndSend(Packet_DataList.create(DataReq.LIST_AMOUNT_ENTITIES,  ents), (Player)player);
 		}
 		
 		else if (maintype == DataReq.COMMAND_FILTERING_TRUE){

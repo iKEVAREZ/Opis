@@ -46,7 +46,7 @@ import mcp.mobius.opis.events.PlayerTracker;
 import mcp.mobius.opis.helpers.ModIdentification;
 import mcp.mobius.opis.network.OpisConnectionHandler;
 import mcp.mobius.opis.network.OpisPacketHandler;
-import mcp.mobius.opis.network.Packet251Extended;
+import mcp.mobius.opis.network.custom.Packet251Extended;
 import mcp.mobius.opis.proxy.ProxyServer;
 import mcp.mobius.opis.tools.BlockLag;
 import mcp.mobius.opis.tools.TileLag;

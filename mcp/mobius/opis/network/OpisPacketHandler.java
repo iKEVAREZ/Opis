@@ -24,11 +24,12 @@ import mcp.mobius.opis.events.PlayerTracker;
 import mcp.mobius.opis.gui.swing.SwingUI;
 import mcp.mobius.opis.network.client.Packet_ReqChunks;
 import mcp.mobius.opis.network.client.Packet_ReqData;
+import mcp.mobius.opis.network.custom.Packet250Metadata;
 import mcp.mobius.opis.network.enums.AccessLevel;
 import mcp.mobius.opis.network.enums.DataReq;
-import mcp.mobius.opis.network.server.Packet250Metadata;
 import mcp.mobius.opis.network.server.Packet_Chunks;
 import mcp.mobius.opis.network.server.Packet_ClientCommand;
+import mcp.mobius.opis.network.server.Packet_DataAbstract;
 import mcp.mobius.opis.network.server.Packet_DataList;
 import mcp.mobius.opis.network.server.Packet_DataOverlayChunkEntities;
 import mcp.mobius.opis.network.server.Packet_DataValue;
@@ -268,22 +269,22 @@ public class OpisPacketHandler implements IPacketHandler {
 		}
 	}        
 	
-	/*
-	public static void validateAndSend(Packet250Metadata packet, Player player){
-		if (packet.dataReq.canPlayerUseCommand(player))
-			PacketDispatcher.sendPacketToPlayer(packet, player);
+	public static void validateAndSend(Packet_DataAbstract capsule, Player player){
+		if (capsule.dataReq.canPlayerUseCommand(player))
+			PacketDispatcher.sendPacketToPlayer(capsule.packet, player);
 	}
-	
-	public static void sendPacketToAllSwing(Packet250Metadata packet){
-		for (Player player : PlayerTracker.instance().playersSwing)
-			OpisPacketHandler.validateAndSend(packet, player);
-	}
-    */
 
+	public static void sendPacketToAllSwing(Packet_DataAbstract capsule){
+		for (Player player : PlayerTracker.instance().playersSwing)
+			OpisPacketHandler.validateAndSend(capsule, player);
+	}
+
+	/*
 	public static void sendPacketToAllSwing(Packet250CustomPayload packet){
 		for (Player player : PlayerTracker.instance().playersSwing)
 			PacketDispatcher.sendPacketToPlayer(packet, player);
-	}	
+	}
+	*/	
 	
 	public static void sendChatMsg(String msg, Player player){
 		PacketDispatcher.sendPacketToPlayer(new Packet3Chat(ChatMessageComponent.createFromText(msg)), player);		

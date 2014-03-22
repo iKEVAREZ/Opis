@@ -20,11 +20,11 @@ import mcp.mobius.opis.network.enums.DataReq;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
 
-public class Packet_DataList {
+public class Packet_DataList extends Packet_DataAbstract{
 
-	public byte header;
-	public DataReq dataReq;
 	public ArrayList<ISerializable> data = new ArrayList<ISerializable>(); 
+	
+	public Packet_DataList() {}
 	
 	public Packet_DataList(Packet250CustomPayload packet) {
 		DataInputStream istream = new DataInputStream(new ByteArrayInputStream(packet.data));
@@ -43,7 +43,7 @@ public class Packet_DataList {
 	}
 
 	//public static Packet250Metadata create(DataReq dataReq, ArrayList<? extends ISerializable> stats){
-	public static Packet250CustomPayload create(DataReq dataReq, ArrayList<? extends ISerializable> stats){
+	public static Packet_DataList create(DataReq dataReq, ArrayList<? extends ISerializable> stats){
 		//Packet250Metadata packet      = new Packet250Metadata();
 		Packet250CustomPayload packet = new Packet250CustomPayload();
 		ByteArrayOutputStream bos     = new ByteArrayOutputStream(1);
@@ -68,7 +68,12 @@ public class Packet_DataList {
 		packet.data    = bos.toByteArray();
 		packet.length  = bos.size();		
 		
-		return packet;
+		Packet_DataList capsule = new Packet_DataList();
+		capsule.dataReq = dataReq;
+		capsule.header  = Packets.DATA_VALUE_GENERAL;
+		capsule.packet  = packet;
+		
+		return capsule;
 	}	
 	
 	private ISerializable dataRead(String datatypeStr, DataInputStream istream){
