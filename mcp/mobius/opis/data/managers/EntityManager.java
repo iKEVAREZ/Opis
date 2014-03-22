@@ -243,10 +243,40 @@ public class EntityManager {
 		//System.out.printf("%s %s\n", coord, getTeleportTarget(coord));
 		CoordinatesBlock target = EntityManager.getTeleportTarget(coord);
 		if (target == null) return false;
+		
+		World   targetWorld = DimensionManager.getWorld(coord.dim);
+		boolean isBedrock   = targetWorld.getBlockId(target.x, target.y - 1, target.z) == Block.bedrock.blockID;
+		boolean canTeleport = false;
+		CoordinatesBlock finalTarget;
+		
+		// Fix for the nether and all cavern worlds.
+		if ((target.y > 64) && isBedrock){
+			int tempY = target.y - 1;
+			while (tempY > 1){
+				if (targetWorld.isAirBlock(target.x, tempY, target.z) && targetWorld.isAirBlock(target.x, tempY - 1, target.z)){
+					canTeleport = true;
+					
+					while (targetWorld.isAirBlock(target.x, tempY, target.z)){tempY -= 1;}
+					
+					break;
+				}
+				tempY -= 1;
+			}
+			
+			finalTarget = new CoordinatesBlock(target.dim, target.x, tempY + 1, target.z);
+			
+			
+		} else {
+			canTeleport = true;			
+			finalTarget = target;
+		}
+
+		if (!canTeleport) return false;
+		
 		if (player.worldObj.provider.dimensionId != coord.dim) 
 			player.travelToDimension(coord.dim);
 		
-		player.setPositionAndUpdate(target.x + 0.5, target.y, target.z + 0.5);
+		player.setPositionAndUpdate(finalTarget.x + 0.5, finalTarget.y, finalTarget.z + 0.5);
 		
 		return true;
 	}
