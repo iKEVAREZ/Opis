@@ -41,7 +41,7 @@ public class PlayerTracker implements IPlayerTracker{
 	public void addPrivilegedPlayer(String name, boolean save){
 		this.playerPrivileged.add(name);
 		if (save){
-			modOpis.instance.config.get(Configuration.CATEGORY_GENERAL, "privileged", new String[]{}).set(playerPrivileged.toArray(new String[]{}));
+			modOpis.instance.config.get("ACCESS_RIGHTS", "privileged", new String[]{}, modOpis.commentPrivileged).set(playerPrivileged.toArray(new String[]{}));
 			modOpis.instance.config.save();
 		}
 	}
@@ -52,12 +52,12 @@ public class PlayerTracker implements IPlayerTracker{
 	
 	public void rmPrivilegedPlayer(String name){
 		this.playerPrivileged.remove(name);
-		modOpis.instance.config.get(Configuration.CATEGORY_GENERAL, "privileged", new String[]{}).set(playerPrivileged.toArray(new String[]{}));
+		modOpis.instance.config.get("ACCESS_RIGHTS", "privileged", new String[]{}, modOpis.commentPrivileged).set(playerPrivileged.toArray(new String[]{}));
 		modOpis.instance.config.save();		
 	}
 	
 	public void reloeadPriviligedPlayers(){
-		String[] users   = modOpis.instance.config.get(Configuration.CATEGORY_GENERAL, "privileged", new String[]{}).getStringList();
+		String[] users   = modOpis.instance.config.get("ACCESS_RIGHTS", "privileged", new String[]{}, modOpis.commentPrivileged).getStringList();
 		for (String s : users)
 			PlayerTracker.instance().addPrivilegedPlayer(s,false);		
 	}

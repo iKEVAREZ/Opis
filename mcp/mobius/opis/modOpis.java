@@ -90,6 +90,10 @@ public class modOpis {
 	
 	public  Configuration config = null;	
 	
+	public static String commentTables     = "Minimum access level to be able to view tables in /opis command. Valid values : NONE, PRIVILEGED, ADMIN";
+	public static String commentOverlays   = "Minimum access level to be able to show overlays in MapWriter. Valid values : NONE, PRIVILEGED, ADMIN";
+	public static String commentPrivileged = "List of players with PRIVILEGED access level.";
+	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		config = new Configuration(event.getSuggestedConfigurationFile());
@@ -98,12 +102,13 @@ public class modOpis {
 		lagGenID         = config.get(Configuration.CATEGORY_GENERAL, "laggenerator_id", -1).getInt();
 		profilerMaxTicks = config.get(Configuration.CATEGORY_GENERAL, "profiler.maxpts", 250).getInt();
 		microseconds     = config.get(Configuration.CATEGORY_GENERAL, "display.microseconds", true).getBoolean(true);
-		String[] users   = config.get(Configuration.CATEGORY_GENERAL, "privileged", new String[]{}).getStringList();
 		
+		
+		String[] users   = config.get("ACCESS_RIGHTS", "privileged", new String[]{}, commentPrivileged).getStringList();
 		AccessLevel minTables   = AccessLevel.PRIVILEGED;
 		AccessLevel minOverlays = AccessLevel.PRIVILEGED;
-		try{ minTables   = AccessLevel.valueOf(config.get("ACCESS_RIGHTS", "tables", "NONE").getString()); }   catch (IllegalArgumentException e){}
-		try{ minOverlays = AccessLevel.valueOf(config.get("ACCESS_RIGHTS", "overlays", "NONE").getString()); } catch (IllegalArgumentException e){}
+		try{ minTables   = AccessLevel.valueOf(config.get("ACCESS_RIGHTS", "tables", "NONE", commentTables).getString()); }   catch (IllegalArgumentException e){}
+		try{ minOverlays = AccessLevel.valueOf(config.get("ACCESS_RIGHTS", "overlays", "NONE", commentOverlays).getString()); } catch (IllegalArgumentException e){}
 
 		DataReq.setTablesMinimumLevel(minTables);
 		DataReq.setOverlaysMinimumLevel(minOverlays);
