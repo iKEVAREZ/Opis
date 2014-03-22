@@ -35,7 +35,7 @@ import mcp.mobius.opis.data.holders.stats.StatsTick;
 import mcp.mobius.opis.data.holders.stats.StatsTickHandler;
 import mcp.mobius.opis.data.holders.stats.StatsTileEntity;
 import mcp.mobius.opis.gui.swing.SwingUI;
-import mcp.mobius.opis.tools.ModIdentification;
+import mcp.mobius.opis.helpers.ModIdentification;
 
 public class DataCache {
 

@@ -2,6 +2,8 @@ package mcp.mobius.opis;
 
 import java.util.logging.Logger;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.network.packet.Packet;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.MinecraftForge;
@@ -39,6 +41,7 @@ import mcp.mobius.opis.data.server.PacketProfiler;
 import mcp.mobius.opis.data.server.WorldTickProfiler;
 import mcp.mobius.opis.data.server.TickProfiler;
 import mcp.mobius.opis.data.server.TileEntityProfiler;
+import mcp.mobius.opis.helpers.ModIdentification;
 import mcp.mobius.opis.network.OpisConnectionHandler;
 import mcp.mobius.opis.network.OpisPacketHandler;
 import mcp.mobius.opis.network.Packet251Extended;
@@ -46,7 +49,8 @@ import mcp.mobius.opis.proxy.ProxyServer;
 import mcp.mobius.opis.server.OpisServerEventHandler;
 import mcp.mobius.opis.server.OpisServerTickHandler;
 import mcp.mobius.opis.server.PlayerTracker;
-import mcp.mobius.opis.tools.ModIdentification;
+import mcp.mobius.opis.tools.BlockLag;
+import mcp.mobius.opis.tools.TileLag;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -59,6 +63,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
 
@@ -79,7 +84,7 @@ public class modOpis {
 	public static boolean profilerRun  = false; 
 	public static int profilerMaxTicks = 250;
 	public static boolean microseconds = true;
-	
+	private static int lagGenID   = -1;
 	public static CoordinatesBlock selectedBlock = null;
 	
 	public  Configuration config = null;	
@@ -89,9 +94,12 @@ public class modOpis {
 		config = new Configuration(event.getSuggestedConfigurationFile());
 
 		profilerDelay    = config.get(Configuration.CATEGORY_GENERAL, "profiler.delay", 1).getInt();
+		lagGenID         = config.get(Configuration.CATEGORY_GENERAL, "laggenerator_id", -1).getInt();
 		profilerMaxTicks = config.get(Configuration.CATEGORY_GENERAL, "profiler.maxpts", 250).getInt();
 		microseconds     = config.get(Configuration.CATEGORY_GENERAL, "display.microseconds", true).getBoolean(true);		
 		String[] users   = config.get(Configuration.CATEGORY_GENERAL, "privileged", new String[]{}).getStringList();
+		
+		
 		for (String s : users)
 			PlayerTracker.instance().addPrivilegedPlayer(s,false);
 		
@@ -118,7 +126,13 @@ public class modOpis {
 			ProfilerRegistrar.registerProfilerEntUpdate(new EntUpdateProfiler());
 			ProfilerRegistrar.registerProfilerPacket(PacketProfiler.instance());
 		}
-			
+
+		if (lagGenID != -1){
+			Block blockDemo = new BlockLag(lagGenID, Material.wood);
+			GameRegistry.registerBlock(blockDemo, "opis.laggen");
+			GameRegistry.registerTileEntity(TileLag.class, "opis.laggen");
+		}
+		
 	}
 	
 	@EventHandler
