@@ -268,6 +268,7 @@ public class OpisPacketHandler implements IPacketHandler {
 		}
 	}        
 	
+	/*
 	public static void validateAndSend(Packet250Metadata packet, Player player){
 		if (packet.dataReq.canPlayerUseCommand(player))
 			PacketDispatcher.sendPacketToPlayer(packet, player);
@@ -277,7 +278,13 @@ public class OpisPacketHandler implements IPacketHandler {
 		for (Player player : PlayerTracker.instance().playersSwing)
 			OpisPacketHandler.validateAndSend(packet, player);
 	}
-      
+    */
+
+	public static void sendPacketToAllSwing(Packet250CustomPayload packet){
+		for (Player player : PlayerTracker.instance().playersSwing)
+			PacketDispatcher.sendPacketToPlayer(packet, player);
+	}	
+	
 	public static void sendChatMsg(String msg, Player player){
 		PacketDispatcher.sendPacketToPlayer(new Packet3Chat(ChatMessageComponent.createFromText(msg)), player);		
 	}

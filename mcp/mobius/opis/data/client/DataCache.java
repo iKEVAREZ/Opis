@@ -152,7 +152,7 @@ public class DataCache {
 		XYPlot xyPlot = chart.getXYPlot();
 		xyPlot.getRendererForDataset(dataset).setSeriesPaint(0, Color.BLUE);
 		
-		for (double y = 50.0; y < 250.0; y += 50.0){
+		for (double y = 25.0; y < 250.0; y += 25.0){
 			ValueMarker marker = new ValueMarker(y);
 			marker.setPaint(Color.black);
 			xyPlot.addRangeMarker(marker);

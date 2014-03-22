@@ -42,8 +42,10 @@ public class Packet_DataList {
 		} catch (IOException e){}				
 	}
 
-	public static Packet250Metadata create(DataReq dataReq, ArrayList<? extends ISerializable> stats){
-		Packet250Metadata packet      = new Packet250Metadata();
+	//public static Packet250Metadata create(DataReq dataReq, ArrayList<? extends ISerializable> stats){
+	public static Packet250CustomPayload create(DataReq dataReq, ArrayList<? extends ISerializable> stats){
+		//Packet250Metadata packet      = new Packet250Metadata();
+		Packet250CustomPayload packet = new Packet250CustomPayload();
 		ByteArrayOutputStream bos     = new ByteArrayOutputStream(1);
 		DataOutputStream ostream = new DataOutputStream(bos);
 
@@ -59,8 +61,8 @@ public class Packet_DataList {
 				data.writeToStream(ostream);
 		}catch(IOException e){}
 		
-		packet.dataReq  = dataReq;
-		packet.dataList = stats;
+		//packet.dataReq  = dataReq;
+		//packet.dataList = stats;
 		
 		packet.channel = "Opis";
 		packet.data    = bos.toByteArray();

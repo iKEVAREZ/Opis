@@ -32,8 +32,10 @@ public class Packet_DataValue {
 		} catch (IOException e){}				
 	}
 
-	public static Packet250Metadata create(DataReq dataReq, ISerializable data){
-		Packet250Metadata packet      = new Packet250Metadata();
+	//public static Packet250Metadata create(DataReq dataReq, ISerializable data){
+	public static Packet250CustomPayload create(DataReq dataReq, ISerializable data){
+		//Packet250Metadata packet      = new Packet250Metadata();
+		Packet250CustomPayload packet = new Packet250CustomPayload();
 		ByteArrayOutputStream bos     = new ByteArrayOutputStream(1);
 		DataOutputStream      ostream = new DataOutputStream(bos);
 
@@ -45,8 +47,8 @@ public class Packet_DataValue {
 			
 		}catch(IOException e){}
 		
-		packet.dataReq   = dataReq;
-		packet.dataValue = data;
+		//packet.dataReq   = dataReq;
+		//packet.dataValue = data;
 		
 		packet.channel = "Opis";
 		packet.data    = bos.toByteArray();
