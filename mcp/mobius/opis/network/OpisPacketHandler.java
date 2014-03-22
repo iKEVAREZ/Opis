@@ -3,7 +3,9 @@ package mcp.mobius.opis.network;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import mapwriter.Mw;
 import mcp.mobius.opis.modOpis;
@@ -220,6 +222,24 @@ public class OpisPacketHandler implements IPacketHandler {
 				SwingUI.instance().getBtnTimingTERefresh().setText("Running...");				
 				
 				SwingUI.instance().getProgBarSummaryOpis().setMaximum(((SerialInt)castedPacket.data).value);
+			}			     
+
+			else if (castedPacket.dataReq == DataReq.STATUS_CURRENT_TIME){
+				DataCache.instance().computeClockScrew(((SerialLong)castedPacket.data).value);
+			}
+
+			else if (castedPacket.dataReq == DataReq.STATUS_TIME_LAST_RUN){
+				long serverLastRun = ((SerialLong)castedPacket.data).value;
+				if (serverLastRun == 0){
+					SwingUI.instance().getLblSummaryTimeStampLastRun().setText("Last run : <Never>");
+				} else {
+					long clientLastRun = serverLastRun + DataCache.instance().getClockScrew();
+			        SimpleDateFormat sdf = new SimpleDateFormat("yy-MM-dd HH:mm:ss");
+			        Date resultdate = new Date(clientLastRun);
+					
+					SwingUI.instance().getLblSummaryTimeStampLastRun().setText(String.format("Last run : %s", sdf.format(resultdate)));
+				}
+
 			}			     
 			     
 		}

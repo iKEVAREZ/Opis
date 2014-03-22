@@ -1,5 +1,8 @@
 package mcp.mobius.opis.network;
 
+import mcp.mobius.opis.data.holders.basetypes.SerialLong;
+import mcp.mobius.opis.network.enums.DataReq;
+import mcp.mobius.opis.network.server.Packet_DataValue;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.NetLoginHandler;
 import net.minecraft.network.packet.NetHandler;
@@ -12,6 +15,7 @@ public class OpisConnectionHandler implements IConnectionHandler {
 
 	@Override
 	public void playerLoggedIn(Player player, NetHandler netHandler, INetworkManager manager) {
+		OpisPacketHandler.validateAndSend(Packet_DataValue.create(DataReq.STATUS_CURRENT_TIME, new SerialLong(System.currentTimeMillis())), player);
 	}
 
 	@Override

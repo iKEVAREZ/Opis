@@ -54,7 +54,8 @@ public class ClientCommandHandler {
 			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.LIST_TIMING_CHUNK));
 			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.VALUE_TIMING_WORLDTICK));
 			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.VALUE_TIMING_ENTUPDATE));
-			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.LIST_AMOUNT_ENTITIES));	
+			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.LIST_AMOUNT_ENTITIES));
+			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.STATUS_TIME_LAST_RUN));
 			SwingUI.instance().showUI();		
 		}
 		

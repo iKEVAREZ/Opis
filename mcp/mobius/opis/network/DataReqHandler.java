@@ -19,6 +19,7 @@ import mcp.mobius.opis.data.holders.basetypes.CoordinatesBlock;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesChunk;
 import mcp.mobius.opis.data.holders.basetypes.SerialDouble;
 import mcp.mobius.opis.data.holders.basetypes.SerialInt;
+import mcp.mobius.opis.data.holders.basetypes.SerialLong;
 import mcp.mobius.opis.data.holders.basetypes.SerialString;
 import mcp.mobius.opis.data.holders.basetypes.TargetEntity;
 import mcp.mobius.opis.data.holders.stats.StatsChunk;
@@ -177,6 +178,10 @@ public class DataReqHandler {
 			PlayerTracker.instance().playersSwing.remove(player);
 		}
 			
+		else if(maintype == DataReq.STATUS_TIME_LAST_RUN){	
+			OpisPacketHandler.validateAndSend(Packet_DataValue.create(DataReq.STATUS_TIME_LAST_RUN,  new SerialLong(ProfilerRegistrar.timeStampLastRun)), (Player)player);
+		}
+		
 		else{
 			modOpis.log.log(Level.WARNING, String.format("Unknown data request : %s ", maintype));
 		}

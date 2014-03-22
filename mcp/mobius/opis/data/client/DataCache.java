@@ -63,10 +63,21 @@ public class DataCache {
 	private long   amountUpload        = 0;
 	private long   amountDownload      = 0;
 	
+	private long   clockScrew          = 0;
+	
 	private StatsTick timingTick = new StatsTick();
 	private ArrayList<Double> timingTickGraphData = new ArrayList<Double>();
 	//private DescriptiveStatistics timingTickGraphData = new DescriptiveStatistics(100);
 
+	public void computeClockScrew(long value){
+		clockScrew = System.currentTimeMillis() - value;
+		System.out.printf("Adjusting clock screw. Server differential is %d ms.\n", clockScrew);
+	}
+	
+	public long getClockScrew(){
+		return this.clockScrew;
+	}
+	
 	public void setAmountUpload(long value){
 		this.amountUpload = value;
 		double uploadKB = (value / 8.0) / 1024.0;

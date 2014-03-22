@@ -149,6 +149,7 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 	private JTable tablePlayers;
 	private JButton btnPlayers_Dummy1;
 	private JButton btnPlayers_Dummy2;
+	private JLabel lblSummaryTimeStampLastRun;
 	
 	public void showUI(){
 		EventQueue.invokeLater(new Runnable() {
@@ -180,7 +181,7 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 		panelSummary = new JPanel();
 		tabbedPane.addTab("Summary", null, panelSummary, null);
 		GridBagLayout gbl_panelSummary = new GridBagLayout();
-		gbl_panelSummary.columnWidths = new int[]{0, 50, 20, 0, 70, 0, 20, 50, 50, 0, 20, 70, 0, 0, 60, 0, 0};
+		gbl_panelSummary.columnWidths = new int[]{0, 50, 20, 0, 70, 0, 20, 50, 50, 0, 20, 70, 0, 0, 42, 0, 0};
 		gbl_panelSummary.rowHeights = new int[]{0, -4, 0, 0, 0, 0, 20, 10, 30, 0, 0, 0, 0, 0};
 		gbl_panelSummary.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		gbl_panelSummary.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
@@ -330,6 +331,14 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 		gbc_lblNewLabel_5.gridx = 12;
 		gbc_lblNewLabel_5.gridy = 3;
 		panelSummary.add(lblNewLabel_5, gbc_lblNewLabel_5);
+		
+		lblSummaryTimeStampLastRun = new JLabel("Last run : Never");
+		GridBagConstraints gbc_lblSummaryTimeStampLastRun = new GridBagConstraints();
+		gbc_lblSummaryTimeStampLastRun.anchor = GridBagConstraints.EAST;
+		gbc_lblSummaryTimeStampLastRun.insets = new Insets(0, 0, 5, 0);
+		gbc_lblSummaryTimeStampLastRun.gridx = 15;
+		gbc_lblSummaryTimeStampLastRun.gridy = 3;
+		panelSummary.add(lblSummaryTimeStampLastRun, gbc_lblSummaryTimeStampLastRun);
 		
 		lblSummary_4 = new JLabel("Entities");
 		GridBagConstraints gbc_lblSummary_4 = new GridBagConstraints();
@@ -992,5 +1001,8 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 	}
 	public JTable getTablePlayers() {
 		return tablePlayers;
+	}
+	public JLabel getLblSummaryTimeStampLastRun() {
+		return lblSummaryTimeStampLastRun;
 	}
 }
