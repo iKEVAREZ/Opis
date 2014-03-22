@@ -4,10 +4,10 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 
 import cpw.mods.fml.common.network.Player;
+import mcp.mobius.opis.events.PlayerTracker;
 import mcp.mobius.opis.network.DataReqHandler;
 import mcp.mobius.opis.network.enums.ClientCommand;
 import mcp.mobius.opis.network.server.Packet_ClientCommand;
-import mcp.mobius.opis.server.PlayerTracker;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;

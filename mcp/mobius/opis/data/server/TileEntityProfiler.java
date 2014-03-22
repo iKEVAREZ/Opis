@@ -7,7 +7,7 @@ import net.minecraftforge.common.ForgeHooks;
 import mcp.mobius.mobiuscore.profiler.IProfilerTileEntity;
 import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.data.managers.TileEntityManager;
-import mcp.mobius.opis.server.OpisServerTickHandler;
+import mcp.mobius.opis.events.OpisServerTickHandler;
 
 public class TileEntityProfiler extends AbstractProfiler implements IProfilerTileEntity {
 

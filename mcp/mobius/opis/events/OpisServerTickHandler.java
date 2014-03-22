@@ -1,4 +1,4 @@
-package mcp.mobius.opis.server;
+package mcp.mobius.opis.events;
 
 import java.util.ArrayList;
 import java.util.EnumSet;

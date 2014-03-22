@@ -1,4 +1,4 @@
-package mcp.mobius.opis.server;
+package mcp.mobius.opis.events;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

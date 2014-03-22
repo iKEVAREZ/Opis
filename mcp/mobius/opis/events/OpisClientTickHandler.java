@@ -1,4 +1,4 @@
-package mcp.mobius.opis.client;
+package mcp.mobius.opis.events;
 
 import java.util.EnumSet;
 import java.util.logging.Level;

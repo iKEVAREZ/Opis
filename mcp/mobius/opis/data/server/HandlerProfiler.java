@@ -7,7 +7,7 @@ import cpw.mods.fml.common.TickType;
 import mcp.mobius.mobiuscore.profiler.IProfilerHandler;
 import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.data.managers.TickHandlerManager;
-import mcp.mobius.opis.server.OpisServerTickHandler;
+import mcp.mobius.opis.events.OpisServerTickHandler;
 
 public class HandlerProfiler extends AbstractProfiler implements IProfilerHandler {
 	

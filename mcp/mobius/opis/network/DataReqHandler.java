@@ -33,6 +33,7 @@ import mcp.mobius.opis.data.managers.TickHandlerManager;
 import mcp.mobius.opis.data.managers.TileEntityManager;
 import mcp.mobius.opis.data.server.EntUpdateProfiler;
 import mcp.mobius.opis.data.server.WorldTickProfiler;
+import mcp.mobius.opis.events.PlayerTracker;
 import mcp.mobius.opis.network.enums.DataReq;
 import mcp.mobius.opis.network.server.Packet_DataList;
 import mcp.mobius.opis.network.server.Packet_DataOverlayChunkEntities;
@@ -40,7 +41,6 @@ import mcp.mobius.opis.network.server.Packet_DataValue;
 import mcp.mobius.opis.network.server.Packet_LoadedChunks;
 import mcp.mobius.opis.network.server.Packet_Tickets;
 import mcp.mobius.opis.overlay.OverlayStatus;
-import mcp.mobius.opis.server.PlayerTracker;
 
 public class DataReqHandler {
 

@@ -6,7 +6,7 @@ import net.minecraft.entity.Entity;
 import mcp.mobius.mobiuscore.profiler.IProfilerEntity;
 import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.data.managers.EntityManager;
-import mcp.mobius.opis.server.OpisServerTickHandler;
+import mcp.mobius.opis.events.OpisServerTickHandler;
 
 public class EntityProfiler extends AbstractProfiler implements IProfilerEntity {
 

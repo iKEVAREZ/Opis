@@ -4,7 +4,7 @@ import mcp.mobius.mobiuscore.profiler.ProfilerRegistrar;
 import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.data.server.EntUpdateProfiler;
 import mcp.mobius.opis.data.server.WorldTickProfiler;
-import mcp.mobius.opis.server.OpisServerTickHandler;
+import mcp.mobius.opis.events.OpisServerTickHandler;
 
 public class MetaManager {
 

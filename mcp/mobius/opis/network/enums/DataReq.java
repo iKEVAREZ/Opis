@@ -2,7 +2,7 @@ package mcp.mobius.opis.network.enums;
 
 import static mcp.mobius.opis.network.enums.AccessLevel.*;
 import cpw.mods.fml.common.network.Player;
-import mcp.mobius.opis.server.PlayerTracker;
+import mcp.mobius.opis.events.PlayerTracker;
 
 public enum DataReq {
 	
