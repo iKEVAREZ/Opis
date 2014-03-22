@@ -27,6 +27,7 @@ import mcp.mobius.opis.data.server.EntUpdateProfiler;
 import mcp.mobius.opis.data.server.PacketProfiler;
 import mcp.mobius.opis.data.server.WorldTickProfiler;
 import mcp.mobius.opis.data.server.TickProfiler;
+import mcp.mobius.opis.network.OpisPacketHandler;
 import mcp.mobius.opis.network.enums.DataReq;
 import mcp.mobius.opis.network.server.Packet_DataList;
 import mcp.mobius.opis.network.server.Packet_DataValue;
@@ -74,13 +75,16 @@ public class OpisServerTickHandler implements ITickHandler {
 			if (System.nanoTime() - timer1000 > 1000000000){
 				timer1000 = System.nanoTime();
 
-				for (Player player : PlayerTracker.instance().playersSwing){				
-					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE_AMOUNT_UPLOAD,   new SerialLong(PacketProfiler.instance().dataSizeOut)), player);
-					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE_AMOUNT_DOWNLOAD, new SerialLong(PacketProfiler.instance().dataSizeIn)),  player);
-					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.STATUS_RUN_UPDATE,     new SerialInt(profilerRunningTicks)), player);
-					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE_TIMING_TICK,     TickProfiler.instance().stats), player);
-					PacketDispatcher.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST_PLAYERS,  EntityManager.getAllPlayers()), player);
+				OpisPacketHandler.sendPacketToAllSwing(Packet_DataValue.create(DataReq.VALUE_AMOUNT_UPLOAD,   new SerialLong(PacketProfiler.instance().dataSizeOut)));
+				OpisPacketHandler.sendPacketToAllSwing(Packet_DataValue.create(DataReq.VALUE_AMOUNT_DOWNLOAD, new SerialLong(PacketProfiler.instance().dataSizeIn)));
+				OpisPacketHandler.sendPacketToAllSwing(Packet_DataValue.create(DataReq.VALUE_TIMING_TICK,     TickProfiler.instance().stats));
+				OpisPacketHandler.sendPacketToAllSwing(Packet_DataList.create(DataReq.LIST_PLAYERS,           EntityManager.getAllPlayers()));
+
+				if (modOpis.profilerRun){
+					OpisPacketHandler.sendPacketToAllSwing(Packet_DataValue.create(DataReq.STATUS_RUNNING,   new SerialInt(modOpis.profilerMaxTicks)));
+					OpisPacketHandler.sendPacketToAllSwing(Packet_DataValue.create(DataReq.STATUS_RUN_UPDATE,     new SerialInt(profilerRunningTicks)));
 				}
+				
 				PacketProfiler.instance().dataSizeOut = 0L;
 				PacketProfiler.instance().dataSizeIn  = 0L;
 			}
@@ -112,6 +116,22 @@ public class OpisServerTickHandler implements ITickHandler {
 				SerialDouble totalWorldTick   = new SerialDouble(GlobalTimingManager.getTotalWorldTickStats());
 				SerialDouble totalEntUpdate   = new SerialDouble(GlobalTimingManager.getTotalEntUpdateStats());
 
+				OpisPacketHandler.sendPacketToAllSwing(Packet_DataList.create(DataReq.LIST_TIMING_HANDLERS,    timingHandlers));
+				OpisPacketHandler.sendPacketToAllSwing(Packet_DataList.create(DataReq.LIST_TIMING_ENTITIES,    timingEntities));
+				OpisPacketHandler.sendPacketToAllSwing(Packet_DataList.create(DataReq.LIST_TIMING_TILEENTS,    timingTileEnts));
+				OpisPacketHandler.sendPacketToAllSwing(Packet_DataList.create(DataReq.LIST_TIMING_CHUNK,       timingChunks));
+				OpisPacketHandler.sendPacketToAllSwing(Packet_DataValue.create(DataReq.VALUE_TIMING_TILEENTS,  totalTimeTE));
+				OpisPacketHandler.sendPacketToAllSwing(Packet_DataValue.create(DataReq.VALUE_TIMING_ENTITIES,  totalTimeEnt));
+				OpisPacketHandler.sendPacketToAllSwing(Packet_DataValue.create(DataReq.VALUE_TIMING_HANDLERS,  totalTimeHandler));
+				OpisPacketHandler.sendPacketToAllSwing(Packet_DataValue.create(DataReq.VALUE_TIMING_WORLDTICK, totalWorldTick));		
+				OpisPacketHandler.sendPacketToAllSwing(Packet_DataValue.create(DataReq.VALUE_TIMING_ENTUPDATE, totalEntUpdate));					
+				
+				OpisPacketHandler.sendPacketToAllSwing(Packet_DataValue.create(DataReq.VALUE_AMOUNT_TILEENTS, new SerialInt(TileEntityManager.stats.size())));
+				OpisPacketHandler.sendPacketToAllSwing(Packet_DataValue.create(DataReq.VALUE_AMOUNT_ENTITIES, new SerialInt(EntityManager.stats.size())));
+				OpisPacketHandler.sendPacketToAllSwing(Packet_DataValue.create(DataReq.VALUE_AMOUNT_HANDLERS, new SerialInt(TickHandlerManager.startStats.size())));
+				
+				OpisPacketHandler.sendPacketToAllSwing(Packet_DataValue.create(DataReq.STATUS_STOP, new SerialInt(modOpis.profilerMaxTicks)));				
+				
 				
 				for (Player player : PlayerTracker.instance().playersSwing){
 
@@ -124,21 +144,6 @@ public class OpisServerTickHandler implements ITickHandler {
 
 					// Here we send a full update to the player
 					PacketDispatcher.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST_AMOUNT_ENTITIES,    amountEntities),  player); 					
-					PacketDispatcher.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST_TIMING_HANDLERS,    timingHandlers),  player);
-					PacketDispatcher.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST_TIMING_ENTITIES,    timingEntities),  player);
-					PacketDispatcher.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST_TIMING_TILEENTS,    timingTileEnts),  player);
-					PacketDispatcher.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST_TIMING_CHUNK,       timingChunks),    player);
-					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE_TIMING_TILEENTS,  totalTimeTE),     player);
-					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE_TIMING_ENTITIES,  totalTimeEnt),    player);
-					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE_TIMING_HANDLERS,  totalTimeHandler),player);
-					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE_TIMING_WORLDTICK, totalWorldTick),  player);		
-					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE_TIMING_ENTUPDATE, totalEntUpdate),  player);					
-					
-					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE_AMOUNT_TILEENTS, new SerialInt(TileEntityManager.stats.size())),      (Player)player);
-					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE_AMOUNT_ENTITIES, new SerialInt(EntityManager.stats.size())),          (Player)player);
-					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE_AMOUNT_HANDLERS, new SerialInt(TickHandlerManager.startStats.size())),(Player)player);
-					
-					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.STATUS_STOP, new SerialInt(modOpis.profilerMaxTicks)), player);
 				}
 				
 				for (Player player : PlayerTracker.instance().playersOpis)

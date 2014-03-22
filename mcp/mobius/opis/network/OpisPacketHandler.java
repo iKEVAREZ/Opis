@@ -32,7 +32,6 @@ import mcp.mobius.opis.network.server.Packet_DataOverlayChunkEntities;
 import mcp.mobius.opis.network.server.Packet_DataValue;
 import mcp.mobius.opis.network.server.Packet_LoadedChunks;
 import mcp.mobius.opis.network.server.Packet_ModMeanTime;
-import mcp.mobius.opis.network.server.Packet_TPS;
 import mcp.mobius.opis.network.server.Packet_Tickets;
 import mcp.mobius.opis.overlay.OverlayLoadedChunks;
 import mcp.mobius.opis.overlay.OverlayMeanTime;
@@ -97,15 +96,6 @@ public class OpisPacketHandler implements IPacketHandler {
 			Packet_ModMeanTime castedPacket = new Packet_ModMeanTime(packet);
 			modOpis.proxy.displayModList(castedPacket.modStats);
 		}		
-		
-		else if (header == Packets.TPS){
-			Packet_TPS castedPacket = new Packet_TPS(packet);
-			
-			for(Integer dim : castedPacket.ticktimes.keySet())
-				System.out.printf("%s : %.5f ms | %.5f ms\n", dim,
-						castedPacket.ticktimes.get(dim).getMean() / 1000.0,
-						castedPacket.ticktimes.get(dim).getGeometricMean() / 1000.0);
-		}
 		
 		else if (header == Packets.DATA_OVERLAY_CHUNK_ENTITIES){
 			Packet_DataOverlayChunkEntities castedPacket = new Packet_DataOverlayChunkEntities(packet);
@@ -216,6 +206,17 @@ public class OpisPacketHandler implements IPacketHandler {
 			else if (castedPacket.dataReq == DataReq.STATUS_RUN_UPDATE){
 				SwingUI.instance().getProgBarSummaryOpis().setValue(((SerialInt)castedPacket.data).value);
 			}
+			     
+			else if (castedPacket.dataReq == DataReq.STATUS_RUNNING){
+				SwingUI.instance().getBtnTimingChunkRefresh().setText("Running...");
+				SwingUI.instance().getBtnSummaryRefresh().setText("Running...");
+				SwingUI.instance().getBtnTimingEntRefresh().setText("Running...");
+				SwingUI.instance().getBtnTimingHandlerRefresh().setText("Running...");
+				SwingUI.instance().getBtnTimingTERefresh().setText("Running...");				
+				
+				SwingUI.instance().getProgBarSummaryOpis().setMaximum(((SerialInt)castedPacket.data).value);
+			}			     
+			     
 		}
 	}
 
@@ -263,6 +264,9 @@ public class OpisPacketHandler implements IPacketHandler {
 		}
 	}        
 	
-
+	public static void sendPacketToAllSwing(Packet250CustomPayload packet){
+		for (Player player : PlayerTracker.instance().playersSwing)
+			PacketDispatcher.sendPacketToPlayer(packet, player);
+	}
         
 }
