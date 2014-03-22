@@ -47,6 +47,8 @@ import mcp.mobius.opis.helpers.ModIdentification;
 import mcp.mobius.opis.network.OpisConnectionHandler;
 import mcp.mobius.opis.network.OpisPacketHandler;
 import mcp.mobius.opis.network.custom.Packet251Extended;
+import mcp.mobius.opis.network.enums.AccessLevel;
+import mcp.mobius.opis.network.enums.DataReq;
 import mcp.mobius.opis.proxy.ProxyServer;
 import mcp.mobius.opis.tools.BlockLag;
 import mcp.mobius.opis.tools.TileLag;
@@ -83,7 +85,7 @@ public class modOpis {
 	public static boolean profilerRun  = false; 
 	public static int profilerMaxTicks = 250;
 	public static boolean microseconds = true;
-	private static int lagGenID   = -1;
+	private static int lagGenID        = -1;
 	public static CoordinatesBlock selectedBlock = null;
 	
 	public  Configuration config = null;	
@@ -95,9 +97,16 @@ public class modOpis {
 		profilerDelay    = config.get(Configuration.CATEGORY_GENERAL, "profiler.delay", 1).getInt();
 		lagGenID         = config.get(Configuration.CATEGORY_GENERAL, "laggenerator_id", -1).getInt();
 		profilerMaxTicks = config.get(Configuration.CATEGORY_GENERAL, "profiler.maxpts", 250).getInt();
-		microseconds     = config.get(Configuration.CATEGORY_GENERAL, "display.microseconds", true).getBoolean(true);		
+		microseconds     = config.get(Configuration.CATEGORY_GENERAL, "display.microseconds", true).getBoolean(true);
 		String[] users   = config.get(Configuration.CATEGORY_GENERAL, "privileged", new String[]{}).getStringList();
 		
+		AccessLevel minTables   = AccessLevel.PRIVILEGED;
+		AccessLevel minOverlays = AccessLevel.PRIVILEGED;
+		try{ minTables   = AccessLevel.valueOf(config.get("ACCESS_RIGHTS", "tables", "NONE").getString()); }   catch (IllegalArgumentException e){}
+		try{ minOverlays = AccessLevel.valueOf(config.get("ACCESS_RIGHTS", "overlays", "NONE").getString()); } catch (IllegalArgumentException e){}
+
+		DataReq.setTablesMinimumLevel(minTables);
+		DataReq.setOverlaysMinimumLevel(minOverlays);
 		
 		for (String s : users)
 			PlayerTracker.instance().addPrivilegedPlayer(s,false);

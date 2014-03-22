@@ -76,5 +76,23 @@ public enum DataReq {
 	
 	public boolean canPlayerUseCommand(String name){
 		return PlayerTracker.instance().getPlayerAccessLevel(name).ordinal() >= this.accessLevel.ordinal();
+	}
+	
+	public static void setTablesMinimumLevel(AccessLevel level){
+		DataReq.LIST_CHUNK_TILEENTS.setAccessLevel(level);
+		DataReq.LIST_CHUNK_ENTITIES.setAccessLevel(level);
+		DataReq.LIST_TIMING_TILEENTS.setAccessLevel(level);
+		DataReq.LIST_TIMING_ENTITIES.setAccessLevel(level);
+		DataReq.LIST_TIMING_HANDLERS.setAccessLevel(level);
+		DataReq.LIST_TIMING_CHUNK.setAccessLevel(level);
+		DataReq.LIST_AMOUNT_ENTITIES.setAccessLevel(level);
+		DataReq.LIST_PLAYERS.setAccessLevel(level);
+	}
+	
+	public static void setOverlaysMinimumLevel(AccessLevel level){
+		DataReq.OVERLAY_CHUNK_ENTITIES.setAccessLevel(level);
+		DataReq.OVERLAY_CHUNK_TIMING.setAccessLevel(level);
+		DataReq.LIST_CHUNK_LOADED.setAccessLevel(level);
+		DataReq.LIST_CHUNK_TICKETS.setAccessLevel(level);		
 	}	
 }
