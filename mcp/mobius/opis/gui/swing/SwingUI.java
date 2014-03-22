@@ -492,7 +492,6 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 		tablePlayers = new JTable();
 		tablePlayers.setModel(new DefaultTableModel(
 			new Object[][] {
-				{null, null, null},
 			},
 			new String[] {
 				"Name", "Dimension", "Coordinates"
@@ -501,14 +500,13 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 			Class[] columnTypes = new Class[] {
 				String.class, Integer.class, Object.class
 			};
+			
+			boolean[] columnEditables = new boolean[] {
+					false, false, false
+			};			
+			
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
-			}
-			boolean[] columnEditables = new boolean[] {
-				false, false, false
-			};
-			public boolean isCellEditable(int row, int column) {
-				return columnEditables[column];
 			}
 		});
 		tablePlayers.getColumnModel().getColumn(2).setPreferredWidth(96);
@@ -538,7 +536,6 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 		tableEntityList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		tableEntityList.setModel(new DefaultTableModel(
 			new Object[][] {
-				{null, null},
 			},
 			new String[] {
 				"Type", "Amount"
@@ -547,14 +544,11 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 			Class[] columnTypes = new Class[] {
 				String.class, Integer.class
 			};
+			boolean[] columnEditables = new boolean[] {
+					false, false
+			};			
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
-			}
-			boolean[] columnEditables = new boolean[] {
-				false, false
-			};
-			public boolean isCellEditable(int row, int column) {
-				return columnEditables[column];
 			}
 		});
 		tableEntityList.getColumnModel().getColumn(0).setPreferredWidth(231);
@@ -593,7 +587,6 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 		tableTimingTE.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		tableTimingTE.setModel(new DefaultTableModel(
 			new Object[][] {
-				{null, null, null, null, null},
 			},
 			new String[] {
 				"Type", "Mod", "Dim", "Pos", "Update Time"
@@ -602,6 +595,9 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 			Class[] columnTypes = new Class[] {
 				String.class, String.class, Integer.class, Object.class, StatAbstract.class
 			};
+			boolean[] columnEditables = new boolean[] {
+					false, false, false, false, false
+			};			
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
 			}
@@ -640,7 +636,6 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 		tableTimingEnt.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		tableTimingEnt.setModel(new DefaultTableModel(
 			new Object[][] {
-				{null, null, null, null, null, null},
 			},
 			new String[] {
 				"Type", "ID", "Dim", "Pos", "Update Time", "Data"
@@ -649,6 +644,9 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 			Class[] columnTypes = new Class[] {
 				String.class, Integer.class, Integer.class, Object.class, StatAbstract.class, Integer.class
 			};
+			boolean[] columnEditables = new boolean[] {
+					false, false, false, false, false, false
+			};			
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
 			}
@@ -674,7 +672,6 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 		tableTimingHandler.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		tableTimingHandler.setModel(new DefaultTableModel(
 			new Object[][] {
-				{null, null},
 			},
 			new String[] {
 				"Name", "Update Time"
@@ -683,6 +680,9 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 			Class[] columnTypes = new Class[] {
 				String.class, StatAbstract.class
 			};
+			boolean[] columnEditables = new boolean[] {
+					false, false
+			};			
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
 			}
@@ -712,7 +712,6 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 		tableTimingChunk.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		tableTimingChunk.setModel(new DefaultTableModel(
 			new Object[][] {
-				{null, null, null, null, null},
 			},
 			new String[] {
 				"Dimension", "Position", "TileEntities", "Entities", "Update Time"
@@ -721,6 +720,9 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 			Class[] columnTypes = new Class[] {
 				Integer.class, String.class, Integer.class, Integer.class, StatAbstract.class
 			};
+			boolean[] columnEditables = new boolean[] {
+					false, false, false, false, false
+			};			
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
 			}
