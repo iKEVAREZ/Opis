@@ -10,7 +10,7 @@ import mcp.mobius.opis.data.holders.basetypes.CoordinatesChunk;
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 
 public abstract class StatAbstract implements Comparable, ISerializable{
-	public    DescriptiveStatistics dstat = new DescriptiveStatistics();
+	protected DescriptiveStatistics dstat = new DescriptiveStatistics();
 	public    Long   dataPoints  = 0L;
 	protected Double geomMean        = null;
 	protected Double dataSum         = null;
@@ -18,13 +18,24 @@ public abstract class StatAbstract implements Comparable, ISerializable{
 	protected CoordinatesChunk chunk = new CoordinatesChunk(0,0,0);
 	protected String name;
 	
+	/*
+	public StatAbstract(){
+		dstat = new DescriptiveStatistics();
+	}
+
+	public StatAbstract(int points){
+		dstat = new DescriptiveStatistics(points);
+	}
+	*/	
+	
 	public void addMeasure(long timing){
-		dstat.addValue((double)timing/1000.0);
+		//this.dstat.addValue((double)timing/1000.0);
+		this.dstat.addValue((double)timing/1000.);
 		dataPoints += 1;
 	}		
 	
 	public void addMeasure(double timing){
-		dstat.addValue(timing);
+		this.dstat.addValue(timing);
 		dataPoints += 1;
 	}	
 	

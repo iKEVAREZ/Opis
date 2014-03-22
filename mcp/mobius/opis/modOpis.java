@@ -15,7 +15,6 @@ import mcp.mobius.opis.commands.server.CommandAddPrivileged;
 import mcp.mobius.opis.commands.server.CommandAmountEntities;
 import mcp.mobius.opis.commands.server.CommandChunkDump;
 import mcp.mobius.opis.commands.server.CommandChunkList;
-import mcp.mobius.opis.commands.server.CommandDataDump;
 import mcp.mobius.opis.commands.server.CommandEntityCreate;
 import mcp.mobius.opis.commands.server.CommandFrequency;
 import mcp.mobius.opis.commands.server.CommandHandler;
@@ -63,7 +62,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
 
-@Mod(modid="Opis", name="Opis", version="1.1.3a_alpha")
+@Mod(modid="Opis", name="Opis", version="1.2.0_dev2_alpha")
 @NetworkMod(channels={"Opis", "Opis_Chunk"},clientSideRequired=false, serverSideRequired=false, connectionHandler=OpisConnectionHandler.class, packetHandler=OpisPacketHandler.class)
 
 public class modOpis {
@@ -136,7 +135,6 @@ public class modOpis {
 		event.registerServerCommand(new CommandStop());		
 		event.registerServerCommand(new CommandTimingTileEntities());
 		event.registerServerCommand(new CommandMeanModTime());
-		event.registerServerCommand(new CommandDataDump());
 		event.registerServerCommand(new CommandTicks());
 		event.registerServerCommand(new CommandTimingEntities());
 		event.registerServerCommand(new CommandAmountEntities());

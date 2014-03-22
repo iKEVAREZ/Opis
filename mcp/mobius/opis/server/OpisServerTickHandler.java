@@ -44,7 +44,8 @@ public class OpisServerTickHandler implements ITickHandler {
 	public long profilerUpdateTickCounter = 0;	
 	public long clientUpdateTickCounter = 0;
 	public int  profilerRunningTicks;
-	public long timeLastUpdate = System.nanoTime();
+	public long timer500  = System.nanoTime();	
+	public long timer1000 = System.nanoTime();
 	
 	public static OpisServerTickHandler instance;
 	
@@ -59,17 +60,25 @@ public class OpisServerTickHandler implements ITickHandler {
 	@Override
 	public void tickEnd(EnumSet<TickType> type, Object... tickData) {
 		if(type.contains(TickType.SERVER)){
-			
-			if (System.nanoTime() - timeLastUpdate > 1000000000){
-				timeLastUpdate = System.nanoTime();
+
+			/*
+			if (System.nanoTime() - timer500 >  500000000){
+				timer500 = System.nanoTime();
+				
+				for (Player player : PlayerTracker.instance().playersSwing){
+					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE_TIMING_TICK,     TickProfiler.instance().stats), player);					
+				}
+			}
+			*/
+				
+			if (System.nanoTime() - timer1000 > 1000000000){
+				timer1000 = System.nanoTime();
 
 				for (Player player : PlayerTracker.instance().playersSwing){				
 					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE_AMOUNT_UPLOAD,   new SerialLong(PacketProfiler.instance().dataSizeOut)), player);
 					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE_AMOUNT_DOWNLOAD, new SerialLong(PacketProfiler.instance().dataSizeIn)),  player);
-					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE_TIMING_TICK,     TickProfiler.instance().stats), player);
-					
 					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.STATUS_RUN_UPDATE,     new SerialInt(profilerRunningTicks)), player);
-					
+					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE_TIMING_TICK,     TickProfiler.instance().stats), player);
 					PacketDispatcher.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST_PLAYERS,  EntityManager.getAllPlayers()), player);
 				}
 				PacketProfiler.instance().dataSizeOut = 0L;

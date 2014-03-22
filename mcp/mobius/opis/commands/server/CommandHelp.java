@@ -46,8 +46,6 @@ public class CommandHelp extends CommandBase implements IOpisCommand {
 				new CommandTimingEntities(),
 				new CommandAmountEntities(),				
 				
-				new CommandDataDump(),
-
 				new CommandKill(),
 				new CommandKillAll(),
 				
