@@ -14,6 +14,7 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.plot.ValueMarker;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.xy.DefaultTableXYDataset;
@@ -143,26 +144,24 @@ public class DataCache {
 			xyData.add(i, timingTickGraphData.get(i));
 		}
 		
-		/*
-		double[] values = this.timingTickGraphData.getValues();
-		for (int i = 0; i < values.length; i++)
-			xyData.add(i, values[i]);
-		*/
-		
 		XYSeriesCollection dataset = new XYSeriesCollection();
 		dataset.addSeries(xyData);
-		
-		
-		//JFreeChart chart = ChartFactory.createXYLineChart("", "Seconds", "Update Time [ms]", dataset, PlotOrientation.VERTICAL, false, false, false);
+
 		JFreeChart chart = ChartFactory.createXYAreaChart("", "Seconds", "Update Time [ms]", dataset, PlotOrientation.VERTICAL, false, false, false);
 		chart.setBackgroundPaint(new Color(255,255,255,0));
 		XYPlot xyPlot = chart.getXYPlot();
 		xyPlot.getRendererForDataset(dataset).setSeriesPaint(0, Color.BLUE);
-		((NumberAxis)xyPlot.getRangeAxis()).setRange(0.0, 50.0 * (MathHelper.floor_double(xyData.getMaxY() / 50.0D) + 1));
+		
+		for (double y = 50.0; y < 250.0; y += 50.0){
+			ValueMarker marker = new ValueMarker(y);
+			marker.setPaint(Color.black);
+			xyPlot.addRangeMarker(marker);
+		}
+		
+		Double verticalScale = 50.0 * (MathHelper.floor_double(xyData.getMaxY() / 50.0D) + 1);
+		((NumberAxis)xyPlot.getRangeAxis()).setRange(0.0, verticalScale);
 		
 		Dimension dim = SwingUI.instance().getLblSummaryTickChart().getSize();
-		
-		//System.out.printf("%s %s\n", dim.height, dim.width);
 		
 		BufferedImage image = chart.createBufferedImage(dim.width,dim.height);
 		SwingUI.instance().getLblSummaryTickChart().setIcon(new ImageIcon(image));
