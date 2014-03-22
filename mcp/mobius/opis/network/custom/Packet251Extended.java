@@ -1,4 +1,4 @@
-package mcp.mobius.opis.network;
+package mcp.mobius.opis.network.custom;
 
 import java.io.DataInput;
 import java.io.DataOutput;

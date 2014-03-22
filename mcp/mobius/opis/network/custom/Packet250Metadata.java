@@ -1,4 +1,4 @@
-package mcp.mobius.opis.network.server;
+package mcp.mobius.opis.network.custom;
 
 import java.util.ArrayList;
 
@@ -11,4 +11,6 @@ public class Packet250Metadata extends Packet250CustomPayload {
 	public DataReq       dataReq;
 	public ISerializable dataValue;
 	public ArrayList<? extends ISerializable> dataList;
+	
+	
 }
