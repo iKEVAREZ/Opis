@@ -30,6 +30,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.util.HashSet;
 
 import javax.swing.SwingConstants;
 import javax.swing.JCheckBox;
@@ -53,6 +54,7 @@ import mcp.mobius.opis.data.holders.stats.StatsPlayer;
 import mcp.mobius.opis.data.holders.stats.StatsTileEntity;
 import mcp.mobius.opis.data.managers.TileEntityManager;
 import mcp.mobius.opis.network.client.Packet_ReqData;
+import mcp.mobius.opis.network.enums.AccessLevel;
 import mcp.mobius.opis.network.enums.DataReq;
 import mcp.mobius.opis.overlay.OverlayMeanTime;
 import mcp.mobius.opis.overlay.entperchunk.OverlayEntityPerChunk;
@@ -66,11 +68,12 @@ import net.miginfocom.swing.MigLayout;
 
 public class SwingUI extends JFrame implements  ActionListener, ItemListener, WindowListener{
 
+	public static HashSet<JButtonAccess> registeredButtons = new HashSet<JButtonAccess>();
+	
 	private static SwingUI _instance = new SwingUI();
 	public  static SwingUI instance(){
 		return _instance;
 	}
-	
 	
 	private JPanel contentPane;
 	private JScrollPane scrollPaneEntityAmount;
@@ -79,7 +82,7 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 	private JLabel labelAmountValue;
 	private JLabel labelAmountTotal;
 	private JCheckBox chkBoxDisplayAll;
-	private JButton btnRefreshEntityAmount;
+	private JButtonAccess btnRefreshEntityAmount;
 
 	private JPanel panelTimingTE;
 	private JPanel panelTimingEnt;
@@ -92,14 +95,14 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 	private JPanel panelTimingChunk;
 	private JScrollPane scrollPaneTimingChunk;
 	private JTable tableTimingChunk;
-	private JButton btnTimingTECenterMap;
-	private JButton btnTimingTETeleport;
-	private JButton btnTimingEntTeleport;
-	private JButton btnTimingEntCenterMap;
-	private JButton btnTimingEntRefresh;
-	private JButton btnTimingTERefresh;
-	private JButton btnTimingHandlerRefresh;
-	private JButton btnTimingChunkRefresh;
+	private JButtonAccess btnTimingTECenterMap;
+	private JButtonAccess btnTimingTETeleport;
+	private JButtonAccess btnTimingEntTeleport;
+	private JButtonAccess btnTimingEntCenterMap;
+	private JButtonAccess btnTimingEntRefresh;
+	private JButtonAccess btnTimingTERefresh;
+	private JButtonAccess btnTimingHandlerRefresh;
+	private JButtonAccess btnTimingChunkRefresh;
 	private JLabel lblTimingTEValue;
 	private JLabel lblTimingEntValue;
 	private JLabel lblTimingHandlerValue;
@@ -121,9 +124,9 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 	private JLabel lblSummaryAmountHandlers;
 	private JLabel lblSummary_1;
 	private JLabel label;
-	private JButton btnSummaryRefresh;
-	private JButton btnTimingEntPull;
-	private JButton btnAmountKillAll;
+	private JButtonAccess btnSummaryRefresh;
+	private JButtonAccess btnTimingEntPull;
+	private JButtonAccess btnAmountKillAll;
 	private JLabel lblSummary_11;
 	private JLabel lblSummary_12;
 	private JLabel lblSummaryTimingTick;
@@ -138,17 +141,17 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 	private JLabel lblNewLabel_4;
 	private JLabel lblNewLabel_5;
 	private JLabel lblNewLabel_6;
-	private JButton btnTimingChunkCenterMap;
-	private JButton btnTimingChunkTeleport;
+	private JButtonAccess btnTimingChunkCenterMap;
+	private JButtonAccess btnTimingChunkTeleport;
 	private JProgressBar progBarSummaryOpis;
 	private JPanel panelPlayers;
-	private JButton btnPlayersCenterMap;
-	private JButton btnPlayersTeleport;
-	private JButton btnPlayersPull;
+	private JButtonAccess btnPlayersCenterMap;
+	private JButtonAccess btnPlayersTeleport;
+	private JButtonAccess btnPlayersPull;
 	private JScrollPane scrollPanePlayers;
 	private JTable tablePlayers;
-	private JButton btnPlayers_Dummy1;
-	private JButton btnPlayers_Dummy2;
+	private JButtonAccess btnPlayers_Dummy1;
+	private JButtonAccess btnPlayers_Dummy2;
 	private JLabel lblSummaryTimeStampLastRun;
 	
 	public void showUI(){
@@ -213,7 +216,7 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 		gbc_lblNewLabel_6.gridy = 1;
 		panelSummary.add(lblNewLabel_6, gbc_lblNewLabel_6);
 		
-		btnSummaryRefresh = new JButton("Run Opis");
+		btnSummaryRefresh = new JButtonAccess("Run Opis", AccessLevel.PRIVILEGED);
 		GridBagConstraints gbc_btnSummaryReset = new GridBagConstraints();
 		gbc_btnSummaryReset.anchor = GridBagConstraints.EAST;
 		gbc_btnSummaryReset.insets = new Insets(0, 0, 5, 0);
@@ -463,23 +466,23 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 		tabbedPane.addTab("Players", null, panelPlayers, null);
 		panelPlayers.setLayout(new MigLayout("", "[][][][][][grow][]", "[][grow]"));
 		
-		btnPlayersCenterMap = new JButton("Center Map");
+		btnPlayersCenterMap = new JButtonAccess("Center Map");
 		btnPlayersCenterMap.addActionListener(this);
 		panelPlayers.add(btnPlayersCenterMap, "cell 0 0,alignx left");
 		
-		btnPlayersTeleport = new JButton("Teleport");
+		btnPlayersTeleport = new JButtonAccess("Teleport", AccessLevel.PRIVILEGED);
 		btnPlayersTeleport.addActionListener(this);
 		panelPlayers.add(btnPlayersTeleport, "cell 1 0,alignx left");
 		
-		btnPlayersPull = new JButton("Pull");
+		btnPlayersPull = new JButtonAccess("Pull", AccessLevel.PRIVILEGED);
 		btnPlayersPull.addActionListener(this);
 		panelPlayers.add(btnPlayersPull, "cell 2 0,alignx left");
 		
-		btnPlayers_Dummy1 = new JButton("Kill");
+		btnPlayers_Dummy1 = new JButtonAccess("Kill", AccessLevel.PRIVILEGED);
 		btnPlayers_Dummy1.setEnabled(false);
 		panelPlayers.add(btnPlayers_Dummy1, "cell 3 0");
 		
-		btnPlayers_Dummy2 = new JButton("Morph");
+		btnPlayers_Dummy2 = new JButtonAccess("Morph", AccessLevel.PRIVILEGED);
 		btnPlayers_Dummy2.setEnabled(false);
 		panelPlayers.add(btnPlayers_Dummy2, "cell 4 0");
 		
@@ -520,10 +523,10 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 		panelEntityAmount.setLayout(new MigLayout("", "[left][left][481.00px,grow][right]", "[][324px,grow][]"));
 		panelEntityAmount.add(chkBoxDisplayAll, "cell 0 0,alignx left,aligny center");
 		
-		btnRefreshEntityAmount = new JButton("Refresh");
+		btnRefreshEntityAmount = new JButtonAccess("Refresh");
 		btnRefreshEntityAmount.addActionListener(this);
 		
-		btnAmountKillAll = new JButton("Kill All");
+		btnAmountKillAll = new JButtonAccess("Kill All", AccessLevel.PRIVILEGED);
 		btnAmountKillAll.addActionListener(this);
 		panelEntityAmount.add(btnAmountKillAll, "cell 1 0,alignx left,aligny center");
 		panelEntityAmount.add(btnRefreshEntityAmount, "cell 3 0,alignx right,aligny center");
@@ -570,16 +573,16 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 		panelTimingTE = new JPanel();
 		tabbedPane.addTab("TileEntity Timing", null, panelTimingTE, null);
 		
-		btnTimingTECenterMap = new JButton("Center Map");
+		btnTimingTECenterMap = new JButtonAccess("Center Map");
 		btnTimingTECenterMap.addActionListener(this);
 		panelTimingTE.setLayout(new MigLayout("", "[left][left][233px,grow][right]", "[][334px,grow][]"));
 		panelTimingTE.add(btnTimingTECenterMap, "cell 0 0,alignx center,aligny center");
 		
-		btnTimingTETeleport = new JButton("Teleport");
+		btnTimingTETeleport = new JButtonAccess("Teleport", AccessLevel.PRIVILEGED);
 		btnTimingTETeleport.addActionListener(this);
 		panelTimingTE.add(btnTimingTETeleport, "cell 1 0,alignx center,aligny center");
 		
-		btnTimingTERefresh = new JButton("Run Opis");
+		btnTimingTERefresh = new JButtonAccess("Run Opis", AccessLevel.PRIVILEGED);
 		btnTimingTERefresh.addActionListener(this);
 		panelTimingTE.add(btnTimingTERefresh, "cell 3 0,alignx right,aligny center");
 		
@@ -613,20 +616,20 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 		panelTimingEnt = new JPanel();
 		tabbedPane.addTab("EntityTiming", null, panelTimingEnt, null);
 		
-		btnTimingEntCenterMap = new JButton("Center Map");
+		btnTimingEntCenterMap = new JButtonAccess("Center Map");
 		btnTimingEntCenterMap.addActionListener(this);
 		panelTimingEnt.setLayout(new MigLayout("", "[left][left][left][grow][right]", "[][334px,grow][]"));
 		panelTimingEnt.add(btnTimingEntCenterMap, "cell 0 0,alignx center,aligny center");
 		
-		btnTimingEntTeleport = new JButton("Teleport");
+		btnTimingEntTeleport = new JButtonAccess("Teleport", AccessLevel.PRIVILEGED);
 		btnTimingEntTeleport.addActionListener(this);
 		panelTimingEnt.add(btnTimingEntTeleport, "cell 1 0,alignx center,aligny center");
 		
-		btnTimingEntRefresh = new JButton("Run Opis");
+		btnTimingEntRefresh = new JButtonAccess("Run Opis", AccessLevel.PRIVILEGED);
 		btnTimingEntRefresh.addActionListener(this);
 		panelTimingEnt.add(btnTimingEntRefresh, "cell 4 0,alignx right,aligny center");
 		
-		btnTimingEntPull = new JButton("Pull");
+		btnTimingEntPull = new JButtonAccess("Pull", AccessLevel.PRIVILEGED);
 		btnTimingEntPull.addActionListener(this);		
 		panelTimingEnt.add(btnTimingEntPull, "cell 2 0,alignx center,aligny center");
 		
@@ -659,7 +662,7 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 		panelTimingHandler = new JPanel();
 		tabbedPane.addTab("Handlers Timing", null, panelTimingHandler, null);
 		
-		btnTimingHandlerRefresh = new JButton("Run Opis");
+		btnTimingHandlerRefresh = new JButtonAccess("Run Opis", AccessLevel.PRIVILEGED);
 		btnTimingHandlerRefresh.addActionListener(this);
 		panelTimingHandler.setLayout(new MigLayout("", "[495px,grow][]", "[][339px,grow][]"));
 		panelTimingHandler.add(btnTimingHandlerRefresh, "cell 1 0,alignx right,aligny center");
@@ -693,12 +696,12 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 		panelTimingChunk = new JPanel();
 		tabbedPane.addTab("Chunk Timing", null, panelTimingChunk, null);
 		
-		btnTimingChunkCenterMap = new JButton("Center Map");
+		btnTimingChunkCenterMap = new JButtonAccess("Center Map");
 		btnTimingChunkCenterMap.addActionListener(this);
 		panelTimingChunk.setLayout(new MigLayout("", "[left][left][97px,grow][right]", "[][359px,grow]"));
 		panelTimingChunk.add(btnTimingChunkCenterMap, "cell 0 0,alignx left,aligny center");
 		
-		btnTimingChunkTeleport = new JButton("Teleport");
+		btnTimingChunkTeleport = new JButtonAccess("Teleport", AccessLevel.PRIVILEGED);
 		btnTimingChunkTeleport.addActionListener(this);		
 		panelTimingChunk.add(btnTimingChunkTeleport, "cell 1 0,alignx left,aligny center");
 		
@@ -725,7 +728,7 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 		tableTimingChunk.setAutoCreateRowSorter(true);		
 		scrollPaneTimingChunk.setViewportView(tableTimingChunk);
 		
-		btnTimingChunkRefresh = new JButton("Run Opis");
+		btnTimingChunkRefresh = new JButtonAccess("Run Opis", AccessLevel.PRIVILEGED);
 		btnTimingChunkRefresh.addActionListener(this);
 		panelTimingChunk.add(btnTimingChunkRefresh, "cell 3 0,alignx right,aligny center");
 		
