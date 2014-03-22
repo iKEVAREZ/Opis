@@ -146,9 +146,9 @@ public class OpisServerTickHandler implements ITickHandler {
 					OpisPacketHandler.validateAndSend(Packet_DataList.create(DataReq.LIST_AMOUNT_ENTITIES, amountEntities), player);
 				}
 				
-				for (Player player : PlayerTracker.instance().playersOpis)
-					PacketDispatcher.sendPacketToPlayer(new Packet3Chat(ChatMessageComponent.createFromText(String.format("\u00A7oOpis automaticly stopped after %d ticks.", modOpis.profilerMaxTicks))), player);
-
+				for (Player player : PlayerTracker.instance().playersOpis){
+					OpisPacketHandler.sendChatMsg(String.format("\u00A7oOpis automaticly stopped after %d ticks.", modOpis.profilerMaxTicks), player);
+				}
 			}			
 		}
 	}
@@ -165,8 +165,11 @@ public class OpisServerTickHandler implements ITickHandler {
 
 	private void updatePlayers(){
 		for (Player player : PlayerTracker.instance().playerOverlayStatus.keySet()){
-			if (PlayerTracker.instance().playerOverlayStatus.get(player) == OverlayStatus.CHUNKSTATUS)
+			
+			if (PlayerTracker.instance().playerOverlayStatus.get(player) == OverlayStatus.CHUNKSTATUS){
 				PacketDispatcher.sendPacketToPlayer( Packet_LoadedChunks.create(ChunkManager.getLoadedChunks(PlayerTracker.instance().playerDimension.get(player))), player);
+			}
+			
 			if (PlayerTracker.instance().playerOverlayStatus.get(player) == OverlayStatus.MEANTIME){
 				ArrayList<StatsChunk> timingChunks = ChunkManager.getTopChunks(100);
 				OpisPacketHandler.validateAndSend(Packet_DataList.create(DataReq.LIST_TIMING_CHUNK, timingChunks), player);

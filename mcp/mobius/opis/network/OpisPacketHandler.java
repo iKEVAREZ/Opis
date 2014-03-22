@@ -42,8 +42,10 @@ import mcp.mobius.opis.overlay.entperchunk.OverlayEntityPerChunk;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet250CustomPayload;
+import net.minecraft.network.packet.Packet3Chat;
 import net.minecraft.network.packet.Packet56MapChunks;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.ChatMessageComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.DimensionManager;
@@ -275,5 +277,9 @@ public class OpisPacketHandler implements IPacketHandler {
 		for (Player player : PlayerTracker.instance().playersSwing)
 			OpisPacketHandler.validateAndSend(packet, player);
 	}
-        
+      
+	public static void sendChatMsg(String msg, Player player){
+		PacketDispatcher.sendPacketToPlayer(new Packet3Chat(ChatMessageComponent.createFromText(msg)), player);		
+	}
+	
 }
