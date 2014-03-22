@@ -143,7 +143,7 @@ public class OpisServerTickHandler implements ITickHandler {
 					ArrayList<AmountHolder> amountEntities = EntityManager.getCumulativeEntities(filtered);
 
 					// Here we send a full update to the player
-					PacketDispatcher.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST_AMOUNT_ENTITIES,    amountEntities),  player); 					
+					OpisPacketHandler.validateAndSend(Packet_DataList.create(DataReq.LIST_AMOUNT_ENTITIES, amountEntities), player);
 				}
 				
 				for (Player player : PlayerTracker.instance().playersOpis)
@@ -169,7 +169,7 @@ public class OpisServerTickHandler implements ITickHandler {
 				PacketDispatcher.sendPacketToPlayer( Packet_LoadedChunks.create(ChunkManager.getLoadedChunks(PlayerTracker.instance().playerDimension.get(player))), player);
 			if (PlayerTracker.instance().playerOverlayStatus.get(player) == OverlayStatus.MEANTIME){
 				ArrayList<StatsChunk> timingChunks = ChunkManager.getTopChunks(100);
-				PacketDispatcher.sendPacketToPlayer(Packet_DataList.create(DataReq.LIST_TIMING_CHUNK, timingChunks), player);
+				OpisPacketHandler.validateAndSend(Packet_DataList.create(DataReq.LIST_TIMING_CHUNK, timingChunks), player);
 			}
 		}
 	}

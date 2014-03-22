@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import mapwriter.Mw;
 import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.data.client.DataCache;
+import mcp.mobius.opis.data.holders.ISerializable;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesChunk;
 import mcp.mobius.opis.data.holders.basetypes.SerialDouble;
 import mcp.mobius.opis.data.holders.basetypes.SerialInt;
@@ -25,6 +26,7 @@ import mcp.mobius.opis.network.client.Packet_ReqChunks;
 import mcp.mobius.opis.network.client.Packet_ReqData;
 import mcp.mobius.opis.network.enums.AccessLevel;
 import mcp.mobius.opis.network.enums.DataReq;
+import mcp.mobius.opis.network.server.Packet250Metadata;
 import mcp.mobius.opis.network.server.Packet_Chunks;
 import mcp.mobius.opis.network.server.Packet_ClientCommand;
 import mcp.mobius.opis.network.server.Packet_DataList;
@@ -264,9 +266,14 @@ public class OpisPacketHandler implements IPacketHandler {
 		}
 	}        
 	
-	public static void sendPacketToAllSwing(Packet250CustomPayload packet){
-		for (Player player : PlayerTracker.instance().playersSwing)
+	public static void validateAndSend(Packet250Metadata packet, Player player){
+		if (packet.dataReq.canPlayerUseCommand(player))
 			PacketDispatcher.sendPacketToPlayer(packet, player);
+	}
+	
+	public static void sendPacketToAllSwing(Packet250Metadata packet){
+		for (Player player : PlayerTracker.instance().playersSwing)
+			OpisPacketHandler.validateAndSend(packet, player);
 	}
         
 }
