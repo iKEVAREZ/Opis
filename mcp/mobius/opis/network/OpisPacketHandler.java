@@ -8,19 +8,24 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import mapwriter.Mw;
+import mcp.mobius.mobiuscore.profiler.ProfilerRegistrar;
 import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.data.client.DataCache;
 import mcp.mobius.opis.data.holders.ISerializable;
+import mcp.mobius.opis.data.holders.basetypes.AmountHolder;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesChunk;
 import mcp.mobius.opis.data.holders.basetypes.SerialDouble;
 import mcp.mobius.opis.data.holders.basetypes.SerialInt;
 import mcp.mobius.opis.data.holders.basetypes.SerialLong;
 import mcp.mobius.opis.data.holders.basetypes.TicketData;
+import mcp.mobius.opis.data.holders.stats.StatsChunk;
 import mcp.mobius.opis.data.holders.stats.StatsEntity;
 import mcp.mobius.opis.data.holders.stats.StatsTickHandler;
 import mcp.mobius.opis.data.holders.stats.StatsTileEntity;
 import mcp.mobius.opis.data.managers.ChunkManager;
 import mcp.mobius.opis.data.managers.EntityManager;
+import mcp.mobius.opis.data.managers.GlobalTimingManager;
+import mcp.mobius.opis.data.managers.TickHandlerManager;
 import mcp.mobius.opis.data.managers.TileEntityManager;
 import mcp.mobius.opis.events.PlayerTracker;
 import mcp.mobius.opis.gui.swing.SwingUI;
@@ -42,6 +47,7 @@ import mcp.mobius.opis.overlay.OverlayLoadedChunks;
 import mcp.mobius.opis.overlay.OverlayMeanTime;
 import mcp.mobius.opis.overlay.OverlayStatus;
 import mcp.mobius.opis.overlay.entperchunk.OverlayEntityPerChunk;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet250CustomPayload;
@@ -308,6 +314,46 @@ public class OpisPacketHandler implements IPacketHandler {
 	
 	public static void sendChatMsg(String msg, Player player){
 		PacketDispatcher.sendPacketToPlayer(new Packet3Chat(ChatMessageComponent.createFromText(msg)), player);		
+	}
+	
+	public static void sendFullUpdate(Player player){
+		ArrayList<StatsTickHandler> timingHandlers = TickHandlerManager.getCumulatedStats();
+		ArrayList<StatsEntity>      timingEntities = EntityManager.getTopEntities(100);
+		ArrayList<StatsTileEntity>  timingTileEnts = TileEntityManager.getTopEntities(100);
+		ArrayList<StatsChunk>         timingChunks = ChunkManager.getTopChunks(100);
+		SerialDouble totalTimeTE      = new SerialDouble(TileEntityManager.getTotalUpdateTime());
+		SerialDouble totalTimeEnt     = new SerialDouble(EntityManager.getTotalUpdateTime());
+		SerialDouble totalTimeHandler = new SerialDouble(TickHandlerManager.getTotalUpdateTime());
+		SerialDouble totalWorldTick   = new SerialDouble(GlobalTimingManager.getTotalWorldTickStats());
+		SerialDouble totalEntUpdate   = new SerialDouble(GlobalTimingManager.getTotalEntUpdateStats());
+
+		OpisPacketHandler.validateAndSend(Packet_DataList.create(DataReq.LIST_TIMING_HANDLERS,    timingHandlers),   player);
+		OpisPacketHandler.validateAndSend(Packet_DataList.create(DataReq.LIST_TIMING_ENTITIES,    timingEntities),   player);
+		OpisPacketHandler.validateAndSend(Packet_DataList.create(DataReq.LIST_TIMING_TILEENTS,    timingTileEnts),   player);
+		OpisPacketHandler.validateAndSend(Packet_DataList.create(DataReq.LIST_TIMING_CHUNK,       timingChunks),     player);
+		OpisPacketHandler.validateAndSend(Packet_DataValue.create(DataReq.VALUE_TIMING_TILEENTS,  totalTimeTE),      player);
+		OpisPacketHandler.validateAndSend(Packet_DataValue.create(DataReq.VALUE_TIMING_ENTITIES,  totalTimeEnt),     player);
+		OpisPacketHandler.validateAndSend(Packet_DataValue.create(DataReq.VALUE_TIMING_HANDLERS,  totalTimeHandler), player);
+		OpisPacketHandler.validateAndSend(Packet_DataValue.create(DataReq.VALUE_TIMING_WORLDTICK, totalWorldTick),   player);		
+		OpisPacketHandler.validateAndSend(Packet_DataValue.create(DataReq.VALUE_TIMING_ENTUPDATE, totalEntUpdate),   player);					
+		
+		OpisPacketHandler.validateAndSend(Packet_DataValue.create(DataReq.VALUE_AMOUNT_TILEENTS, new SerialInt(TileEntityManager.stats.size())),       player);
+		OpisPacketHandler.validateAndSend(Packet_DataValue.create(DataReq.VALUE_AMOUNT_ENTITIES, new SerialInt(EntityManager.stats.size())),           player);
+		OpisPacketHandler.validateAndSend(Packet_DataValue.create(DataReq.VALUE_AMOUNT_HANDLERS, new SerialInt(TickHandlerManager.startStats.size())), player);
+		
+		OpisPacketHandler.validateAndSend(Packet_DataValue.create(DataReq.STATUS_TIME_LAST_RUN, new SerialLong(ProfilerRegistrar.timeStampLastRun)), player);
+		
+		// This portion is to get the proper filtered amounts depending on the player preferences.
+		String name = ((EntityPlayer)player).getEntityName();
+		boolean filtered = false;
+		if (PlayerTracker.instance().filteredAmount.containsKey(name))
+			filtered = PlayerTracker.instance().filteredAmount.get(name);
+		ArrayList<AmountHolder> amountEntities = EntityManager.getCumulativeEntities(filtered);
+
+		// Here we send a full update to the player
+		//OpisPacketHandler.validateAndSend(Packet_DataList.create(DataReq.LIST_AMOUNT_ENTITIES, amountEntities), player);
+		OpisPacketHandler.validateAndSend(Packet_DataList.create(DataReq.LIST_AMOUNT_ENTITIES, amountEntities), player);		
+		
 	}
 	
 }

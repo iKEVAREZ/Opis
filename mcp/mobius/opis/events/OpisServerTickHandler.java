@@ -106,47 +106,10 @@ public class OpisServerTickHandler implements ITickHandler {
 				
 				// Here we should send a full update to all the clients registered
 				
-				ArrayList<StatsTickHandler> timingHandlers = TickHandlerManager.getCumulatedStats();
-				ArrayList<StatsEntity>      timingEntities = EntityManager.getTopEntities(100);
-				ArrayList<StatsTileEntity>  timingTileEnts = TileEntityManager.getTopEntities(100);
-				ArrayList<StatsChunk>         timingChunks = ChunkManager.getTopChunks(100);
-				SerialDouble totalTimeTE      = new SerialDouble(TileEntityManager.getTotalUpdateTime());
-				SerialDouble totalTimeEnt     = new SerialDouble(EntityManager.getTotalUpdateTime());
-				SerialDouble totalTimeHandler = new SerialDouble(TickHandlerManager.getTotalUpdateTime());
-				SerialDouble totalWorldTick   = new SerialDouble(GlobalTimingManager.getTotalWorldTickStats());
-				SerialDouble totalEntUpdate   = new SerialDouble(GlobalTimingManager.getTotalEntUpdateStats());
-
-				OpisPacketHandler.sendPacketToAllSwing(Packet_DataList.create(DataReq.LIST_TIMING_HANDLERS,    timingHandlers));
-				OpisPacketHandler.sendPacketToAllSwing(Packet_DataList.create(DataReq.LIST_TIMING_ENTITIES,    timingEntities));
-				OpisPacketHandler.sendPacketToAllSwing(Packet_DataList.create(DataReq.LIST_TIMING_TILEENTS,    timingTileEnts));
-				OpisPacketHandler.sendPacketToAllSwing(Packet_DataList.create(DataReq.LIST_TIMING_CHUNK,       timingChunks));
-				OpisPacketHandler.sendPacketToAllSwing(Packet_DataValue.create(DataReq.VALUE_TIMING_TILEENTS,  totalTimeTE));
-				OpisPacketHandler.sendPacketToAllSwing(Packet_DataValue.create(DataReq.VALUE_TIMING_ENTITIES,  totalTimeEnt));
-				OpisPacketHandler.sendPacketToAllSwing(Packet_DataValue.create(DataReq.VALUE_TIMING_HANDLERS,  totalTimeHandler));
-				OpisPacketHandler.sendPacketToAllSwing(Packet_DataValue.create(DataReq.VALUE_TIMING_WORLDTICK, totalWorldTick));		
-				OpisPacketHandler.sendPacketToAllSwing(Packet_DataValue.create(DataReq.VALUE_TIMING_ENTUPDATE, totalEntUpdate));					
-				
-				OpisPacketHandler.sendPacketToAllSwing(Packet_DataValue.create(DataReq.VALUE_AMOUNT_TILEENTS, new SerialInt(TileEntityManager.stats.size())));
-				OpisPacketHandler.sendPacketToAllSwing(Packet_DataValue.create(DataReq.VALUE_AMOUNT_ENTITIES, new SerialInt(EntityManager.stats.size())));
-				OpisPacketHandler.sendPacketToAllSwing(Packet_DataValue.create(DataReq.VALUE_AMOUNT_HANDLERS, new SerialInt(TickHandlerManager.startStats.size())));
-				
 				OpisPacketHandler.sendPacketToAllSwing(Packet_DataValue.create(DataReq.STATUS_STOP,          new SerialInt(modOpis.profilerMaxTicks)));
-				OpisPacketHandler.sendPacketToAllSwing(Packet_DataValue.create(DataReq.STATUS_TIME_LAST_RUN, new SerialLong(ProfilerRegistrar.timeStampLastRun)));
-				
 				
 				for (Player player : PlayerTracker.instance().playersSwing){
-
-					// This portion is to get the proper filtered amounts depending on the player preferences.
-					String name = ((EntityPlayer)player).getEntityName();
-					boolean filtered = false;
-					if (PlayerTracker.instance().filteredAmount.containsKey(name))
-						filtered = PlayerTracker.instance().filteredAmount.get(name);
-					ArrayList<AmountHolder> amountEntities = EntityManager.getCumulativeEntities(filtered);
-
-					// Here we send a full update to the player
-					//OpisPacketHandler.validateAndSend(Packet_DataList.create(DataReq.LIST_AMOUNT_ENTITIES, amountEntities), player);
-					OpisPacketHandler.validateAndSend(Packet_DataList.create(DataReq.LIST_AMOUNT_ENTITIES, amountEntities), player);
-					
+					OpisPacketHandler.sendFullUpdate(player);
 				}
 				
 				for (Player player : PlayerTracker.instance().playersOpis){
