@@ -48,6 +48,7 @@ public enum DataReq {
 	COMMAND_FILTERING_FALSE,
 	COMMAND_UNREGISTER,
 	COMMAND_UNREGISTER_SWING,
+	COMMAND_OPEN_SWING,
 	
 	OVERLAY_CHUNK_ENTITIES,
 	OVERLAY_CHUNK_TIMING;
@@ -95,4 +96,8 @@ public enum DataReq {
 		DataReq.LIST_CHUNK_LOADED.setAccessLevel(level);
 		DataReq.LIST_CHUNK_TICKETS.setAccessLevel(level);		
 	}	
+	
+	public static void setOpisMinimumLevel(AccessLevel level){
+		DataReq.COMMAND_OPEN_SWING.setAccessLevel(level);
+	}
 }

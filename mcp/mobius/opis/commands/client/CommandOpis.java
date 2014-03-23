@@ -8,11 +8,13 @@ import mcp.mobius.opis.events.PlayerTracker;
 import mcp.mobius.opis.network.DataReqHandler;
 import mcp.mobius.opis.network.OpisPacketHandler;
 import mcp.mobius.opis.network.enums.ClientCommand;
+import mcp.mobius.opis.network.enums.DataReq;
 import mcp.mobius.opis.network.server.Packet_ClientCommand;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.util.ChatMessageComponent;
 
 public class CommandOpis extends CommandBase {
 
@@ -28,6 +30,16 @@ public class CommandOpis extends CommandBase {
 
 	@Override
 	public void processCommand(ICommandSender icommandsender, String[] astring) {
+		if (!(icommandsender instanceof Player)){
+			icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText("You are not a normal client and can't open the Swing interface."));
+			return;
+		}
+		
+		if (!DataReq.COMMAND_OPEN_SWING.canPlayerUseCommand((Player)icommandsender)){
+			icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText("Your access level prevents you from doing that."));
+			return;			
+		}
+		
 		PlayerTracker.instance().playersSwing.add((Player)icommandsender);
 		PlayerTracker.instance().playersOpis.add((Player)icommandsender);
 		((EntityPlayerMP)icommandsender).playerNetServerHandler.sendPacketToPlayer(Packet_ClientCommand.create(ClientCommand.SHOW_SWING));

@@ -92,6 +92,7 @@ public class modOpis {
 	
 	public static String commentTables     = "Minimum access level to be able to view tables in /opis command. Valid values : NONE, PRIVILEGED, ADMIN";
 	public static String commentOverlays   = "Minimum access level to be able to show overlays in MapWriter. Valid values : NONE, PRIVILEGED, ADMIN";
+	public static String commentOpis       = "Minimum access level to be open Opis interface. Valid values : NONE, PRIVILEGED, ADMIN";
 	public static String commentPrivileged = "List of players with PRIVILEGED access level.";
 	
 	@EventHandler
@@ -107,11 +108,14 @@ public class modOpis {
 		String[] users   = config.get("ACCESS_RIGHTS", "privileged", new String[]{}, commentPrivileged).getStringList();
 		AccessLevel minTables   = AccessLevel.PRIVILEGED;
 		AccessLevel minOverlays = AccessLevel.PRIVILEGED;
-		try{ minTables   = AccessLevel.valueOf(config.get("ACCESS_RIGHTS", "tables", "NONE", commentTables).getString()); }   catch (IllegalArgumentException e){}
+		AccessLevel openOpis    = AccessLevel.PRIVILEGED;
+		try{ openOpis    = AccessLevel.valueOf(config.get("ACCESS_RIGHTS", "opis",     "NONE", commentTables).getString()); }   catch (IllegalArgumentException e){}
+		try{ minTables   = AccessLevel.valueOf(config.get("ACCESS_RIGHTS", "tables",   "NONE", commentTables).getString()); }   catch (IllegalArgumentException e){}
 		try{ minOverlays = AccessLevel.valueOf(config.get("ACCESS_RIGHTS", "overlays", "NONE", commentOverlays).getString()); } catch (IllegalArgumentException e){}
 
 		DataReq.setTablesMinimumLevel(minTables);
 		DataReq.setOverlaysMinimumLevel(minOverlays);
+		DataReq.setOpisMinimumLevel(openOpis);
 		
 		for (String s : users)
 			PlayerTracker.instance().addPrivilegedPlayer(s,false);
