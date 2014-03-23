@@ -193,100 +193,17 @@ public class EntityManager {
 		return cumData;
 	}
 	
-	public static CoordinatesBlock getTeleportTarget(CoordinatesBlock coord){
-		World world = DimensionManager.getWorld(coord.dim);
-		if (world == null) {return null;}
-		
-		int maxOffset       = 16;
-		boolean targetFound = false;
-		
-		if (coord.y > 0){
-			for (int xoffset = 0; xoffset <= maxOffset; xoffset++){
-				for (int zoffset = 0; zoffset <= maxOffset; zoffset++){
-					if ( world.isAirBlock(coord.x + xoffset, coord.y,     coord.z + zoffset) && 
-					     world.isAirBlock(coord.x + xoffset, coord.y + 1, coord.z + zoffset) &&
-					    !world.isAirBlock(coord.x + xoffset, coord.y - 1, coord.z + zoffset))
-						return new CoordinatesBlock(coord.dim, coord.x + xoffset, coord.y, coord.z + zoffset);
-					
-					if (world.isAirBlock(coord.x - xoffset, coord.y,     coord.z + zoffset) && 
-					    world.isAirBlock(coord.x - xoffset, coord.y + 1, coord.z + zoffset) &&
-					   !world.isAirBlock(coord.x - xoffset, coord.y - 1, coord.z + zoffset))				
-						return new CoordinatesBlock(coord.dim, coord.x - xoffset, coord.y, coord.z + zoffset);
-					
-					if (world.isAirBlock(coord.x + xoffset, coord.y,     coord.z - zoffset) && 
-						world.isAirBlock(coord.x + xoffset, coord.y + 1, coord.z - zoffset) &&
-					   !world.isAirBlock(coord.x + xoffset, coord.y - 1, coord.z - zoffset))
-						return new CoordinatesBlock(coord.dim, coord.x + xoffset, coord.y, coord.z - zoffset);
-					
-					if (world.isAirBlock(coord.x - xoffset, coord.y,     coord.z - zoffset) && 
-						world.isAirBlock(coord.x - xoffset, coord.y + 1, coord.z - zoffset) &&
-					   !world.isAirBlock(coord.x - xoffset, coord.y - 1, coord.z - zoffset))
-						return new CoordinatesBlock(coord.dim, coord.x - xoffset, coord.y, coord.z - zoffset);				
-				}
-			}
-		} else {
-			int y = 256;
-			while (world.isAirBlock(coord.x, y, coord.z) ||
-				   world.getBlockId(coord.x, y, coord.z) == Block.vine.blockID
-				  )
-				y--;
-	
-			for (int xoffset = 0; xoffset <= maxOffset; xoffset++){
-				for (int zoffset = 0; zoffset <= maxOffset; zoffset++){
-					if (world.isAirBlock(coord.x + xoffset, y, coord.z + zoffset) && world.isAirBlock(coord.x + xoffset, y + 1, coord.z + zoffset))
-						return new CoordinatesBlock(coord.dim, coord.x + xoffset, y, coord.z + zoffset);
-					
-					if (world.isAirBlock(coord.x - xoffset, y, coord.z + zoffset) && world.isAirBlock(coord.x - xoffset, y + 1, coord.z + zoffset))				
-						return new CoordinatesBlock(coord.dim, coord.x - xoffset, y, coord.z + zoffset);
-					
-					if (world.isAirBlock(coord.x + xoffset, y, coord.z - zoffset) && world.isAirBlock(coord.x + xoffset, y + 1, coord.z - zoffset))
-						return new CoordinatesBlock(coord.dim, coord.x + xoffset, y, coord.z - zoffset);
-					
-					if (world.isAirBlock(coord.x - xoffset, y, coord.z - zoffset) && world.isAirBlock(coord.x - xoffset, y + 1, coord.z - zoffset))
-						return new CoordinatesBlock(coord.dim, coord.x - xoffset, y, coord.z - zoffset);				
-				}
-			}	
-		}
-		
-		return null;
-	}
-	
 	public static boolean teleportPlayer(CoordinatesBlock coord, EntityPlayerMP player){
 		//System.out.printf("%s %s\n", coord, getTeleportTarget(coord));
-		CoordinatesBlock target = EntityManager.getTeleportTarget(coord);
+		CoordinatesBlock target = Teleport.instance().getTeleportTarget(coord);
 		if (target == null) return false;
 		
-		World   targetWorld = DimensionManager.getWorld(coord.dim);
-		boolean isBedrock   = targetWorld.getBlockId(target.x, target.y - 1, target.z) == Block.bedrock.blockID;
-		boolean canTeleport = false;
-		CoordinatesBlock finalTarget;
-		
-		// Fix for the nether and all cavern worlds.
-		if ((target.y > 64) && isBedrock){
-			int tempY = target.y - 1;
-			while (tempY > 1){
-				if (targetWorld.isAirBlock(target.x, tempY, target.z) && targetWorld.isAirBlock(target.x, tempY - 1, target.z)){
-					canTeleport = true;
-					
-					while (targetWorld.isAirBlock(target.x, tempY, target.z)){tempY -= 1;}
-					
-					break;
-				}
-				tempY -= 1;
-			}
-			
-			finalTarget = new CoordinatesBlock(target.dim, target.x, tempY + 1, target.z);
-			
-			
-		} else {
-			canTeleport = true;			
-			finalTarget = target;
-		}
+		target = Teleport.instance().fixNetherTP(target);
 
-		if (!canTeleport) return false;
+		if (target == null) return false;
 		
 		if (Teleport.instance().movePlayerToDimension(player, coord.dim))
-			player.setPositionAndUpdate(finalTarget.x + 0.5, finalTarget.y, finalTarget.z + 0.5);
+			player.setPositionAndUpdate(target.x + 0.5, target.y, target.z + 0.5);
 		else
 			return false;
 		
