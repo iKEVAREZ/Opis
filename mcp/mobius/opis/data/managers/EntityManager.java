@@ -262,8 +262,10 @@ public class EntityManager {
 		}
 			
 		
-		if (ent instanceof EntityPlayerMP)
+		if (ent instanceof EntityPlayerMP && filtered)
 			return "Player";
+		else if (ent instanceof EntityPlayerMP && !filtered)
+			return "[ Player ] " + ((EntityPlayerMP)ent).getDisplayName();
 		
 		String name = ent.getTranslatedEntityName();
 		

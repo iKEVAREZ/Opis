@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import mcp.mobius.opis.data.holders.ISerializable;
@@ -16,6 +17,8 @@ import mcp.mobius.opis.data.holders.stats.StatsEntity;
 import mcp.mobius.opis.data.holders.stats.StatsTileEntity;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.WorldServer;
+import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.gen.ChunkProviderServer;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.ForgeChunkManager.Ticket;
 
@@ -39,8 +42,9 @@ public class ChunkManager {
 	
 	public static HashMap<Integer, HashMap<ChunkCoordIntPair, Boolean>> getAllLoadedChunks(){
 		HashMap<Integer, HashMap<ChunkCoordIntPair, Boolean>> chunkStatus = new HashMap<Integer, HashMap<ChunkCoordIntPair, Boolean>>();
-		for (int dim : DimensionManager.getIDs())
+		for (int dim : DimensionManager.getIDs()){
 			chunkStatus.put(dim, ChunkManager.getLoadedChunks(dim));
+		}
 		
 		return chunkStatus;
 	}
@@ -52,9 +56,18 @@ public class ChunkManager {
 		{
 			Set<ChunkCoordIntPair> persistantChunks = world.getPersistentChunks().keySet();
 			Set<ChunkCoordIntPair> chunks = (Set<ChunkCoordIntPair>)world.activeChunkSet;
+			HashSet<ChunkCoordIntPair> provider = new HashSet<ChunkCoordIntPair>();
+			
+			List loadedChunks = ((ChunkProviderServer)world.getChunkProvider()).loadedChunks;
 			
 			for (ChunkCoordIntPair chunk : chunks){
 				chunkStatus.put(chunk, persistantChunks.contains(chunk));
+			}
+			
+			for (Object o : loadedChunks){
+				Chunk chunk = (Chunk)o;
+				if(!chunkStatus.containsKey(chunk.getChunkCoordIntPair()))
+					chunkStatus.put(chunk.getChunkCoordIntPair(), false);
 			}
 		}
 		
