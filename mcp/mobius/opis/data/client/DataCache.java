@@ -8,6 +8,7 @@ import java.util.HashMap;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
@@ -220,12 +221,9 @@ public class DataCache {
 	}		
 	
 	public void setAmountEntities(ArrayList<ISerializable> stats){
-		this.amountEntities.clear();
-		for (ISerializable stat : stats)
-			this.amountEntities.add((AmountHolder)stat);			
-		
-		DefaultTableModel model = (DefaultTableModel)SwingUI.instance().getTableEntityList().getModel();
-		this.clearRows(model);
+		JTable table            = SwingUI.instance().getTableEntityList();
+		DefaultTableModel model = (DefaultTableModel)table.getModel();
+		int               row   = this.updateData(table, model, this.amountEntities, stats, AmountHolder.class);	
 		
 		int totalEntities = 0;
 		
@@ -235,31 +233,25 @@ public class DataCache {
 		}		
 
 		SwingUI.instance().getLabelAmountValue().setText(String.valueOf(totalEntities));
-		model.fireTableDataChanged();		
+		this.dataUpdated(table, model, row);	
 	}
 	
 	public void setTimingHandlers(ArrayList<ISerializable> timingHandlers_){
-		this.timingHandlers.clear();
-		for (ISerializable stat : timingHandlers_)
-			this.timingHandlers.add((StatsTickHandler)stat);			
-		
-		DefaultTableModel model = (DefaultTableModel)SwingUI.instance().getTableTimingHandler().getModel();
-		this.clearRows(model);
+		JTable table            = SwingUI.instance().getTableTimingHandler();
+		DefaultTableModel model = (DefaultTableModel)table.getModel();
+		int               row   = this.updateData(table, model, this.timingHandlers, timingHandlers_, StatsTickHandler.class);	
 		
 		for (StatsTickHandler stat : DataCache.instance().getTimingHandlers()){
 			model.addRow(new Object[] {stat.getName(), stat});
 		}
 
-		model.fireTableDataChanged();		
+		this.dataUpdated(table, model, row);		
 	}
 	
 	public void setTimingEntities(ArrayList<ISerializable> timingEntities_){
-		this.timingEntities.clear();
-		for (ISerializable stat : timingEntities_)
-			this.timingEntities.add((StatsEntity)stat);		
-		
-		DefaultTableModel model = (DefaultTableModel)SwingUI.instance().getTableTimingEnt().getModel();
-		this.clearRows(model);
+		JTable table            = SwingUI.instance().getTableTimingEnt();
+		DefaultTableModel model = (DefaultTableModel)table.getModel();
+		int               row   = this.updateData(table, model, this.timingEntities, timingEntities_, StatsEntity.class);	
 		
 		for (StatsEntity stat : DataCache.instance().getTimingEntities()){
 			model.addRow(new Object[]  {stat.getName(), 
@@ -270,17 +262,14 @@ public class DataCache {
 										String.valueOf(stat.getDataPoints())});
 		}
 		
-		model.fireTableDataChanged();			
+		this.dataUpdated(table, model, row);		
 		
 	}
 	
 	public void setTimingTileEnts(ArrayList<ISerializable> timingTileEnts_){
-		this.timingTileEnts.clear();
-		for (ISerializable stat : timingTileEnts_)
-			this.timingTileEnts.add((StatsTileEntity)stat);
-		
-		DefaultTableModel model = (DefaultTableModel)SwingUI.instance().getTableTimingTE().getModel();
-		this.clearRows(model);
+		JTable table            = SwingUI.instance().getTableTimingTE();
+		DefaultTableModel model = (DefaultTableModel)table.getModel();
+		int               row   = this.updateData(table, model, this.timingTileEnts, timingTileEnts_, StatsTileEntity.class);	
 		
 		for (StatsTileEntity stat : DataCache.instance().getTimingTileEnts()){
 			ItemStack is;
@@ -301,16 +290,13 @@ public class DataCache {
 				     stat});
 		}
 		
-		model.fireTableDataChanged();				
+		this.dataUpdated(table, model, row);		
 	}
 	
 	public void setTimingChunks(ArrayList<ISerializable> timingChunks_){
-		this.timingChunks.clear();
-		for (ISerializable stat : timingChunks_)
-			this.timingChunks.add((StatsChunk)stat);
-		
-		DefaultTableModel model = (DefaultTableModel)SwingUI.instance().getTableTimingChunk().getModel();
-		this.clearRows(model);
+		JTable table            = SwingUI.instance().getTableTimingChunk();
+		DefaultTableModel model = (DefaultTableModel)table.getModel();
+		int               row   = this.updateData(table, model, this.timingChunks, timingChunks_, StatsChunk.class);		
 		
 		for (StatsChunk stat : DataCache.instance().getTimingChunks()){
 			model.addRow(new Object[]  {
@@ -321,7 +307,7 @@ public class DataCache {
 				     stat});
 		}
 		
-		model.fireTableDataChanged();				
+		this.dataUpdated(table, model, row);	
 	}	
 	
 	public ArrayList<StatsPlayer> getListPlayers(){
@@ -329,15 +315,10 @@ public class DataCache {
 	}
 	
 	public void setListPlayers(ArrayList<ISerializable> playerList){
-		int row = SwingUI.instance().getTablePlayers().getSelectedRow();
-		
-		this.listPlayers.clear();
-		for (ISerializable stat : playerList)
-			this.listPlayers.add((StatsPlayer)stat);
-		
-		DefaultTableModel model = (DefaultTableModel)SwingUI.instance().getTablePlayers().getModel();
-		this.clearRows(model);
-		
+		JTable table            = SwingUI.instance().getTablePlayers();
+		DefaultTableModel model = (DefaultTableModel)table.getModel();
+		int               row   = this.updateData(table, model, this.listPlayers, playerList, StatsPlayer.class);
+
 		for (StatsPlayer stat : DataCache.instance().getListPlayers()){
 			model.addRow(new Object[]  {
 					stat.getName(),
@@ -346,18 +327,31 @@ public class DataCache {
 					 });
 		}
 		
-		model.fireTableDataChanged();
-		
-		try{
-			SwingUI.instance().getTablePlayers().setRowSelectionInterval(row, row);
-		} catch (IllegalArgumentException e ){
-			
-		}		
+		this.dataUpdated(table, model, row);
 	}
 	
-	private void clearRows(DefaultTableModel model){
+	private <U> int updateData(JTable table, DefaultTableModel model, ArrayList<U> dataarray, ArrayList<? extends ISerializable> newdata, Class<U> datatype){
+		int row = table.getSelectedRow();
+		
 		if (model.getRowCount() > 0)
 			for (int i = model.getRowCount() - 1; i >= 0; i--)
 				model.removeRow(i);		
+		
+		dataarray.clear();
+		
+		for (ISerializable stat : newdata)
+			dataarray.add(datatype.cast(stat));
+		
+		return row;
+	}
+	
+	private void dataUpdated(JTable table, DefaultTableModel model, int row){
+		model.fireTableDataChanged();
+		
+		try{
+			table.setRowSelectionInterval(row, row);
+		} catch (IllegalArgumentException e ){
+			
+		}		
 	}
 }
