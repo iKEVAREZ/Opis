@@ -3,26 +3,38 @@ package mcp.mobius.opis.data.managers;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
+import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityList;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.network.packet.Packet3Chat;
+import net.minecraft.network.packet.Packet41EntityEffect;
+import net.minecraft.network.packet.Packet9Respawn;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatMessageComponent;
+import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.MathHelper;
+import net.minecraft.world.Teleporter;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldProvider;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
 import mcp.mobius.opis.data.holders.basetypes.AmountHolder;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesBlock;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesChunk;
 import mcp.mobius.opis.data.holders.stats.StatsEntity;
 import mcp.mobius.opis.data.holders.stats.StatsPlayer;
+import mcp.mobius.opis.helpers.Teleport;
 
 public class EntityManager {
 
@@ -273,10 +285,10 @@ public class EntityManager {
 
 		if (!canTeleport) return false;
 		
-		if (player.worldObj.provider.dimensionId != coord.dim) 
-			player.travelToDimension(coord.dim);
-		
-		player.setPositionAndUpdate(finalTarget.x + 0.5, finalTarget.y, finalTarget.z + 0.5);
+		if (Teleport.instance().movePlayerToDimension(player, coord.dim))
+			player.setPositionAndUpdate(finalTarget.x + 0.5, finalTarget.y, finalTarget.z + 0.5);
+		else
+			return false;
 		
 		return true;
 	}
@@ -292,15 +304,23 @@ public class EntityManager {
 			return false;
 		}				
 		
-		if (src.worldObj.provider.dimensionId != trg.worldObj.provider.dimensionId) 
-			src.travelToDimension(trg.worldObj.provider.dimensionId);
-		
-		src.setLocationAndAngles(trg.posX, trg.posY, trg.posZ, src.rotationYaw, src.rotationPitch);
-		
+		if (src instanceof EntityPlayerMP){
+			if (Teleport.instance().movePlayerToDimension((EntityPlayerMP)src, trg.worldObj.provider.dimensionId))
+				src.setLocationAndAngles(trg.posX, trg.posY, trg.posZ, src.rotationYaw, src.rotationPitch);
+			else
+				return false;
+		}
+		else{
+			if (Teleport.instance().moveEntityToDimension(src, trg.worldObj.provider.dimensionId))			
+				src.setLocationAndAngles(trg.posX, trg.posY, trg.posZ, src.rotationYaw, src.rotationPitch);
+			else
+				return false;
+		}
+	
 		return true;		
 		
 	}
-		
+
 	public static Entity getEntity(int eid, int dim){
 		World world = DimensionManager.getWorld(dim);
 		if (world == null) return null;
