@@ -38,45 +38,38 @@ public class CommandChunkList extends CommandBase implements IOpisCommand {
 
 	@Override
 	public void processCommand(ICommandSender icommandsender, String[] astring) {
+		if (icommandsender instanceof Player){
+			icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText("DEPRECATED ! Please run /opis instead."));
+			return;
+		}				
+		
 		ArrayList<StatsChunk> chunks = new ArrayList<StatsChunk>();
 		
 		if (astring.length == 0)
-			chunks = ChunkManager.getTopChunks(100);
+			chunks = ChunkManager.getTopChunks(20);
 		else
 			try{
 				chunks = ChunkManager.getTopChunks(Integer.valueOf(astring.length));	
 			}catch (Exception e){return;}
 		
-		/*
-		System.out.printf("== ==\n");
-		for (ChunkStats stat : chunks){
-			System.out.printf("%s\n", stat);
+		icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText("[DIM X Z] Time NTEs"));
+		for (StatsChunk stat : chunks){
+			icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText(stat.toString()));
 		}
-		*/
-		if (icommandsender instanceof EntityPlayer)	
-			OpisPacketHandler.validateAndSend(Packet_DataList.create(DataReq.LIST_TIMING_CHUNK, chunks), (Player)icommandsender);
-		else {
-			icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText("[DIM X Z] Time NTEs"));
-			for (StatsChunk stat : chunks){
-				icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText(stat.toString()));
-			}
-		}
+
 		
 	}
 
 	@Override
     public int getRequiredPermissionLevel()
     {
-        return 3;
+        return 0;
     }	
 
 	@Override
     public boolean canCommandSenderUseCommand(ICommandSender sender)
     {
-		if (sender instanceof DedicatedServer) return true;
-		if ((sender instanceof EntityPlayerMP) && ((EntityPlayerMP)sender).playerNetServerHandler.netManager instanceof MemoryConnection) return true;
-		if (!(sender instanceof DedicatedServer) && !(sender instanceof EntityPlayerMP)) return true;		
-		return PlayerTracker.instance().isPrivileged(((EntityPlayerMP)sender).username);
+		return true;
     }
 
 	@Override

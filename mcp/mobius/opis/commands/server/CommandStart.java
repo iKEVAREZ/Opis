@@ -47,14 +47,16 @@ public class CommandStart extends CommandBase implements IOpisCommand {
 
 	@Override
 	public void processCommand(ICommandSender icommandsender, String[] astring) {
+		if (icommandsender instanceof Player){
+			icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText("DEPRECATED ! Please run /opis instead."));
+			return;
+		}				
+		
 		MetaManager.reset();	
 		modOpis.profilerRun = true;
 		ProfilerRegistrar.turnOn();
-		
-		if (icommandsender instanceof EntityPlayer){
-			PlayerTracker.instance().playersOpis.add((Player)icommandsender);
-			OpisPacketHandler.sendPacketToAllSwing(Packet_DataValue.create(DataReq.STATUS_START, new SerialInt(modOpis.profilerMaxTicks)));			
-		}
+
+		OpisPacketHandler.sendPacketToAllSwing(Packet_DataValue.create(DataReq.STATUS_START, new SerialInt(modOpis.profilerMaxTicks)));		
 		icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText(String.format("\u00A7oOpis started with a tick delay %s.", modOpis.profilerDelay)));
 
 		
@@ -63,16 +65,13 @@ public class CommandStart extends CommandBase implements IOpisCommand {
 	@Override
     public int getRequiredPermissionLevel()
     {
-        return 3;
+        return 0;
     }	
 
 	@Override
     public boolean canCommandSenderUseCommand(ICommandSender sender)
     {
-		if (sender instanceof DedicatedServer) return true;
-		if ((sender instanceof EntityPlayerMP) && ((EntityPlayerMP)sender).playerNetServerHandler.netManager instanceof MemoryConnection) return true;
-		if (!(sender instanceof DedicatedServer) && !(sender instanceof EntityPlayerMP)) return true;
-		return PlayerTracker.instance().isPrivileged(((EntityPlayerMP)sender).username);
+		return true;
     }
 
 	@Override

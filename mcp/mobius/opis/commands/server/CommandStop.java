@@ -39,15 +39,7 @@ public class CommandStop extends CommandBase implements IOpisCommand {
 	public void processCommand(ICommandSender icommandsender, String[] astring) {
 		modOpis.profilerRun = false;
 		ProfilerRegistrar.turnOff();
-
-		if (icommandsender instanceof EntityPlayer)
-			PlayerTracker.instance().playersOpis.add((Player)icommandsender);
-		
-		for (Player player : PlayerTracker.instance().playersOpis)
-			PacketDispatcher.sendPacketToPlayer(new Packet3Chat(ChatMessageComponent.createFromText(String.format("\u00A7oOpis stopped."))), player);
-		
-		if (!(icommandsender instanceof EntityPlayer))
-			icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText(String.format("\u00A7oOpis stopped.")));
+		icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText(String.format("\u00A7oOpis stopped.")));
 	}
 
 	@Override

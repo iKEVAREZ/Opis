@@ -21,7 +21,6 @@ import mcp.mobius.opis.commands.server.CommandHandler;
 import mcp.mobius.opis.commands.server.CommandHelp;
 import mcp.mobius.opis.commands.server.CommandKill;
 import mcp.mobius.opis.commands.server.CommandKillAll;
-import mcp.mobius.opis.commands.server.CommandMeanModTime;
 import mcp.mobius.opis.commands.server.CommandReset;
 import mcp.mobius.opis.commands.server.CommandRmPrivileged;
 import mcp.mobius.opis.commands.server.CommandStart;
@@ -161,7 +160,6 @@ public class modOpis {
 		event.registerServerCommand(new CommandStart());
 		event.registerServerCommand(new CommandStop());		
 		event.registerServerCommand(new CommandTimingTileEntities());
-		event.registerServerCommand(new CommandMeanModTime());
 		event.registerServerCommand(new CommandTicks());
 		event.registerServerCommand(new CommandTimingEntities());
 		event.registerServerCommand(new CommandAmountEntities());

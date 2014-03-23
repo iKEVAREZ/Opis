@@ -19,7 +19,7 @@ public class PlayerTracker implements IPlayerTracker{
 	private PlayerTracker(){}
 	
 	public HashSet<Player> playersSwing = new HashSet<Player>();		 //This is the list of players who have opened the UI
-	public HashSet<Player> playersOpis  = new HashSet<Player>();		 //This is the list of players who have opened the UI or used the command line
+	//public HashSet<Player> playersOpis  = new HashSet<Player>();		 //This is the list of players who have opened the UI or used the command line
 	public HashMap<String, Boolean> filteredAmount = new HashMap<String, Boolean>(); //Should the entity amount be filtered or not
 	public HashMap<Player, OverlayStatus> playerOverlayStatus = new HashMap<Player, OverlayStatus>();
 	public HashMap<Player, Integer>       playerDimension     = new HashMap<Player, Integer>();
@@ -88,7 +88,7 @@ public class PlayerTracker implements IPlayerTracker{
 	public void onPlayerLogout(EntityPlayer player) {
 		this.playerOverlayStatus.remove(player);
 		this.playerDimension.remove(player);
-		this.playersOpis.remove(player);
+		//this.playersOpis.remove(player);
 		this.playersSwing.remove(player);
 	}
 

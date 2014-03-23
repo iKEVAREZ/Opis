@@ -38,6 +38,11 @@ public class CommandTimingTileEntities extends CommandBase implements IOpisComma
 
 	@Override
 	public void processCommand(ICommandSender icommandsender, String[] astring) {
+		if (icommandsender instanceof Player){
+			icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText("DEPRECATED ! Please run /opis instead."));
+			return;
+		}				
+		
 		ArrayList<StatsTileEntity> tes = new ArrayList<StatsTileEntity>(); 
 		if (astring.length == 0){
 			tes = TileEntityManager.getTopEntities(20);
@@ -48,29 +53,23 @@ public class CommandTimingTileEntities extends CommandBase implements IOpisComma
 			} catch (Exception e) {return;}
 		}
 		
-		if (icommandsender instanceof EntityPlayer)		
-			OpisPacketHandler.validateAndSend(Packet_DataList.create(DataReq.LIST_TIMING_TILEENTS,  tes), (Player)icommandsender);
-		else{
-			for (StatsTileEntity stat : tes){
-				icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText(stat.toString()));
-			}
-		}			
+		for (StatsTileEntity stat : tes){
+			icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText(stat.toString()));
+		}
+			
 		
 	}
 
 	@Override
     public int getRequiredPermissionLevel()
     {
-        return 3;
+        return 0;
     }	
 
 	@Override
     public boolean canCommandSenderUseCommand(ICommandSender sender)
     {
-		if (sender instanceof DedicatedServer) return true;
-		if ((sender instanceof EntityPlayerMP) && ((EntityPlayerMP)sender).playerNetServerHandler.netManager instanceof MemoryConnection) return true;
-		if (!(sender instanceof DedicatedServer) && !(sender instanceof EntityPlayerMP)) return true;
-		return PlayerTracker.instance().isPrivileged(((EntityPlayerMP)sender).username);
+		return true;
     }			
 	
 	@Override

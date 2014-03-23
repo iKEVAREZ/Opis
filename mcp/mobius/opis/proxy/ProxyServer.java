@@ -14,5 +14,4 @@ import mcp.mobius.opis.overlay.OverlayStatus;
 public class ProxyServer {
 	
 	public void init(){}
-	public void displayModList(ArrayList<StatsMod> stats){}
 }

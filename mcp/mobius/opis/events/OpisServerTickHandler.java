@@ -111,14 +111,10 @@ public class OpisServerTickHandler implements ITickHandler {
 				
 				// Here we should send a full update to all the clients registered
 				
-				OpisPacketHandler.sendPacketToAllSwing(Packet_DataValue.create(DataReq.STATUS_STOP,          new SerialInt(modOpis.profilerMaxTicks)));
+				OpisPacketHandler.sendPacketToAllSwing(Packet_DataValue.create(DataReq.STATUS_STOP, new SerialInt(modOpis.profilerMaxTicks)));
 				
 				for (Player player : PlayerTracker.instance().playersSwing){
 					OpisPacketHandler.sendFullUpdate(player);
-				}
-				
-				for (Player player : PlayerTracker.instance().playersOpis){
-					OpisPacketHandler.sendChatMsg(String.format("\u00A7oOpis automaticly stopped after %d ticks.", modOpis.profilerMaxTicks), player);
 				}
 			}			
 		}

@@ -17,7 +17,6 @@ import mcp.mobius.opis.data.holders.stats.StatsTileEntity;
 import mcp.mobius.opis.gui.font.Fonts;
 import mcp.mobius.opis.gui.font.TrueTypeFont;
 import mcp.mobius.opis.gui.screens.ScreenBase;
-import mcp.mobius.opis.gui.screens.ScreenMods;
 import mcp.mobius.opis.overlay.OverlayLoadedChunks;
 import mcp.mobius.opis.overlay.OverlayMeanTime;
 import mcp.mobius.opis.overlay.entperchunk.OverlayEntityPerChunk;
@@ -44,10 +43,4 @@ public class ProxyClient extends ProxyServer {
 		fontMC8 = Fonts.createFont(new ResourceLocation("opis", "fonts/LiberationMono-Bold.ttf"), 14, true);
 	}
 
-	@Override
-	public void displayModList(ArrayList<StatsMod> stats){
-		ScreenBase screenMods = new ScreenMods(null, stats);
-		screenMods.display();		
-	}		
-	
 }
