@@ -26,8 +26,8 @@ import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
-import codechicken.lib.math.MathHelper;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.MathHelper;
 import mcp.mobius.opis.data.holders.ISerializable;
 import mcp.mobius.opis.data.holders.basetypes.AmountHolder;
 import mcp.mobius.opis.data.holders.stats.StatAbstract;

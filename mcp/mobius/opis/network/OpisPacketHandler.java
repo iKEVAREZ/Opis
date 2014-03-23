@@ -287,7 +287,7 @@ public class OpisPacketHandler implements IPacketHandler {
 				logmsg += "Rejected";
 			}
 			
-			modOpis.log.log(Level.INFO, logmsg);
+			//modOpis.log.log(Level.INFO, logmsg);
 		}
 	}	
 	
