@@ -14,13 +14,13 @@ public class PacketProfiler implements IProfilerPacket {
 	@Override
 	public void addPacketOut(Packet packet) {
 		if (packet != null)
-			dataSizeOut += packet.getPacketSize();
+			dataSizeOut += packet.getPacketSize() + 1;
 	}
 
 	@Override
 	public void addPacketIn(Packet packet) {
 		if (packet != null)
-			dataSizeIn += packet.getPacketSize();
+			dataSizeIn += packet.getPacketSize() + 1;
 	}
 
 }
