@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.logging.Level;
 
 import mapwriter.Mw;
 import mcp.mobius.mobiuscore.profiler.ProfilerRegistrar;
@@ -282,9 +283,17 @@ public class OpisPacketHandler implements IPacketHandler {
 		
 		else if (header == Packets.REQ_DATA){
 			Packet_ReqData castedPacket = new Packet_ReqData(packet);
+			
+			String logmsg = String.format("Received request %s from player %s ... ", castedPacket.dataReq, ((EntityPlayer)player).username);
+			
 			if (castedPacket.dataReq.canPlayerUseCommand(player)){
+				logmsg += "Accepted";
 				DataReqHandler.instance().handle(castedPacket.dataReq, castedPacket.param1, castedPacket.param2,  player);
+			} else {
+				logmsg += "Rejected";
 			}
+			
+			modOpis.log.log(Level.INFO, logmsg);
 		}
 	}	
 	

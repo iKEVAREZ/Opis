@@ -150,8 +150,8 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 	private JButtonAccess btnPlayersPull;
 	private JScrollPane scrollPanePlayers;
 	private JTable tablePlayers;
-	private JButtonAccess btnPlayers_Dummy1;
-	private JButtonAccess btnPlayers_Dummy2;
+	private JButton btnPlayers_Dummy1;
+	private JButton btnPlayers_Dummy2;
 	private JLabel lblSummaryTimeStampLastRun;
 	
 	public void showUI(){
@@ -478,11 +478,11 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 		btnPlayersPull.addActionListener(this);
 		panelPlayers.add(btnPlayersPull, "cell 2 0,alignx left");
 		
-		btnPlayers_Dummy1 = new JButtonAccess("Kill", AccessLevel.PRIVILEGED);
+		btnPlayers_Dummy1 = new JButton("Kill");
 		btnPlayers_Dummy1.setEnabled(false);
 		panelPlayers.add(btnPlayers_Dummy1, "cell 3 0");
 		
-		btnPlayers_Dummy2 = new JButtonAccess("Morph", AccessLevel.PRIVILEGED);
+		btnPlayers_Dummy2 = new JButton("Morph");
 		btnPlayers_Dummy2.setEnabled(false);
 		panelPlayers.add(btnPlayers_Dummy2, "cell 4 0");
 		
@@ -877,8 +877,8 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 			CoordinatesBlock coord = data.getCoordinates();
 			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.OVERLAY_CHUNK_ENTITIES));
 			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.LIST_CHUNK_ENTITIES, data.getChunk()));			
-			OverlayMeanTime.instance().setSelectedChunk(coord.dim, coord.x >> 4, coord.z >> 4);
 			MwAPI.setCurrentDataProvider(OverlayEntityPerChunk.instance());
+			OverlayEntityPerChunk.instance().selectedChunk = coord.asCoordinatesChunk();
 			Minecraft.getMinecraft().displayGuiScreen(new MwGui(Mw.instance, coord.dim, coord.x, coord.z));			
 		}
 		
@@ -934,7 +934,7 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 			CoordinatesBlock coord = data.getCoordinates();
 			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.OVERLAY_CHUNK_ENTITIES));
 			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.LIST_CHUNK_ENTITIES, data.getChunk()));			
-			OverlayMeanTime.instance().setSelectedChunk(coord.dim, coord.x >> 4, coord.z >> 4);
+			OverlayEntityPerChunk.instance().selectedChunk = coord.asCoordinatesChunk();
 			MwAPI.setCurrentDataProvider(OverlayEntityPerChunk.instance());
 			Minecraft.getMinecraft().displayGuiScreen(new MwGui(Mw.instance, coord.dim, coord.x, coord.z));			
 		}		

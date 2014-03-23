@@ -56,7 +56,7 @@ public class OverlayEntityPerChunk implements IMwDataProvider {
 	public HashMap<CoordinatesChunk, Integer> overlayData = new HashMap<CoordinatesChunk, Integer>(); 
 	public ArrayList<ReducedData> reducedData = new ArrayList<ReducedData>();
 	public ArrayList<StatsEntity> entStats    = new ArrayList<StatsEntity>();
-	CoordinatesChunk selectedChunk = null;
+	public CoordinatesChunk selectedChunk = null;
 	
 	private OverlayEntityPerChunk(){}
 	

@@ -128,17 +128,13 @@ public class modOpis {
 		TickRegistry.registerTickHandler(new OpisServerTickHandler(), Side.SERVER);
 		TickRegistry.registerTickHandler(new OpisClientTickHandler(), Side.CLIENT);
 		
-		if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT){
-			//ProfilerRegistrar.registerProfilerTick(new TickHandlerClientProfiler());
-		} else {
-			ProfilerRegistrar.registerProfilerTileEntity(new TileEntityProfiler());
-			ProfilerRegistrar.registerProfilerEntity(new EntityProfiler());
-			ProfilerRegistrar.registerProfilerHandler(new HandlerProfiler());
-			ProfilerRegistrar.registerProfilerWorldTick(new WorldTickProfiler());
-			ProfilerRegistrar.registerProfilerTick(TickProfiler.instance());
-			ProfilerRegistrar.registerProfilerEntUpdate(new EntUpdateProfiler());
-			ProfilerRegistrar.registerProfilerPacket(PacketProfiler.instance());
-		}
+		ProfilerRegistrar.registerProfilerTileEntity(new TileEntityProfiler());
+		ProfilerRegistrar.registerProfilerEntity(new EntityProfiler());
+		ProfilerRegistrar.registerProfilerHandler(new HandlerProfiler());
+		ProfilerRegistrar.registerProfilerWorldTick(new WorldTickProfiler());
+		ProfilerRegistrar.registerProfilerTick(TickProfiler.instance());
+		ProfilerRegistrar.registerProfilerEntUpdate(new EntUpdateProfiler());
+		ProfilerRegistrar.registerProfilerPacket(PacketProfiler.instance());
 
 		if (lagGenID != -1){
 			Block blockDemo = new BlockLag(lagGenID, Material.wood);

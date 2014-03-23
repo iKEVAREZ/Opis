@@ -14,7 +14,7 @@ public class StatsPlayer extends StatAbstract {
 	
 	public StatsPlayer(EntityPlayer player){
 		this.eid   = player.entityId;
-		this.name  = player.getDisplayName();
+		this.name  = player.username;
 		this.coord = new CoordinatesBlock(player.worldObj.provider.dimensionId, player.posX, player.posY, player.posZ);
 		this.chunk = this.coord.asCoordinatesChunk();
 	}
