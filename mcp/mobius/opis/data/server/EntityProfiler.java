@@ -1,5 +1,7 @@
 package mcp.mobius.opis.data.server;
 
+import java.util.concurrent.ConcurrentLinkedQueue;
+
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import net.minecraft.entity.Entity;
@@ -12,6 +14,21 @@ public class EntityProfiler extends AbstractProfiler implements IProfilerEntity 
 
 	private Entity currentEntity = null;
 	
+	/*
+	private ConcurrentLinkedQueue<Integer> dataQueue = new ConcurrentLinkedQueue<Integer>();
+	
+	final class UpdateData{
+		final long   update;
+		final Entity entity;
+		
+		public UpdateData(long update, Entity entity){
+			this.update = update;
+			this.entity = entity;
+		}
+		
+	}
+	*/
+	
 	@Override
 	public void FullEntityStart() {}
 
@@ -20,7 +37,8 @@ public class EntityProfiler extends AbstractProfiler implements IProfilerEntity 
 
 	@Override
 	public void Start(Entity ent) {
-		//if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT) return;		
+		//if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT) return;
+		
 		if ((!modOpis.profilerRun) || (OpisServerTickHandler.instance.profilerUpdateTickCounter % modOpis.profilerDelay != 0)) return;
 		
 		if (ent.worldObj.isRemote) return;
