@@ -237,7 +237,7 @@ public class OpisPacketHandler implements IPacketHandler {
 					SwingUI.instance().getLblSummaryTimeStampLastRun().setText("Last run : <Never>");
 				} else {
 					long clientLastRun = serverLastRun + DataCache.instance().getClockScrew();
-			        SimpleDateFormat sdf = new SimpleDateFormat("yy-MM-dd HH:mm:ss");
+			        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			        Date resultdate = new Date(clientLastRun);
 					
 					SwingUI.instance().getLblSummaryTimeStampLastRun().setText(String.format("Last run : %s", sdf.format(resultdate)));
