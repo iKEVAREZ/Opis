@@ -366,9 +366,6 @@ public class OpisPacketHandler implements IPacketHandler {
 		
 		OpisPacketHandler.validateAndSend(Packet_DataValue.create(Message.STATUS_ACCESS_LEVEL, new SerialInt(PlayerTracker.instance().getPlayerAccessLevel(player).ordinal())), player);
 		
-		OpisPacketHandler.validateAndSend(Packet_DataValue.create(Message.VALUE_CHUNK_FORCED, new SerialInt(ChunkManager.getForcedChunkAmount())), player);
-		OpisPacketHandler.validateAndSend(Packet_DataValue.create(Message.VALUE_CHUNK_LOADED, new SerialInt(ChunkManager.getLoadedChunkAmount())), player);		
-		
 		// This portion is to get the proper filtered amounts depending on the player preferences.
 		String name = ((EntityPlayer)player).getEntityName();
 		boolean filtered = false;
