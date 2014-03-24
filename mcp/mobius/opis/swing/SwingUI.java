@@ -846,10 +846,12 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
+		// REFRESH Button on the AmountEnt Screen
 		if (e.getSource() == btnRefreshEntityAmount){
 			this.requestAmoutEntityUpdate();
 		}
-		
+
+		// CENTER Button on the TimingTE Screen
 		else if ((e.getSource() == this.btnTimingTECenterMap) && (this.tableTimingTE.getSelectedRow() != -1)){
 			int indexData = tableTimingTE.convertRowIndexToModel(tableTimingTE.getSelectedRow());
 			StatsTileEntity data = DataCache.instance().getTimingTileEnts().get(indexData);
@@ -859,7 +861,8 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 			MwAPI.setCurrentDataProvider(OverlayMeanTime.instance());
 			Minecraft.getMinecraft().displayGuiScreen(new MwGui(Mw.instance, coord.dim, coord.x, coord.z));			
 		}
-		
+
+		// TELEPORT Button on the TimingTE Screen
 		else if ((e.getSource() == this.btnTimingTETeleport) && (this.tableTimingTE.getSelectedRow() != -1)){		
 			int indexData = tableTimingTE.convertRowIndexToModel(tableTimingTE.getSelectedRow());	
 			StatsTileEntity data = DataCache.instance().getTimingTileEnts().get(indexData);
@@ -869,7 +872,8 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.COMMAND_TELEPORT_BLOCK, coord));
 			Minecraft.getMinecraft().setIngameFocus();			
 		}
-		
+
+		// CENTER Button on the TimingEnts Screen
 		else if ((e.getSource() == this.btnTimingEntCenterMap) && (this.tableTimingEnt.getSelectedRow() != -1)){
 			int indexData = tableTimingEnt.convertRowIndexToModel(tableTimingEnt.getSelectedRow());
 			StatsEntity data = DataCache.instance().getTimingEntities().get(indexData);
@@ -881,7 +885,8 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 			OverlayEntityPerChunk.instance().selectedChunk = coord.asCoordinatesChunk();
 			Minecraft.getMinecraft().displayGuiScreen(new MwGui(Mw.instance, coord.dim, coord.x, coord.z));			
 		}
-		
+
+		// TELEPORT Button on the TimingEnts Screen
 		else if ((e.getSource() == this.btnTimingEntTeleport) && (this.tableTimingEnt.getSelectedRow() != -1)){		
 			int indexData = tableTimingEnt.convertRowIndexToModel(tableTimingEnt.getSelectedRow());	
 			StatsEntity data = DataCache.instance().getTimingEntities().get(indexData);
@@ -892,6 +897,7 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 			Minecraft.getMinecraft().setIngameFocus();			
 		}
 		
+		// PULL Button on the TimingEnts Screen
 		else if ((e.getSource() == this.btnTimingEntPull) && (this.tableTimingEnt.getSelectedRow() != -1)){		
 			int indexData = tableTimingEnt.convertRowIndexToModel(tableTimingEnt.getSelectedRow());	
 			StatsEntity data = DataCache.instance().getTimingEntities().get(indexData);
@@ -900,24 +906,29 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 			int dim = data.getCoordinates().dim;
 			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.COMMAND_TELEPORT_PULL_ENTITY, new TargetEntity(eid, dim)));
 		}		
-		
+
+		// RUN OPIS Button		
 		else if ((e.getSource() == this.btnTimingTERefresh) || (e.getSource() == btnTimingEntRefresh) || (e.getSource() == btnTimingHandlerRefresh) || (e.getSource() == btnTimingChunkRefresh) || (e.getSource() == btnSummaryRefresh)){
 			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.COMMAND_START));
 		}
 		
+		
+		// KILLALL Button on the AmountEnts Screen		
 		else if ((e.getSource() == this.btnAmountKillAll) && (this.tableEntityList.getSelectedRow() != -1)){
 			int indexData = tableEntityList.convertRowIndexToModel(tableEntityList.getSelectedRow());
 			AmountHolder data = DataCache.instance().getAmountEntities().get(indexData);
 			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.COMMAND_KILLALL, new SerialString(data.key)));
 			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.LIST_AMOUNT_ENTITIES));
 		}
-		
+
+		// TELEPORT Button on the TimingChunk Screen		
 		else if ((e.getSource() == this.btnTimingChunkTeleport) && (this.tableTimingChunk.getSelectedRow() != -1)){
 			int indexData = tableTimingChunk.convertRowIndexToModel(tableTimingChunk.getSelectedRow());
 			StatsChunk data = DataCache.instance().getTimingChunks().get(indexData);
 			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.COMMAND_TELEPORT_CHUNK, data.getChunk()));
 		}
-		
+
+		// CENTER Button on the TimingChunk Screen
 		else if ((e.getSource() == this.btnTimingChunkCenterMap) && (this.tableTimingChunk.getSelectedRow() != -1)){
 			int indexData = tableTimingChunk.convertRowIndexToModel(tableTimingChunk.getSelectedRow());
 			StatsChunk data = DataCache.instance().getTimingChunks().get(indexData);
@@ -926,7 +937,8 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 			MwAPI.setCurrentDataProvider(OverlayMeanTime.instance());
 			Minecraft.getMinecraft().displayGuiScreen(new MwGui(Mw.instance, data.getChunk().dim, data.getChunk().x + 8, data.getChunk().z + 8));			
 		}		
-		
+
+		// CENTER Button on the Players Screen
 		else if ((e.getSource() == this.btnPlayersCenterMap) && (this.tablePlayers.getSelectedRow() != -1)){
 			int indexData = tablePlayers.convertRowIndexToModel(tablePlayers.getSelectedRow());
 			StatsPlayer data = DataCache.instance().getListPlayers().get(indexData);
@@ -938,7 +950,8 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 			MwAPI.setCurrentDataProvider(OverlayEntityPerChunk.instance());
 			Minecraft.getMinecraft().displayGuiScreen(new MwGui(Mw.instance, coord.dim, coord.x, coord.z));			
 		}		
-		
+
+		// TELEPORT Button on the Players Screen
 		else if ((e.getSource() == this.btnPlayersTeleport) && (this.tablePlayers.getSelectedRow() != -1)){		
 			int indexData = tablePlayers.convertRowIndexToModel(tablePlayers.getSelectedRow());
 			StatsPlayer data = DataCache.instance().getListPlayers().get(indexData);
@@ -949,6 +962,8 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 			Minecraft.getMinecraft().setIngameFocus();			
 		}		
 	
+		
+		// PULL Button on the Players Screen
 		else if ((e.getSource() == this.btnPlayersPull) && (this.tablePlayers.getSelectedRow() != -1)){		
 			int indexData = tablePlayers.convertRowIndexToModel(tablePlayers.getSelectedRow());
 			StatsPlayer data = DataCache.instance().getListPlayers().get(indexData);

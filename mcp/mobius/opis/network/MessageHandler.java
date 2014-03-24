@@ -173,6 +173,7 @@ public class MessageHandler {
 		
 		else if (maintype == Message.COMMAND_KILLALL){
 			EntityManager.killAll(((SerialString)param1).value);
+			//this.handle(Message.LIST_AMOUNT_ENTITIES, null, null, player);
 		}			
 		
 		else if(maintype == Message.COMMAND_UNREGISTER_SWING){

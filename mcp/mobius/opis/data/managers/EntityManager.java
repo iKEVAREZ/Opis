@@ -302,9 +302,10 @@ public class EntityManager {
 			
 			for (Object o : copyList){
 				Entity ent  = (Entity)o;
-				String name = EntityManager.getEntityName(ent).toLowerCase(); 
+				String nameFiltered   = EntityManager.getEntityName(ent, true).toLowerCase();
+				String nameUnfiltered = EntityManager.getEntityName(ent, false).toLowerCase();
 				
-				if (name.equals(entName.toLowerCase())){
+				if (nameFiltered.equals(entName.toLowerCase()) || nameUnfiltered.equals(entName.toLowerCase())){
 					ent.setDead();
 					nkilled += 1;
 				}
