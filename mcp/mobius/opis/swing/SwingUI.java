@@ -154,6 +154,10 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 	private JButton btnPlayers_Dummy2;
 	private JLabel lblSummaryTimeStampLastRun;
 	private JButton btnTimingTERemoveHighlight;
+	private JLabel lblSummary_16;
+	private JLabel lblSummary_17;
+	private JLabel lblSummaryForcedChunks;
+	private JLabel lblSummaryLoadedChunk;
 	
 	public void showUI(){
 		EventQueue.invokeLater(new Runnable() {
@@ -173,7 +177,7 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 	private SwingUI() {
 		setTitle("Opis Control Panel");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 838, 449);
+		setBounds(100, 100, 893, 455);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
@@ -406,6 +410,38 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 		gbc_lblSummaryAmountHandlers.gridx = 7;
 		gbc_lblSummaryAmountHandlers.gridy = 5;
 		panelSummary.add(lblSummaryAmountHandlers, gbc_lblSummaryAmountHandlers);
+		
+		lblSummary_16 = new JLabel("Forced chunks");
+		GridBagConstraints gbc_lblSummary_16 = new GridBagConstraints();
+		gbc_lblSummary_16.insets = new Insets(0, 0, 5, 5);
+		gbc_lblSummary_16.gridx = 9;
+		gbc_lblSummary_16.gridy = 5;
+		panelSummary.add(lblSummary_16, gbc_lblSummary_16);
+		
+		lblSummaryForcedChunks = new JLabel("0");
+		GridBagConstraints gbc_lblSummaryForcedChunks = new GridBagConstraints();
+		gbc_lblSummaryForcedChunks.anchor = GridBagConstraints.EAST;
+		gbc_lblSummaryForcedChunks.gridwidth = 2;
+		gbc_lblSummaryForcedChunks.insets = new Insets(0, 0, 5, 5);
+		gbc_lblSummaryForcedChunks.gridx = 11;
+		gbc_lblSummaryForcedChunks.gridy = 5;
+		panelSummary.add(lblSummaryForcedChunks, gbc_lblSummaryForcedChunks);
+		
+		lblSummary_17 = new JLabel("Loaded chunks");
+		GridBagConstraints gbc_lblSummary_17 = new GridBagConstraints();
+		gbc_lblSummary_17.insets = new Insets(0, 0, 5, 5);
+		gbc_lblSummary_17.gridx = 9;
+		gbc_lblSummary_17.gridy = 6;
+		panelSummary.add(lblSummary_17, gbc_lblSummary_17);
+		
+		lblSummaryLoadedChunk = new JLabel("0");
+		GridBagConstraints gbc_lblSummaryLoadedChunk = new GridBagConstraints();
+		gbc_lblSummaryLoadedChunk.anchor = GridBagConstraints.EAST;
+		gbc_lblSummaryLoadedChunk.gridwidth = 2;
+		gbc_lblSummaryLoadedChunk.insets = new Insets(0, 0, 5, 5);
+		gbc_lblSummaryLoadedChunk.gridx = 11;
+		gbc_lblSummaryLoadedChunk.gridy = 6;
+		panelSummary.add(lblSummaryLoadedChunk, gbc_lblSummaryLoadedChunk);
 		
 		lblSummary_6 = new JLabel("Total");
 		GridBagConstraints gbc_lblSummary_6 = new GridBagConstraints();
@@ -1039,5 +1075,11 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 	}
 	public JButton getBtnTimingTERemoveHighlight() {
 		return btnTimingTERemoveHighlight;
+	}
+	public JLabel getLblSummaryForcedChunks() {
+		return lblSummaryForcedChunks;
+	}
+	public JLabel getLblSummaryLoadedChunks() {
+		return lblSummaryLoadedChunk;
 	}
 }

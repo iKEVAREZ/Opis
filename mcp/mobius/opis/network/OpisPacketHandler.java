@@ -253,7 +253,14 @@ public class OpisPacketHandler implements IPacketHandler {
 				modOpis.selectedBlock = (CoordinatesBlock)castedPacket.data;
 				SwingUI.instance().getBtnTimingTERemoveHighlight().setEnabled(true);
 			}
-			   
+			
+			else if(castedPacket.dataReq == Message.VALUE_CHUNK_FORCED){
+				SwingUI.instance().getLblSummaryForcedChunks().setText(String.valueOf(((SerialInt)castedPacket.data).value));
+			}
+			     
+			else if(castedPacket.dataReq == Message.VALUE_CHUNK_LOADED){
+				SwingUI.instance().getLblSummaryLoadedChunks().setText(String.valueOf(((SerialInt)castedPacket.data).value));
+			}			     
 		}
 	}
 
@@ -358,6 +365,9 @@ public class OpisPacketHandler implements IPacketHandler {
 		OpisPacketHandler.validateAndSend(Packet_DataValue.create(Message.STATUS_TIME_LAST_RUN, new SerialLong(ProfilerRegistrar.timeStampLastRun)), player);
 		
 		OpisPacketHandler.validateAndSend(Packet_DataValue.create(Message.STATUS_ACCESS_LEVEL, new SerialInt(PlayerTracker.instance().getPlayerAccessLevel(player).ordinal())), player);
+		
+		OpisPacketHandler.validateAndSend(Packet_DataValue.create(Message.VALUE_CHUNK_FORCED, new SerialInt(ChunkManager.getForcedChunkAmount())), player);
+		OpisPacketHandler.validateAndSend(Packet_DataValue.create(Message.VALUE_CHUNK_LOADED, new SerialInt(ChunkManager.getLoadedChunkAmount())), player);		
 		
 		// This portion is to get the proper filtered amounts depending on the player preferences.
 		String name = ((EntityPlayer)player).getEntityName();

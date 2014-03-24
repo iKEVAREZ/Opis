@@ -116,5 +116,23 @@ public class ChunkManager {
 		
 		return outList;
 	}
+
+	public static int getLoadedChunkAmount(){	
+		int loadedChunks = 0;
+		for (WorldServer world : DimensionManager.getWorlds()){
+			int loadedChunksForDim = world.getChunkProvider().getLoadedChunkCount();
+			loadedChunks += loadedChunksForDim;
+			//System.out.printf("[ %2d ]  %d chunks\n", world.provider.dimensionId, loadedChunksForDim);
+		}
+		//System.out.printf("Total : %d chunks\n", loadedChunks);
+		return loadedChunks;
+	}
 	
+	public static int getForcedChunkAmount(){	
+		int forcedChunks = 0;
+		for (WorldServer world : DimensionManager.getWorlds()){
+			forcedChunks += world.getPersistentChunks().size();
+		}
+		return forcedChunks;
+	}	
 }
