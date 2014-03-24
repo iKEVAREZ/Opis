@@ -358,8 +358,6 @@ public class OpisPacketHandler implements IPacketHandler {
 		OpisPacketHandler.validateAndSend(Packet_DataValue.create(Message.VALUE_TIMING_WORLDTICK, totalWorldTick),   player);		
 		OpisPacketHandler.validateAndSend(Packet_DataValue.create(Message.VALUE_TIMING_ENTUPDATE, totalEntUpdate),   player);					
 		
-		OpisPacketHandler.validateAndSend(Packet_DataValue.create(Message.VALUE_AMOUNT_TILEENTS, new SerialInt(TileEntityManager.stats.size())),       player);
-		OpisPacketHandler.validateAndSend(Packet_DataValue.create(Message.VALUE_AMOUNT_ENTITIES, new SerialInt(EntityManager.stats.size())),           player);
 		OpisPacketHandler.validateAndSend(Packet_DataValue.create(Message.VALUE_AMOUNT_HANDLERS, new SerialInt(TickHandlerManager.startStats.size())), player);
 		
 		OpisPacketHandler.validateAndSend(Packet_DataValue.create(Message.STATUS_TIME_LAST_RUN, new SerialLong(ProfilerRegistrar.timeStampLastRun)), player);

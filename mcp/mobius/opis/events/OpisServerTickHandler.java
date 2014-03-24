@@ -77,9 +77,11 @@ public class OpisServerTickHandler implements ITickHandler {
 
 				OpisPacketHandler.sendPacketToAllSwing(Packet_DataValue.create(Message.VALUE_AMOUNT_UPLOAD,   new SerialLong(PacketProfiler.instance().dataSizeOut)));
 				OpisPacketHandler.sendPacketToAllSwing(Packet_DataValue.create(Message.VALUE_AMOUNT_DOWNLOAD, new SerialLong(PacketProfiler.instance().dataSizeIn)));
-				OpisPacketHandler.sendPacketToAllSwing(Packet_DataValue.create(Message.VALUE_CHUNK_FORCED, new SerialInt(ChunkManager.getForcedChunkAmount())));
-				OpisPacketHandler.sendPacketToAllSwing(Packet_DataValue.create(Message.VALUE_CHUNK_LOADED, new SerialInt(ChunkManager.getLoadedChunkAmount())));
+				OpisPacketHandler.sendPacketToAllSwing(Packet_DataValue.create(Message.VALUE_CHUNK_FORCED,    new SerialInt(ChunkManager.getForcedChunkAmount())));
+				OpisPacketHandler.sendPacketToAllSwing(Packet_DataValue.create(Message.VALUE_CHUNK_LOADED,    new SerialInt(ChunkManager.getLoadedChunkAmount())));
 				OpisPacketHandler.sendPacketToAllSwing(Packet_DataValue.create(Message.VALUE_TIMING_TICK,     TickProfiler.instance().stats));
+				OpisPacketHandler.sendPacketToAllSwing(Packet_DataValue.create(Message.VALUE_AMOUNT_TILEENTS, new SerialInt(TileEntityManager.getAmountTileEntities())));
+				OpisPacketHandler.sendPacketToAllSwing(Packet_DataValue.create(Message.VALUE_AMOUNT_ENTITIES, new SerialInt(EntityManager.getAmountEntities())));
 				
 				OpisPacketHandler.sendPacketToAllSwing(Packet_DataList.create(Message.LIST_PLAYERS,           EntityManager.getAllPlayers()));
 				

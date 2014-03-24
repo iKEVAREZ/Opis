@@ -327,4 +327,12 @@ public class EntityManager {
 		return outList;
 	}
 	
+	public static int getAmountEntities(){
+		int amountEntities = 0;
+		for (WorldServer world : DimensionManager.getWorlds()){
+			amountEntities += world.loadedEntityList.size();
+		}
+		return amountEntities;		
+	}	
+	
 }
