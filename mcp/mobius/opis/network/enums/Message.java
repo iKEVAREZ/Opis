@@ -51,7 +51,9 @@ public enum Message {
 	COMMAND_OPEN_SWING,
 	
 	OVERLAY_CHUNK_ENTITIES,
-	OVERLAY_CHUNK_TIMING;
+	OVERLAY_CHUNK_TIMING,
+	
+	CLIENT_HIGHLIGHT_BLOCK;
 	
 	private AccessLevel accessLevel = AccessLevel.NONE;
 	

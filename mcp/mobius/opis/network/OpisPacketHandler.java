@@ -14,6 +14,7 @@ import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.data.client.DataCache;
 import mcp.mobius.opis.data.holders.ISerializable;
 import mcp.mobius.opis.data.holders.basetypes.AmountHolder;
+import mcp.mobius.opis.data.holders.basetypes.CoordinatesBlock;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesChunk;
 import mcp.mobius.opis.data.holders.basetypes.SerialDouble;
 import mcp.mobius.opis.data.holders.basetypes.SerialInt;
@@ -247,7 +248,12 @@ public class OpisPacketHandler implements IPacketHandler {
 			else if(castedPacket.dataReq == Message.STATUS_ACCESS_LEVEL){
 				DataCache.instance().setAccessLevel( AccessLevel.values()[((SerialInt)castedPacket.data).value] );
 			}			     
-			     
+		
+			else if(castedPacket.dataReq == Message.CLIENT_HIGHLIGHT_BLOCK){
+				modOpis.selectedBlock = (CoordinatesBlock)castedPacket.data;
+				SwingUI.instance().getBtnTimingTERemoveHighlight().setEnabled(true);
+			}
+			   
 		}
 	}
 

@@ -68,7 +68,7 @@ public class OverlayMeanTime implements IMwDataProvider {
 							MathHelper.ceiling_double_int(this.mapView.getZ()) >> 4);
 				}
 				else{
-					modOpis.selectedBlock = coord;
+					//modOpis.selectedBlock = coord;
 					PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.COMMAND_TELEPORT_BLOCK, coord));
 					Minecraft.getMinecraft().setIngameFocus();
 				}

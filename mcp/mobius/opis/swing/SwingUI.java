@@ -153,6 +153,7 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 	private JButton btnPlayers_Dummy1;
 	private JButton btnPlayers_Dummy2;
 	private JLabel lblSummaryTimeStampLastRun;
+	private JButton btnTimingTERemoveHighlight;
 	
 	public void showUI(){
 		EventQueue.invokeLater(new Runnable() {
@@ -569,7 +570,7 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 		
 		btnTimingTECenterMap = new JButtonAccess("Center Map");
 		btnTimingTECenterMap.addActionListener(this);
-		panelTimingTE.setLayout(new MigLayout("", "[left][left][233px,grow][right]", "[][334px,grow][]"));
+		panelTimingTE.setLayout(new MigLayout("", "[left][left][][233px,grow][right]", "[][334px,grow][]"));
 		panelTimingTE.add(btnTimingTECenterMap, "cell 0 0,alignx center,aligny center");
 		
 		btnTimingTETeleport = new JButtonAccess("Teleport", AccessLevel.PRIVILEGED);
@@ -578,10 +579,15 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 		
 		btnTimingTERefresh = new JButtonAccess("Run Opis", AccessLevel.PRIVILEGED);
 		btnTimingTERefresh.addActionListener(this);
-		panelTimingTE.add(btnTimingTERefresh, "cell 3 0,alignx right,aligny center");
+		
+		btnTimingTERemoveHighlight = new JButton("Reset Highlight");
+		btnTimingTERemoveHighlight.setEnabled(false);
+		panelTimingTE.add(btnTimingTERemoveHighlight, "cell 2 0,alignx left");
+		panelTimingTE.add(btnTimingTERefresh, "cell 4 0,alignx right,aligny center");
+		btnTimingTERemoveHighlight.addActionListener(this);
 		
 		JScrollPane scrollPaneTimingTE = new JScrollPane();
-		panelTimingTE.add(scrollPaneTimingTE, "cell 0 1 4 1,grow");
+		panelTimingTE.add(scrollPaneTimingTE, "cell 0 1 5 1,grow");
 		
 		tableTimingTE = new JTable();
 		tableTimingTE.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -607,7 +613,7 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 		scrollPaneTimingTE.setViewportView(tableTimingTE);
 		
 		lblTimingTEValue = new JLabel("Total update time : 0 µs");
-		panelTimingTE.add(lblTimingTEValue, "cell 0 2 4 1,alignx center,aligny center");
+		panelTimingTE.add(lblTimingTEValue, "cell 0 2 5 1,alignx center,aligny center");
 		
 		panelTimingEnt = new JPanel();
 		tabbedPane.addTab("EntityTiming", null, panelTimingEnt, null);
@@ -971,7 +977,13 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 			int eid = data.getEID();
 			int dim = data.getCoordinates().dim;
 			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.COMMAND_TELEPORT_PULL_ENTITY, new TargetEntity(eid, dim)));			
-		}		
+		}
+		
+		// RESET HIGHLIGHT on the TimingTE Screen
+		else if (e.getSource() == this.btnTimingTERemoveHighlight){
+			modOpis.selectedBlock = null;
+			this.btnTimingTERemoveHighlight.setEnabled(false);
+		}
 		
 	}
 
@@ -1024,5 +1036,8 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 	}
 	public JLabel getLblSummaryTimeStampLastRun() {
 		return lblSummaryTimeStampLastRun;
+	}
+	public JButton getBtnTimingTERemoveHighlight() {
+		return btnTimingTERemoveHighlight;
 	}
 }

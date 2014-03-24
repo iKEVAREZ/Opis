@@ -150,6 +150,7 @@ public class MessageHandler {
 		
 		else if (maintype == Message.COMMAND_TELEPORT_BLOCK){
 			EntityManager.teleportPlayer((CoordinatesBlock)param1, (EntityPlayerMP)player);
+			OpisPacketHandler.validateAndSend(Packet_DataValue.create(Message.CLIENT_HIGHLIGHT_BLOCK, param1), (Player)player);
 		}	
 		
 		else if (maintype == Message.COMMAND_TELEPORT_TO_ENTITY){
