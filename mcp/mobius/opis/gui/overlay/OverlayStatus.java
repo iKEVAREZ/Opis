@@ -1,4 +1,4 @@
-package mcp.mobius.opis.overlay;
+package mcp.mobius.opis.gui.overlay;
 
 public enum OverlayStatus {
 	CHUNKSTATUS,

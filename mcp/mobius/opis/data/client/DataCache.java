@@ -37,10 +37,10 @@ import mcp.mobius.opis.data.holders.stats.StatsPlayer;
 import mcp.mobius.opis.data.holders.stats.StatsTick;
 import mcp.mobius.opis.data.holders.stats.StatsTickHandler;
 import mcp.mobius.opis.data.holders.stats.StatsTileEntity;
-import mcp.mobius.opis.gui.swing.JButtonAccess;
-import mcp.mobius.opis.gui.swing.SwingUI;
 import mcp.mobius.opis.helpers.ModIdentification;
 import mcp.mobius.opis.network.enums.AccessLevel;
+import mcp.mobius.opis.swing.JButtonAccess;
+import mcp.mobius.opis.swing.SwingUI;
 
 public class DataCache {
 

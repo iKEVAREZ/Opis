@@ -1,4 +1,4 @@
-package mcp.mobius.opis.network.server;
+package mcp.mobius.opis.network.packets.server;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -15,8 +15,8 @@ import mcp.mobius.opis.data.holders.stats.StatsChunk;
 import mcp.mobius.opis.data.holders.stats.StatsEntity;
 import mcp.mobius.opis.data.holders.stats.StatsTickHandler;
 import mcp.mobius.opis.data.holders.stats.StatsTileEntity;
-import mcp.mobius.opis.network.Packets;
-import mcp.mobius.opis.network.enums.DataReq;
+import mcp.mobius.opis.network.enums.Message;
+import mcp.mobius.opis.network.enums.Packets;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
 
@@ -31,7 +31,7 @@ public class Packet_DataList extends Packet_DataAbstract{
 		
 		try{
 			this.header   = istream.readByte();
-			this.dataReq  = DataReq.values()[istream.readInt()];
+			this.dataReq  = Message.values()[istream.readInt()];
 			int ndata     = istream.readInt();
 			String datatype = "";
 			if (ndata > 0)
@@ -43,7 +43,7 @@ public class Packet_DataList extends Packet_DataAbstract{
 	}
 
 	//public static Packet250Metadata create(DataReq dataReq, ArrayList<? extends ISerializable> stats){
-	public static Packet_DataList create(DataReq dataReq, ArrayList<? extends ISerializable> stats){
+	public static Packet_DataList create(Message dataReq, ArrayList<? extends ISerializable> stats){
 		//Packet250Metadata packet      = new Packet250Metadata();
 		Packet250CustomPayload packet = new Packet250CustomPayload();
 		ByteArrayOutputStream bos     = new ByteArrayOutputStream(1);

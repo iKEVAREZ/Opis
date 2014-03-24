@@ -1,4 +1,4 @@
-package mcp.mobius.opis.network.server;
+package mcp.mobius.opis.network.packets.server;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -6,8 +6,8 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import mcp.mobius.opis.network.Packets;
 import mcp.mobius.opis.network.enums.ClientCommand;
+import mcp.mobius.opis.network.enums.Packets;
 import net.minecraft.network.packet.Packet250CustomPayload;
 
 public class Packet_ClientCommand {

@@ -1,4 +1,4 @@
-package mcp.mobius.opis.gui.swing;
+package mcp.mobius.opis.swing;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
@@ -53,11 +53,11 @@ import mcp.mobius.opis.data.holders.stats.StatsEntity;
 import mcp.mobius.opis.data.holders.stats.StatsPlayer;
 import mcp.mobius.opis.data.holders.stats.StatsTileEntity;
 import mcp.mobius.opis.data.managers.TileEntityManager;
-import mcp.mobius.opis.network.client.Packet_ReqData;
+import mcp.mobius.opis.gui.overlay.OverlayMeanTime;
+import mcp.mobius.opis.gui.overlay.entperchunk.OverlayEntityPerChunk;
 import mcp.mobius.opis.network.enums.AccessLevel;
-import mcp.mobius.opis.network.enums.DataReq;
-import mcp.mobius.opis.overlay.OverlayMeanTime;
-import mcp.mobius.opis.overlay.entperchunk.OverlayEntityPerChunk;
+import mcp.mobius.opis.network.enums.Message;
+import mcp.mobius.opis.network.packets.client.Packet_ReqData;
 import net.minecraft.client.Minecraft;
 
 import javax.swing.ListSelectionModel;
@@ -866,7 +866,7 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 			
 			CoordinatesBlock coord = data.getCoordinates();
 			modOpis.selectedBlock = coord;
-			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.COMMAND_TELEPORT_BLOCK, coord));
+			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.COMMAND_TELEPORT_BLOCK, coord));
 			Minecraft.getMinecraft().setIngameFocus();			
 		}
 		
@@ -875,8 +875,8 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 			StatsEntity data = DataCache.instance().getTimingEntities().get(indexData);
 			
 			CoordinatesBlock coord = data.getCoordinates();
-			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.OVERLAY_CHUNK_ENTITIES));
-			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.LIST_CHUNK_ENTITIES, data.getChunk()));			
+			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.OVERLAY_CHUNK_ENTITIES));
+			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.LIST_CHUNK_ENTITIES, data.getChunk()));			
 			MwAPI.setCurrentDataProvider(OverlayEntityPerChunk.instance());
 			OverlayEntityPerChunk.instance().selectedChunk = coord.asCoordinatesChunk();
 			Minecraft.getMinecraft().displayGuiScreen(new MwGui(Mw.instance, coord.dim, coord.x, coord.z));			
@@ -888,7 +888,7 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 			
 			int eid = data.getID();
 			int dim = data.getCoordinates().dim;
-			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.COMMAND_TELEPORT_TO_ENTITY, new TargetEntity(eid, dim)));
+			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.COMMAND_TELEPORT_TO_ENTITY, new TargetEntity(eid, dim)));
 			Minecraft.getMinecraft().setIngameFocus();			
 		}
 		
@@ -898,24 +898,24 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 			
 			int eid = data.getID();
 			int dim = data.getCoordinates().dim;
-			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.COMMAND_TELEPORT_PULL_ENTITY, new TargetEntity(eid, dim)));
+			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.COMMAND_TELEPORT_PULL_ENTITY, new TargetEntity(eid, dim)));
 		}		
 		
 		else if ((e.getSource() == this.btnTimingTERefresh) || (e.getSource() == btnTimingEntRefresh) || (e.getSource() == btnTimingHandlerRefresh) || (e.getSource() == btnTimingChunkRefresh) || (e.getSource() == btnSummaryRefresh)){
-			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.COMMAND_START));
+			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.COMMAND_START));
 		}
 		
 		else if ((e.getSource() == this.btnAmountKillAll) && (this.tableEntityList.getSelectedRow() != -1)){
 			int indexData = tableEntityList.convertRowIndexToModel(tableEntityList.getSelectedRow());
 			AmountHolder data = DataCache.instance().getAmountEntities().get(indexData);
-			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.COMMAND_KILLALL, new SerialString(data.key)));
-			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.LIST_AMOUNT_ENTITIES));
+			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.COMMAND_KILLALL, new SerialString(data.key)));
+			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.LIST_AMOUNT_ENTITIES));
 		}
 		
 		else if ((e.getSource() == this.btnTimingChunkTeleport) && (this.tableTimingChunk.getSelectedRow() != -1)){
 			int indexData = tableTimingChunk.convertRowIndexToModel(tableTimingChunk.getSelectedRow());
 			StatsChunk data = DataCache.instance().getTimingChunks().get(indexData);
-			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.COMMAND_TELEPORT_CHUNK, data.getChunk()));
+			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.COMMAND_TELEPORT_CHUNK, data.getChunk()));
 		}
 		
 		else if ((e.getSource() == this.btnTimingChunkCenterMap) && (this.tableTimingChunk.getSelectedRow() != -1)){
@@ -932,8 +932,8 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 			StatsPlayer data = DataCache.instance().getListPlayers().get(indexData);
 			
 			CoordinatesBlock coord = data.getCoordinates();
-			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.OVERLAY_CHUNK_ENTITIES));
-			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.LIST_CHUNK_ENTITIES, data.getChunk()));			
+			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.OVERLAY_CHUNK_ENTITIES));
+			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.LIST_CHUNK_ENTITIES, data.getChunk()));			
 			OverlayEntityPerChunk.instance().selectedChunk = coord.asCoordinatesChunk();
 			MwAPI.setCurrentDataProvider(OverlayEntityPerChunk.instance());
 			Minecraft.getMinecraft().displayGuiScreen(new MwGui(Mw.instance, coord.dim, coord.x, coord.z));			
@@ -945,7 +945,7 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 			
 			int eid = data.getEID();
 			int dim = data.getCoordinates().dim;
-			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.COMMAND_TELEPORT_TO_ENTITY, new TargetEntity(eid, dim)));
+			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.COMMAND_TELEPORT_TO_ENTITY, new TargetEntity(eid, dim)));
 			Minecraft.getMinecraft().setIngameFocus();			
 		}		
 	
@@ -955,7 +955,7 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 			
 			int eid = data.getEID();
 			int dim = data.getCoordinates().dim;
-			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.COMMAND_TELEPORT_PULL_ENTITY, new TargetEntity(eid, dim)));			
+			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.COMMAND_TELEPORT_PULL_ENTITY, new TargetEntity(eid, dim)));			
 		}		
 		
 	}
@@ -964,18 +964,18 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 	public void itemStateChanged(ItemEvent e) {
 		if (e.getItem() == chkBoxDisplayAll){
 			if      (e.getStateChange() == ItemEvent.SELECTED){
-				PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.COMMAND_FILTERING_TRUE));
+				PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.COMMAND_FILTERING_TRUE));
 				this.requestAmoutEntityUpdate();
 			}
 			else if (e.getStateChange() == ItemEvent.DESELECTED){
-				PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.COMMAND_FILTERING_FALSE));
+				PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.COMMAND_FILTERING_FALSE));
 				this.requestAmoutEntityUpdate();				
 			}
 		}
 	}
 	
 	private void requestAmoutEntityUpdate(){
-		PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.LIST_AMOUNT_ENTITIES));
+		PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.LIST_AMOUNT_ENTITIES));
 	}
 
 	@Override
@@ -983,7 +983,7 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 
 	@Override
 	public void windowClosed(WindowEvent arg0) {
-		PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.COMMAND_UNREGISTER_SWING));
+		PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.COMMAND_UNREGISTER_SWING));
 	}
 
 	@Override

@@ -9,7 +9,7 @@ import com.google.common.collect.ImmutableSetMultimap;
 
 import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.commands.IOpisCommand;
-import mcp.mobius.opis.network.server.Packet_LoadedChunks;
+import mcp.mobius.opis.network.packets.server.Packet_LoadedChunks;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.world.ChunkCoordIntPair;

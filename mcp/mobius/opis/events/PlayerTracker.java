@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 import mcp.mobius.opis.modOpis;
+import mcp.mobius.opis.gui.overlay.OverlayStatus;
 import mcp.mobius.opis.network.enums.AccessLevel;
-import mcp.mobius.opis.overlay.OverlayStatus;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;

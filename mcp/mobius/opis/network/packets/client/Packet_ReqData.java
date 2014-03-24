@@ -1,4 +1,4 @@
-package mcp.mobius.opis.network.client;
+package mcp.mobius.opis.network.packets.client;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -13,13 +13,13 @@ import mcp.mobius.opis.data.holders.ISerializable;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesBlock;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesChunk;
 import mcp.mobius.opis.data.holders.basetypes.TargetEntity;
-import mcp.mobius.opis.network.Packets;
-import mcp.mobius.opis.network.enums.DataReq;
+import mcp.mobius.opis.network.enums.Message;
+import mcp.mobius.opis.network.enums.Packets;
 
 public class Packet_ReqData {
 	
 	public byte     header;
-	public DataReq  dataReq;
+	public Message  dataReq;
 	public ISerializable param1 = null;
 	public ISerializable param2 = null;
 	
@@ -28,7 +28,7 @@ public class Packet_ReqData {
 		
 		try{
 			this.header    = istream.readByte();
-			this.dataReq   = DataReq.values()[istream.readInt()];
+			this.dataReq   = Message.values()[istream.readInt()];
 			
 			if (istream.readBoolean()){
 				String datatype = Packet.readString(istream, 255);
@@ -43,15 +43,15 @@ public class Packet_ReqData {
 		} catch (IOException e){}				
 	}
 
-	public static Packet250CustomPayload create(DataReq dataReq){
+	public static Packet250CustomPayload create(Message dataReq){
 		return Packet_ReqData.create(dataReq, null, null) ;
 	}		
 
-	public static Packet250CustomPayload create(DataReq dataReq, ISerializable param1){
+	public static Packet250CustomPayload create(Message dataReq, ISerializable param1){
 		return Packet_ReqData.create(dataReq, param1, null) ;
 	}			
 	
-	public static Packet250CustomPayload create(DataReq dataReq, ISerializable param1, ISerializable param2){
+	public static Packet250CustomPayload create(Message dataReq, ISerializable param1, ISerializable param2){
 		Packet250CustomPayload packet = new Packet250CustomPayload();
 		ByteArrayOutputStream bos     = new ByteArrayOutputStream(1);
 		DataOutputStream outputStream = new DataOutputStream(bos);

@@ -1,4 +1,4 @@
-package mcp.mobius.opis.network.server;
+package mcp.mobius.opis.network.packets.server;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.HashSet;
 
 import mcp.mobius.opis.data.holders.basetypes.TicketData;
-import mcp.mobius.opis.network.Packets;
+import mcp.mobius.opis.network.enums.Packets;
 import net.minecraft.network.packet.Packet250CustomPayload;
 
 public class Packet_Tickets {

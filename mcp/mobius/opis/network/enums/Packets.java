@@ -1,4 +1,4 @@
-package mcp.mobius.opis.network;
+package mcp.mobius.opis.network.enums;
 
 public class Packets {
 	

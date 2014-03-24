@@ -1,4 +1,4 @@
-package mcp.mobius.opis.overlay.entperchunk;
+package mcp.mobius.opis.gui.overlay.entperchunk;
 
 import cpw.mods.fml.common.network.PacketDispatcher;
 import net.minecraft.client.Minecraft;
@@ -10,11 +10,11 @@ import mcp.mobius.opis.data.holders.basetypes.TargetEntity;
 import mcp.mobius.opis.data.holders.stats.StatsEntity;
 import mcp.mobius.opis.gui.events.MouseEvent;
 import mcp.mobius.opis.gui.interfaces.IWidget;
+import mcp.mobius.opis.gui.overlay.entperchunk.OverlayEntityPerChunk.ReducedData;
 import mcp.mobius.opis.gui.widgets.tableview.TableRow;
 import mcp.mobius.opis.gui.widgets.tableview.ViewTable;
-import mcp.mobius.opis.network.client.Packet_ReqData;
-import mcp.mobius.opis.network.enums.DataReq;
-import mcp.mobius.opis.overlay.entperchunk.OverlayEntityPerChunk.ReducedData;
+import mcp.mobius.opis.network.enums.Message;
+import mcp.mobius.opis.network.packets.client.Packet_ReqData;
 
 public class TableEntities extends ViewTable {
 	MapView mapView;
@@ -39,7 +39,7 @@ public class TableEntities extends ViewTable {
 			//PacketDispatcher.sendPacketToServer(Packet_ReqTeleport.create(coord));
 			int eid = ((StatsEntity)row.getObject()).getID();
 			int dim = ((StatsEntity)row.getObject()).getCoordinates().dim;
-			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.COMMAND_TELEPORT_TO_ENTITY, new TargetEntity(eid, dim)));
+			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.COMMAND_TELEPORT_TO_ENTITY, new TargetEntity(eid, dim)));
 			Minecraft.getMinecraft().setIngameFocus();			
 		}
 	}

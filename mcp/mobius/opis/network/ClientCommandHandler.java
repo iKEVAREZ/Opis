@@ -15,10 +15,10 @@ import mcp.mobius.opis.data.holders.stats.StatsTickHandler;
 import mcp.mobius.opis.data.managers.MetaManager;
 import mcp.mobius.opis.data.managers.TickHandlerManager;
 import mcp.mobius.opis.events.OpisClientTickHandler;
-import mcp.mobius.opis.gui.swing.SwingUI;
-import mcp.mobius.opis.network.client.Packet_ReqData;
 import mcp.mobius.opis.network.enums.ClientCommand;
-import mcp.mobius.opis.network.enums.DataReq;
+import mcp.mobius.opis.network.enums.Message;
+import mcp.mobius.opis.network.packets.client.Packet_ReqData;
+import mcp.mobius.opis.swing.SwingUI;
 
 public class ClientCommandHandler {
 	

@@ -4,7 +4,7 @@ import static mcp.mobius.opis.network.enums.AccessLevel.*;
 import cpw.mods.fml.common.network.Player;
 import mcp.mobius.opis.events.PlayerTracker;
 
-public enum DataReq {
+public enum Message {
 	
 	LIST_CHUNK_TILEENTS,
 	LIST_CHUNK_ENTITIES,
@@ -55,11 +55,11 @@ public enum DataReq {
 	
 	private AccessLevel accessLevel = AccessLevel.NONE;
 	
-	private DataReq(){
+	private Message(){
 		accessLevel = AccessLevel.NONE;
 	}
 
-	private DataReq(AccessLevel level){
+	private Message(AccessLevel level){
 		accessLevel = level;
 	}	
 	
@@ -80,24 +80,24 @@ public enum DataReq {
 	}
 	
 	public static void setTablesMinimumLevel(AccessLevel level){
-		DataReq.LIST_CHUNK_TILEENTS.setAccessLevel(level);
-		DataReq.LIST_CHUNK_ENTITIES.setAccessLevel(level);
-		DataReq.LIST_TIMING_TILEENTS.setAccessLevel(level);
-		DataReq.LIST_TIMING_ENTITIES.setAccessLevel(level);
-		DataReq.LIST_TIMING_HANDLERS.setAccessLevel(level);
-		DataReq.LIST_TIMING_CHUNK.setAccessLevel(level);
-		DataReq.LIST_AMOUNT_ENTITIES.setAccessLevel(level);
-		DataReq.LIST_PLAYERS.setAccessLevel(level);
+		Message.LIST_CHUNK_TILEENTS.setAccessLevel(level);
+		Message.LIST_CHUNK_ENTITIES.setAccessLevel(level);
+		Message.LIST_TIMING_TILEENTS.setAccessLevel(level);
+		Message.LIST_TIMING_ENTITIES.setAccessLevel(level);
+		Message.LIST_TIMING_HANDLERS.setAccessLevel(level);
+		Message.LIST_TIMING_CHUNK.setAccessLevel(level);
+		Message.LIST_AMOUNT_ENTITIES.setAccessLevel(level);
+		Message.LIST_PLAYERS.setAccessLevel(level);
 	}
 	
 	public static void setOverlaysMinimumLevel(AccessLevel level){
-		DataReq.OVERLAY_CHUNK_ENTITIES.setAccessLevel(level);
-		DataReq.OVERLAY_CHUNK_TIMING.setAccessLevel(level);
-		DataReq.LIST_CHUNK_LOADED.setAccessLevel(level);
-		DataReq.LIST_CHUNK_TICKETS.setAccessLevel(level);		
+		Message.OVERLAY_CHUNK_ENTITIES.setAccessLevel(level);
+		Message.OVERLAY_CHUNK_TIMING.setAccessLevel(level);
+		Message.LIST_CHUNK_LOADED.setAccessLevel(level);
+		Message.LIST_CHUNK_TICKETS.setAccessLevel(level);		
 	}	
 	
 	public static void setOpisMinimumLevel(AccessLevel level){
-		DataReq.COMMAND_OPEN_SWING.setAccessLevel(level);
+		Message.COMMAND_OPEN_SWING.setAccessLevel(level);
 	}
 }

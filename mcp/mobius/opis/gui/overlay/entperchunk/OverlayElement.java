@@ -1,4 +1,4 @@
-package mcp.mobius.opis.overlay.entperchunk;
+package mcp.mobius.opis.gui.overlay.entperchunk;
 
 import java.awt.Point;
 

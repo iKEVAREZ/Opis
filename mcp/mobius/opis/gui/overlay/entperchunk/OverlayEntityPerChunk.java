@@ -1,4 +1,4 @@
-package mcp.mobius.opis.overlay.entperchunk;
+package mcp.mobius.opis.gui.overlay.entperchunk;
 
 import java.awt.Point;
 import java.util.ArrayList;
@@ -28,9 +28,9 @@ import mcp.mobius.opis.gui.widgets.LayoutCanvas;
 import mcp.mobius.opis.gui.widgets.WidgetGeometry;
 import mcp.mobius.opis.gui.widgets.tableview.TableRow;
 import mcp.mobius.opis.gui.widgets.tableview.ViewTable;
-import mcp.mobius.opis.network.client.Packet_ReqChunks;
-import mcp.mobius.opis.network.client.Packet_ReqData;
-import mcp.mobius.opis.network.enums.DataReq;
+import mcp.mobius.opis.network.enums.Message;
+import mcp.mobius.opis.network.packets.client.Packet_ReqChunks;
+import mcp.mobius.opis.network.packets.client.Packet_ReqData;
 
 public class OverlayEntityPerChunk implements IMwDataProvider {
 
@@ -134,13 +134,13 @@ public class OverlayEntityPerChunk implements IMwDataProvider {
 			this.showList = true;
 		
 		if (prevSelected == null && this.selectedChunk != null)
-			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.LIST_CHUNK_ENTITIES, this.selectedChunk));
+			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.LIST_CHUNK_ENTITIES, this.selectedChunk));
 
 		else if (this.selectedChunk != null && !this.selectedChunk.equals(prevSelected))
-			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.LIST_CHUNK_ENTITIES, this.selectedChunk));			
+			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.LIST_CHUNK_ENTITIES, this.selectedChunk));			
 		
 		else if (this.selectedChunk == null)
-			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.OVERLAY_CHUNK_ENTITIES));			
+			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.OVERLAY_CHUNK_ENTITIES));			
 	}
 
 	@Override
@@ -156,7 +156,7 @@ public class OverlayEntityPerChunk implements IMwDataProvider {
 
 	@Override
 	public void onOverlayActivated(MapView mapview) {
-		PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.OVERLAY_CHUNK_ENTITIES));
+		PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.OVERLAY_CHUNK_ENTITIES));
 	}
 
 	@Override

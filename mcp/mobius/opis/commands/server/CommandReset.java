@@ -13,7 +13,7 @@ import mcp.mobius.opis.data.managers.TileEntityManager;
 import mcp.mobius.opis.events.OpisServerTickHandler;
 import mcp.mobius.opis.events.PlayerTracker;
 import mcp.mobius.opis.network.enums.ClientCommand;
-import mcp.mobius.opis.network.server.Packet_ClientCommand;
+import mcp.mobius.opis.network.packets.server.Packet_ClientCommand;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;

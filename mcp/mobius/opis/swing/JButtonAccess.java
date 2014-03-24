@@ -1,4 +1,4 @@
-package mcp.mobius.opis.gui.swing;
+package mcp.mobius.opis.swing;
 
 import javax.swing.JButton;
 

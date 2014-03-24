@@ -45,9 +45,9 @@ import mcp.mobius.opis.events.PlayerTracker;
 import mcp.mobius.opis.helpers.ModIdentification;
 import mcp.mobius.opis.network.OpisConnectionHandler;
 import mcp.mobius.opis.network.OpisPacketHandler;
-import mcp.mobius.opis.network.custom.Packet251Extended;
 import mcp.mobius.opis.network.enums.AccessLevel;
-import mcp.mobius.opis.network.enums.DataReq;
+import mcp.mobius.opis.network.enums.Message;
+import mcp.mobius.opis.network.packets.custom.Packet251Extended;
 import mcp.mobius.opis.proxy.ProxyServer;
 import mcp.mobius.opis.tools.BlockLag;
 import mcp.mobius.opis.tools.TileLag;
@@ -112,9 +112,9 @@ public class modOpis {
 		try{ minTables   = AccessLevel.valueOf(config.get("ACCESS_RIGHTS", "tables",   "NONE", commentTables).getString()); }   catch (IllegalArgumentException e){}
 		try{ minOverlays = AccessLevel.valueOf(config.get("ACCESS_RIGHTS", "overlays", "NONE", commentOverlays).getString()); } catch (IllegalArgumentException e){}
 
-		DataReq.setTablesMinimumLevel(minTables);
-		DataReq.setOverlaysMinimumLevel(minOverlays);
-		DataReq.setOpisMinimumLevel(openOpis);
+		Message.setTablesMinimumLevel(minTables);
+		Message.setOverlaysMinimumLevel(minOverlays);
+		Message.setOpisMinimumLevel(openOpis);
 		
 		for (String s : users)
 			PlayerTracker.instance().addPrivilegedPlayer(s,false);

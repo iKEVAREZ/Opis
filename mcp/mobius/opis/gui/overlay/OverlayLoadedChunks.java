@@ -1,4 +1,4 @@
-package mcp.mobius.opis.overlay;
+package mcp.mobius.opis.gui.overlay;
 
 import java.awt.Point;
 import java.util.ArrayList;
@@ -31,9 +31,9 @@ import mcp.mobius.opis.gui.widgets.LayoutCanvas;
 import mcp.mobius.opis.gui.widgets.WidgetGeometry;
 import mcp.mobius.opis.gui.widgets.tableview.TableRow;
 import mcp.mobius.opis.gui.widgets.tableview.ViewTable;
-import mcp.mobius.opis.network.client.Packet_ReqChunks;
-import mcp.mobius.opis.network.client.Packet_ReqData;
-import mcp.mobius.opis.network.enums.DataReq;
+import mcp.mobius.opis.network.enums.Message;
+import mcp.mobius.opis.network.packets.client.Packet_ReqChunks;
+import mcp.mobius.opis.network.packets.client.Packet_ReqData;
 
 public class OverlayLoadedChunks implements IMwDataProvider {
 
@@ -65,7 +65,7 @@ public class OverlayLoadedChunks implements IMwDataProvider {
 							MathHelper.ceiling_double_int(this.mapView.getX()) >> 4, 
 							MathHelper.ceiling_double_int(this.mapView.getZ()) >> 4);
 				} else {
-					PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.COMMAND_TELEPORT_BLOCK, new CoordinatesBlock(coord)));					
+					PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.COMMAND_TELEPORT_BLOCK, new CoordinatesBlock(coord)));					
 					Minecraft.getMinecraft().setIngameFocus();
 				}
 			}
@@ -186,7 +186,7 @@ public class OverlayLoadedChunks implements IMwDataProvider {
 	
 	@Override
 	public void onDimensionChanged(int dimension, MapView mapview) {
-		PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.LIST_CHUNK_LOADED, new SerialInt(dimension)));
+		PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.LIST_CHUNK_LOADED, new SerialInt(dimension)));
 	}
 
 	@Override
@@ -200,15 +200,15 @@ public class OverlayLoadedChunks implements IMwDataProvider {
 	@Override
 	public void onOverlayActivated(MapView mapview) {
 		this.selectedChunk = null;
-		PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.LIST_CHUNK_LOADED, new SerialInt(mapview.getDimension())));		
-		PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.LIST_CHUNK_TICKETS));		
+		PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.LIST_CHUNK_LOADED, new SerialInt(mapview.getDimension())));		
+		PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.LIST_CHUNK_TICKETS));		
 	}
 
 	@Override
 	public void onOverlayDeactivated(MapView mapview) {
 		this.showList = false;
 		this.selectedChunk = null;		
-		PacketDispatcher.sendPacketToServer(Packet_ReqData.create(DataReq.COMMAND_UNREGISTER));
+		PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.COMMAND_UNREGISTER));
 	}
 
 	@Override

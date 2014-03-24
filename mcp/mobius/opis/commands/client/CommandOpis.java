@@ -5,11 +5,11 @@ import javax.swing.JLabel;
 
 import cpw.mods.fml.common.network.Player;
 import mcp.mobius.opis.events.PlayerTracker;
-import mcp.mobius.opis.network.DataReqHandler;
+import mcp.mobius.opis.network.MessageHandler;
 import mcp.mobius.opis.network.OpisPacketHandler;
 import mcp.mobius.opis.network.enums.ClientCommand;
-import mcp.mobius.opis.network.enums.DataReq;
-import mcp.mobius.opis.network.server.Packet_ClientCommand;
+import mcp.mobius.opis.network.enums.Message;
+import mcp.mobius.opis.network.packets.server.Packet_ClientCommand;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
@@ -35,7 +35,7 @@ public class CommandOpis extends CommandBase {
 			return;
 		}
 		
-		if (!DataReq.COMMAND_OPEN_SWING.canPlayerUseCommand((Player)icommandsender)){
+		if (!Message.COMMAND_OPEN_SWING.canPlayerUseCommand((Player)icommandsender)){
 			icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText("Your access level prevents you from doing that."));
 			return;			
 		}
