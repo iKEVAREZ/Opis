@@ -40,6 +40,7 @@ public class PanelTimingTileEnts extends JPanel implements ActionListener{
 		btnTeleport.addActionListener(this);
 		
 		btnReset = new JButtonAccess("Reset Highlight", AccessLevel.PRIVILEGED);
+		btnReset.setEnabled(false);
 		add(btnReset, "cell 2 0");
 		btnReset.addActionListener(this);
 		
