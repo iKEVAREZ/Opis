@@ -76,13 +76,6 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 	}
 	
 	private JPanel contentPane;
-	private JScrollPane scrollPaneEntityAmount;
-	private JTable tableEntityList;
-	private JPanel panelEntityAmount;
-	private JLabel labelAmountValue;
-	private JLabel labelAmountTotal;
-	private JCheckBox chkBoxDisplayAll;
-	private JButtonAccess btnRefreshEntityAmount;
 
 	private JPanel panelSummary;
 	private JLabel lblSummary_3;
@@ -103,7 +96,6 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 	private JLabel lblSummary_1;
 	private JLabel label;
 	private JButtonAccess btnSummaryRefresh;
-	private JButtonAccess btnAmountKillAll;
 	private JLabel lblSummary_11;
 	private JLabel lblSummary_12;
 	private JLabel lblSummaryTimingTick;
@@ -119,14 +111,6 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 	private JLabel lblNewLabel_5;
 	private JLabel lblNewLabel_6;
 	private JProgressBar progBarSummaryOpis;
-	private JPanel panelPlayers;
-	private JButtonAccess btnPlayersCenterMap;
-	private JButtonAccess btnPlayersTeleport;
-	private JButtonAccess btnPlayersPull;
-	private JScrollPane scrollPanePlayers;
-	private JTable tablePlayers;
-	private JButton btnPlayers_Dummy1;
-	private JButton btnPlayers_Dummy2;
 	private JLabel lblSummaryTimeStampLastRun;
 	private JButton btnTimingTERemoveHighlight;
 	private JLabel lblSummary_16;
@@ -134,6 +118,8 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 	private JLabel lblSummaryForcedChunks;
 	private JLabel lblSummaryLoadedChunk;
 
+	private PanelPlayers        panelPlayers;	
+	private PanelAmountEntities panelAmountEntities;	
 	private PanelTimingTileEnts panelTimingTileEnts;
 	private PanelTimingEntities panelTimingEntities;
 	private PanelTimingHandlers panelTimingHandlers;	
@@ -479,111 +465,13 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 		gbc_lblSummaryTickChart.gridy = 12;
 		panelSummary.add(lblSummaryTickChart, gbc_lblSummaryTickChart);
 		
-		panelPlayers = new JPanel();
-		tabbedPane.addTab("Players", null, panelPlayers, null);
-		panelPlayers.setLayout(new MigLayout("", "[][][][][][grow][]", "[][grow]"));
-		
-		btnPlayersCenterMap = new JButtonAccess("Center Map");
-		btnPlayersCenterMap.addActionListener(this);
-		panelPlayers.add(btnPlayersCenterMap, "cell 0 0,alignx left");
-		
-		btnPlayersTeleport = new JButtonAccess("Teleport", AccessLevel.PRIVILEGED);
-		btnPlayersTeleport.addActionListener(this);
-		panelPlayers.add(btnPlayersTeleport, "cell 1 0,alignx left");
-		
-		btnPlayersPull = new JButtonAccess("Pull", AccessLevel.PRIVILEGED);
-		btnPlayersPull.addActionListener(this);
-		panelPlayers.add(btnPlayersPull, "cell 2 0,alignx left");
-		
-		btnPlayers_Dummy1 = new JButton("Kill");
-		btnPlayers_Dummy1.setEnabled(false);
-		panelPlayers.add(btnPlayers_Dummy1, "cell 3 0");
-		
-		btnPlayers_Dummy2 = new JButton("Morph");
-		btnPlayers_Dummy2.setEnabled(false);
-		panelPlayers.add(btnPlayers_Dummy2, "cell 4 0");
-		
-		scrollPanePlayers = new JScrollPane();
-		panelPlayers.add(scrollPanePlayers, "cell 0 1 7 1,grow");
-		
-		tablePlayers = new JTable();
-		tablePlayers.setModel(new DefaultTableModel(
-			new Object[][] {
-			},
-			new String[] {
-				"Name", "Dimension", "Coordinates"
-			}
-		) {
-			Class[] columnTypes = new Class[] {
-				String.class, Integer.class, Object.class
-			};
-			
-			boolean[] columnEditables = new boolean[] {
-					false, false, false
-			};			
-			
-			public Class getColumnClass(int columnIndex) {
-				return columnTypes[columnIndex];
-			}
-		});
-		tablePlayers.getColumnModel().getColumn(2).setPreferredWidth(96);
-		tablePlayers.setAutoCreateRowSorter(true);
-		scrollPanePlayers.setViewportView(tablePlayers);
-		
-		panelEntityAmount = new JPanel();
-		tabbedPane.addTab("Entity Amount", null, panelEntityAmount, null);
-		
-		chkBoxDisplayAll = new JCheckBox("Filter Entities");
-		chkBoxDisplayAll.addItemListener(this);
-		panelEntityAmount.setLayout(new MigLayout("", "[left][left][481.00px,grow][right]", "[][324px,grow][]"));
-		panelEntityAmount.add(chkBoxDisplayAll, "cell 0 0,alignx left,aligny center");
-		
-		btnRefreshEntityAmount = new JButtonAccess("Refresh");
-		btnRefreshEntityAmount.addActionListener(this);
-		
-		btnAmountKillAll = new JButtonAccess("Kill All", AccessLevel.PRIVILEGED);
-		btnAmountKillAll.addActionListener(this);
-		panelEntityAmount.add(btnAmountKillAll, "cell 1 0,alignx left,aligny center");
-		panelEntityAmount.add(btnRefreshEntityAmount, "cell 3 0,alignx right,aligny center");
-		
-		scrollPaneEntityAmount = new JScrollPane();
-		panelEntityAmount.add(scrollPaneEntityAmount, "cell 0 1 4 1,grow");
-		
-		tableEntityList = new JTable();
-		tableEntityList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		tableEntityList.setModel(new DefaultTableModel(
-			new Object[][] {
-			},
-			new String[] {
-				"Type", "Amount"
-			}
-		) {
-			Class[] columnTypes = new Class[] {
-				String.class, Integer.class
-			};
-			boolean[] columnEditables = new boolean[] {
-					false, false
-			};			
-			public Class getColumnClass(int columnIndex) {
-				return columnTypes[columnIndex];
-			}
-		});
-		tableEntityList.getColumnModel().getColumn(0).setPreferredWidth(231);
-		tableEntityList.getColumnModel().getColumn(1).setPreferredWidth(237);
-		tableEntityList.setAutoCreateRowSorter(true);
-		scrollPaneEntityAmount.setViewportView(tableEntityList);
-		
-		labelAmountTotal = new JLabel("Total");
-		labelAmountTotal.setHorizontalAlignment(SwingConstants.CENTER);
-		panelEntityAmount.add(labelAmountTotal, "cell 0 2,grow");
-		
-		labelAmountValue = new JLabel("0");
-		labelAmountValue.setHorizontalAlignment(SwingConstants.CENTER);
-		panelEntityAmount.add(labelAmountValue, "cell 3 2,grow");
-		
-		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-		centerRenderer.setHorizontalAlignment( JLabel.CENTER );
 
+		panelPlayers = new PanelPlayers();
+		tabbedPane.addTab("Players", null, panelPlayers, null);		
+
+		panelAmountEntities = new PanelAmountEntities();
+		tabbedPane.addTab("Entities amount", null, panelAmountEntities, null);		
+		
 		panelTimingTileEnts = new PanelTimingTileEnts();
 		tabbedPane.addTab("TileEntities timing", null, panelTimingTileEnts, null);		
 		
@@ -597,21 +485,8 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 		tabbedPane.addTab("Chunks timing", null, panelTimingChunks, null);		
 		
 		this.addWindowListener(this);
-		
-		for (int i = 0; i < tableEntityList.getColumnCount(); i++)
-			tableEntityList.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
-
-		for (int i = 0; i < tablePlayers.getColumnCount(); i++)
-			tablePlayers.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);		
 	}
 
-	public JTable getTableEntityList() {
-		return tableEntityList;
-	}
-	
-	public JLabel getLabelAmountValue() {
-		return labelAmountValue;
-	}
 	public JLabel getLblSummaryTimingTileEnts() {
 		return lblSummaryTimingTileEnts;
 	}
@@ -653,179 +528,13 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 		return btnSummaryRefresh;
 	}
 	
-	//public JLabel getLblSummaryTimingGlobalUpdate() {
-	//	return lblSummaryTimingGlobalUpdate;
-	//}
-	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		
-		// REFRESH Button on the AmountEnt Screen
-		if (e.getSource() == btnRefreshEntityAmount){
-			this.requestAmoutEntityUpdate();
-		}
-
-		// CENTER Button on the TimingTE Screen
-		/*
-		else if ((e.getSource() == this.btnTimingTECenterMap) && (this.tableTimingTE.getSelectedRow() != -1)){
-			int indexData = tableTimingTE.convertRowIndexToModel(tableTimingTE.getSelectedRow());
-			StatsTileEntity data = DataCache.instance().getTimingTileEnts().get(indexData);
-			
-			CoordinatesBlock coord = data.getCoordinates();
-			OverlayMeanTime.instance().setSelectedChunk(coord.dim, coord.x >> 4, coord.z >> 4);
-			MwAPI.setCurrentDataProvider(OverlayMeanTime.instance());
-			Minecraft.getMinecraft().displayGuiScreen(new MwGui(Mw.instance, coord.dim, coord.x, coord.z));			
-		}
-		*/
-		
-		// TELEPORT Button on the TimingTE Screen
-		/*
-		else if ((e.getSource() == this.btnTimingTETeleport) && (this.tableTimingTE.getSelectedRow() != -1)){		
-			int indexData = tableTimingTE.convertRowIndexToModel(tableTimingTE.getSelectedRow());	
-			StatsTileEntity data = DataCache.instance().getTimingTileEnts().get(indexData);
-			
-			CoordinatesBlock coord = data.getCoordinates();
-			modOpis.selectedBlock = coord;
-			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.COMMAND_TELEPORT_BLOCK, coord));
-			Minecraft.getMinecraft().setIngameFocus();			
-		}
-		*/
-
-		// CENTER Button on the TimingEnts Screen
-		/*
-		else if ((e.getSource() == this.btnTimingEntCenterMap) && (this.tableTimingEnt.getSelectedRow() != -1)){
-			int indexData = tableTimingEnt.convertRowIndexToModel(tableTimingEnt.getSelectedRow());
-			StatsEntity data = DataCache.instance().getTimingEntities().get(indexData);
-			
-			CoordinatesBlock coord = data.getCoordinates();
-			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.OVERLAY_CHUNK_ENTITIES));
-			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.LIST_CHUNK_ENTITIES, data.getChunk()));			
-			MwAPI.setCurrentDataProvider(OverlayEntityPerChunk.instance());
-			OverlayEntityPerChunk.instance().selectedChunk = coord.asCoordinatesChunk();
-			Minecraft.getMinecraft().displayGuiScreen(new MwGui(Mw.instance, coord.dim, coord.x, coord.z));			
-		}
-		*/
-		
-		// TELEPORT Button on the TimingEnts Screen
-		/*
-		else if ((e.getSource() == this.btnTimingEntTeleport) && (this.tableTimingEnt.getSelectedRow() != -1)){		
-			int indexData = tableTimingEnt.convertRowIndexToModel(tableTimingEnt.getSelectedRow());	
-			StatsEntity data = DataCache.instance().getTimingEntities().get(indexData);
-			
-			int eid = data.getID();
-			int dim = data.getCoordinates().dim;
-			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.COMMAND_TELEPORT_TO_ENTITY, new TargetEntity(eid, dim)));
-			Minecraft.getMinecraft().setIngameFocus();			
-		}
-		*/
-		
-		// PULL Button on the TimingEnts Screen
-		/*
-		else if ((e.getSource() == this.btnTimingEntPull) && (this.tableTimingEnt.getSelectedRow() != -1)){		
-			int indexData = tableTimingEnt.convertRowIndexToModel(tableTimingEnt.getSelectedRow());	
-			StatsEntity data = DataCache.instance().getTimingEntities().get(indexData);
-			
-			int eid = data.getID();
-			int dim = data.getCoordinates().dim;
-			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.COMMAND_TELEPORT_PULL_ENTITY, new TargetEntity(eid, dim)));
-		}		
-		*/
-		
-		// RUN OPIS Button
-		/*
-		else if ((e.getSource() == this.btnTimingTERefresh) || (e.getSource() == btnTimingEntRefresh) || (e.getSource() == btnTimingHandlerRefresh) || (e.getSource() == btnTimingChunkRefresh) || (e.getSource() == btnSummaryRefresh)){
-			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.COMMAND_START));
-		}
-		*/
-		
-		// KILLALL Button on the AmountEnts Screen		
-		else if ((e.getSource() == this.btnAmountKillAll) && (this.tableEntityList.getSelectedRow() != -1)){
-			int indexData = tableEntityList.convertRowIndexToModel(tableEntityList.getSelectedRow());
-			AmountHolder data = DataCache.instance().getAmountEntities().get(indexData);
-			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.COMMAND_KILLALL, new SerialString(data.key)));
-			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.LIST_AMOUNT_ENTITIES));
-		}
-
-		// TELEPORT Button on the TimingChunk Screen
-		/*
-		else if ((e.getSource() == this.btnTimingChunkTeleport) && (this.tableTimingChunk.getSelectedRow() != -1)){
-			int indexData = tableTimingChunk.convertRowIndexToModel(tableTimingChunk.getSelectedRow());
-			StatsChunk data = DataCache.instance().getTimingChunks().get(indexData);
-			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.COMMAND_TELEPORT_CHUNK, data.getChunk()));
-		}
-		*/
-
-		// CENTER Button on the TimingChunk Screen
-		/*
-		else if ((e.getSource() == this.btnTimingChunkCenterMap) && (this.tableTimingChunk.getSelectedRow() != -1)){
-			int indexData = tableTimingChunk.convertRowIndexToModel(tableTimingChunk.getSelectedRow());
-			StatsChunk data = DataCache.instance().getTimingChunks().get(indexData);
-			
-			OverlayMeanTime.instance().setSelectedChunk(data.getChunk().dim, data.getChunk().chunkX, data.getChunk().chunkZ);
-			MwAPI.setCurrentDataProvider(OverlayMeanTime.instance());
-			Minecraft.getMinecraft().displayGuiScreen(new MwGui(Mw.instance, data.getChunk().dim, data.getChunk().x + 8, data.getChunk().z + 8));			
-		}		
-		*/
-		
-		// CENTER Button on the Players Screen
-		else if ((e.getSource() == this.btnPlayersCenterMap) && (this.tablePlayers.getSelectedRow() != -1)){
-			int indexData = tablePlayers.convertRowIndexToModel(tablePlayers.getSelectedRow());
-			StatsPlayer data = DataCache.instance().getListPlayers().get(indexData);
-			
-			CoordinatesBlock coord = data.getCoordinates();
-			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.OVERLAY_CHUNK_ENTITIES));
-			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.LIST_CHUNK_ENTITIES, data.getChunk()));			
-			OverlayEntityPerChunk.instance().selectedChunk = coord.asCoordinatesChunk();
-			MwAPI.setCurrentDataProvider(OverlayEntityPerChunk.instance());
-			Minecraft.getMinecraft().displayGuiScreen(new MwGui(Mw.instance, coord.dim, coord.x, coord.z));			
-		}		
-
-		// TELEPORT Button on the Players Screen
-		else if ((e.getSource() == this.btnPlayersTeleport) && (this.tablePlayers.getSelectedRow() != -1)){		
-			int indexData = tablePlayers.convertRowIndexToModel(tablePlayers.getSelectedRow());
-			StatsPlayer data = DataCache.instance().getListPlayers().get(indexData);
-			
-			int eid = data.getEID();
-			int dim = data.getCoordinates().dim;
-			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.COMMAND_TELEPORT_TO_ENTITY, new TargetEntity(eid, dim)));
-			Minecraft.getMinecraft().setIngameFocus();			
-		}		
-	
-		
-		// PULL Button on the Players Screen
-		else if ((e.getSource() == this.btnPlayersPull) && (this.tablePlayers.getSelectedRow() != -1)){		
-			int indexData = tablePlayers.convertRowIndexToModel(tablePlayers.getSelectedRow());
-			StatsPlayer data = DataCache.instance().getListPlayers().get(indexData);
-			
-			int eid = data.getEID();
-			int dim = data.getCoordinates().dim;
-			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.COMMAND_TELEPORT_PULL_ENTITY, new TargetEntity(eid, dim)));			
-		}
-		
-		// RESET HIGHLIGHT on the TimingTE Screen
-		else if (e.getSource() == this.btnTimingTERemoveHighlight){
-			modOpis.selectedBlock = null;
-			this.btnTimingTERemoveHighlight.setEnabled(false);
-		}
 		
 	}
 
 	@Override
 	public void itemStateChanged(ItemEvent e) {
-		if (e.getItem() == chkBoxDisplayAll){
-			if      (e.getStateChange() == ItemEvent.SELECTED){
-				PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.COMMAND_FILTERING_TRUE));
-				this.requestAmoutEntityUpdate();
-			}
-			else if (e.getStateChange() == ItemEvent.DESELECTED){
-				PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.COMMAND_FILTERING_FALSE));
-				this.requestAmoutEntityUpdate();				
-			}
-		}
-	}
-	
-	private void requestAmoutEntityUpdate(){
-		PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.LIST_AMOUNT_ENTITIES));
 	}
 
 	@Override
@@ -854,9 +563,7 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 	public JProgressBar getProgBarSummaryOpis() {
 		return progBarSummaryOpis;
 	}
-	public JTable getTablePlayers() {
-		return tablePlayers;
-	}
+
 	public JLabel getLblSummaryTimeStampLastRun() {
 		return lblSummaryTimeStampLastRun;
 	}
@@ -869,6 +576,8 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 	public JLabel getLblSummaryLoadedChunks() {
 		return lblSummaryLoadedChunk;
 	}
+	
+	
 	public PanelTimingChunks getPanelTimingChunks() {
 		return panelTimingChunks;
 	}
@@ -880,5 +589,11 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 	}
 	public PanelTimingTileEnts getPanelTimingTileEnts() {
 		return panelTimingTileEnts;
+	}
+	public PanelAmountEntities getPanelAmountEntities() {
+		return panelAmountEntities;
+	}
+	public PanelPlayers getPanelPlayers() {
+		return panelPlayers;
 	}
 }

@@ -221,7 +221,7 @@ public class DataCache {
 	}		
 	
 	public void setAmountEntities(ArrayList<ISerializable> stats){
-		JTable table            = SwingUI.instance().getTableEntityList();
+		JTable table            = SwingUI.instance().getPanelAmountEntities().getTable();
 		DefaultTableModel model = (DefaultTableModel)table.getModel();
 		int               row   = this.updateData(table, model, this.amountEntities, stats, AmountHolder.class);	
 		
@@ -232,7 +232,7 @@ public class DataCache {
 				totalEntities += stat.value;
 		}		
 
-		SwingUI.instance().getLabelAmountValue().setText(String.valueOf(totalEntities));
+		SwingUI.instance().getPanelAmountEntities().getLblSummary().setText("Total : " + String.valueOf(totalEntities));
 		this.dataUpdated(table, model, row);	
 	}
 	
@@ -315,7 +315,7 @@ public class DataCache {
 	}
 	
 	public void setListPlayers(ArrayList<ISerializable> playerList){
-		JTable table            = SwingUI.instance().getTablePlayers();
+		JTable table            = SwingUI.instance().getPanelPlayers().getTable();
 		DefaultTableModel model = (DefaultTableModel)table.getModel();
 		int               row   = this.updateData(table, model, this.listPlayers, playerList, StatsPlayer.class);
 

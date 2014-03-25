@@ -70,7 +70,6 @@ public class PanelPlayers extends JPanel implements ActionListener{
 				return columnTypes[columnIndex];
 			}
 		});
-
 		table.setAutoCreateRowSorter(true);		
 		scrollPane.setViewportView(table);
 
