@@ -127,11 +127,6 @@ public class OpisServerTickHandler implements ITickHandler {
 				System.out.printf("worldVillageSiegeStats : %s µs\n", GlobalTimingManager.getTotalStats(GlobalTimingManager.worldVillageSiegeStats));
 				System.out.printf("worldApplyBlockEventsStats : %s µs\n", GlobalTimingManager.getTotalStats(GlobalTimingManager.worldApplyBlockEventsStats));				
 				
-				
-				
-				
-				
-				
 			}			
 		}
 	}

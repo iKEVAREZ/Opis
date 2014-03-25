@@ -56,14 +56,14 @@ public class ChunkManager {
 		WorldServer world = DimensionManager.getWorld(dimension);
 		if (world != null)
 		{
-			for (ChunkCoordIntPair coord : world.getPersistentChunks().keySet())
-				chunkStatus.add(new CoordinatesChunk(dimension, coord, (byte)1));
-			
 			for (Object o : ((ChunkProviderServer)world.getChunkProvider()).loadedChunks){
 				Chunk chunk = (Chunk)o;
 				
 				chunkStatus.add(new CoordinatesChunk(dimension, chunk.getChunkCoordIntPair(), (byte)0));
-			}			
+			}
+			
+			for (ChunkCoordIntPair coord : world.getPersistentChunks().keySet())
+				chunkStatus.add(new CoordinatesChunk(dimension, coord, (byte)1));			
 		}
 		
 		return new ArrayList<CoordinatesChunk>(chunkStatus);
