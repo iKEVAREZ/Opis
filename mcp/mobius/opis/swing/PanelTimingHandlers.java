@@ -1,9 +1,14 @@
 package mcp.mobius.opis.swing;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.JPanel;
 
 import mcp.mobius.opis.data.holders.stats.StatAbstract;
 import mcp.mobius.opis.network.enums.AccessLevel;
+import mcp.mobius.opis.network.enums.Message;
+import mcp.mobius.opis.network.packets.client.Packet_ReqData;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.JButton;
@@ -13,7 +18,9 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
-public class PanelTimingHandlers extends JPanel {
+import cpw.mods.fml.common.network.PacketDispatcher;
+
+public class PanelTimingHandlers extends JPanel implements ActionListener{
 	private JTable table;
 	private JButtonAccess btnRun;
 	private JLabel lblSummary;
@@ -26,6 +33,7 @@ public class PanelTimingHandlers extends JPanel {
 		
 		btnRun = new JButtonAccess("Run Opis", AccessLevel.PRIVILEGED);
 		add(btnRun, "cell 1 0");
+		btnRun.addActionListener(this);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		
@@ -61,4 +69,12 @@ public class PanelTimingHandlers extends JPanel {
 	public JButton getBtnRun()    {return btnRun;}
 	public JTable  getTable()     {return table;}
 	public JLabel  getLblSummary(){return lblSummary;}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// RUN OPIS Button
+		if (e.getSource() == this.getBtnRun()){
+			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.COMMAND_START));
+		}		
+	}
 }
