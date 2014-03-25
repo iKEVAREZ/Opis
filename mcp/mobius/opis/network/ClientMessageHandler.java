@@ -142,7 +142,7 @@ public class ClientMessageHandler {
 			DataCache.instance().setAmountDownload(((SerialLong)data).value);	
 		     
 		else if (msg == Message.STATUS_START){
-			SwingUI.instance().getBtnTimingChunkRefresh().setText("Running...");
+			SwingUI.instance().getPanelTimingChunks().getBtnRun().setText("Running...");
 			SwingUI.instance().getBtnSummaryRefresh().setText("Running...");
 			SwingUI.instance().getBtnTimingEntRefresh().setText("Running...");
 			SwingUI.instance().getBtnTimingHandlerRefresh().setText("Running...");
@@ -154,7 +154,7 @@ public class ClientMessageHandler {
 		}
 		     
 		else if (msg == Message.STATUS_STOP){
-			SwingUI.instance().getBtnTimingChunkRefresh().setText("Run Opis");
+			SwingUI.instance().getPanelTimingChunks().getBtnRun().setText("Run Opis");
 			SwingUI.instance().getBtnSummaryRefresh().setText("Run Opis");
 			SwingUI.instance().getBtnTimingEntRefresh().setText("Run Opis");
 			SwingUI.instance().getBtnTimingHandlerRefresh().setText("Run Opis");
@@ -170,7 +170,7 @@ public class ClientMessageHandler {
 		}
 		     
 		else if (msg == Message.STATUS_RUNNING){
-			SwingUI.instance().getBtnTimingChunkRefresh().setText("Running...");
+			SwingUI.instance().getPanelTimingChunks().getBtnRun().setText("Running...");
 			SwingUI.instance().getBtnSummaryRefresh().setText("Running...");
 			SwingUI.instance().getBtnTimingEntRefresh().setText("Running...");
 			SwingUI.instance().getBtnTimingHandlerRefresh().setText("Running...");

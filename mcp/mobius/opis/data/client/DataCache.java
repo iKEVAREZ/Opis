@@ -294,7 +294,7 @@ public class DataCache {
 	}
 	
 	public void setTimingChunks(ArrayList<ISerializable> timingChunks_){
-		JTable table            = SwingUI.instance().getTableTimingChunk();
+		JTable table            = SwingUI.instance().getPanelTimingChunks().getTable();
 		DefaultTableModel model = (DefaultTableModel)table.getModel();
 		int               row   = this.updateData(table, model, this.timingChunks, timingChunks_, StatsChunk.class);		
 		

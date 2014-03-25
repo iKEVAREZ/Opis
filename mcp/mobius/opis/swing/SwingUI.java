@@ -92,9 +92,6 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 	private JScrollPane scrollPaneTimingHandler;
 	private JTable tableTimingHandler;
 	private JTable tableTimingTE;
-	private JPanel panelTimingChunk;
-	private JScrollPane scrollPaneTimingChunk;
-	private JTable tableTimingChunk;
 	private JButtonAccess btnTimingTECenterMap;
 	private JButtonAccess btnTimingTETeleport;
 	private JButtonAccess btnTimingEntTeleport;
@@ -102,7 +99,6 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 	private JButtonAccess btnTimingEntRefresh;
 	private JButtonAccess btnTimingTERefresh;
 	private JButtonAccess btnTimingHandlerRefresh;
-	private JButtonAccess btnTimingChunkRefresh;
 	private JLabel lblTimingTEValue;
 	private JLabel lblTimingEntValue;
 	private JLabel lblTimingHandlerValue;
@@ -141,8 +137,6 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 	private JLabel lblNewLabel_4;
 	private JLabel lblNewLabel_5;
 	private JLabel lblNewLabel_6;
-	private JButtonAccess btnTimingChunkCenterMap;
-	private JButtonAccess btnTimingChunkTeleport;
 	private JProgressBar progBarSummaryOpis;
 	private JPanel panelPlayers;
 	private JButtonAccess btnPlayersCenterMap;
@@ -158,6 +152,8 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 	private JLabel lblSummary_17;
 	private JLabel lblSummaryForcedChunks;
 	private JLabel lblSummaryLoadedChunk;
+	
+	private PanelTimingChunks panelTimingChunks;
 	
 	public void showUI(){
 		EventQueue.invokeLater(new Runnable() {
@@ -735,49 +731,11 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 		lblTimingHandlerValue = new JLabel("Total update time : 0 µs");
 		panelTimingHandler.add(lblTimingHandlerValue, "cell 0 2 2 1,alignx center,aligny center");
 		
-		panelTimingChunk = new JPanel();
-		tabbedPane.addTab("Chunk Timing", null, panelTimingChunk, null);
-		
-		btnTimingChunkCenterMap = new JButtonAccess("Center Map");
-		btnTimingChunkCenterMap.addActionListener(this);
-		panelTimingChunk.setLayout(new MigLayout("", "[left][left][97px,grow][right]", "[][359px,grow]"));
-		panelTimingChunk.add(btnTimingChunkCenterMap, "cell 0 0,alignx left,aligny center");
-		
-		btnTimingChunkTeleport = new JButtonAccess("Teleport", AccessLevel.PRIVILEGED);
-		btnTimingChunkTeleport.addActionListener(this);		
-		panelTimingChunk.add(btnTimingChunkTeleport, "cell 1 0,alignx left,aligny center");
-		
-		scrollPaneTimingChunk = new JScrollPane();
-		panelTimingChunk.add(scrollPaneTimingChunk, "cell 0 1 4 1,grow");
-		
-		tableTimingChunk = new JTable();
-		tableTimingChunk.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		tableTimingChunk.setModel(new DefaultTableModel(
-			new Object[][] {
-			},
-			new String[] {
-				"Dimension", "Position", "TileEntities", "Entities", "Update Time"
-			}
-		) {
-			Class[] columnTypes = new Class[] {
-				Integer.class, String.class, Integer.class, Integer.class, StatAbstract.class
-			};
-			boolean[] columnEditables = new boolean[] {
-					false, false, false, false, false
-			};			
-			public Class getColumnClass(int columnIndex) {
-				return columnTypes[columnIndex];
-			}
-		});
-		tableTimingChunk.setAutoCreateRowSorter(true);		
-		scrollPaneTimingChunk.setViewportView(tableTimingChunk);
-		
-		btnTimingChunkRefresh = new JButtonAccess("Run Opis", AccessLevel.PRIVILEGED);
-		btnTimingChunkRefresh.addActionListener(this);
-		panelTimingChunk.add(btnTimingChunkRefresh, "cell 3 0,alignx right,aligny center");
-		
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 		centerRenderer.setHorizontalAlignment( JLabel.CENTER );
+		
+		panelTimingChunks = new PanelTimingChunks();
+		tabbedPane.addTab("Chunks timing", null, panelTimingChunks, null);		
 		
 		this.addWindowListener(this);
 		
@@ -792,9 +750,6 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 		
 		for (int i = 0; i < tableTimingHandler.getColumnCount(); i++)
 			tableTimingHandler.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
-		
-		for (int i = 0; i < tableTimingChunk.getColumnCount(); i++)
-			tableTimingChunk.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
 		
 		for (int i = 0; i < tablePlayers.getColumnCount(); i++)
 			tablePlayers.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);		
@@ -811,9 +766,6 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 	}
 	public JTable getTableTimingHandler() {
 		return tableTimingHandler;
-	}
-	public JTable getTableTimingChunk() {
-		return tableTimingChunk;
 	}
 	
 	public JLabel getLabelAmountValue() {
@@ -877,9 +829,6 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 	public JButton getBtnTimingHandlerRefresh() {
 		return btnTimingHandlerRefresh;
 	}
-	public JButton getBtnTimingChunkRefresh() {
-		return btnTimingChunkRefresh;
-	}	
 	
 	//public JLabel getLblSummaryTimingGlobalUpdate() {
 	//	return lblSummaryTimingGlobalUpdate;
@@ -949,11 +898,12 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.COMMAND_TELEPORT_PULL_ENTITY, new TargetEntity(eid, dim)));
 		}		
 
-		// RUN OPIS Button		
+		// RUN OPIS Button
+		/*
 		else if ((e.getSource() == this.btnTimingTERefresh) || (e.getSource() == btnTimingEntRefresh) || (e.getSource() == btnTimingHandlerRefresh) || (e.getSource() == btnTimingChunkRefresh) || (e.getSource() == btnSummaryRefresh)){
 			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.COMMAND_START));
 		}
-		
+		*/
 		
 		// KILLALL Button on the AmountEnts Screen		
 		else if ((e.getSource() == this.btnAmountKillAll) && (this.tableEntityList.getSelectedRow() != -1)){
@@ -963,14 +913,17 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.LIST_AMOUNT_ENTITIES));
 		}
 
-		// TELEPORT Button on the TimingChunk Screen		
+		// TELEPORT Button on the TimingChunk Screen
+		/*
 		else if ((e.getSource() == this.btnTimingChunkTeleport) && (this.tableTimingChunk.getSelectedRow() != -1)){
 			int indexData = tableTimingChunk.convertRowIndexToModel(tableTimingChunk.getSelectedRow());
 			StatsChunk data = DataCache.instance().getTimingChunks().get(indexData);
 			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.COMMAND_TELEPORT_CHUNK, data.getChunk()));
 		}
+		*/
 
 		// CENTER Button on the TimingChunk Screen
+		/*
 		else if ((e.getSource() == this.btnTimingChunkCenterMap) && (this.tableTimingChunk.getSelectedRow() != -1)){
 			int indexData = tableTimingChunk.convertRowIndexToModel(tableTimingChunk.getSelectedRow());
 			StatsChunk data = DataCache.instance().getTimingChunks().get(indexData);
@@ -979,7 +932,8 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 			MwAPI.setCurrentDataProvider(OverlayMeanTime.instance());
 			Minecraft.getMinecraft().displayGuiScreen(new MwGui(Mw.instance, data.getChunk().dim, data.getChunk().x + 8, data.getChunk().z + 8));			
 		}		
-
+		*/
+		
 		// CENTER Button on the Players Screen
 		else if ((e.getSource() == this.btnPlayersCenterMap) && (this.tablePlayers.getSelectedRow() != -1)){
 			int indexData = tablePlayers.convertRowIndexToModel(tablePlayers.getSelectedRow());
@@ -1081,5 +1035,8 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 	}
 	public JLabel getLblSummaryLoadedChunks() {
 		return lblSummaryLoadedChunk;
+	}
+	public PanelTimingChunks getPanelTimingChunks() {
+		return panelTimingChunks;
 	}
 }
