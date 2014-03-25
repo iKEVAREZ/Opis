@@ -76,24 +76,12 @@ public class PanelTimingEntities extends JPanel implements ActionListener{
 
 	}
 
-	public JTable getTable() {
-		return table;
-	}
-	public JButton getBtnRun() {
-		return btnRun;
-	}
-	public JButton getBtnPull() {
-		return btnPull;
-	}
-	public JButton getBtnTeleport() {
-		return btnTeleport;
-	}
-	public JButton getBtnCenter() {
-		return btnCenter;
-	}
-	public JLabel getLblSummary() {
-		return lblSummary;
-	}
+	public JTable  getTable()       {return table;}
+	public JButton getBtnRun()      {return btnRun;}
+	public JButton getBtnPull()     {return btnPull;}
+	public JButton getBtnTeleport() {return btnTeleport;}
+	public JButton getBtnCenter()   {return btnCenter;}
+	public JLabel  getLblSummary()  {return lblSummary;}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {}

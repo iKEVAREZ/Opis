@@ -28,7 +28,7 @@ import javax.swing.table.DefaultTableModel;
 
 import cpw.mods.fml.common.network.PacketDispatcher;
 
-public class PanelTimingChunks extends JPanel implements  ActionListener{
+public class PanelTimingChunks extends JPanel implements ActionListener{
 	private JTable table;
 	private JButtonAccess btnRun;
 	private JButtonAccess btnTeleport;
