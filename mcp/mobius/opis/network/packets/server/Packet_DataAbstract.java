@@ -6,6 +6,6 @@ import mcp.mobius.opis.network.enums.Message;
 public class Packet_DataAbstract {
 
 	public byte     header;
-	public Message dataReq;	
+	public Message  msg;	
 	public Packet250CustomPayload packet;
 }

@@ -41,7 +41,7 @@ import mcp.mobius.opis.network.packets.client.Packet_ReqChunks;
 import mcp.mobius.opis.network.packets.client.Packet_ReqData;
 import mcp.mobius.opis.network.packets.custom.Packet250Metadata;
 import mcp.mobius.opis.network.packets.server.Packet_Chunks;
-import mcp.mobius.opis.network.packets.server.Packet_ClientCommand;
+import mcp.mobius.opis.network.packets.server.Packet_DataCommand;
 import mcp.mobius.opis.network.packets.server.Packet_DataAbstract;
 import mcp.mobius.opis.network.packets.server.Packet_DataList;
 import mcp.mobius.opis.network.packets.server.Packet_DataOverlayChunkEntities;
@@ -89,13 +89,6 @@ public class OpisPacketHandler implements IPacketHandler {
 			ChunkManager.chunksLoad = castedPacket.chunkStatus;
 		}
 
-		/*
-		else if (header == Packets.MEANTIME){
-			Packet_MeanTime castedPacket = new Packet_MeanTime(packet);
-			ChunkManager.chunkMeanTime = castedPacket.chunkStatus;
-		}
-		*/			
-
 		else if (header == Packets.TICKETS){
 			Packet_Tickets castedPacket = new Packet_Tickets(packet);
 			OverlayLoadedChunks.instance().setupTable(castedPacket.tickets);
@@ -115,152 +108,18 @@ public class OpisPacketHandler implements IPacketHandler {
 		}
 		
 		else if (header == Packets.CLIENT_CMD){
-			Packet_ClientCommand castedPacket = new Packet_ClientCommand(packet);
-			ClientCommandHandler.instance().handle(castedPacket.cmd);
+			Packet_DataCommand castedPacket = new Packet_DataCommand(packet);
+			ClientMessageHandler.instance().handle(castedPacket.msg);
 		}		
 		
 		else if (header == Packets.DATA_LIST_GENERAL){
 			Packet_DataList castedPacket = new Packet_DataList(packet);
-
-			     if (castedPacket.dataReq == Message.LIST_TIMING_TILEENTS)
-				DataCache.instance().setTimingTileEnts(castedPacket.data);
-			
-			else if (castedPacket.dataReq == Message.LIST_TIMING_ENTITIES)
-				DataCache.instance().setTimingEntities(castedPacket.data);
-			
-			else if (castedPacket.dataReq == Message.LIST_TIMING_HANDLERS)
-				DataCache.instance().setTimingHandlers(castedPacket.data);		
-			
-			else if (castedPacket.dataReq == Message.LIST_TIMING_CHUNK){
-				DataCache.instance().setTimingChunks(castedPacket.data);
-				ChunkManager.setChunkMeanTime(castedPacket.data);
-			}
-			
-			else if (castedPacket.dataReq == Message.LIST_AMOUNT_ENTITIES)
-				DataCache.instance().setAmountEntities(castedPacket.data);			
-
-			else if (castedPacket.dataReq == Message.LIST_CHUNK_ENTITIES){
-				OverlayEntityPerChunk.instance().setEntStats(castedPacket.data);
-				OverlayEntityPerChunk.instance().setupEntTable();		
-			}
-			else if (castedPacket.dataReq == Message.LIST_CHUNK_TILEENTS){
-				OverlayMeanTime.instance().setupTable(castedPacket.data);	 
-			}			     
-			
-			else if (castedPacket.dataReq == Message.LIST_PLAYERS){
-				DataCache.instance().setListPlayers(castedPacket.data);	 
-			}			     
-			     
+			ClientMessageHandler.instance().handle(castedPacket.msg, castedPacket.data);
 		}
 		
 		else if (header == Packets.DATA_VALUE_GENERAL){
 			Packet_DataValue castedPacket = new Packet_DataValue(packet);
-			
-			     if (castedPacket.dataReq == Message.VALUE_TIMING_TILEENTS)
-				DataCache.instance().setTimingTileEntsTotal(((SerialDouble)castedPacket.data).value);
-			
-			else if (castedPacket.dataReq == Message.VALUE_TIMING_ENTITIES)
-				DataCache.instance().setTimingEntitiesTotal(((SerialDouble)castedPacket.data).value);	
-			
-			else if (castedPacket.dataReq == Message.VALUE_TIMING_HANDLERS)
-				DataCache.instance().setTimingHandlersTotal(((SerialDouble)castedPacket.data).value);	
-
-			else if (castedPacket.dataReq == Message.VALUE_TIMING_WORLDTICK)
-				DataCache.instance().setTimingWorldTickTotal(((SerialDouble)castedPacket.data).value);			
-
-			else if (castedPacket.dataReq == Message.VALUE_TIMING_ENTUPDATE)
-				DataCache.instance().setTimingEntUpdateTotal(((SerialDouble)castedPacket.data).value);						
-			
-			else if (castedPacket.dataReq == Message.VALUE_AMOUNT_TILEENTS)
-				DataCache.instance().setAmountTileEntsTotal(((SerialInt)castedPacket.data).value);
-			
-			else if (castedPacket.dataReq == Message.VALUE_AMOUNT_ENTITIES)
-				DataCache.instance().setAmountEntitiesTotal(((SerialInt)castedPacket.data).value);	
-			
-			else if (castedPacket.dataReq == Message.VALUE_AMOUNT_HANDLERS)
-				DataCache.instance().setAmountHandlersTotal(((SerialInt)castedPacket.data).value);
-			
-			else if (castedPacket.dataReq == Message.VALUE_TIMING_TICK)
-				DataCache.instance().setTimingTick(castedPacket.data);	
-			
-			else if (castedPacket.dataReq == Message.VALUE_AMOUNT_UPLOAD)
-				DataCache.instance().setAmountUpload(((SerialLong)castedPacket.data).value);		
-			
-			else if (castedPacket.dataReq == Message.VALUE_AMOUNT_DOWNLOAD)
-				DataCache.instance().setAmountDownload(((SerialLong)castedPacket.data).value);	
-			     
-			else if (castedPacket.dataReq == Message.STATUS_START){
-				SwingUI.instance().getBtnTimingChunkRefresh().setText("Running...");
-				SwingUI.instance().getBtnSummaryRefresh().setText("Running...");
-				SwingUI.instance().getBtnTimingEntRefresh().setText("Running...");
-				SwingUI.instance().getBtnTimingHandlerRefresh().setText("Running...");
-				SwingUI.instance().getBtnTimingTERefresh().setText("Running...");
-				
-				SwingUI.instance().getProgBarSummaryOpis().setValue(0);
-				SwingUI.instance().getProgBarSummaryOpis().setMinimum(0);
-				SwingUI.instance().getProgBarSummaryOpis().setMaximum(((SerialInt)castedPacket.data).value);
-			}
-			     
-			else if (castedPacket.dataReq == Message.STATUS_STOP){
-				SwingUI.instance().getBtnTimingChunkRefresh().setText("Run Opis");
-				SwingUI.instance().getBtnSummaryRefresh().setText("Run Opis");
-				SwingUI.instance().getBtnTimingEntRefresh().setText("Run Opis");
-				SwingUI.instance().getBtnTimingHandlerRefresh().setText("Run Opis");
-				SwingUI.instance().getBtnTimingTERefresh().setText("Run Opis");
-				
-				SwingUI.instance().getProgBarSummaryOpis().setValue(((SerialInt)castedPacket.data).value);
-				SwingUI.instance().getProgBarSummaryOpis().setMinimum(0);
-				SwingUI.instance().getProgBarSummaryOpis().setMaximum(((SerialInt)castedPacket.data).value);				
-			}
-			     
-			else if (castedPacket.dataReq == Message.STATUS_RUN_UPDATE){
-				SwingUI.instance().getProgBarSummaryOpis().setValue(((SerialInt)castedPacket.data).value);
-			}
-			     
-			else if (castedPacket.dataReq == Message.STATUS_RUNNING){
-				SwingUI.instance().getBtnTimingChunkRefresh().setText("Running...");
-				SwingUI.instance().getBtnSummaryRefresh().setText("Running...");
-				SwingUI.instance().getBtnTimingEntRefresh().setText("Running...");
-				SwingUI.instance().getBtnTimingHandlerRefresh().setText("Running...");
-				SwingUI.instance().getBtnTimingTERefresh().setText("Running...");				
-				
-				SwingUI.instance().getProgBarSummaryOpis().setMaximum(((SerialInt)castedPacket.data).value);
-			}			     
-
-			else if (castedPacket.dataReq == Message.STATUS_CURRENT_TIME){
-				DataCache.instance().computeClockScrew(((SerialLong)castedPacket.data).value);
-			}
-
-			else if (castedPacket.dataReq == Message.STATUS_TIME_LAST_RUN){
-				long serverLastRun = ((SerialLong)castedPacket.data).value;
-				if (serverLastRun == 0){
-					SwingUI.instance().getLblSummaryTimeStampLastRun().setText("Last run : <Never>");
-				} else {
-					long clientLastRun = serverLastRun + DataCache.instance().getClockScrew();
-			        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-			        Date resultdate = new Date(clientLastRun);
-					
-					SwingUI.instance().getLblSummaryTimeStampLastRun().setText(String.format("Last run : %s", sdf.format(resultdate)));
-				}
-
-			}	
-			     
-			else if(castedPacket.dataReq == Message.STATUS_ACCESS_LEVEL){
-				DataCache.instance().setAccessLevel( AccessLevel.values()[((SerialInt)castedPacket.data).value] );
-			}			     
-		
-			else if(castedPacket.dataReq == Message.CLIENT_HIGHLIGHT_BLOCK){
-				modOpis.selectedBlock = (CoordinatesBlock)castedPacket.data;
-				SwingUI.instance().getBtnTimingTERemoveHighlight().setEnabled(true);
-			}
-			
-			else if(castedPacket.dataReq == Message.VALUE_CHUNK_FORCED){
-				SwingUI.instance().getLblSummaryForcedChunks().setText(String.valueOf(((SerialInt)castedPacket.data).value));
-			}
-			     
-			else if(castedPacket.dataReq == Message.VALUE_CHUNK_LOADED){
-				SwingUI.instance().getLblSummaryLoadedChunks().setText(String.valueOf(((SerialInt)castedPacket.data).value));
-			}			     
+			ClientMessageHandler.instance().handle(castedPacket.msg, castedPacket.data);			
 		}
 	}
 
@@ -296,7 +155,7 @@ public class OpisPacketHandler implements IPacketHandler {
 			
 			if (castedPacket.dataReq.canPlayerUseCommand(player)){
 				logmsg += "Accepted";
-				MessageHandler.instance().handle(castedPacket.dataReq, castedPacket.param1, castedPacket.param2,  player);
+				ServerMessageHandler.instance().handle(castedPacket.dataReq, castedPacket.param1, castedPacket.param2,  player);
 			} else {
 				logmsg += "Rejected";
 			}
@@ -317,7 +176,7 @@ public class OpisPacketHandler implements IPacketHandler {
 	}        
 	
 	public static void validateAndSend(Packet_DataAbstract capsule, Player player){
-		if (capsule.dataReq.canPlayerUseCommand(player))
+		if (capsule.msg.canPlayerUseCommand(player))
 			PacketDispatcher.sendPacketToPlayer(capsule.packet, player);
 	}
 

@@ -44,14 +44,14 @@ import mcp.mobius.opis.network.packets.server.Packet_DataValue;
 import mcp.mobius.opis.network.packets.server.Packet_LoadedChunks;
 import mcp.mobius.opis.network.packets.server.Packet_Tickets;
 
-public class MessageHandler {
+public class ServerMessageHandler {
 
-	private static MessageHandler _instance;
-	private MessageHandler(){}
+	private static ServerMessageHandler _instance;
+	private ServerMessageHandler(){}
 	
-	public static MessageHandler instance(){
+	public static ServerMessageHandler instance(){
 		if(_instance == null)
-			_instance = new MessageHandler();			
+			_instance = new ServerMessageHandler();			
 		return _instance;
 	}	
 

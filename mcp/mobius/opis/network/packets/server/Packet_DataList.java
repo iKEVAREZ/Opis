@@ -31,7 +31,7 @@ public class Packet_DataList extends Packet_DataAbstract{
 		
 		try{
 			this.header   = istream.readByte();
-			this.dataReq  = Message.values()[istream.readInt()];
+			this.msg  = Message.values()[istream.readInt()];
 			int ndata     = istream.readInt();
 			String datatype = "";
 			if (ndata > 0)
@@ -43,7 +43,7 @@ public class Packet_DataList extends Packet_DataAbstract{
 	}
 
 	//public static Packet250Metadata create(DataReq dataReq, ArrayList<? extends ISerializable> stats){
-	public static Packet_DataList create(Message dataReq, ArrayList<? extends ISerializable> stats){
+	public static Packet_DataList create(Message msg, ArrayList<? extends ISerializable> data){
 		//Packet250Metadata packet      = new Packet250Metadata();
 		Packet250CustomPayload packet = new Packet250CustomPayload();
 		ByteArrayOutputStream bos     = new ByteArrayOutputStream(1);
@@ -51,14 +51,14 @@ public class Packet_DataList extends Packet_DataAbstract{
 
 		try{
 			ostream.writeByte(Packets.DATA_LIST_GENERAL);
-			ostream.writeInt(dataReq.ordinal());
-			ostream.writeInt(stats.size());
+			ostream.writeInt(msg.ordinal());
+			ostream.writeInt(data.size());
 			
-			if (stats.size() > 0)
-				Packet.writeString(stats.get(0).getClass().getCanonicalName(), ostream);
+			if (data.size() > 0)
+				Packet.writeString(data.get(0).getClass().getCanonicalName(), ostream);
 				
-			for (ISerializable data : stats)
-				data.writeToStream(ostream);
+			for (ISerializable odata : data)
+				odata.writeToStream(ostream);
 		}catch(IOException e){}
 		
 		//packet.dataReq  = dataReq;
@@ -69,7 +69,7 @@ public class Packet_DataList extends Packet_DataAbstract{
 		packet.length  = bos.size();		
 		
 		Packet_DataList capsule = new Packet_DataList();
-		capsule.dataReq = dataReq;
+		capsule.msg = msg;
 		capsule.header  = Packets.DATA_VALUE_GENERAL;
 		capsule.packet  = packet;
 		

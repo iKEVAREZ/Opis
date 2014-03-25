@@ -5,11 +5,10 @@ import javax.swing.JLabel;
 
 import cpw.mods.fml.common.network.Player;
 import mcp.mobius.opis.events.PlayerTracker;
-import mcp.mobius.opis.network.MessageHandler;
+import mcp.mobius.opis.network.ServerMessageHandler;
 import mcp.mobius.opis.network.OpisPacketHandler;
-import mcp.mobius.opis.network.enums.ClientCommand;
 import mcp.mobius.opis.network.enums.Message;
-import mcp.mobius.opis.network.packets.server.Packet_ClientCommand;
+import mcp.mobius.opis.network.packets.server.Packet_DataCommand;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
@@ -41,7 +40,7 @@ public class CommandOpis extends CommandBase {
 		}
 		
 		PlayerTracker.instance().playersSwing.add((Player)icommandsender);
-		((EntityPlayerMP)icommandsender).playerNetServerHandler.sendPacketToPlayer(Packet_ClientCommand.create(ClientCommand.SHOW_SWING));
+		((EntityPlayerMP)icommandsender).playerNetServerHandler.sendPacketToPlayer(Packet_DataCommand.create(Message.CLIENT_SHOW_SWING));
 		OpisPacketHandler.sendFullUpdate((Player)icommandsender);
 	}
 	

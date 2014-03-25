@@ -24,7 +24,7 @@ public class Packet_DataValue extends Packet_DataAbstract{
 		
 		try{
 			this.header   = istream.readByte();
-			this.dataReq  = Message.values()[istream.readInt()];
+			this.msg  = Message.values()[istream.readInt()];
 			String datatype = "";
 			datatype = Packet.readString(istream, 255);
 			data = dataRead(datatype, istream);
@@ -55,7 +55,7 @@ public class Packet_DataValue extends Packet_DataAbstract{
 		packet.length  = bos.size();		
 		
 		Packet_DataValue capsule = new Packet_DataValue();
-		capsule.dataReq = dataReq;
+		capsule.msg = dataReq;
 		capsule.header  = Packets.DATA_VALUE_GENERAL;
 		capsule.packet  = packet;
 		
