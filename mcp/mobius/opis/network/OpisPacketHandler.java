@@ -176,8 +176,10 @@ public class OpisPacketHandler implements IPacketHandler {
 	}        
 	
 	public static void validateAndSend(Packet_DataAbstract capsule, Player player){
-		if (capsule.msg.canPlayerUseCommand(player))
+		if (capsule.msg.canPlayerUseCommand(player) && capsule.packet.getPacketSize() < 32000)
 			PacketDispatcher.sendPacketToPlayer(capsule.packet, player);
+		else if (capsule.packet.getPacketSize() > 32000)
+			modOpis.log.warning(String.format("Data packet size of type %s too big : %d ! Dropping !", capsule.msg, capsule.packet.getPacketSize()));
 	}
 
 	public static void sendPacketToAllSwing(Packet_DataAbstract capsule){
@@ -204,8 +206,8 @@ public class OpisPacketHandler implements IPacketHandler {
 		SerialDouble totalTimeTE      = new SerialDouble(TileEntityManager.getTotalUpdateTime());
 		SerialDouble totalTimeEnt     = new SerialDouble(EntityManager.getTotalUpdateTime());
 		SerialDouble totalTimeHandler = new SerialDouble(TickHandlerManager.getTotalUpdateTime());
-		SerialDouble totalWorldTick   = new SerialDouble(GlobalTimingManager.getTotalWorldTickStats());
-		SerialDouble totalEntUpdate   = new SerialDouble(GlobalTimingManager.getTotalEntUpdateStats());
+		SerialDouble totalWorldTick   = new SerialDouble(GlobalTimingManager.getTotalStats(GlobalTimingManager.worldTickStats));
+		SerialDouble totalEntUpdate   = new SerialDouble(GlobalTimingManager.getTotalStats(GlobalTimingManager.entUpdateStats));
 
 		OpisPacketHandler.validateAndSend(Packet_DataList.create(Message.LIST_TIMING_HANDLERS,    timingHandlers),   player);
 		OpisPacketHandler.validateAndSend(Packet_DataList.create(Message.LIST_TIMING_ENTITIES,    timingEntities),   player);

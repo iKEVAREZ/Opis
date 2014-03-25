@@ -11,6 +11,7 @@ import net.minecraft.world.ChunkCoordIntPair;
 public final class CoordinatesChunk implements ISerializable {
 	public final int dim, x, y, z;
 	public final int chunkX, chunkZ;
+	public final byte metadata;
 	//public boolean isChunk;
 	
 	public CoordinatesChunk(CoordinatesBlock coord){
@@ -21,6 +22,8 @@ public final class CoordinatesChunk implements ISerializable {
 		this.x = chunkX << 4; 
 		this.y = 0; 
 		this.z = chunkZ << 4;
+		
+		this.metadata = 0;		
 	}
 	
 	public CoordinatesChunk(int dim, int chunkX, int chunkZ){
@@ -30,8 +33,22 @@ public final class CoordinatesChunk implements ISerializable {
 		
 		this.x = chunkX << 4; 
 		this.y = 0; 
-		this.z = chunkZ << 4;		
+		this.z = chunkZ << 4;
+		
+		this.metadata = 0;		
 	}
+	
+	public CoordinatesChunk(int dim, int chunkX, int chunkZ, byte metadata){
+		this.dim = dim;
+		this.chunkX = chunkX;
+		this.chunkZ = chunkZ;
+		
+		this.x = chunkX << 4; 
+		this.y = 0; 
+		this.z = chunkZ << 4;		
+		
+		this.metadata = metadata;
+	}	
 	
 	public CoordinatesChunk(TileEntity te){
 		this.dim = te.getWorldObj().provider.dimensionId;
@@ -40,7 +57,9 @@ public final class CoordinatesChunk implements ISerializable {
 		
 		this.x = this.chunkX << 4; 
 		this.y = 0; 
-		this.z = this.chunkZ << 4;		
+		this.z = this.chunkZ << 4;
+		
+		this.metadata = 0;
 	}	
 	
 	public String toString(){
@@ -72,10 +91,11 @@ public final class CoordinatesChunk implements ISerializable {
 	public void writeToStream(DataOutputStream stream) throws IOException {
 		stream.writeInt(this.dim);
 		stream.writeInt(this.chunkX);
-		stream.writeInt(this.chunkZ);		
+		stream.writeInt(this.chunkZ);
+		stream.writeByte(this.metadata);
 	}
 
 	public static CoordinatesChunk readFromStream(DataInputStream stream) throws IOException {
-		return new CoordinatesChunk(stream.readInt(), stream.readInt(), stream.readInt());
+		return new CoordinatesChunk(stream.readInt(), stream.readInt(), stream.readInt(), stream.readByte());
 	}	
 }

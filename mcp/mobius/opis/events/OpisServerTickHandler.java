@@ -114,13 +114,24 @@ public class OpisServerTickHandler implements ITickHandler {
 				modOpis.profilerRun = false;
 				ProfilerRegistrar.turnOff();				
 				
-				// Here we should send a full update to all the clients registered
-				
 				OpisPacketHandler.sendPacketToAllSwing(Packet_DataValue.create(Message.STATUS_STOP, new SerialInt(modOpis.profilerMaxTicks)));
 				
 				for (Player player : PlayerTracker.instance().playersSwing){
 					OpisPacketHandler.sendFullUpdate(player);
 				}
+				
+				System.out.printf("worldUpdatesStats : %s µs\n", GlobalTimingManager.getTotalStats(GlobalTimingManager.worldUpdatesStats));
+				System.out.printf("worldBlocksAndAmbianceStats : %s µs\n", GlobalTimingManager.getTotalStats(GlobalTimingManager.worldBlocksAndAmbianceStats));
+				System.out.printf("worldPlayerInstancesStats : %s µs\n", GlobalTimingManager.getTotalStats(GlobalTimingManager.worldPlayerInstancesStats));
+				System.out.printf("worldVillageCollectionStats : %s µs\n", GlobalTimingManager.getTotalStats(GlobalTimingManager.worldVillageCollectionStats));
+				System.out.printf("worldVillageSiegeStats : %s µs\n", GlobalTimingManager.getTotalStats(GlobalTimingManager.worldVillageSiegeStats));
+				System.out.printf("worldApplyBlockEventsStats : %s µs\n", GlobalTimingManager.getTotalStats(GlobalTimingManager.worldApplyBlockEventsStats));				
+				
+				
+				
+				
+				
+				
 			}			
 		}
 	}

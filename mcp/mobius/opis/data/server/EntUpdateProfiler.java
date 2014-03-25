@@ -18,7 +18,7 @@ public class EntUpdateProfiler extends AbstractProfiler implements	IProfilerEntU
 	@Override
 	public void EntUpdateEnd(int id) {
 		this.clock.stop();
-		GlobalTimingManager.addEntUpdateStat(id, this.clock.timeDelta);
+		GlobalTimingManager.addStat(id, this.clock.timeDelta, GlobalTimingManager.entUpdateStats);
 	}
 
 }
