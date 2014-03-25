@@ -16,6 +16,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import cpw.mods.fml.common.network.PacketDispatcher;
@@ -63,6 +64,12 @@ public class PanelTimingHandlers extends JPanel implements ActionListener{
 		
 		lblSummary = new JLabel("TmpText");
 		add(lblSummary, "cell 0 2 2 1,alignx center");
+		
+		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		centerRenderer.setHorizontalAlignment( JLabel.CENTER );		
+		
+		for (int i = 0; i < table.getColumnCount(); i++)
+			table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);			
 
 	}
 

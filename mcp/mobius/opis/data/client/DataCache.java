@@ -131,19 +131,19 @@ public class DataCache {
 	public void setTimingHandlersTotal(double value){
 		this.timingHandlersTotal = value;
 		SwingUI.instance().getLblSummaryTimingHandlers().setText(String.format("%.3f", value/1000.));
-		SwingUI.instance().getLblTimingHandlerValue().setText(String.format("Total update time : %.3f µs", value));
+		SwingUI.instance().getPanelTimingHandlers().getLblSummary().setText(String.format("Total update time : %.3f µs", value));
 		SwingUI.instance().getLblSummaryTimingTotal().setText(String.format("%.3f",this.getProfiledTickTotalTime()));
 	}
 	public void setTimingEntitiesTotal(double value){
 		this.timingEntitiesTotal = value;
 		SwingUI.instance().getLblSummaryTimingEntities().setText(String.format("%.3f", value/1000.));
-		SwingUI.instance().getLblTimingEntValue().setText(String.format("Total update time : %.3f µs", value));
+		SwingUI.instance().getPanelTimingEntities().getLblSummary().setText(String.format("Total update time : %.3f µs", value));
 		SwingUI.instance().getLblSummaryTimingTotal().setText(String.format("%.3f",this.getProfiledTickTotalTime()));		
 	}
 	public void setTimingTileEntsTotal(double value){
 		this.timingTileEntsTotal = value;
 		SwingUI.instance().getLblSummaryTimingTileEnts().setText(String.format("%.3f", value/1000.));
-		SwingUI.instance().getLblTimingTEValue().setText(String.format("Total update time : %.3f µs", value));
+		SwingUI.instance().getPanelTimingTileEnts().getLblSummary().setText(String.format("Total update time : %.3f µs", value));
 		SwingUI.instance().getLblSummaryTimingTotal().setText(String.format("%.3f",this.getProfiledTickTotalTime()));		
 	}	
 
@@ -237,7 +237,7 @@ public class DataCache {
 	}
 	
 	public void setTimingHandlers(ArrayList<ISerializable> timingHandlers_){
-		JTable table            = SwingUI.instance().getTableTimingHandler();
+		JTable table            = SwingUI.instance().getPanelTimingHandlers().getTable();
 		DefaultTableModel model = (DefaultTableModel)table.getModel();
 		int               row   = this.updateData(table, model, this.timingHandlers, timingHandlers_, StatsTickHandler.class);	
 		
@@ -249,7 +249,7 @@ public class DataCache {
 	}
 	
 	public void setTimingEntities(ArrayList<ISerializable> timingEntities_){
-		JTable table            = SwingUI.instance().getTableTimingEnt();
+		JTable table            = SwingUI.instance().getPanelTimingEntities().getTable();
 		DefaultTableModel model = (DefaultTableModel)table.getModel();
 		int               row   = this.updateData(table, model, this.timingEntities, timingEntities_, StatsEntity.class);	
 		
@@ -267,7 +267,7 @@ public class DataCache {
 	}
 	
 	public void setTimingTileEnts(ArrayList<ISerializable> timingTileEnts_){
-		JTable table            = SwingUI.instance().getTableTimingTE();
+		JTable table            = SwingUI.instance().getPanelTimingTileEnts().getTable();
 		DefaultTableModel model = (DefaultTableModel)table.getModel();
 		int               row   = this.updateData(table, model, this.timingTileEnts, timingTileEnts_, StatsTileEntity.class);	
 		

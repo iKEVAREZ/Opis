@@ -84,24 +84,6 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 	private JCheckBox chkBoxDisplayAll;
 	private JButtonAccess btnRefreshEntityAmount;
 
-	private JPanel panelTimingTE;
-	private JPanel panelTimingEnt;
-	private JPanel panelTimingHandler;
-	private JScrollPane scrollPaneTimingEnt;
-	private JTable tableTimingEnt;
-	private JScrollPane scrollPaneTimingHandler;
-	private JTable tableTimingHandler;
-	private JTable tableTimingTE;
-	private JButtonAccess btnTimingTECenterMap;
-	private JButtonAccess btnTimingTETeleport;
-	private JButtonAccess btnTimingEntTeleport;
-	private JButtonAccess btnTimingEntCenterMap;
-	private JButtonAccess btnTimingEntRefresh;
-	private JButtonAccess btnTimingTERefresh;
-	private JButtonAccess btnTimingHandlerRefresh;
-	private JLabel lblTimingTEValue;
-	private JLabel lblTimingEntValue;
-	private JLabel lblTimingHandlerValue;
 	private JPanel panelSummary;
 	private JLabel lblSummary_3;
 	private JLabel lblSummary_4;
@@ -121,7 +103,6 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 	private JLabel lblSummary_1;
 	private JLabel label;
 	private JButtonAccess btnSummaryRefresh;
-	private JButtonAccess btnTimingEntPull;
 	private JButtonAccess btnAmountKillAll;
 	private JLabel lblSummary_11;
 	private JLabel lblSummary_12;
@@ -152,8 +133,11 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 	private JLabel lblSummary_17;
 	private JLabel lblSummaryForcedChunks;
 	private JLabel lblSummaryLoadedChunk;
-	
-	private PanelTimingChunks panelTimingChunks;
+
+	private PanelTimingTileEnts panelTimingTileEnts;
+	private PanelTimingEntities panelTimingEntities;
+	private PanelTimingHandlers panelTimingHandlers;	
+	private PanelTimingChunks   panelTimingChunks;
 	
 	public void showUI(){
 		EventQueue.invokeLater(new Runnable() {
@@ -597,142 +581,17 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 		labelAmountValue.setHorizontalAlignment(SwingConstants.CENTER);
 		panelEntityAmount.add(labelAmountValue, "cell 3 2,grow");
 		
-		panelTimingTE = new JPanel();
-		tabbedPane.addTab("TileEntity Timing", null, panelTimingTE, null);
-		
-		btnTimingTECenterMap = new JButtonAccess("Center Map");
-		btnTimingTECenterMap.addActionListener(this);
-		panelTimingTE.setLayout(new MigLayout("", "[left][left][][233px,grow][right]", "[][334px,grow][]"));
-		panelTimingTE.add(btnTimingTECenterMap, "cell 0 0,alignx center,aligny center");
-		
-		btnTimingTETeleport = new JButtonAccess("Teleport", AccessLevel.PRIVILEGED);
-		btnTimingTETeleport.addActionListener(this);
-		panelTimingTE.add(btnTimingTETeleport, "cell 1 0,alignx center,aligny center");
-		
-		btnTimingTERefresh = new JButtonAccess("Run Opis", AccessLevel.PRIVILEGED);
-		btnTimingTERefresh.addActionListener(this);
-		
-		btnTimingTERemoveHighlight = new JButton("Reset Highlight");
-		btnTimingTERemoveHighlight.setEnabled(false);
-		panelTimingTE.add(btnTimingTERemoveHighlight, "cell 2 0,alignx left");
-		panelTimingTE.add(btnTimingTERefresh, "cell 4 0,alignx right,aligny center");
-		btnTimingTERemoveHighlight.addActionListener(this);
-		
-		JScrollPane scrollPaneTimingTE = new JScrollPane();
-		panelTimingTE.add(scrollPaneTimingTE, "cell 0 1 5 1,grow");
-		
-		tableTimingTE = new JTable();
-		tableTimingTE.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		tableTimingTE.setModel(new DefaultTableModel(
-			new Object[][] {
-			},
-			new String[] {
-				"Type", "Mod", "Dim", "Pos", "Update Time"
-			}
-		) {
-			Class[] columnTypes = new Class[] {
-				String.class, String.class, Integer.class, Object.class, StatAbstract.class
-			};
-			boolean[] columnEditables = new boolean[] {
-					false, false, false, false, false
-			};			
-			public Class getColumnClass(int columnIndex) {
-				return columnTypes[columnIndex];
-			}
-		});
-		tableTimingTE.setAutoCreateRowSorter(true);
-		//tableTimingTE.getSelectionModel().addListSelectionListener(this);		
-		scrollPaneTimingTE.setViewportView(tableTimingTE);
-		
-		lblTimingTEValue = new JLabel("Total update time : 0 µs");
-		panelTimingTE.add(lblTimingTEValue, "cell 0 2 5 1,alignx center,aligny center");
-		
-		panelTimingEnt = new JPanel();
-		tabbedPane.addTab("EntityTiming", null, panelTimingEnt, null);
-		
-		btnTimingEntCenterMap = new JButtonAccess("Center Map");
-		btnTimingEntCenterMap.addActionListener(this);
-		panelTimingEnt.setLayout(new MigLayout("", "[left][left][left][grow][right]", "[][334px,grow][]"));
-		panelTimingEnt.add(btnTimingEntCenterMap, "cell 0 0,alignx center,aligny center");
-		
-		btnTimingEntTeleport = new JButtonAccess("Teleport", AccessLevel.PRIVILEGED);
-		btnTimingEntTeleport.addActionListener(this);
-		panelTimingEnt.add(btnTimingEntTeleport, "cell 1 0,alignx center,aligny center");
-		
-		btnTimingEntRefresh = new JButtonAccess("Run Opis", AccessLevel.PRIVILEGED);
-		btnTimingEntRefresh.addActionListener(this);
-		panelTimingEnt.add(btnTimingEntRefresh, "cell 4 0,alignx right,aligny center");
-		
-		btnTimingEntPull = new JButtonAccess("Pull", AccessLevel.PRIVILEGED);
-		btnTimingEntPull.addActionListener(this);		
-		panelTimingEnt.add(btnTimingEntPull, "cell 2 0,alignx center,aligny center");
-		
-		scrollPaneTimingEnt = new JScrollPane();
-		panelTimingEnt.add(scrollPaneTimingEnt, "cell 0 1 5 1,grow");
-		
-		tableTimingEnt = new JTable();
-		tableTimingEnt.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		tableTimingEnt.setModel(new DefaultTableModel(
-			new Object[][] {
-			},
-			new String[] {
-				"Type", "ID", "Dim", "Pos", "Update Time", "Data"
-			}
-		) {
-			Class[] columnTypes = new Class[] {
-				String.class, Integer.class, Integer.class, Object.class, StatAbstract.class, Integer.class
-			};
-			boolean[] columnEditables = new boolean[] {
-					false, false, false, false, false, false
-			};			
-			public Class getColumnClass(int columnIndex) {
-				return columnTypes[columnIndex];
-			}
-		});
-		tableTimingEnt.setAutoCreateRowSorter(true);
-		scrollPaneTimingEnt.setViewportView(tableTimingEnt);
-		
-		lblTimingEntValue = new JLabel("Total update time : 0 µs");
-		panelTimingEnt.add(lblTimingEntValue, "cell 0 2 5 1,alignx center,aligny center");
-		
-		panelTimingHandler = new JPanel();
-		tabbedPane.addTab("Handlers Timing", null, panelTimingHandler, null);
-		
-		btnTimingHandlerRefresh = new JButtonAccess("Run Opis", AccessLevel.PRIVILEGED);
-		btnTimingHandlerRefresh.addActionListener(this);
-		panelTimingHandler.setLayout(new MigLayout("", "[495px,grow][]", "[][339px,grow][]"));
-		panelTimingHandler.add(btnTimingHandlerRefresh, "cell 1 0,alignx right,aligny center");
-		
-		scrollPaneTimingHandler = new JScrollPane();
-		panelTimingHandler.add(scrollPaneTimingHandler, "cell 0 1 2 1,grow");
-		
-		tableTimingHandler = new JTable();
-		tableTimingHandler.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		tableTimingHandler.setModel(new DefaultTableModel(
-			new Object[][] {
-			},
-			new String[] {
-				"Name", "Update Time"
-			}
-		) {
-			Class[] columnTypes = new Class[] {
-				String.class, StatAbstract.class
-			};
-			boolean[] columnEditables = new boolean[] {
-					false, false
-			};			
-			public Class getColumnClass(int columnIndex) {
-				return columnTypes[columnIndex];
-			}
-		});
-		tableTimingHandler.setAutoCreateRowSorter(true);
-		scrollPaneTimingHandler.setViewportView(tableTimingHandler);
-		
-		lblTimingHandlerValue = new JLabel("Total update time : 0 µs");
-		panelTimingHandler.add(lblTimingHandlerValue, "cell 0 2 2 1,alignx center,aligny center");
-		
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 		centerRenderer.setHorizontalAlignment( JLabel.CENTER );
+
+		panelTimingTileEnts = new PanelTimingTileEnts();
+		tabbedPane.addTab("TileEntities timing", null, panelTimingTileEnts, null);		
+		
+		panelTimingEntities = new PanelTimingEntities();
+		tabbedPane.addTab("Entities timing", null, panelTimingEntities, null);		
+		
+		panelTimingHandlers = new PanelTimingHandlers();
+		tabbedPane.addTab("Handlers timing", null, panelTimingHandlers, null);		
 		
 		panelTimingChunks = new PanelTimingChunks();
 		tabbedPane.addTab("Chunks timing", null, panelTimingChunks, null);		
@@ -742,15 +601,6 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 		for (int i = 0; i < tableEntityList.getColumnCount(); i++)
 			tableEntityList.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
 
-		for (int i = 0; i < tableTimingTE.getColumnCount(); i++)
-			tableTimingTE.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
-		
-		for (int i = 0; i < tableTimingEnt.getColumnCount(); i++)
-			tableTimingEnt.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
-		
-		for (int i = 0; i < tableTimingHandler.getColumnCount(); i++)
-			tableTimingHandler.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
-		
 		for (int i = 0; i < tablePlayers.getColumnCount(); i++)
 			tablePlayers.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);		
 	}
@@ -758,27 +608,9 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 	public JTable getTableEntityList() {
 		return tableEntityList;
 	}
-	public JTable getTableTimingTE() {
-		return tableTimingTE;
-	}
-	public JTable getTableTimingEnt() {
-		return tableTimingEnt;
-	}
-	public JTable getTableTimingHandler() {
-		return tableTimingHandler;
-	}
 	
 	public JLabel getLabelAmountValue() {
 		return labelAmountValue;
-	}
-	public JLabel getLblTimingHandlerValue() {
-		return lblTimingHandlerValue;
-	}
-	public JLabel getLblTimingEntValue() {
-		return lblTimingEntValue;
-	}
-	public JLabel getLblTimingTEValue() {
-		return lblTimingTEValue;
 	}
 	public JLabel getLblSummaryTimingTileEnts() {
 		return lblSummaryTimingTileEnts;
@@ -820,15 +652,6 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 	public JButton getBtnSummaryRefresh() {
 		return btnSummaryRefresh;
 	}
-	public JButton getBtnTimingTERefresh() {
-		return btnTimingTERefresh;
-	}
-	public JButton getBtnTimingEntRefresh() {
-		return btnTimingEntRefresh;
-	}
-	public JButton getBtnTimingHandlerRefresh() {
-		return btnTimingHandlerRefresh;
-	}
 	
 	//public JLabel getLblSummaryTimingGlobalUpdate() {
 	//	return lblSummaryTimingGlobalUpdate;
@@ -843,6 +666,7 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 		}
 
 		// CENTER Button on the TimingTE Screen
+		/*
 		else if ((e.getSource() == this.btnTimingTECenterMap) && (this.tableTimingTE.getSelectedRow() != -1)){
 			int indexData = tableTimingTE.convertRowIndexToModel(tableTimingTE.getSelectedRow());
 			StatsTileEntity data = DataCache.instance().getTimingTileEnts().get(indexData);
@@ -852,8 +676,10 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 			MwAPI.setCurrentDataProvider(OverlayMeanTime.instance());
 			Minecraft.getMinecraft().displayGuiScreen(new MwGui(Mw.instance, coord.dim, coord.x, coord.z));			
 		}
-
+		*/
+		
 		// TELEPORT Button on the TimingTE Screen
+		/*
 		else if ((e.getSource() == this.btnTimingTETeleport) && (this.tableTimingTE.getSelectedRow() != -1)){		
 			int indexData = tableTimingTE.convertRowIndexToModel(tableTimingTE.getSelectedRow());	
 			StatsTileEntity data = DataCache.instance().getTimingTileEnts().get(indexData);
@@ -863,8 +689,10 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.COMMAND_TELEPORT_BLOCK, coord));
 			Minecraft.getMinecraft().setIngameFocus();			
 		}
+		*/
 
 		// CENTER Button on the TimingEnts Screen
+		/*
 		else if ((e.getSource() == this.btnTimingEntCenterMap) && (this.tableTimingEnt.getSelectedRow() != -1)){
 			int indexData = tableTimingEnt.convertRowIndexToModel(tableTimingEnt.getSelectedRow());
 			StatsEntity data = DataCache.instance().getTimingEntities().get(indexData);
@@ -876,8 +704,10 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 			OverlayEntityPerChunk.instance().selectedChunk = coord.asCoordinatesChunk();
 			Minecraft.getMinecraft().displayGuiScreen(new MwGui(Mw.instance, coord.dim, coord.x, coord.z));			
 		}
-
+		*/
+		
 		// TELEPORT Button on the TimingEnts Screen
+		/*
 		else if ((e.getSource() == this.btnTimingEntTeleport) && (this.tableTimingEnt.getSelectedRow() != -1)){		
 			int indexData = tableTimingEnt.convertRowIndexToModel(tableTimingEnt.getSelectedRow());	
 			StatsEntity data = DataCache.instance().getTimingEntities().get(indexData);
@@ -887,8 +717,10 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.COMMAND_TELEPORT_TO_ENTITY, new TargetEntity(eid, dim)));
 			Minecraft.getMinecraft().setIngameFocus();			
 		}
+		*/
 		
 		// PULL Button on the TimingEnts Screen
+		/*
 		else if ((e.getSource() == this.btnTimingEntPull) && (this.tableTimingEnt.getSelectedRow() != -1)){		
 			int indexData = tableTimingEnt.convertRowIndexToModel(tableTimingEnt.getSelectedRow());	
 			StatsEntity data = DataCache.instance().getTimingEntities().get(indexData);
@@ -897,7 +729,8 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 			int dim = data.getCoordinates().dim;
 			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.COMMAND_TELEPORT_PULL_ENTITY, new TargetEntity(eid, dim)));
 		}		
-
+		*/
+		
 		// RUN OPIS Button
 		/*
 		else if ((e.getSource() == this.btnTimingTERefresh) || (e.getSource() == btnTimingEntRefresh) || (e.getSource() == btnTimingHandlerRefresh) || (e.getSource() == btnTimingChunkRefresh) || (e.getSource() == btnSummaryRefresh)){
@@ -1038,5 +871,14 @@ public class SwingUI extends JFrame implements  ActionListener, ItemListener, Wi
 	}
 	public PanelTimingChunks getPanelTimingChunks() {
 		return panelTimingChunks;
+	}
+	public PanelTimingHandlers getPanelTimingHandlers() {
+		return panelTimingHandlers;
+	}
+	public PanelTimingEntities getPanelTimingEntities() {
+		return panelTimingEntities;
+	}
+	public PanelTimingTileEnts getPanelTimingTileEnts() {
+		return panelTimingTileEnts;
 	}
 }

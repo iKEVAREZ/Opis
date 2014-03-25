@@ -143,10 +143,10 @@ public class ClientMessageHandler {
 		     
 		else if (msg == Message.STATUS_START){
 			SwingUI.instance().getPanelTimingChunks().getBtnRun().setText("Running...");
+			SwingUI.instance().getPanelTimingHandlers().getBtnRun().setText("Running...");
+			SwingUI.instance().getPanelTimingEntities().getBtnRun().setText("Running...");
+			SwingUI.instance().getPanelTimingTileEnts().getBtnRun().setText("Running...");
 			SwingUI.instance().getBtnSummaryRefresh().setText("Running...");
-			SwingUI.instance().getBtnTimingEntRefresh().setText("Running...");
-			SwingUI.instance().getBtnTimingHandlerRefresh().setText("Running...");
-			SwingUI.instance().getBtnTimingTERefresh().setText("Running...");
 			
 			SwingUI.instance().getProgBarSummaryOpis().setValue(0);
 			SwingUI.instance().getProgBarSummaryOpis().setMinimum(0);
@@ -155,10 +155,10 @@ public class ClientMessageHandler {
 		     
 		else if (msg == Message.STATUS_STOP){
 			SwingUI.instance().getPanelTimingChunks().getBtnRun().setText("Run Opis");
+			SwingUI.instance().getPanelTimingHandlers().getBtnRun().setText("Run Opis");
+			SwingUI.instance().getPanelTimingEntities().getBtnRun().setText("Run Opis");
+			SwingUI.instance().getPanelTimingTileEnts().getBtnRun().setText("Run Opis");
 			SwingUI.instance().getBtnSummaryRefresh().setText("Run Opis");
-			SwingUI.instance().getBtnTimingEntRefresh().setText("Run Opis");
-			SwingUI.instance().getBtnTimingHandlerRefresh().setText("Run Opis");
-			SwingUI.instance().getBtnTimingTERefresh().setText("Run Opis");
 			
 			SwingUI.instance().getProgBarSummaryOpis().setValue(((SerialInt)data).value);
 			SwingUI.instance().getProgBarSummaryOpis().setMinimum(0);
@@ -171,10 +171,10 @@ public class ClientMessageHandler {
 		     
 		else if (msg == Message.STATUS_RUNNING){
 			SwingUI.instance().getPanelTimingChunks().getBtnRun().setText("Running...");
-			SwingUI.instance().getBtnSummaryRefresh().setText("Running...");
-			SwingUI.instance().getBtnTimingEntRefresh().setText("Running...");
-			SwingUI.instance().getBtnTimingHandlerRefresh().setText("Running...");
-			SwingUI.instance().getBtnTimingTERefresh().setText("Running...");				
+			SwingUI.instance().getPanelTimingHandlers().getBtnRun().setText("Running...");
+			SwingUI.instance().getPanelTimingEntities().getBtnRun().setText("Running...");
+			SwingUI.instance().getPanelTimingTileEnts().getBtnRun().setText("Running...");
+			SwingUI.instance().getBtnSummaryRefresh().setText("Running...");				
 			
 			SwingUI.instance().getProgBarSummaryOpis().setMaximum(((SerialInt)data).value);
 		}			     
