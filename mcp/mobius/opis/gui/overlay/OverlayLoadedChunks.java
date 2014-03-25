@@ -121,8 +121,10 @@ public class OverlayLoadedChunks implements IMwDataProvider {
 	@Override
 	public ArrayList<IMwChunkOverlay> getChunksOverlay(int dim, double centerX,	double centerZ, double minX, double minZ, double maxX, double maxZ) {
 		ArrayList<IMwChunkOverlay> overlays = new ArrayList<IMwChunkOverlay>();
-		for (ChunkCoordIntPair chunk : ChunkManager.chunksLoad.keySet())
-			overlays.add(new ChunkOverlay(chunk.chunkXPos, chunk.chunkZPos, ChunkManager.chunksLoad.get(chunk)));
+		
+		for (CoordinatesChunk chunk : ChunkManager.getLoadedChunks()){
+			overlays.add(new ChunkOverlay(chunk.chunkX, chunk.chunkZ, chunk.metadata == 0 ? false : true));
+		}
 		return overlays;
 	}
 
@@ -130,16 +132,16 @@ public class OverlayLoadedChunks implements IMwDataProvider {
 	public String getStatusString(int dim, int bX, int bY, int bZ) {
 		int xChunk = bX >> 4;
 		int zChunk = bZ >> 4;
-		ChunkCoordIntPair chunkCoord = new ChunkCoordIntPair(xChunk, zChunk);
 		
-		if (ChunkManager.chunksLoad.containsKey(chunkCoord)){
-			if (ChunkManager.chunksLoad.get(chunkCoord))
-				return ", Force loaded";
-			else
-				return ", Player loaded";
-		}
-		else
-			return ", Not loaded";
+		for (CoordinatesChunk chunk : ChunkManager.getLoadedChunks()){
+			if (chunk.chunkX == xChunk && chunk.chunkZ == zChunk && chunk.metadata == 0)
+				return ", Game loaded";
+			
+			else if (chunk.chunkX == xChunk && chunk.chunkZ == zChunk && chunk.metadata == 1)
+				return ", Force loaded";			
+		}		
+		
+		return "";
 	}
 
 	@Override

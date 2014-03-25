@@ -26,13 +26,24 @@ public class ChunkManager {
 	
 
 	
-	public  static HashMap<ChunkCoordIntPair, Boolean>       chunksLoad = new HashMap<ChunkCoordIntPair, Boolean>();
+	private static ArrayList<CoordinatesChunk>  chunksLoad = new ArrayList<CoordinatesChunk>();
 	private static HashMap<CoordinatesChunk, StatsChunk>  chunkMeanTime = new HashMap<CoordinatesChunk, StatsChunk>();
 	public  static ArrayList<TicketData> tickets = new ArrayList<TicketData>();
 
-	public static void setChunkMeanTime(ArrayList<ISerializable> stats){
+	public static void setLoadedChunks(ArrayList<ISerializable> data){
+		chunksLoad.clear();
+		for (ISerializable chunk : data){
+			chunksLoad.add((CoordinatesChunk)chunk);
+		}
+	}
+	
+	public static ArrayList<CoordinatesChunk> getLoadedChunks(){
+		return chunksLoad;
+	}	
+	
+	public static void setChunkMeanTime(ArrayList<ISerializable> data){
 		chunkMeanTime.clear();
-		for (ISerializable stat : stats)
+		for (ISerializable stat : data)
 			chunkMeanTime.put(((StatsChunk)stat).getChunk(), (StatsChunk)stat);
 	}
 	
@@ -40,38 +51,22 @@ public class ChunkManager {
 		return chunkMeanTime;
 	}
 	
-	public static HashMap<Integer, HashMap<ChunkCoordIntPair, Boolean>> getAllLoadedChunks(){
-		HashMap<Integer, HashMap<ChunkCoordIntPair, Boolean>> chunkStatus = new HashMap<Integer, HashMap<ChunkCoordIntPair, Boolean>>();
-		for (int dim : DimensionManager.getIDs()){
-			chunkStatus.put(dim, ChunkManager.getLoadedChunks(dim));
-		}
-		
-		return chunkStatus;
-	}
-	
-	public static HashMap<ChunkCoordIntPair, Boolean> getLoadedChunks(int dimension){
-		HashMap<ChunkCoordIntPair, Boolean> chunkStatus = new HashMap<ChunkCoordIntPair, Boolean>();
+	public static ArrayList<CoordinatesChunk> getLoadedChunks(int dimension){
+		HashSet<CoordinatesChunk> chunkStatus = new HashSet<CoordinatesChunk>();
 		WorldServer world = DimensionManager.getWorld(dimension);
 		if (world != null)
 		{
-			Set<ChunkCoordIntPair> persistantChunks = world.getPersistentChunks().keySet();
-			Set<ChunkCoordIntPair> chunks = (Set<ChunkCoordIntPair>)world.activeChunkSet;
-			HashSet<ChunkCoordIntPair> provider = new HashSet<ChunkCoordIntPair>();
+			for (ChunkCoordIntPair coord : world.getPersistentChunks().keySet())
+				chunkStatus.add(new CoordinatesChunk(dimension, coord, (byte)1));
 			
-			List loadedChunks = ((ChunkProviderServer)world.getChunkProvider()).loadedChunks;
-			
-			for (ChunkCoordIntPair chunk : chunks){
-				chunkStatus.put(chunk, persistantChunks.contains(chunk));
-			}
-			
-			for (Object o : loadedChunks){
+			for (Object o : ((ChunkProviderServer)world.getChunkProvider()).loadedChunks){
 				Chunk chunk = (Chunk)o;
-				if(!chunkStatus.containsKey(chunk.getChunkCoordIntPair()))
-					chunkStatus.put(chunk.getChunkCoordIntPair(), false);
-			}
+				
+				chunkStatus.add(new CoordinatesChunk(dimension, chunk.getChunkCoordIntPair(), (byte)0));
+			}			
 		}
 		
-		return chunkStatus;
+		return new ArrayList<CoordinatesChunk>(chunkStatus);
 	}
 
 	public static HashSet<TicketData> getTickets(){

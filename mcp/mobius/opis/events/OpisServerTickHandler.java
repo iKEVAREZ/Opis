@@ -32,7 +32,6 @@ import mcp.mobius.opis.network.OpisPacketHandler;
 import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.packets.server.Packet_DataList;
 import mcp.mobius.opis.network.packets.server.Packet_DataValue;
-import mcp.mobius.opis.network.packets.server.Packet_LoadedChunks;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.TickType;
 import cpw.mods.fml.common.network.PacketDispatcher;
@@ -43,10 +42,10 @@ import mcp.mobius.mobiuscore.profiler.ProfilerRegistrar;
 public class OpisServerTickHandler implements ITickHandler {
 
 	public long profilerUpdateTickCounter = 0;	
-	public long clientUpdateTickCounter = 0;
 	public int  profilerRunningTicks;
 	public long timer500  = System.nanoTime();	
 	public long timer1000 = System.nanoTime();
+	public long timer5000 = System.nanoTime();
 	
 	public static OpisServerTickHandler instance;
 	
@@ -72,7 +71,8 @@ public class OpisServerTickHandler implements ITickHandler {
 			}
 			*/
 				
-			if (System.nanoTime() - timer1000 > 1000000000){
+			// One second timer
+			if (System.nanoTime() - timer1000 > 1000000000L){
 				timer1000 = System.nanoTime();
 
 				OpisPacketHandler.sendPacketToAllSwing(Packet_DataValue.create(Message.VALUE_AMOUNT_UPLOAD,   new SerialLong(PacketProfiler.instance().dataSizeOut)));
@@ -99,10 +99,10 @@ public class OpisServerTickHandler implements ITickHandler {
 				PacketProfiler.instance().dataSizeIn  = 0L;
 			}
 			
-			clientUpdateTickCounter++;
-			if (clientUpdateTickCounter % 100 == 0){
+			// Five second timer
+			if (System.nanoTime() - timer5000 > 5000000000L){
+				timer5000 = System.nanoTime();
 				updatePlayers();
-				clientUpdateTickCounter = 0;
 			}
 			
 			profilerUpdateTickCounter++;
@@ -150,7 +150,8 @@ public class OpisServerTickHandler implements ITickHandler {
 		for (Player player : PlayerTracker.instance().playerOverlayStatus.keySet()){
 			
 			if (PlayerTracker.instance().playerOverlayStatus.get(player) == OverlayStatus.CHUNKSTATUS){
-				PacketDispatcher.sendPacketToPlayer( Packet_LoadedChunks.create(ChunkManager.getLoadedChunks(PlayerTracker.instance().playerDimension.get(player))), player);
+				OpisPacketHandler.validateAndSend(Packet_DataList.create(Message.LIST_CHUNK_LOADED, ChunkManager.getLoadedChunks(PlayerTracker.instance().playerDimension.get(player))), player);	
+				
 			}
 			
 			if (PlayerTracker.instance().playerOverlayStatus.get(player) == OverlayStatus.MEANTIME){

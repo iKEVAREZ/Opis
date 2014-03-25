@@ -100,6 +100,10 @@ public class ClientMessageHandler {
 		
 		else if (msg == Message.LIST_PLAYERS){
 			DataCache.instance().setListPlayers(data);	 
+		}	
+		
+		else if (msg == Message.LIST_CHUNK_LOADED){
+			ChunkManager.setLoadedChunks(data);	 
 		}			
 	}
 	

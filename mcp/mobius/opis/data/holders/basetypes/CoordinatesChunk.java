@@ -50,6 +50,30 @@ public final class CoordinatesChunk implements ISerializable {
 		this.metadata = metadata;
 	}	
 	
+	public CoordinatesChunk(int dim, ChunkCoordIntPair coord){
+		this.dim = dim;
+		this.chunkX = coord.chunkXPos;
+		this.chunkZ = coord.chunkZPos;
+		
+		this.x = chunkX << 4; 
+		this.y = 0; 
+		this.z = chunkZ << 4;		
+		
+		this.metadata = 0;
+	}	
+
+	public CoordinatesChunk(int dim, ChunkCoordIntPair coord, byte metadata){
+		this.dim = dim;
+		this.chunkX = coord.chunkXPos;
+		this.chunkZ = coord.chunkZPos;
+		
+		this.x = chunkX << 4; 
+		this.y = 0; 
+		this.z = chunkZ << 4;		
+		
+		this.metadata = metadata;
+	}		
+	
 	public CoordinatesChunk(TileEntity te){
 		this.dim = te.getWorldObj().provider.dimensionId;
 		this.chunkX = te.xCoord >> 4;

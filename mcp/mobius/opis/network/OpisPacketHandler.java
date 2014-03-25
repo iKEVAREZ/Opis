@@ -46,7 +46,6 @@ import mcp.mobius.opis.network.packets.server.Packet_DataAbstract;
 import mcp.mobius.opis.network.packets.server.Packet_DataList;
 import mcp.mobius.opis.network.packets.server.Packet_DataOverlayChunkEntities;
 import mcp.mobius.opis.network.packets.server.Packet_DataValue;
-import mcp.mobius.opis.network.packets.server.Packet_LoadedChunks;
 import mcp.mobius.opis.network.packets.server.Packet_Tickets;
 import mcp.mobius.opis.swing.SwingUI;
 import net.minecraft.entity.player.EntityPlayer;
@@ -84,12 +83,8 @@ public class OpisPacketHandler implements IPacketHandler {
 	}
 
 	void onPacketToClient(INetworkManager manager, Packet250CustomPayload packet, Player player, Byte header) {
-		if (header == Packets.LOADED_CHUNKS){
-			Packet_LoadedChunks castedPacket = new Packet_LoadedChunks(packet);
-			ChunkManager.chunksLoad = castedPacket.chunkStatus;
-		}
-
-		else if (header == Packets.TICKETS){
+		
+		if (header == Packets.TICKETS){
 			Packet_Tickets castedPacket = new Packet_Tickets(packet);
 			OverlayLoadedChunks.instance().setupTable(castedPacket.tickets);
 		}			

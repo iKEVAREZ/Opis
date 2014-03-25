@@ -2,7 +2,6 @@ package mcp.mobius.opis.network.enums;
 
 public class Packets {
 	
-	public static byte LOADED_CHUNKS = 0x01;	// S => C
 	public static byte REQ_CHUNKS    = 0x02;	// C => S //Not used right now
 	public static byte TICKETS       = 0x03;	// S => C
 	public static byte CHUNKS        = 0x04;	// S => C
