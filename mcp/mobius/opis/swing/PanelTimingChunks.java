@@ -22,6 +22,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
@@ -55,6 +56,7 @@ public class PanelTimingChunks extends JPanel implements  ActionListener{
 		add(scrollPane, "cell 0 1 4 1,grow");
 		
 		table = new JTable();
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);		
 		table.setModel(new DefaultTableModel(
 				new Object[][] {
 				},
@@ -72,6 +74,7 @@ public class PanelTimingChunks extends JPanel implements  ActionListener{
 					return columnTypes[columnIndex];
 				}
 			});
+		table.setAutoCreateRowSorter(true);			
 		scrollPane.setViewportView(table);
 
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
@@ -82,18 +85,10 @@ public class PanelTimingChunks extends JPanel implements  ActionListener{
 		
 	}
 
-	public JTable getTable() {
-		return table;
-	}
-	public JButton getBtnRun() {
-		return btnRun;
-	}
-	public JButton getBtnTeleport() {
-		return btnTeleport;
-	}
-	public JButton getBtnCenter() {
-		return btnCenter;
-	}
+	public JTable  getTable()  {return table;}
+	public JButton getBtnRun() {return btnRun;}
+	public JButton getBtnTeleport() {return btnTeleport;}
+	public JButton getBtnCenter()   {return btnCenter;}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
