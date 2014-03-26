@@ -1,7 +1,11 @@
 package mcp.mobius.opis.swing.panels;
 
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
@@ -10,10 +14,25 @@ import mcp.mobius.opis.data.holders.stats.StatsTick;
 import mcp.mobius.opis.network.enums.AccessLevel;
 import mcp.mobius.opis.swing.widgets.JButtonAccess;
 import net.miginfocom.swing.MigLayout;
+import net.minecraft.util.MathHelper;
 
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import javax.swing.JProgressBar;
+
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.plot.ValueMarker;
+import org.jfree.chart.plot.XYPlot;
+import org.jfree.data.time.Second;
+import org.jfree.data.time.TimeSeries;
+import org.jfree.data.time.TimeSeriesCollection;
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
 
 public class PanelSummary extends JPanel implements ActionListener{
 	private JLabel lblTimingWorldTick;
@@ -37,7 +56,7 @@ public class PanelSummary extends JPanel implements ActionListener{
 	 * Create the panel.
 	 */
 	public PanelSummary() {
-		setLayout(new MigLayout("", "[20px:20px:20px][][20px:20px:20px][60px:60px:60px][][20px:20px:20px][50px:50px:50px][20px:20px:20px][][20px:20px:20px][50px:50px:50px][][20px:20px:20px][grow][]", "[20px:20px:20px][][][][][][][][20px:20px:20px][][grow]"));
+		setLayout(new MigLayout("", "[20px:20px:20px,grow][][20px:20px:20px][60px:60px:60px][][20px:20px:20px][50px:50px:50px][20px:20px:20px][][20px:20px:20px][50px:50px:50px][][20px:20px:20px][grow][]", "[20px:20px:20px][][][][][][][][20px:20px:20px][][grow]"));
 		
 		JLabel lblNewLabel_5 = new JLabel("Update time");
 		add(lblNewLabel_5, "cell 3 1 2 1,alignx right");
@@ -150,6 +169,9 @@ public class PanelSummary extends JPanel implements ActionListener{
 		
 		JLabel lblNewLabel_33 = new JLabel("ms");
 		add(lblNewLabel_33, "cell 4 9,alignx left");
+		
+		JPanel panel = this.createGraph();
+		add(panel, "cell 0 10 15 1,grow");
 
 	}
 
@@ -234,30 +256,34 @@ public class PanelSummary extends JPanel implements ActionListener{
 		this.getLblAmountTileEnts().setText(String.valueOf(value));
 	}	
 	
-	public void setTimingTick(ISerializable tickStat){
-		this.getLblTickTime().setText(String.valueOf(String.format("%.3f", ((StatsTick)tickStat).getGeometricMean()/1000.)));
-		
-		/*
-		if (timingTickGraphData.size() > 100)
-			timingTickGraphData.remove(0);
-		
-		timingTickGraphData.add(this.timingTick.getGeometricMean()/1000.);
-		//timingTickGraphData.addValue(this.timingTick.getGeometricMean()/1000.);
-		
-		XYSeries xyData = new XYSeries("Update time");
-		
-		double maxValue = 0D;
-		for (int i = 0; i < timingTickGraphData.size(); i++){
-			xyData.add(i, timingTickGraphData.get(i));
-		}
-		
-		XYSeriesCollection dataset = new XYSeriesCollection();
-		dataset.addSeries(xyData);
-
+	ArrayList<Double> datapoints = new ArrayList<Double>();
+	XYSeries xydata = new XYSeries("Update time");
+	XYSeriesCollection dataset = new XYSeriesCollection();
+	XYPlot xyPlot;
+	
+	private JPanel createGraph(){
 		JFreeChart chart = ChartFactory.createXYAreaChart("", "Seconds", "Update Time [ms]", dataset, PlotOrientation.VERTICAL, false, false, false);
 		chart.setBackgroundPaint(new Color(255,255,255,0));
-		XYPlot xyPlot = chart.getXYPlot();
+		xyPlot = chart.getXYPlot();
 		xyPlot.getRendererForDataset(dataset).setSeriesPaint(0, Color.BLUE);
+		return new ChartPanel(chart);
+	}
+	
+	public void setTimingTick(ISerializable tickStat){
+		double ticktime = ((StatsTick)tickStat).getGeometricMean()/1000.;
+		
+		this.getLblTickTime().setText(String.valueOf(String.format("%.3f", ((StatsTick)tickStat).getGeometricMean()/1000.)));
+
+		datapoints.add(ticktime);
+		if (datapoints.size() > 101)
+			datapoints.remove(0);
+		
+		xydata.clear();
+		for (int i = 0; i < datapoints.size(); i++)
+			xydata.add(i, datapoints.get(i));
+
+		dataset.removeAllSeries();
+		dataset.addSeries(xydata);
 		
 		for (double y = 25.0; y < 250.0; y += 25.0){
 			ValueMarker marker = new ValueMarker(y);
@@ -265,18 +291,12 @@ public class PanelSummary extends JPanel implements ActionListener{
 			xyPlot.addRangeMarker(marker);
 		}
 		
-		Double verticalScale = 50.0 * (MathHelper.floor_double(xyData.getMaxY() / 50.0D) + 1);
+		Double verticalScale = 50.0 * (MathHelper.floor_double(xydata.getMaxY() / 50.0D) + 1);
 		((NumberAxis)xyPlot.getRangeAxis()).setRange(0.0, verticalScale);
-		
-		Dimension dim = SwingUI.instance().getLblSummaryTickChart().getSize();
-		
-		BufferedImage image = chart.createBufferedImage(dim.width,dim.height);
-		SwingUI.instance().getLblSummaryTickChart().setIcon(new ImageIcon(image));
-		*/
+		((NumberAxis)xyPlot.getDomainAxis()).setRange(0.0, 100.0);
 	}
 
 	private double getProfiledTickTotalTime(){
 		return (timingWorldTickTotal + timingHandlersTotal + timingTileEntsTotal + timingEntitiesTotal)/1000.;
 	}
-
 }
