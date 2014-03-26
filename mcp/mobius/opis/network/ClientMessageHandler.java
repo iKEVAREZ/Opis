@@ -108,75 +108,65 @@ public class ClientMessageHandler {
 	}
 	
 	public void handle(Message msg, ISerializable data){
-		if (msg == Message.VALUE_TIMING_TILEENTS)
-			DataCache.instance().setTimingTileEntsTotal(((SerialDouble)data).value);
+		if (msg == Message.VALUE_TIMING_TILEENTS){
+			SwingUI.instance().getPanelSummary().setTimingTileEntsTotal(((SerialDouble)data).value);
+			SwingUI.instance().getPanelTimingTileEnts().getLblSummary().setText(String.format("Total update time : %.3f µs", ((SerialDouble)data).value));			
+		}
 		
-		else if (msg == Message.VALUE_TIMING_ENTITIES)
-			DataCache.instance().setTimingEntitiesTotal(((SerialDouble)data).value);	
+		else if (msg == Message.VALUE_TIMING_ENTITIES){
+			SwingUI.instance().getPanelSummary().setTimingEntitiesTotal(((SerialDouble)data).value);
+			SwingUI.instance().getPanelTimingEntities().getLblSummary().setText(String.format("Total update time : %.3f µs", ((SerialDouble)data).value));
+		}
 		
-		else if (msg == Message.VALUE_TIMING_HANDLERS)
-			DataCache.instance().setTimingHandlersTotal(((SerialDouble)data).value);	
+		else if (msg == Message.VALUE_TIMING_HANDLERS){
+			SwingUI.instance().getPanelSummary().setTimingHandlersTotal(((SerialDouble)data).value);
+			SwingUI.instance().getPanelTimingHandlers().getLblSummary().setText(String.format("Total update time : %.3f µs", ((SerialDouble)data).value));			
+		}
 	
-		else if (msg == Message.VALUE_TIMING_WORLDTICK)
-			DataCache.instance().setTimingWorldTickTotal(((SerialDouble)data).value);			
+		else if (msg == Message.VALUE_TIMING_WORLDTICK){
+			SwingUI.instance().getPanelSummary().setTimingWorldTickTotal(((SerialDouble)data).value);
+		}
 	
 		else if (msg == Message.VALUE_TIMING_ENTUPDATE)
-			DataCache.instance().setTimingEntUpdateTotal(((SerialDouble)data).value);						
+			SwingUI.instance().getPanelSummary().setTimingEntUpdateTotal(((SerialDouble)data).value);						
 		
 		else if (msg == Message.VALUE_AMOUNT_TILEENTS)
-			DataCache.instance().setAmountTileEntsTotal(((SerialInt)data).value);
+			SwingUI.instance().getPanelSummary().setAmountTileEntsTotal(((SerialInt)data).value);
 		
 		else if (msg == Message.VALUE_AMOUNT_ENTITIES)
-			DataCache.instance().setAmountEntitiesTotal(((SerialInt)data).value);	
+			SwingUI.instance().getPanelSummary().setAmountEntitiesTotal(((SerialInt)data).value);	
 		
 		else if (msg == Message.VALUE_AMOUNT_HANDLERS)
-			DataCache.instance().setAmountHandlersTotal(((SerialInt)data).value);
+			SwingUI.instance().getPanelSummary().setAmountHandlersTotal(((SerialInt)data).value);
 		
 		else if (msg == Message.VALUE_TIMING_TICK)
-			DataCache.instance().setTimingTick(data);	
+			SwingUI.instance().getPanelSummary().setTimingTick(data);	
 		
-		else if (msg == Message.VALUE_AMOUNT_UPLOAD)
-			DataCache.instance().setAmountUpload(((SerialLong)data).value);		
+		else if (msg == Message.VALUE_AMOUNT_UPLOAD){
+			SwingUI.instance().getPanelSummary().setAmountUpload(((SerialLong)data).value);
+		}
 		
-		else if (msg == Message.VALUE_AMOUNT_DOWNLOAD)
-			DataCache.instance().setAmountDownload(((SerialLong)data).value);	
+		else if (msg == Message.VALUE_AMOUNT_DOWNLOAD){
+			SwingUI.instance().getPanelSummary().setAmountDownload(((SerialLong)data).value);
+		}
 		     
 		else if (msg == Message.STATUS_START){
-			SwingUI.instance().getPanelTimingChunks().getBtnRun().setText("Running...");
-			SwingUI.instance().getPanelTimingHandlers().getBtnRun().setText("Running...");
-			SwingUI.instance().getPanelTimingEntities().getBtnRun().setText("Running...");
-			SwingUI.instance().getPanelTimingTileEnts().getBtnRun().setText("Running...");
-			SwingUI.instance().getBtnSummaryRefresh().setText("Running...");
-			
-			SwingUI.instance().getProgBarSummaryOpis().setValue(0);
-			SwingUI.instance().getProgBarSummaryOpis().setMinimum(0);
-			SwingUI.instance().getProgBarSummaryOpis().setMaximum(((SerialInt)data).value);
+			SwingUI.instance().setTextRunButton("Running...");
+			SwingUI.instance().getPanelSummary().setProgressBar(0, ((SerialInt)data).value, 0);
 		}
 		     
 		else if (msg == Message.STATUS_STOP){
-			SwingUI.instance().getPanelTimingChunks().getBtnRun().setText("Run Opis");
-			SwingUI.instance().getPanelTimingHandlers().getBtnRun().setText("Run Opis");
-			SwingUI.instance().getPanelTimingEntities().getBtnRun().setText("Run Opis");
-			SwingUI.instance().getPanelTimingTileEnts().getBtnRun().setText("Run Opis");
-			SwingUI.instance().getBtnSummaryRefresh().setText("Run Opis");
-			
-			SwingUI.instance().getProgBarSummaryOpis().setValue(((SerialInt)data).value);
-			SwingUI.instance().getProgBarSummaryOpis().setMinimum(0);
-			SwingUI.instance().getProgBarSummaryOpis().setMaximum(((SerialInt)data).value);				
+			SwingUI.instance().setTextRunButton("Run Opis");
+			SwingUI.instance().getPanelSummary().setProgressBar(0, ((SerialInt)data).value, ((SerialInt)data).value);
 		}
 		     
 		else if (msg == Message.STATUS_RUN_UPDATE){
-			SwingUI.instance().getProgBarSummaryOpis().setValue(((SerialInt)data).value);
+			SwingUI.instance().getPanelSummary().setProgressBar(-1, -1, ((SerialInt)data).value);			
 		}
 		     
 		else if (msg == Message.STATUS_RUNNING){
-			SwingUI.instance().getPanelTimingChunks().getBtnRun().setText("Running...");
-			SwingUI.instance().getPanelTimingHandlers().getBtnRun().setText("Running...");
-			SwingUI.instance().getPanelTimingEntities().getBtnRun().setText("Running...");
-			SwingUI.instance().getPanelTimingTileEnts().getBtnRun().setText("Running...");
-			SwingUI.instance().getBtnSummaryRefresh().setText("Running...");				
-			
-			SwingUI.instance().getProgBarSummaryOpis().setMaximum(((SerialInt)data).value);
+			SwingUI.instance().setTextRunButton("Running...");
+			SwingUI.instance().getPanelSummary().setProgressBar(-1, ((SerialInt)data).value, -1);
 		}			     
 	
 		else if (msg == Message.STATUS_CURRENT_TIME){
@@ -186,13 +176,13 @@ public class ClientMessageHandler {
 		else if (msg == Message.STATUS_TIME_LAST_RUN){
 			long serverLastRun = ((SerialLong)data).value;
 			if (serverLastRun == 0){
-				SwingUI.instance().getLblSummaryTimeStampLastRun().setText("Last run : <Never>");
+				SwingUI.instance().getPanelSummary().getLblTimeStamp().setText("Last run : <Never>");
 			} else {
 				long clientLastRun = serverLastRun + DataCache.instance().getClockScrew();
 		        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		        Date resultdate = new Date(clientLastRun);
 				
-				SwingUI.instance().getLblSummaryTimeStampLastRun().setText(String.format("Last run : %s", sdf.format(resultdate)));
+		        SwingUI.instance().getPanelSummary().getLblTimeStamp().setText(String.format("Last run : %s", sdf.format(resultdate)));
 			}
 	
 		}	
@@ -203,15 +193,15 @@ public class ClientMessageHandler {
 	
 		else if(msg == Message.CLIENT_HIGHLIGHT_BLOCK){
 			modOpis.selectedBlock = (CoordinatesBlock)data;
-			SwingUI.instance().getBtnTimingTERemoveHighlight().setEnabled(true);
+			SwingUI.instance().getPanelTimingTileEnts().getBtnReset().setEnabled(true);
 		}
 		
 		else if(msg == Message.VALUE_CHUNK_FORCED){
-			SwingUI.instance().getLblSummaryForcedChunks().setText(String.valueOf(((SerialInt)data).value));
+			SwingUI.instance().getPanelSummary().getLblAmountForced().setText(String.valueOf(((SerialInt)data).value));
 		}
 		     
 		else if(msg == Message.VALUE_CHUNK_LOADED){
-			SwingUI.instance().getLblSummaryLoadedChunks().setText(String.valueOf(((SerialInt)data).value));
+			SwingUI.instance().getPanelSummary().getLblAmountLoaded().setText(String.valueOf(((SerialInt)data).value));
 		}			
 	}
 }

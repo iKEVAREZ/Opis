@@ -5,6 +5,8 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JPanel;
 
+import mcp.mobius.opis.data.holders.ISerializable;
+import mcp.mobius.opis.data.holders.stats.StatsTick;
 import mcp.mobius.opis.network.enums.AccessLevel;
 import net.miginfocom.swing.MigLayout;
 
@@ -169,4 +171,111 @@ public class PanelSummary extends JPanel implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {}
+	
+	public void setProgressBar(int min, int max, int value){
+		if (min != -1)
+			this.getProgressBarRun().setMinimum(min);
+		
+		if (max != -1)
+			this.getProgressBarRun().setMaximum(max);
+			
+		if (value != -1)
+			this.getProgressBarRun().setValue(value);			
+	}
+	
+	public void setAmountUpload(long value){
+		double uploadKB = (value / 8.0) / 1024.0;
+		this.getLblAmountUpload().setText(String.format("%.3f", uploadKB));		
+	}
+	
+	public void setAmountDownload(long value){
+		double downloadKB = (value / 8.0) / 1024.0;
+		this.getLblAmountDownload().setText(String.format("%.3f", downloadKB));		
+	}
+	
+	private double timingWorldTickTotal;
+	private double timingHandlersTotal;
+	private double timingTileEntsTotal;
+	private double timingEntitiesTotal;
+	
+	public void setTimingWorldTickTotal(double value){
+		this.timingWorldTickTotal = value;
+		this.getLblTimingWorldTick().setText(String.format("%.3f", value/1000.));
+		this.getLblTimingTotal().setText(String.format("%.3f", this.getProfiledTickTotalTime() ));
+	}	
+	
+	public void setTimingEntUpdateTotal(double value){
+	}	
+	
+	public void setTimingHandlersTotal(double value){
+		this.timingHandlersTotal = value;
+		this.getLblTimingHandlers().setText(String.format("%.3f", value/1000.));
+		this.getLblTimingTotal().setText(String.format("%.3f", this.getProfiledTickTotalTime() ));
+	}
+	public void setTimingEntitiesTotal(double value){
+		this.timingEntitiesTotal = value;
+		this.getLblTimingEntities().setText(String.format("%.3f", value/1000.));
+		this.getLblTimingTotal().setText(String.format("%.3f", this.getProfiledTickTotalTime() ));		
+	}
+	public void setTimingTileEntsTotal(double value){
+		this.timingTileEntsTotal = value;
+		this.getLblTimingTileEnts().setText(String.format("%.3f", value/1000.));
+		this.getLblTimingTotal().setText(String.format("%.3f", this.getProfiledTickTotalTime() ));		
+	}	
+
+	public void setAmountHandlersTotal(int value){
+		this.getLblAmountHandlers().setText(String.valueOf(value));
+	}
+	public void setAmountEntitiesTotal(int value){
+		this.getLblAmountEntities().setText(String.valueOf(value));		
+	}
+	public void setAmountTileEntsTotal(int value){
+		this.getLblAmountTileEnts().setText(String.valueOf(value));
+	}	
+	
+	public void setTimingTick(ISerializable tickStat){
+		this.getLblTickTime().setText(String.valueOf(String.format("%.3f", ((StatsTick)tickStat).getGeometricMean()/1000.)));
+		
+		/*
+		if (timingTickGraphData.size() > 100)
+			timingTickGraphData.remove(0);
+		
+		timingTickGraphData.add(this.timingTick.getGeometricMean()/1000.);
+		//timingTickGraphData.addValue(this.timingTick.getGeometricMean()/1000.);
+		
+		XYSeries xyData = new XYSeries("Update time");
+		
+		double maxValue = 0D;
+		for (int i = 0; i < timingTickGraphData.size(); i++){
+			xyData.add(i, timingTickGraphData.get(i));
+		}
+		
+		XYSeriesCollection dataset = new XYSeriesCollection();
+		dataset.addSeries(xyData);
+
+		JFreeChart chart = ChartFactory.createXYAreaChart("", "Seconds", "Update Time [ms]", dataset, PlotOrientation.VERTICAL, false, false, false);
+		chart.setBackgroundPaint(new Color(255,255,255,0));
+		XYPlot xyPlot = chart.getXYPlot();
+		xyPlot.getRendererForDataset(dataset).setSeriesPaint(0, Color.BLUE);
+		
+		for (double y = 25.0; y < 250.0; y += 25.0){
+			ValueMarker marker = new ValueMarker(y);
+			marker.setPaint(Color.black);
+			xyPlot.addRangeMarker(marker);
+		}
+		
+		Double verticalScale = 50.0 * (MathHelper.floor_double(xyData.getMaxY() / 50.0D) + 1);
+		((NumberAxis)xyPlot.getRangeAxis()).setRange(0.0, verticalScale);
+		
+		Dimension dim = SwingUI.instance().getLblSummaryTickChart().getSize();
+		
+		BufferedImage image = chart.createBufferedImage(dim.width,dim.height);
+		SwingUI.instance().getLblSummaryTickChart().setIcon(new ImageIcon(image));
+		*/
+	}
+
+	private double getProfiledTickTotalTime(){
+		return (timingWorldTickTotal + timingHandlersTotal + timingTileEntsTotal + timingEntitiesTotal)/1000.;
+	}
+
 }

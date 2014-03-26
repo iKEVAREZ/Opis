@@ -2,6 +2,8 @@ package mcp.mobius.opis.swing;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 import javax.swing.JPanel;
 
@@ -17,7 +19,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
-public class PanelAmountEntities extends JPanel implements ActionListener{
+public class PanelAmountEntities extends JPanel implements ActionListener,  ItemListener{
 	private JTable table;
 	private JCheckBox chckbxFilter;
 	private JButtonAccess btnKillAll;
@@ -32,6 +34,7 @@ public class PanelAmountEntities extends JPanel implements ActionListener{
 		
 		chckbxFilter = new JCheckBox("Filter Entities");
 		add(chckbxFilter, "cell 0 0");
+		chckbxFilter.addItemListener(this);
 		
 		btnKillAll = new JButtonAccess("Kill All", AccessLevel.PRIVILEGED);
 		add(btnKillAll, "cell 1 0");
@@ -85,4 +88,7 @@ public class PanelAmountEntities extends JPanel implements ActionListener{
 	
 	@Override
 	public void actionPerformed(ActionEvent arg0) {}
+
+	@Override
+	public void itemStateChanged(ItemEvent arg0) {}
 }
