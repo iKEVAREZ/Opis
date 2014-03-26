@@ -58,6 +58,14 @@ import mcp.mobius.opis.gui.overlay.entperchunk.OverlayEntityPerChunk;
 import mcp.mobius.opis.network.enums.AccessLevel;
 import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.packets.client.Packet_ReqData;
+import mcp.mobius.opis.swing.panels.PanelAmountEntities;
+import mcp.mobius.opis.swing.panels.PanelPlayers;
+import mcp.mobius.opis.swing.panels.PanelSummary;
+import mcp.mobius.opis.swing.panels.PanelTimingChunks;
+import mcp.mobius.opis.swing.panels.PanelTimingEntities;
+import mcp.mobius.opis.swing.panels.PanelTimingHandlers;
+import mcp.mobius.opis.swing.panels.PanelTimingTileEnts;
+import mcp.mobius.opis.swing.widgets.JButtonAccess;
 import net.minecraft.client.Minecraft;
 
 import javax.swing.ListSelectionModel;
