@@ -5,6 +5,7 @@ import java.util.logging.Logger;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.network.packet.Packet;
+import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.MinecraftForge;
 import mcp.mobius.mobiuscore.profiler.ProfilerRegistrar;
@@ -30,6 +31,7 @@ import mcp.mobius.opis.commands.server.CommandTimingEntities;
 import mcp.mobius.opis.commands.server.CommandTimingTileEntities;
 import mcp.mobius.opis.data.client.TickHandlerClientProfiler;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesBlock;
+import mcp.mobius.opis.data.server.DeadManSwitch;
 import mcp.mobius.opis.data.server.EntUpdateProfiler;
 import mcp.mobius.opis.data.server.EntityProfiler;
 import mcp.mobius.opis.data.server.HandlerProfiler;
@@ -179,5 +181,7 @@ public class modOpis {
 		event.registerServerCommand(new CommandHelp());
 		
 		GameRegistry.registerPlayerTracker(PlayerTracker.instance());
+		
+		DeadManSwitch.startDeadManSwitch(MinecraftServer.getServer());
 	}	
 }

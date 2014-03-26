@@ -14,7 +14,8 @@ public class TickProfiler extends AbstractProfiler implements IProfilerTick {
 	
 	@Override
 	public void TickStart() {
-		this.clock.start();		
+		DeadManSwitch.deadManSwitch.release();
+		this.clock.start();	
 	}
 
 	@Override
