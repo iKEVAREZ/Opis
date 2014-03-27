@@ -28,7 +28,6 @@ import javax.swing.table.DefaultTableModel;
 import cpw.mods.fml.common.network.PacketDispatcher;
 
 public class PanelTimingHandlers extends JPanelMsgHandler implements ActionListener{
-	private JTableStats   table;
 	private JButtonAccess btnRun;
 	private JLabel lblSummary;
 	
@@ -81,7 +80,6 @@ public class PanelTimingHandlers extends JPanelMsgHandler implements ActionListe
 	}
 
 	public JButton getBtnRun()    {return btnRun;}
-	public JTable  getTable()     {return table;}
 	public JLabel  getLblSummary(){return lblSummary;}
 
 	@Override

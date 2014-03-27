@@ -31,7 +31,6 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 public class PanelTimingTileEnts extends JPanelMsgHandler implements ActionListener{
-	private JTableStats   table;
 	private JButtonAccess btnCenter;
 	private JButtonAccess btnTeleport;
 	private JButtonAccess btnReset;
@@ -102,7 +101,6 @@ public class PanelTimingTileEnts extends JPanelMsgHandler implements ActionListe
 	public JButton getBtnTeleport(){return btnTeleport;}
 	public JButton getBtnReset()   {return btnReset;}
 	public JButton getBtnRun()     {return btnRun;}
-	public JTable  getTable()      {return table;}
 	public JLabel  getLblSummary() {return lblSummary;}
 
 	@Override

@@ -10,6 +10,8 @@ import mcp.mobius.opis.data.holders.stats.StatAbstract;
 
 public abstract class JPanelMsgHandler extends JPanel implements IMessageHandler {
 	
+	protected JTableStats table;
+	
 	protected <U> int updateData(JTable table, DefaultTableModel model, Class<U> datatype){
 		int row = table.getSelectedRow();
 		
@@ -28,6 +30,10 @@ public abstract class JPanelMsgHandler extends JPanel implements IMessageHandler
 		} catch (IllegalArgumentException e ){
 			
 		}		
+	}
+	
+	public JTableStats getTable(){
+		return this.table;
 	}
 	
 }

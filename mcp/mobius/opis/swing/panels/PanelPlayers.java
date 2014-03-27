@@ -23,7 +23,6 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 public class PanelPlayers extends JPanelMsgHandler implements ActionListener{
-	private JTableStats   table;
 	private JButtonAccess btnCenter;
 	private JButtonAccess btnTeleport;
 	private JButtonAccess btnPull;
@@ -91,7 +90,6 @@ public class PanelPlayers extends JPanelMsgHandler implements ActionListener{
 	public JButton getBtnCenter()   {return btnCenter;}
 	public JButton getBtnTeleport() {return btnTeleport;}
 	public JButton getBtnPull()     {return btnPull;}
-	public JTable getTable()        {return table;}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {}

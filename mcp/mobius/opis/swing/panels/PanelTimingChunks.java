@@ -26,7 +26,6 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 public class PanelTimingChunks extends JPanelMsgHandler implements ActionListener{
-	private JTableStats   table;
 	private JButtonAccess btnRun;
 	private JButtonAccess btnTeleport;
 	private JButtonAccess btnCenter;
@@ -83,7 +82,6 @@ public class PanelTimingChunks extends JPanelMsgHandler implements ActionListene
 		
 	}
 
-	public JTable  getTable()  {return table;}
 	public JButton getBtnRun() {return btnRun;}
 	public JButton getBtnTeleport() {return btnTeleport;}
 	public JButton getBtnCenter()   {return btnCenter;}

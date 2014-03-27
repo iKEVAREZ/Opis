@@ -25,7 +25,6 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 public class PanelAmountEntities extends JPanelMsgHandler implements ActionListener, ItemListener{
-	private JTableStats table;
 	private JCheckBox chckbxFilter;
 	private JButtonAccess btnKillAll;
 	private JButtonAccess btnRefresh;
@@ -89,7 +88,6 @@ public class PanelAmountEntities extends JPanelMsgHandler implements ActionListe
 	public JCheckBox getChckbxFilter() {return chckbxFilter;}
 	public JButton   getBtnKillAll()   {return btnKillAll;}
 	public JButton   getBtnRefresh()   {return btnRefresh;}
-	public JTable    getTable()        {return table;}
 	public JLabel    getLblSummary()   {return lblSummary;}	
 	
 	@Override
