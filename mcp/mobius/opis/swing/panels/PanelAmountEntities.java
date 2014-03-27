@@ -9,6 +9,7 @@ import mcp.mobius.opis.data.holders.basetypes.AmountHolder;
 import mcp.mobius.opis.network.enums.AccessLevel;
 import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.packets.server.NetDataRaw;
+import mcp.mobius.opis.swing.actions.ActionAmountEntities;
 import mcp.mobius.opis.swing.widgets.JButtonAccess;
 import mcp.mobius.opis.swing.widgets.JPanelMsgHandler;
 import mcp.mobius.opis.swing.widgets.JTableStats;
@@ -24,7 +25,7 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
-public class PanelAmountEntities extends JPanelMsgHandler implements ActionListener, ItemListener{
+public class PanelAmountEntities extends JPanelMsgHandler{
 	private JCheckBox chckbxFilter;
 	private JButtonAccess btnKillAll;
 	private JButtonAccess btnRefresh;
@@ -38,15 +39,15 @@ public class PanelAmountEntities extends JPanelMsgHandler implements ActionListe
 		
 		chckbxFilter = new JCheckBox("Filter Entities");
 		add(chckbxFilter, "cell 0 0");
-		chckbxFilter.addItemListener(this);
+		chckbxFilter.addItemListener(new ActionAmountEntities());
 		
 		btnKillAll = new JButtonAccess("Kill All", AccessLevel.PRIVILEGED);
 		add(btnKillAll, "cell 1 0");
-		btnKillAll.addActionListener(this);
+		btnKillAll.addActionListener(new ActionAmountEntities());
 		
 		btnRefresh = new JButtonAccess("Refresh", AccessLevel.NONE);
 		add(btnRefresh, "cell 3 0");
-		btnRefresh.addActionListener(this);
+		btnRefresh.addActionListener(new ActionAmountEntities());
 		
 		JScrollPane scrollPane = new JScrollPane();
 		add(scrollPane, "cell 0 1 4 1,grow");
@@ -90,12 +91,6 @@ public class PanelAmountEntities extends JPanelMsgHandler implements ActionListe
 	public JButton   getBtnRefresh()   {return btnRefresh;}
 	public JLabel    getLblSummary()   {return lblSummary;}	
 	
-	@Override
-	public void actionPerformed(ActionEvent arg0) {}
-
-	@Override
-	public void itemStateChanged(ItemEvent arg0) {}
-
 	@Override
 	public boolean handleMessage(Message msg, NetDataRaw rawdata) {
 		switch(msg){

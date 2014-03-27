@@ -38,7 +38,7 @@ import org.jfree.chart.plot.XYPlot;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
-public class PanelSummary extends JPanelMsgHandler implements ActionListener{
+public class PanelSummary extends JPanelMsgHandler{
 	private JLabel lblTimingWorldTick;
 	private JLabel lblTimingTileEnts;
 	private JLabel lblTimingEntities;
@@ -196,9 +196,6 @@ public class PanelSummary extends JPanelMsgHandler implements ActionListener{
 	public JProgressBar getProgressBarRun() {return progressBarRun;}
 	public JLabel getLblTimeStamp()         {return lblTimeStamp;}
 
-	@Override
-	public void actionPerformed(ActionEvent e) {}
-	
 	public void setProgressBar(int min, int max, int value){
 		if (min != -1)
 			this.getProgressBarRun().setMinimum(min);

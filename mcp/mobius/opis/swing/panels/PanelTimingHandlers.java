@@ -27,7 +27,7 @@ import javax.swing.table.DefaultTableModel;
 
 import cpw.mods.fml.common.network.PacketDispatcher;
 
-public class PanelTimingHandlers extends JPanelMsgHandler implements ActionListener{
+public class PanelTimingHandlers extends JPanelMsgHandler{
 	private JButtonAccess btnRun;
 	private JLabel lblSummary;
 	
@@ -81,14 +81,6 @@ public class PanelTimingHandlers extends JPanelMsgHandler implements ActionListe
 
 	public JButton getBtnRun()    {return btnRun;}
 	public JLabel  getLblSummary(){return lblSummary;}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		// RUN OPIS Button
-		if (e.getSource() == this.getBtnRun()){
-			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.COMMAND_START));
-		}		
-	}
 
 	@Override
 	public boolean handleMessage(Message msg, NetDataRaw rawdata) {

@@ -6,12 +6,12 @@ import java.awt.event.ActionListener;
 import mcp.mobius.opis.data.holders.basetypes.SerialDouble;
 import mcp.mobius.opis.data.holders.stats.StatAbstract;
 import mcp.mobius.opis.data.holders.stats.StatsEntity;
+import mcp.mobius.opis.gui.overlay.entperchunk.OverlayEntityPerChunk;
 import mcp.mobius.opis.network.enums.AccessLevel;
 import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.packets.server.NetDataRaw;
-import mcp.mobius.opis.swing.actions.ActionCenterMap;
 import mcp.mobius.opis.swing.actions.ActionRunOpis;
-import mcp.mobius.opis.swing.actions.ActionTeleport;
+import mcp.mobius.opis.swing.actions.ActionTimingEntities;
 import mcp.mobius.opis.swing.widgets.JButtonAccess;
 import mcp.mobius.opis.swing.widgets.JPanelMsgHandler;
 import mcp.mobius.opis.swing.widgets.JTableStats;
@@ -26,7 +26,7 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
-public class PanelTimingEntities extends JPanelMsgHandler implements ActionListener{
+public class PanelTimingEntities extends JPanelMsgHandler{
 	private JButtonAccess btnRun;
 	private JButtonAccess btnPull;
 	private JButtonAccess btnTeleport;
@@ -41,15 +41,15 @@ public class PanelTimingEntities extends JPanelMsgHandler implements ActionListe
 		
 		btnCenter = new JButtonAccess("Center Map", AccessLevel.NONE);
 		add(btnCenter, "cell 0 0");
-		btnCenter.addActionListener(new ActionCenterMap());
+		btnCenter.addActionListener(new ActionTimingEntities());
 		
 		btnTeleport = new JButtonAccess("Teleport", AccessLevel.PRIVILEGED);
 		add(btnTeleport, "cell 1 0");
-		btnTeleport.addActionListener(new ActionTeleport());
+		btnTeleport.addActionListener(new ActionTimingEntities());
 		
 		btnPull = new JButtonAccess("Pull", AccessLevel.PRIVILEGED);
 		add(btnPull, "cell 2 0");
-		btnPull.addActionListener(this);
+		btnPull.addActionListener(new ActionTimingEntities());
 		
 		btnRun = new JButtonAccess("Run Opis", AccessLevel.PRIVILEGED);
 		add(btnRun, "cell 4 0");
@@ -97,9 +97,6 @@ public class PanelTimingEntities extends JPanelMsgHandler implements ActionListe
 	public JButton getBtnTeleport() {return btnTeleport;}
 	public JButton getBtnCenter()   {return btnCenter;}
 	public JLabel  getLblSummary()  {return lblSummary;}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {}
 
 	@Override
 	public boolean handleMessage(Message msg, NetDataRaw rawdata) {

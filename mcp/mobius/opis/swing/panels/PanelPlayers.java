@@ -4,11 +4,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import mcp.mobius.opis.data.holders.stats.StatsPlayer;
+import mcp.mobius.opis.gui.overlay.entperchunk.OverlayEntityPerChunk;
 import mcp.mobius.opis.network.enums.AccessLevel;
 import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.packets.server.NetDataRaw;
-import mcp.mobius.opis.swing.actions.ActionCenterMap;
-import mcp.mobius.opis.swing.actions.ActionTeleport;
+import mcp.mobius.opis.swing.actions.ActionPlayers;
 import mcp.mobius.opis.swing.widgets.JButtonAccess;
 import mcp.mobius.opis.swing.widgets.JPanelMsgHandler;
 import mcp.mobius.opis.swing.widgets.JTableStats;
@@ -22,7 +22,7 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
-public class PanelPlayers extends JPanelMsgHandler implements ActionListener{
+public class PanelPlayers extends JPanelMsgHandler{
 	private JButtonAccess btnCenter;
 	private JButtonAccess btnTeleport;
 	private JButtonAccess btnPull;
@@ -35,15 +35,15 @@ public class PanelPlayers extends JPanelMsgHandler implements ActionListener{
 		
 		btnCenter = new JButtonAccess("Center Map", AccessLevel.NONE);
 		add(btnCenter, "cell 0 0");
-		btnCenter.addActionListener(new ActionCenterMap());
+		btnCenter.addActionListener(new ActionPlayers());
 		
 		btnTeleport = new JButtonAccess("Teleport", AccessLevel.PRIVILEGED);
 		add(btnTeleport, "cell 1 0");
-		btnTeleport.addActionListener(new ActionTeleport());
+		btnTeleport.addActionListener(new ActionPlayers());
 		
 		btnPull = new JButtonAccess("Pull", AccessLevel.PRIVILEGED);
 		add(btnPull, "cell 2 0");
-		btnPull.addActionListener(this);
+		btnPull.addActionListener(new ActionPlayers());
 		
 		JButton btnKill = new JButton("Kill");
 		btnKill.setEnabled(false);
@@ -90,9 +90,6 @@ public class PanelPlayers extends JPanelMsgHandler implements ActionListener{
 	public JButton getBtnCenter()   {return btnCenter;}
 	public JButton getBtnTeleport() {return btnTeleport;}
 	public JButton getBtnPull()     {return btnPull;}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {}
 
 	@Override
 	public boolean handleMessage(Message msg, NetDataRaw rawdata) {

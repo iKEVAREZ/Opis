@@ -5,12 +5,12 @@ import java.awt.event.ActionListener;
 
 import mcp.mobius.opis.data.holders.stats.StatAbstract;
 import mcp.mobius.opis.data.holders.stats.StatsChunk;
+import mcp.mobius.opis.gui.overlay.OverlayMeanTime;
 import mcp.mobius.opis.network.enums.AccessLevel;
 import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.packets.server.NetDataRaw;
-import mcp.mobius.opis.swing.actions.ActionCenterMap;
 import mcp.mobius.opis.swing.actions.ActionRunOpis;
-import mcp.mobius.opis.swing.actions.ActionTeleport;
+import mcp.mobius.opis.swing.actions.ActionTimingChunks;
 import mcp.mobius.opis.swing.widgets.JButtonAccess;
 import mcp.mobius.opis.swing.widgets.JPanelMsgHandler;
 import mcp.mobius.opis.swing.widgets.JTableStats;
@@ -25,7 +25,7 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
-public class PanelTimingChunks extends JPanelMsgHandler implements ActionListener{
+public class PanelTimingChunks extends JPanelMsgHandler{
 	private JButtonAccess btnRun;
 	private JButtonAccess btnTeleport;
 	private JButtonAccess btnCenter;
@@ -38,11 +38,11 @@ public class PanelTimingChunks extends JPanelMsgHandler implements ActionListene
 		
 		btnCenter = new JButtonAccess("Center Map", AccessLevel.NONE);
 		add(btnCenter, "cell 0 0");
-		btnCenter.addActionListener(new ActionCenterMap());
+		btnCenter.addActionListener(new ActionTimingChunks());
 		
 		btnTeleport = new JButtonAccess("Teleport", AccessLevel.PRIVILEGED);
 		add(btnTeleport, "cell 1 0");
-		btnTeleport.addActionListener(new ActionTeleport());
+		btnTeleport.addActionListener(new ActionTimingChunks());
 		
 		btnRun = new JButtonAccess("Run Opis", AccessLevel.PRIVILEGED);
 		add(btnRun, "cell 3 0");
@@ -85,31 +85,6 @@ public class PanelTimingChunks extends JPanelMsgHandler implements ActionListene
 	public JButton getBtnRun() {return btnRun;}
 	public JButton getBtnTeleport() {return btnTeleport;}
 	public JButton getBtnCenter()   {return btnCenter;}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		// RUN OPIS Button
-		//if (e.getSource() == this.getBtnRun()){
-		//	PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.COMMAND_START));
-		//}
-		
-		// TELEPORT Button on the TimingChunk Screen
-		//else if ((e.getSource() == this.getBtnTeleport()) && (this.getTable().getSelectedRow() != -1)){
-		//	int indexData = this.getTable().convertRowIndexToModel(this.getTable().getSelectedRow());
-		//	StatsChunk data = DataCache.instance().getTimingChunks().get(indexData);
-		//	PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.COMMAND_TELEPORT_CHUNK, data.getChunk()));
-		//}
-
-		// CENTER Button on the TimingChunk Screen
-		//else if ((e.getSource() == this.getBtnCenter()) && (this.getTable().getSelectedRow() != -1)){
-		//	int indexData = this.getTable().convertRowIndexToModel(this.getTable().getSelectedRow());
-		//	StatsChunk data = DataCache.instance().getTimingChunks().get(indexData);
-			
-		//	OverlayMeanTime.instance().setSelectedChunk(data.getChunk().dim, data.getChunk().chunkX, data.getChunk().chunkZ);
-		//	MwAPI.setCurrentDataProvider(OverlayMeanTime.instance());
-		//	Minecraft.getMinecraft().displayGuiScreen(new MwGui(Mw.instance, data.getChunk().dim, data.getChunk().x + 8, data.getChunk().z + 8));			
-		//}		
-	}
 
 	@Override
 	public boolean handleMessage(Message msg, NetDataRaw rawdata) {
