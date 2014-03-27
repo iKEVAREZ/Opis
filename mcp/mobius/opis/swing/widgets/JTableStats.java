@@ -9,23 +9,23 @@ import mcp.mobius.opis.data.holders.stats.StatAbstract;
 
 public class JTableStats extends JTable {
 
-	protected ArrayList<StatAbstract> statistics;
+	protected ArrayList<ISerializable> statistics;
 	
-	public ArrayList<StatAbstract> getStatistics(){
+	public ArrayList<ISerializable> getStatistics(){
 		return this.statistics;
 	}
 	
-	/*
-	public void setStatistics(ArrayList<StatAbstract> statistics){
+	public void setStatistics(ArrayList<ISerializable> statistics){
 		this.statistics = statistics;
 	}
-	*/
-	
+
+	/*
 	public void setStatistics(ArrayList<ISerializable> statistics){
-		this.statistics = new ArrayList<StatAbstract>();
+		this.statistics = new ArrayList<ISerializable>();
 		for (Object o : statistics){
 			this.statistics.add((StatAbstract)o);
 		}
-	}	
+	}
+	*/	
 	
 }
