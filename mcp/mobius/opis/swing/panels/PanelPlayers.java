@@ -2,12 +2,16 @@ package mcp.mobius.opis.swing.panels;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import mcp.mobius.opis.data.holders.stats.StatsPlayer;
 import mcp.mobius.opis.network.enums.AccessLevel;
 import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.packets.server.NetDataRaw;
+import mcp.mobius.opis.swing.actions.ActionCenterMap;
+import mcp.mobius.opis.swing.actions.ActionTeleport;
 import mcp.mobius.opis.swing.widgets.JButtonAccess;
 import mcp.mobius.opis.swing.widgets.JPanelMsgHandler;
+import mcp.mobius.opis.swing.widgets.JTableStats;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.JButton;
@@ -19,7 +23,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 public class PanelPlayers extends JPanelMsgHandler implements ActionListener{
-	private JTable table;
+	private JTableStats   table;
 	private JButtonAccess btnCenter;
 	private JButtonAccess btnTeleport;
 	private JButtonAccess btnPull;
@@ -32,11 +36,11 @@ public class PanelPlayers extends JPanelMsgHandler implements ActionListener{
 		
 		btnCenter = new JButtonAccess("Center Map", AccessLevel.NONE);
 		add(btnCenter, "cell 0 0");
-		btnCenter.addActionListener(this);
+		btnCenter.addActionListener(new ActionCenterMap());
 		
 		btnTeleport = new JButtonAccess("Teleport", AccessLevel.PRIVILEGED);
 		add(btnTeleport, "cell 1 0");
-		btnTeleport.addActionListener(this);
+		btnTeleport.addActionListener(new ActionTeleport());
 		
 		btnPull = new JButtonAccess("Pull", AccessLevel.PRIVILEGED);
 		add(btnPull, "cell 2 0");
@@ -53,7 +57,7 @@ public class PanelPlayers extends JPanelMsgHandler implements ActionListener{
 		JScrollPane scrollPane = new JScrollPane();
 		add(scrollPane, "cell 0 1 6 1,grow");
 		
-		table = new JTable();
+		table = new JTableStats();
 		table.setModel(new DefaultTableModel(
 			new Object[][] {
 			},
@@ -96,6 +100,9 @@ public class PanelPlayers extends JPanelMsgHandler implements ActionListener{
 	public boolean handleMessage(Message msg, NetDataRaw rawdata) {
 		switch(msg){
 		case LIST_PLAYERS:{
+			
+			((JTableStats)this.getTable()).setStatistics(rawdata.array);
+			
 			DefaultTableModel model = (DefaultTableModel)this.getTable().getModel();
 			int               row   = this.updateData(table, model, StatsPlayer.class);
 

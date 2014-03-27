@@ -11,6 +11,7 @@ import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.packets.server.NetDataRaw;
 import mcp.mobius.opis.swing.widgets.JButtonAccess;
 import mcp.mobius.opis.swing.widgets.JPanelMsgHandler;
+import mcp.mobius.opis.swing.widgets.JTableStats;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.JCheckBox;
@@ -24,7 +25,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 public class PanelAmountEntities extends JPanelMsgHandler implements ActionListener, ItemListener{
-	private JTable table;
+	private JTableStats table;
 	private JCheckBox chckbxFilter;
 	private JButtonAccess btnKillAll;
 	private JButtonAccess btnRefresh;
@@ -51,7 +52,7 @@ public class PanelAmountEntities extends JPanelMsgHandler implements ActionListe
 		JScrollPane scrollPane = new JScrollPane();
 		add(scrollPane, "cell 0 1 4 1,grow");
 		
-		table = new JTable();
+		table = new JTableStats();
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.setModel(new DefaultTableModel(
 			new Object[][] {

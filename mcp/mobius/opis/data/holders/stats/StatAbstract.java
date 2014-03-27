@@ -81,8 +81,10 @@ public abstract class StatAbstract implements Comparable, ISerializable{
 	
 	public String getName(){ return this.name; };
 	
-	public CoordinatesBlock getCoordinates(){return this.coord;}
-	public CoordinatesChunk getChunk(){return this.chunk;}	
+	public CoordinatesBlock getCoordinates()   {return this.coord;}
+	public CoordinatesChunk getChunk()         {return this.chunk;}	
+	public CoordinatesBlock getTeleportTarget(){return this.coord;}
+	
 	
 	public abstract void  writeToStream(DataOutputStream stream) throws IOException;
 

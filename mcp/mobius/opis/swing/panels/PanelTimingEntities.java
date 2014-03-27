@@ -9,8 +9,12 @@ import mcp.mobius.opis.data.holders.stats.StatsEntity;
 import mcp.mobius.opis.network.enums.AccessLevel;
 import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.packets.server.NetDataRaw;
+import mcp.mobius.opis.swing.actions.ActionCenterMap;
+import mcp.mobius.opis.swing.actions.ActionRunOpis;
+import mcp.mobius.opis.swing.actions.ActionTeleport;
 import mcp.mobius.opis.swing.widgets.JButtonAccess;
 import mcp.mobius.opis.swing.widgets.JPanelMsgHandler;
+import mcp.mobius.opis.swing.widgets.JTableStats;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.JButton;
@@ -23,7 +27,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 public class PanelTimingEntities extends JPanelMsgHandler implements ActionListener{
-	private JTable table;
+	private JTableStats   table;
 	private JButtonAccess btnRun;
 	private JButtonAccess btnPull;
 	private JButtonAccess btnTeleport;
@@ -38,11 +42,11 @@ public class PanelTimingEntities extends JPanelMsgHandler implements ActionListe
 		
 		btnCenter = new JButtonAccess("Center Map", AccessLevel.NONE);
 		add(btnCenter, "cell 0 0");
-		btnCenter.addActionListener(this);
+		btnCenter.addActionListener(new ActionCenterMap());
 		
 		btnTeleport = new JButtonAccess("Teleport", AccessLevel.PRIVILEGED);
 		add(btnTeleport, "cell 1 0");
-		btnTeleport.addActionListener(this);
+		btnTeleport.addActionListener(new ActionTeleport());
 		
 		btnPull = new JButtonAccess("Pull", AccessLevel.PRIVILEGED);
 		add(btnPull, "cell 2 0");
@@ -50,12 +54,12 @@ public class PanelTimingEntities extends JPanelMsgHandler implements ActionListe
 		
 		btnRun = new JButtonAccess("Run Opis", AccessLevel.PRIVILEGED);
 		add(btnRun, "cell 4 0");
-		btnRun.addActionListener(this);
+		btnRun.addActionListener(new ActionRunOpis());
 		
 		JScrollPane scrollPane = new JScrollPane();
 		add(scrollPane, "cell 0 1 5 1,grow");
 		
-		table = new JTable();
+		table = new JTableStats();
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.setModel(new DefaultTableModel(
 			new Object[][] {
@@ -103,6 +107,9 @@ public class PanelTimingEntities extends JPanelMsgHandler implements ActionListe
 	public boolean handleMessage(Message msg, NetDataRaw rawdata) {
 		switch(msg){
 		case LIST_TIMING_ENTITIES:{
+			
+			((JTableStats)this.getTable()).setStatistics(rawdata.array);
+			
 			DefaultTableModel model = (DefaultTableModel)table.getModel();
 			int               row   = this.updateData(table, model, StatsEntity.class);	
 			

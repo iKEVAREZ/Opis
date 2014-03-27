@@ -18,6 +18,7 @@ import mcp.mobius.opis.data.holders.stats.StatsTick;
 import mcp.mobius.opis.network.enums.AccessLevel;
 import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.packets.server.NetDataRaw;
+import mcp.mobius.opis.swing.actions.ActionRunOpis;
 import mcp.mobius.opis.swing.widgets.JButtonAccess;
 import mcp.mobius.opis.swing.widgets.JPanelMsgHandler;
 import net.miginfocom.swing.MigLayout;
@@ -72,7 +73,7 @@ public class PanelSummary extends JPanelMsgHandler implements ActionListener{
 		
 		btnRun = new JButtonAccess("Run Opis", AccessLevel.PRIVILEGED);
 		add(btnRun, "cell 14 1,alignx right");
-		btnRun.addActionListener(this);
+		btnRun.addActionListener(new ActionRunOpis());
 		
 		JLabel lblNewLabel = new JLabel("World tick");
 		add(lblNewLabel, "cell 1 2");
