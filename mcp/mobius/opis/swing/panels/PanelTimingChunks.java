@@ -3,33 +3,22 @@ package mcp.mobius.opis.swing.panels;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JPanel;
-
-import mapwriter.Mw;
-import mapwriter.api.MwAPI;
-import mapwriter.gui.MwGui;
-import mcp.mobius.opis.data.client.DataCache;
 import mcp.mobius.opis.data.holders.stats.StatAbstract;
 import mcp.mobius.opis.data.holders.stats.StatsChunk;
-import mcp.mobius.opis.gui.overlay.OverlayMeanTime;
 import mcp.mobius.opis.network.enums.AccessLevel;
 import mcp.mobius.opis.network.enums.Message;
-import mcp.mobius.opis.network.packets.client.Packet_ReqData;
 import mcp.mobius.opis.network.packets.server.NetDataRaw;
 import mcp.mobius.opis.swing.widgets.JButtonAccess;
 import mcp.mobius.opis.swing.widgets.JPanelMsgHandler;
 import net.miginfocom.swing.MigLayout;
-import net.minecraft.client.Minecraft;
-
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-
-import cpw.mods.fml.common.network.PacketDispatcher;
 
 public class PanelTimingChunks extends JPanelMsgHandler implements ActionListener{
 	private JTable table;
@@ -73,6 +62,7 @@ public class PanelTimingChunks extends JPanelMsgHandler implements ActionListene
 				boolean[] columnEditables = new boolean[] {
 						false, false, false, false, false
 				};			
+				@Override
 				public Class getColumnClass(int columnIndex) {
 					return columnTypes[columnIndex];
 				}
@@ -81,7 +71,7 @@ public class PanelTimingChunks extends JPanelMsgHandler implements ActionListene
 		scrollPane.setViewportView(table);
 
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-		centerRenderer.setHorizontalAlignment( JLabel.CENTER );		
+		centerRenderer.setHorizontalAlignment( SwingConstants.CENTER );		
 		
 		for (int i = 0; i < table.getColumnCount(); i++)
 			table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);		

@@ -2,12 +2,6 @@ package mcp.mobius.opis.swing.panels;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-
-import javax.swing.JPanel;
-
-import mcp.mobius.opis.api.IMessageHandler;
-import mcp.mobius.opis.data.holders.ISerializable;
 import mcp.mobius.opis.data.holders.stats.StatsPlayer;
 import mcp.mobius.opis.network.enums.AccessLevel;
 import mcp.mobius.opis.network.enums.Message;
@@ -20,6 +14,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
@@ -74,6 +69,7 @@ public class PanelPlayers extends JPanelMsgHandler implements ActionListener{
 					false, false, false
 			};			
 			
+			@Override
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
 			}
@@ -82,7 +78,7 @@ public class PanelPlayers extends JPanelMsgHandler implements ActionListener{
 		scrollPane.setViewportView(table);
 
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-		centerRenderer.setHorizontalAlignment( JLabel.CENTER );		
+		centerRenderer.setHorizontalAlignment( SwingConstants.CENTER );		
 		
 		for (int i = 0; i < table.getColumnCount(); i++)
 			table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);			

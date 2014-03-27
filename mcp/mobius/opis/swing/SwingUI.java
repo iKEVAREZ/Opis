@@ -6,57 +6,16 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
-import javax.swing.JTable;
-import javax.swing.KeyStroke;
+import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.JScrollPane;
-
-import java.awt.GridLayout;
-
-import javax.swing.JLabel;
-
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.HashSet;
 
 import javax.swing.SwingConstants;
-import javax.swing.JCheckBox;
-import javax.swing.JButton;
-
 import cpw.mods.fml.common.network.PacketDispatcher;
-import mapwriter.Mw;
-import mapwriter.api.MwAPI;
-import mapwriter.gui.MwGui;
-import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.api.IMessageHandler;
-import mcp.mobius.opis.data.client.DataCache;
-import mcp.mobius.opis.data.holders.basetypes.AmountHolder;
-import mcp.mobius.opis.data.holders.basetypes.CoordinatesBlock;
-import mcp.mobius.opis.data.holders.basetypes.CoordinatesChunk;
 import mcp.mobius.opis.data.holders.basetypes.SerialInt;
-import mcp.mobius.opis.data.holders.basetypes.SerialString;
-import mcp.mobius.opis.data.holders.basetypes.TargetEntity;
-import mcp.mobius.opis.data.holders.stats.StatAbstract;
-import mcp.mobius.opis.data.holders.stats.StatsChunk;
-import mcp.mobius.opis.data.holders.stats.StatsEntity;
-import mcp.mobius.opis.data.holders.stats.StatsPlayer;
-import mcp.mobius.opis.data.holders.stats.StatsTileEntity;
-import mcp.mobius.opis.data.managers.TileEntityManager;
-import mcp.mobius.opis.gui.overlay.OverlayMeanTime;
-import mcp.mobius.opis.gui.overlay.entperchunk.OverlayEntityPerChunk;
 import mcp.mobius.opis.network.enums.AccessLevel;
 import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.packets.client.Packet_ReqData;
@@ -69,13 +28,6 @@ import mcp.mobius.opis.swing.panels.PanelTimingEntities;
 import mcp.mobius.opis.swing.panels.PanelTimingHandlers;
 import mcp.mobius.opis.swing.panels.PanelTimingTileEnts;
 import mcp.mobius.opis.swing.widgets.JButtonAccess;
-import net.minecraft.client.Minecraft;
-
-import javax.swing.ListSelectionModel;
-import javax.swing.JSeparator;
-import javax.swing.JProgressBar;
-
-import net.miginfocom.swing.MigLayout;
 
 public class SwingUI extends JFrame implements WindowListener, IMessageHandler{
 
@@ -98,6 +50,7 @@ public class SwingUI extends JFrame implements WindowListener, IMessageHandler{
 	
 	public void showUI(){
 		EventQueue.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				try {
 					SwingUI.instance().setVisible(true);
@@ -113,14 +66,14 @@ public class SwingUI extends JFrame implements WindowListener, IMessageHandler{
 	 */
 	private SwingUI() {
 		setTitle("Opis Control Panel");
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 893, 455);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
 		
-		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		JTabbedPane tabbedPane = new JTabbedPane(SwingConstants.TOP);
 		contentPane.add(tabbedPane, BorderLayout.CENTER);
 
 		panelSummary = new PanelSummary();

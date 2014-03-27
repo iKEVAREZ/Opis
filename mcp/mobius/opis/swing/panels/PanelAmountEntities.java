@@ -5,8 +5,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
-import javax.swing.JPanel;
-
 import mcp.mobius.opis.data.holders.basetypes.AmountHolder;
 import mcp.mobius.opis.network.enums.AccessLevel;
 import mcp.mobius.opis.network.enums.Message;
@@ -21,6 +19,7 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
@@ -67,6 +66,7 @@ public class PanelAmountEntities extends JPanelMsgHandler implements ActionListe
 			boolean[] columnEditables = new boolean[] {
 					false, false
 			};			
+			@Override
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
 			}
@@ -78,7 +78,7 @@ public class PanelAmountEntities extends JPanelMsgHandler implements ActionListe
 		add(lblSummary, "cell 0 2 4 1,alignx center");
 
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-		centerRenderer.setHorizontalAlignment( JLabel.CENTER );		
+		centerRenderer.setHorizontalAlignment( SwingConstants.CENTER );		
 		
 		for (int i = 0; i < table.getColumnCount(); i++)
 			table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);		
