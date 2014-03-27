@@ -66,6 +66,15 @@ public class ProxyClient extends ProxyServer {
 		MessageHandlerRegistrar.instance().registerHandler(Message.VALUE_AMOUNT_DOWNLOAD, SwingUI.instance().getPanelSummary());
 		MessageHandlerRegistrar.instance().registerHandler(Message.VALUE_TIMING_TICK,     SwingUI.instance().getPanelSummary());
 		MessageHandlerRegistrar.instance().registerHandler(Message.VALUE_CHUNK_FORCED,    SwingUI.instance().getPanelSummary());	
-		MessageHandlerRegistrar.instance().registerHandler(Message.VALUE_CHUNK_LOADED,    SwingUI.instance().getPanelSummary());	
+		MessageHandlerRegistrar.instance().registerHandler(Message.VALUE_CHUNK_LOADED,    SwingUI.instance().getPanelSummary());
+		
+		MessageHandlerRegistrar.instance().registerHandler(Message.VALUE_TIMING_TILEENTS, SwingUI.instance().getPanelSummary());
+		MessageHandlerRegistrar.instance().registerHandler(Message.VALUE_TIMING_TILEENTS, SwingUI.instance().getPanelTimingTileEnts());
+		MessageHandlerRegistrar.instance().registerHandler(Message.VALUE_TIMING_ENTITIES, SwingUI.instance().getPanelSummary());
+		MessageHandlerRegistrar.instance().registerHandler(Message.VALUE_TIMING_ENTITIES, SwingUI.instance().getPanelTimingEntities());
+		MessageHandlerRegistrar.instance().registerHandler(Message.VALUE_TIMING_HANDLERS, SwingUI.instance().getPanelSummary());
+		MessageHandlerRegistrar.instance().registerHandler(Message.VALUE_TIMING_HANDLERS, SwingUI.instance().getPanelTimingHandlers());
+
+		MessageHandlerRegistrar.instance().registerHandler(Message.VALUE_TIMING_WORLDTICK, SwingUI.instance().getPanelSummary());		
 	}
 }

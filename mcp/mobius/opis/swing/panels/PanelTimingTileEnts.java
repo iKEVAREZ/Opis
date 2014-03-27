@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JPanel;
 
+import mcp.mobius.opis.data.holders.basetypes.SerialDouble;
 import mcp.mobius.opis.data.holders.stats.StatAbstract;
 import mcp.mobius.opis.data.holders.stats.StatsTileEntity;
 import mcp.mobius.opis.helpers.ModIdentification;
@@ -131,6 +132,10 @@ public class PanelTimingTileEnts extends JPanelMsgHandler implements ActionListe
 			this.dataUpdated(table, model, row);			
 			
 			break;
+		}
+		
+		case VALUE_TIMING_TILEENTS:{
+			this.getLblSummary().setText(String.format("Total update time : %.3f µs", ((SerialDouble)rawdata.value).value));	
 		}
 		
 		default:

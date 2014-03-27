@@ -217,29 +217,7 @@ public class PanelSummary extends JPanelMsgHandler implements ActionListener{
 	private double timingTileEntsTotal;
 	private double timingEntitiesTotal;
 	
-	public void setTimingWorldTickTotal(double value){
-		this.timingWorldTickTotal = value;
-		this.getLblTimingWorldTick().setText(String.format("%.3f", value/1000.));
-		this.getLblTimingTotal().setText(String.format("%.3f", this.getProfiledTickTotalTime() ));
-	}	
-	
 	public void setTimingEntUpdateTotal(double value){
-	}	
-	
-	public void setTimingHandlersTotal(double value){
-		this.timingHandlersTotal = value;
-		this.getLblTimingHandlers().setText(String.format("%.3f", value/1000.));
-		this.getLblTimingTotal().setText(String.format("%.3f", this.getProfiledTickTotalTime() ));
-	}
-	public void setTimingEntitiesTotal(double value){
-		this.timingEntitiesTotal = value;
-		this.getLblTimingEntities().setText(String.format("%.3f", value/1000.));
-		this.getLblTimingTotal().setText(String.format("%.3f", this.getProfiledTickTotalTime() ));		
-	}
-	public void setTimingTileEntsTotal(double value){
-		this.timingTileEntsTotal = value;
-		this.getLblTimingTileEnts().setText(String.format("%.3f", value/1000.));
-		this.getLblTimingTotal().setText(String.format("%.3f", this.getProfiledTickTotalTime() ));		
 	}	
 	
 	ArrayList<Double> datapoints = new ArrayList<Double>();
@@ -327,7 +305,31 @@ public class PanelSummary extends JPanelMsgHandler implements ActionListener{
 		case VALUE_CHUNK_LOADED:{
 			this.getLblAmountLoaded().setText(String.valueOf(((SerialInt)rawdata.value).value));
 			break;
-		}				
+		}
+		case VALUE_TIMING_TILEENTS:{
+			this.timingTileEntsTotal = ((SerialDouble)rawdata.value).value;
+			this.getLblTimingTileEnts().setText(String.format("%.3f", this.timingTileEntsTotal/1000.));
+			this.getLblTimingTotal().setText(String.format("%.3f", this.getProfiledTickTotalTime() ));	
+			break;
+		}			
+		case VALUE_TIMING_ENTITIES:{
+			this.timingEntitiesTotal = ((SerialDouble)rawdata.value).value;
+			this.getLblTimingEntities().setText(String.format("%.3f", this.timingEntitiesTotal/1000.));
+			this.getLblTimingTotal().setText(String.format("%.3f", this.getProfiledTickTotalTime() ));
+			break;
+		}			
+		case VALUE_TIMING_HANDLERS:{
+			this.timingHandlersTotal = ((SerialDouble)rawdata.value).value;
+			this.getLblTimingHandlers().setText(String.format("%.3f", this.timingHandlersTotal/1000.));
+			this.getLblTimingTotal().setText(String.format("%.3f", this.getProfiledTickTotalTime() ));
+			break;
+		}					
+		case VALUE_TIMING_WORLDTICK:{
+			this.timingWorldTickTotal = ((SerialDouble)rawdata.value).value;
+			this.getLblTimingWorldTick().setText(String.format("%.3f", timingWorldTickTotal/1000.));
+			this.getLblTimingTotal().setText(String.format("%.3f", this.getProfiledTickTotalTime() ));			
+		}
+		
 		default:
 			return false;
 			

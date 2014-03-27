@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JPanel;
 
+import mcp.mobius.opis.data.holders.basetypes.SerialDouble;
 import mcp.mobius.opis.data.holders.stats.StatAbstract;
 import mcp.mobius.opis.data.holders.stats.StatsTickHandler;
 import mcp.mobius.opis.network.enums.AccessLevel;
@@ -105,7 +106,9 @@ public class PanelTimingHandlers extends JPanelMsgHandler implements ActionListe
 			
 			break;
 		}
-		
+		case VALUE_TIMING_HANDLERS:{
+			this.getLblSummary().setText(String.format("Total update time : %.3f µs", ((SerialDouble)rawdata.value).value));	
+		}			
 		default:
 			return false;
 			

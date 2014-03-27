@@ -91,26 +91,7 @@ public class ClientMessageHandler {
 	}
 	
 	public void handle(Message msg, ISerializable data){
-		if (msg == Message.VALUE_TIMING_TILEENTS){
-			SwingUI.instance().getPanelSummary().setTimingTileEntsTotal(((SerialDouble)data).value);
-			SwingUI.instance().getPanelTimingTileEnts().getLblSummary().setText(String.format("Total update time : %.3f µs", ((SerialDouble)data).value));			
-		}
-		
-		else if (msg == Message.VALUE_TIMING_ENTITIES){
-			SwingUI.instance().getPanelSummary().setTimingEntitiesTotal(((SerialDouble)data).value);
-			SwingUI.instance().getPanelTimingEntities().getLblSummary().setText(String.format("Total update time : %.3f µs", ((SerialDouble)data).value));
-		}
-		
-		else if (msg == Message.VALUE_TIMING_HANDLERS){
-			SwingUI.instance().getPanelSummary().setTimingHandlersTotal(((SerialDouble)data).value);
-			SwingUI.instance().getPanelTimingHandlers().getLblSummary().setText(String.format("Total update time : %.3f µs", ((SerialDouble)data).value));			
-		}
-	
-		else if (msg == Message.VALUE_TIMING_WORLDTICK){
-			SwingUI.instance().getPanelSummary().setTimingWorldTickTotal(((SerialDouble)data).value);
-		}
-	
-		else if (msg == Message.VALUE_TIMING_ENTUPDATE)
+		if (msg == Message.VALUE_TIMING_ENTUPDATE)
 			SwingUI.instance().getPanelSummary().setTimingEntUpdateTotal(((SerialDouble)data).value);						
 
 		else if (msg == Message.STATUS_START){
