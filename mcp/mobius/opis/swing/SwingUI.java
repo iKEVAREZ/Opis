@@ -213,7 +213,6 @@ public class SwingUI extends JFrame implements WindowListener, IMessageHandler{
 					button.setEnabled(true);
 				}
 			}
-			
 			break;
 		}
 		

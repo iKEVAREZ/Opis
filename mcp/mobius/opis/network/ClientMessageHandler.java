@@ -112,27 +112,7 @@ public class ClientMessageHandler {
 	
 		else if (msg == Message.VALUE_TIMING_ENTUPDATE)
 			SwingUI.instance().getPanelSummary().setTimingEntUpdateTotal(((SerialDouble)data).value);						
-		
-		else if (msg == Message.VALUE_AMOUNT_TILEENTS)
-			SwingUI.instance().getPanelSummary().setAmountTileEntsTotal(((SerialInt)data).value);
-		
-		else if (msg == Message.VALUE_AMOUNT_ENTITIES)
-			SwingUI.instance().getPanelSummary().setAmountEntitiesTotal(((SerialInt)data).value);	
-		
-		else if (msg == Message.VALUE_AMOUNT_HANDLERS)
-			SwingUI.instance().getPanelSummary().setAmountHandlersTotal(((SerialInt)data).value);
-		
-		else if (msg == Message.VALUE_TIMING_TICK)
-			SwingUI.instance().getPanelSummary().setTimingTick(data);	
-		
-		else if (msg == Message.VALUE_AMOUNT_UPLOAD){
-			SwingUI.instance().getPanelSummary().setAmountUpload(((SerialLong)data).value);
-		}
-		
-		else if (msg == Message.VALUE_AMOUNT_DOWNLOAD){
-			SwingUI.instance().getPanelSummary().setAmountDownload(((SerialLong)data).value);
-		}
-		     
+
 		else if (msg == Message.STATUS_START){
 			SwingUI.instance().setTextRunButton("Running...");
 			SwingUI.instance().getPanelSummary().setProgressBar(0, ((SerialInt)data).value, 0);
@@ -170,13 +150,5 @@ public class ClientMessageHandler {
 			modOpis.selectedBlock = (CoordinatesBlock)data;
 			SwingUI.instance().getPanelTimingTileEnts().getBtnReset().setEnabled(true);
 		}
-		
-		else if(msg == Message.VALUE_CHUNK_FORCED){
-			SwingUI.instance().getPanelSummary().getLblAmountForced().setText(String.valueOf(((SerialInt)data).value));
-		}
-		     
-		else if(msg == Message.VALUE_CHUNK_LOADED){
-			SwingUI.instance().getPanelSummary().getLblAmountLoaded().setText(String.valueOf(((SerialInt)data).value));
-		}			
 	}
 }

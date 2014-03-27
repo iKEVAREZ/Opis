@@ -10,6 +10,9 @@ import java.util.ArrayList;
 import javax.swing.JPanel;
 
 import mcp.mobius.opis.data.holders.ISerializable;
+import mcp.mobius.opis.data.holders.basetypes.SerialDouble;
+import mcp.mobius.opis.data.holders.basetypes.SerialInt;
+import mcp.mobius.opis.data.holders.basetypes.SerialLong;
 import mcp.mobius.opis.data.holders.stats.StatsTick;
 import mcp.mobius.opis.network.enums.AccessLevel;
 import mcp.mobius.opis.network.enums.Message;
@@ -209,16 +212,6 @@ public class PanelSummary extends JPanelMsgHandler implements ActionListener{
 			this.getProgressBarRun().setValue(value);			
 	}
 	
-	public void setAmountUpload(long value){
-		double uploadKB = (value / 8.0) / 1024.0;
-		this.getLblAmountUpload().setText(String.format("%.3f", uploadKB));		
-	}
-	
-	public void setAmountDownload(long value){
-		double downloadKB = (value / 8.0) / 1024.0;
-		this.getLblAmountDownload().setText(String.format("%.3f", downloadKB));		
-	}
-	
 	private double timingWorldTickTotal;
 	private double timingHandlersTotal;
 	private double timingTileEntsTotal;
@@ -247,16 +240,6 @@ public class PanelSummary extends JPanelMsgHandler implements ActionListener{
 		this.timingTileEntsTotal = value;
 		this.getLblTimingTileEnts().setText(String.format("%.3f", value/1000.));
 		this.getLblTimingTotal().setText(String.format("%.3f", this.getProfiledTickTotalTime() ));		
-	}	
-
-	public void setAmountHandlersTotal(int value){
-		this.getLblAmountHandlers().setText(String.valueOf(value));
-	}
-	public void setAmountEntitiesTotal(int value){
-		this.getLblAmountEntities().setText(String.valueOf(value));		
-	}
-	public void setAmountTileEntsTotal(int value){
-		this.getLblAmountTileEnts().setText(String.valueOf(value));
 	}	
 	
 	ArrayList<Double> datapoints = new ArrayList<Double>();
@@ -310,6 +293,45 @@ public class PanelSummary extends JPanelMsgHandler implements ActionListener{
 
 	@Override
 	public boolean handleMessage(Message msg, NetDataRaw rawdata) {
-		return false;
+		switch(msg){
+		case VALUE_AMOUNT_TILEENTS:{
+			this.getLblAmountTileEnts().setText(String.valueOf(((SerialInt)rawdata.value).value));
+			break;
+		}
+		case VALUE_AMOUNT_ENTITIES:{
+			this.getLblAmountEntities().setText(String.valueOf(((SerialInt)rawdata.value).value));		
+			break;
+		}
+		case VALUE_AMOUNT_HANDLERS:{
+			this.getLblAmountHandlers().setText(String.valueOf(((SerialInt)rawdata.value).value));
+			break;
+		}
+		case VALUE_AMOUNT_UPLOAD:{
+			double uploadKB = (((SerialLong)rawdata.value).value / 8.0) / 1024.0;
+			this.getLblAmountUpload().setText(String.format("%.3f", uploadKB));	
+			break;
+		}
+		case VALUE_AMOUNT_DOWNLOAD:{
+			double downloadKB = (((SerialLong)rawdata.value).value / 8.0) / 1024.0;
+			this.getLblAmountDownload().setText(String.format("%.3f", downloadKB));	
+			break;
+		}
+		case VALUE_TIMING_TICK:{
+			this.setTimingTick(rawdata.value);
+			break;
+		}		
+		case VALUE_CHUNK_FORCED:{
+			this.getLblAmountForced().setText(String.valueOf(((SerialInt)rawdata.value).value));
+			break;
+		}		
+		case VALUE_CHUNK_LOADED:{
+			this.getLblAmountLoaded().setText(String.valueOf(((SerialInt)rawdata.value).value));
+			break;
+		}				
+		default:
+			return false;
+			
+		}
+		return true;
 	}
 }

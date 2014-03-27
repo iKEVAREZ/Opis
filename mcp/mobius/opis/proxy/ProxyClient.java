@@ -55,9 +55,17 @@ public class ProxyClient extends ProxyServer {
 		MessageHandlerRegistrar.instance().registerHandler(Message.LIST_TIMING_HANDLERS, SwingUI.instance().getPanelTimingHandlers());
 		MessageHandlerRegistrar.instance().registerHandler(Message.LIST_TIMING_CHUNK,    SwingUI.instance().getPanelTimingChunks());
 		
-		MessageHandlerRegistrar.instance().registerHandler(Message.STATUS_ACCESS_LEVEL,    DataCache.instance());
-		MessageHandlerRegistrar.instance().registerHandler(Message.STATUS_ACCESS_LEVEL,    SwingUI.instance());		
-		MessageHandlerRegistrar.instance().registerHandler(Message.STATUS_CURRENT_TIME,    DataCache.instance());
+		MessageHandlerRegistrar.instance().registerHandler(Message.STATUS_ACCESS_LEVEL,  DataCache.instance());
+		MessageHandlerRegistrar.instance().registerHandler(Message.STATUS_ACCESS_LEVEL,  SwingUI.instance());		
+		MessageHandlerRegistrar.instance().registerHandler(Message.STATUS_CURRENT_TIME,  DataCache.instance());
 		
+		MessageHandlerRegistrar.instance().registerHandler(Message.VALUE_AMOUNT_TILEENTS, SwingUI.instance().getPanelSummary());
+		MessageHandlerRegistrar.instance().registerHandler(Message.VALUE_AMOUNT_ENTITIES, SwingUI.instance().getPanelSummary());
+		MessageHandlerRegistrar.instance().registerHandler(Message.VALUE_AMOUNT_HANDLERS, SwingUI.instance().getPanelSummary());
+		MessageHandlerRegistrar.instance().registerHandler(Message.VALUE_AMOUNT_UPLOAD,   SwingUI.instance().getPanelSummary());
+		MessageHandlerRegistrar.instance().registerHandler(Message.VALUE_AMOUNT_DOWNLOAD, SwingUI.instance().getPanelSummary());
+		MessageHandlerRegistrar.instance().registerHandler(Message.VALUE_TIMING_TICK,     SwingUI.instance().getPanelSummary());
+		MessageHandlerRegistrar.instance().registerHandler(Message.VALUE_CHUNK_FORCED,    SwingUI.instance().getPanelSummary());	
+		MessageHandlerRegistrar.instance().registerHandler(Message.VALUE_CHUNK_LOADED,    SwingUI.instance().getPanelSummary());	
 	}
 }
