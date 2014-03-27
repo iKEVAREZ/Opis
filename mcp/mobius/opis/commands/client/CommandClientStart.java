@@ -1,7 +1,7 @@
 package mcp.mobius.opis.commands.client;
 
 import mcp.mobius.opis.network.enums.Message;
-import mcp.mobius.opis.network.packets.server.Packet_DataCommand;
+import mcp.mobius.opis.network.packets.server.NetDataCommand;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -20,7 +20,7 @@ public class CommandClientStart extends CommandBase {
 
 	@Override
 	public void processCommand(ICommandSender icommandsender, String[] astring) {
-		((EntityPlayerMP)icommandsender).playerNetServerHandler.sendPacketToPlayer(Packet_DataCommand.create(Message.CLIENT_START_PROFILING));
+		((EntityPlayerMP)icommandsender).playerNetServerHandler.sendPacketToPlayer(NetDataCommand.create(Message.CLIENT_START_PROFILING));
 	}
 
 	@Override

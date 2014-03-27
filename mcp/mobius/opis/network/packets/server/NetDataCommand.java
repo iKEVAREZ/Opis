@@ -10,12 +10,9 @@ import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.enums.Packets;
 import net.minecraft.network.packet.Packet250CustomPayload;
 
-public class Packet_DataCommand {
+public class NetDataCommand extends NetDataRaw{
 
-	public byte    header;
-	public Message msg;
-	
-	public Packet_DataCommand(Packet250CustomPayload packet) {
+	public NetDataCommand(Packet250CustomPayload packet) {
 		DataInputStream inputStream = new DataInputStream(new ByteArrayInputStream(packet.data));
 		try{
 			this.header  = inputStream.readByte();

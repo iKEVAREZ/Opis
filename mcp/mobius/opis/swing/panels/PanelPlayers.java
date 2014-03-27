@@ -2,11 +2,18 @@ package mcp.mobius.opis.swing.panels;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
+import mcp.mobius.opis.api.IMessageHandler;
+import mcp.mobius.opis.data.holders.ISerializable;
+import mcp.mobius.opis.data.holders.stats.StatsPlayer;
 import mcp.mobius.opis.network.enums.AccessLevel;
+import mcp.mobius.opis.network.enums.Message;
+import mcp.mobius.opis.network.packets.server.NetDataRaw;
 import mcp.mobius.opis.swing.widgets.JButtonAccess;
+import mcp.mobius.opis.swing.widgets.JPanelMsgHandler;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.JButton;
@@ -16,7 +23,7 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
-public class PanelPlayers extends JPanel implements ActionListener{
+public class PanelPlayers extends JPanelMsgHandler implements ActionListener{
 	private JTable table;
 	private JButtonAccess btnCenter;
 	private JButtonAccess btnTeleport;
@@ -88,4 +95,23 @@ public class PanelPlayers extends JPanel implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {}
+
+	@Override
+	public void handleMessage(Message msg, NetDataRaw rawdata) {
+		if (msg == Message.LIST_PLAYERS){
+			DefaultTableModel model = (DefaultTableModel)this.getTable().getModel();
+			int               row   = this.updateData(table, model, StatsPlayer.class);
+
+			for (Object o : rawdata.array){
+				StatsPlayer player = (StatsPlayer)o;
+				model.addRow(new Object[]  {
+					player.getName(),
+					player.getCoordinates().dim,
+					String.format("[ %4d %4d %4d ]", 	player.getCoordinates().x, player.getCoordinates().y, player.getCoordinates().z),  
+					 });
+			}
+			
+			this.dataUpdated(table, model, row);			
+		}
+	}
 }

@@ -11,6 +11,7 @@ import java.util.logging.Level;
 import mapwriter.Mw;
 import mcp.mobius.mobiuscore.profiler.ProfilerRegistrar;
 import mcp.mobius.opis.modOpis;
+import mcp.mobius.opis.api.MessageHandlerRegistrar;
 import mcp.mobius.opis.data.client.DataCache;
 import mcp.mobius.opis.data.holders.ISerializable;
 import mcp.mobius.opis.data.holders.basetypes.AmountHolder;
@@ -41,11 +42,11 @@ import mcp.mobius.opis.network.packets.client.Packet_ReqChunks;
 import mcp.mobius.opis.network.packets.client.Packet_ReqData;
 import mcp.mobius.opis.network.packets.custom.Packet250Metadata;
 import mcp.mobius.opis.network.packets.server.Packet_Chunks;
-import mcp.mobius.opis.network.packets.server.Packet_DataCommand;
-import mcp.mobius.opis.network.packets.server.Packet_DataAbstract;
-import mcp.mobius.opis.network.packets.server.Packet_DataList;
+import mcp.mobius.opis.network.packets.server.NetDataCommand;
+import mcp.mobius.opis.network.packets.server.NetDataRaw;
+import mcp.mobius.opis.network.packets.server.NetDataList;
 import mcp.mobius.opis.network.packets.server.Packet_DataOverlayChunkEntities;
-import mcp.mobius.opis.network.packets.server.Packet_DataValue;
+import mcp.mobius.opis.network.packets.server.NetDataValue;
 import mcp.mobius.opis.network.packets.server.Packet_Tickets;
 import mcp.mobius.opis.swing.SwingUI;
 import net.minecraft.entity.player.EntityPlayer;
@@ -103,18 +104,22 @@ public class OpisPacketHandler implements IPacketHandler {
 		}
 		
 		else if (header == Packets.CLIENT_CMD){
-			Packet_DataCommand castedPacket = new Packet_DataCommand(packet);
+			NetDataCommand castedPacket = new NetDataCommand(packet);
 			ClientMessageHandler.instance().handle(castedPacket.msg);
 		}		
 		
 		else if (header == Packets.DATA_LIST_GENERAL){
-			Packet_DataList castedPacket = new Packet_DataList(packet);
-			ClientMessageHandler.instance().handle(castedPacket.msg, castedPacket.data);
-		}
+			NetDataRaw rawdata = new NetDataList(packet);
+			MessageHandlerRegistrar.instance().routeMessage(rawdata.msg, rawdata);
+			//NetDataList castedPacket = new NetDataList(packet);
+			//ClientMessageHandler.instance().handle(castedPacket.msg, castedPacket.array);
+		}		
 		
 		else if (header == Packets.DATA_VALUE_GENERAL){
-			Packet_DataValue castedPacket = new Packet_DataValue(packet);
-			ClientMessageHandler.instance().handle(castedPacket.msg, castedPacket.data);			
+			NetDataRaw rawdata = new NetDataValue(packet);
+			MessageHandlerRegistrar.instance().routeMessage(rawdata.msg, rawdata);
+			//NetDataValue castedPacket = new NetDataValue(packet);
+			//ClientMessageHandler.instance().handle(castedPacket.msg, castedPacket.value);			
 		}
 	}
 
@@ -170,14 +175,14 @@ public class OpisPacketHandler implements IPacketHandler {
 		}
 	}        
 	
-	public static void validateAndSend(Packet_DataAbstract capsule, Player player){
+	public static void validateAndSend(NetDataRaw capsule, Player player){
 		if (capsule.msg.canPlayerUseCommand(player) && capsule.packet.getPacketSize() < 32000)
 			PacketDispatcher.sendPacketToPlayer(capsule.packet, player);
 		else if (capsule.packet.getPacketSize() > 32000)
 			modOpis.log.warning(String.format("Data packet size of type %s too big : %d ! Dropping !", capsule.msg, capsule.packet.getPacketSize()));
 	}
 
-	public static void sendPacketToAllSwing(Packet_DataAbstract capsule){
+	public static void sendPacketToAllSwing(NetDataRaw capsule){
 		for (Player player : PlayerTracker.instance().playersSwing)
 			OpisPacketHandler.validateAndSend(capsule, player);
 	}
@@ -204,21 +209,21 @@ public class OpisPacketHandler implements IPacketHandler {
 		SerialDouble totalWorldTick   = new SerialDouble(GlobalTimingManager.getTotalStats(GlobalTimingManager.worldTickStats));
 		SerialDouble totalEntUpdate   = new SerialDouble(GlobalTimingManager.getTotalStats(GlobalTimingManager.entUpdateStats));
 
-		OpisPacketHandler.validateAndSend(Packet_DataList.create(Message.LIST_TIMING_HANDLERS,    timingHandlers),   player);
-		OpisPacketHandler.validateAndSend(Packet_DataList.create(Message.LIST_TIMING_ENTITIES,    timingEntities),   player);
-		OpisPacketHandler.validateAndSend(Packet_DataList.create(Message.LIST_TIMING_TILEENTS,    timingTileEnts),   player);
-		OpisPacketHandler.validateAndSend(Packet_DataList.create(Message.LIST_TIMING_CHUNK,       timingChunks),     player);
-		OpisPacketHandler.validateAndSend(Packet_DataValue.create(Message.VALUE_TIMING_TILEENTS,  totalTimeTE),      player);
-		OpisPacketHandler.validateAndSend(Packet_DataValue.create(Message.VALUE_TIMING_ENTITIES,  totalTimeEnt),     player);
-		OpisPacketHandler.validateAndSend(Packet_DataValue.create(Message.VALUE_TIMING_HANDLERS,  totalTimeHandler), player);
-		OpisPacketHandler.validateAndSend(Packet_DataValue.create(Message.VALUE_TIMING_WORLDTICK, totalWorldTick),   player);		
-		OpisPacketHandler.validateAndSend(Packet_DataValue.create(Message.VALUE_TIMING_ENTUPDATE, totalEntUpdate),   player);					
+		OpisPacketHandler.validateAndSend(NetDataList.create(Message.LIST_TIMING_HANDLERS,    timingHandlers),   player);
+		OpisPacketHandler.validateAndSend(NetDataList.create(Message.LIST_TIMING_ENTITIES,    timingEntities),   player);
+		OpisPacketHandler.validateAndSend(NetDataList.create(Message.LIST_TIMING_TILEENTS,    timingTileEnts),   player);
+		OpisPacketHandler.validateAndSend(NetDataList.create(Message.LIST_TIMING_CHUNK,       timingChunks),     player);
+		OpisPacketHandler.validateAndSend(NetDataValue.create(Message.VALUE_TIMING_TILEENTS,  totalTimeTE),      player);
+		OpisPacketHandler.validateAndSend(NetDataValue.create(Message.VALUE_TIMING_ENTITIES,  totalTimeEnt),     player);
+		OpisPacketHandler.validateAndSend(NetDataValue.create(Message.VALUE_TIMING_HANDLERS,  totalTimeHandler), player);
+		OpisPacketHandler.validateAndSend(NetDataValue.create(Message.VALUE_TIMING_WORLDTICK, totalWorldTick),   player);		
+		OpisPacketHandler.validateAndSend(NetDataValue.create(Message.VALUE_TIMING_ENTUPDATE, totalEntUpdate),   player);					
 		
-		OpisPacketHandler.validateAndSend(Packet_DataValue.create(Message.VALUE_AMOUNT_HANDLERS, new SerialInt(TickHandlerManager.startStats.size())), player);
+		OpisPacketHandler.validateAndSend(NetDataValue.create(Message.VALUE_AMOUNT_HANDLERS, new SerialInt(TickHandlerManager.startStats.size())), player);
 		
-		OpisPacketHandler.validateAndSend(Packet_DataValue.create(Message.STATUS_TIME_LAST_RUN, new SerialLong(ProfilerRegistrar.timeStampLastRun)), player);
+		OpisPacketHandler.validateAndSend(NetDataValue.create(Message.STATUS_TIME_LAST_RUN, new SerialLong(ProfilerRegistrar.timeStampLastRun)), player);
 		
-		OpisPacketHandler.validateAndSend(Packet_DataValue.create(Message.STATUS_ACCESS_LEVEL, new SerialInt(PlayerTracker.instance().getPlayerAccessLevel(player).ordinal())), player);
+		OpisPacketHandler.validateAndSend(NetDataValue.create(Message.STATUS_ACCESS_LEVEL, new SerialInt(PlayerTracker.instance().getPlayerAccessLevel(player).ordinal())), player);
 		
 		// This portion is to get the proper filtered amounts depending on the player preferences.
 		String name = ((EntityPlayer)player).getEntityName();
@@ -229,7 +234,7 @@ public class OpisPacketHandler implements IPacketHandler {
 
 		// Here we send a full update to the player
 		//OpisPacketHandler.validateAndSend(Packet_DataList.create(DataReq.LIST_AMOUNT_ENTITIES, amountEntities), player);
-		OpisPacketHandler.validateAndSend(Packet_DataList.create(Message.LIST_AMOUNT_ENTITIES, amountEntities), player);		
+		OpisPacketHandler.validateAndSend(NetDataList.create(Message.LIST_AMOUNT_ENTITIES, amountEntities), player);		
 		
 	}
 	

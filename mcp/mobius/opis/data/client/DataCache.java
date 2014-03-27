@@ -52,7 +52,7 @@ public class DataCache {
 	private ArrayList<StatsEntity>      timingEntities = new ArrayList<StatsEntity>(); 
 	private ArrayList<StatsTileEntity>  timingTileEnts = new ArrayList<StatsTileEntity>();
 	private ArrayList<StatsChunk>       timingChunks   = new ArrayList<StatsChunk>();
-	private ArrayList<StatsPlayer>		listPlayers    = new ArrayList<StatsPlayer>();
+	//private ArrayList<StatsPlayer>		listPlayers    = new ArrayList<StatsPlayer>();
 	
 	private long   clockScrew          = 0;
 	
@@ -197,6 +197,7 @@ public class DataCache {
 		this.dataUpdated(table, model, row);	
 	}	
 	
+	/*
 	public ArrayList<StatsPlayer> getListPlayers(){
 		return this.listPlayers;
 	}
@@ -216,6 +217,7 @@ public class DataCache {
 		
 		this.dataUpdated(table, model, row);
 	}
+	*/
 	
 	private <U> int updateData(JTable table, DefaultTableModel model, ArrayList<U> dataarray, ArrayList<? extends ISerializable> newdata, Class<U> datatype){
 		int row = table.getSelectedRow();

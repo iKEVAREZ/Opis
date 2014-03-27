@@ -13,27 +13,25 @@ import mcp.mobius.opis.data.holders.ISerializable;
 import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.enums.Packets;
 
-public class Packet_DataValue extends Packet_DataAbstract{
+public class NetDataValue extends NetDataRaw{
 
-	public ISerializable data; 
+	public NetDataValue(){};
 	
-	public Packet_DataValue(){};
-	
-	public Packet_DataValue(Packet250CustomPayload packet) {
+	public NetDataValue(Packet250CustomPayload packet) {
 		DataInputStream istream = new DataInputStream(new ByteArrayInputStream(packet.data));
 		
 		try{
 			this.header   = istream.readByte();
-			this.msg  = Message.values()[istream.readInt()];
-			String datatype = "";
-			datatype = Packet.readString(istream, 255);
-			data = dataRead(datatype, istream);
+			this.msg      = Message.values()[istream.readInt()];
+			this.clazzStr = Packet.readString(istream, 255);
+			this.clazz    = this.getClass(this.clazzStr);
+			this.value    = dataRead(this.clazzStr, istream);
 			
 		} catch (IOException e){}				
 	}
 
 	//public static Packet250Metadata create(DataReq dataReq, ISerializable data){
-	public static Packet_DataValue create(Message dataReq, ISerializable data){
+	public static NetDataValue create(Message dataReq, ISerializable data){
 		//Packet250Metadata packet      = new Packet250Metadata();
 		Packet250CustomPayload packet = new Packet250CustomPayload();
 		ByteArrayOutputStream bos     = new ByteArrayOutputStream(1);
@@ -54,24 +52,11 @@ public class Packet_DataValue extends Packet_DataAbstract{
 		packet.data    = bos.toByteArray();
 		packet.length  = bos.size();		
 		
-		Packet_DataValue capsule = new Packet_DataValue();
+		NetDataValue capsule = new NetDataValue();
 		capsule.msg = dataReq;
 		capsule.header  = Packets.DATA_VALUE_GENERAL;
 		capsule.packet  = packet;
 		
 		return capsule;
 	}	
-	
-	private ISerializable dataRead(String datatypeStr, DataInputStream istream){
-		try{
-			Class  datatype = Class.forName(datatypeStr);
-			Method readFromStream = datatype.getMethod("readFromStream", DataInputStream.class);
-			
-			return (ISerializable)readFromStream.invoke(null, istream);
-
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}	
-	
 }

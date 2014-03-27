@@ -30,8 +30,8 @@ import mcp.mobius.opis.data.server.TickProfiler;
 import mcp.mobius.opis.gui.overlay.OverlayStatus;
 import mcp.mobius.opis.network.OpisPacketHandler;
 import mcp.mobius.opis.network.enums.Message;
-import mcp.mobius.opis.network.packets.server.Packet_DataList;
-import mcp.mobius.opis.network.packets.server.Packet_DataValue;
+import mcp.mobius.opis.network.packets.server.NetDataList;
+import mcp.mobius.opis.network.packets.server.NetDataValue;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.TickType;
 import cpw.mods.fml.common.network.PacketDispatcher;
@@ -75,24 +75,24 @@ public class OpisServerTickHandler implements ITickHandler {
 			if (System.nanoTime() - timer1000 > 1000000000L){
 				timer1000 = System.nanoTime();
 
-				OpisPacketHandler.sendPacketToAllSwing(Packet_DataValue.create(Message.VALUE_AMOUNT_UPLOAD,   new SerialLong(PacketProfiler.instance().dataSizeOut)));
-				OpisPacketHandler.sendPacketToAllSwing(Packet_DataValue.create(Message.VALUE_AMOUNT_DOWNLOAD, new SerialLong(PacketProfiler.instance().dataSizeIn)));
-				OpisPacketHandler.sendPacketToAllSwing(Packet_DataValue.create(Message.VALUE_CHUNK_FORCED,    new SerialInt(ChunkManager.getForcedChunkAmount())));
-				OpisPacketHandler.sendPacketToAllSwing(Packet_DataValue.create(Message.VALUE_CHUNK_LOADED,    new SerialInt(ChunkManager.getLoadedChunkAmount())));
-				OpisPacketHandler.sendPacketToAllSwing(Packet_DataValue.create(Message.VALUE_TIMING_TICK,     TickProfiler.instance().stats));
-				OpisPacketHandler.sendPacketToAllSwing(Packet_DataValue.create(Message.VALUE_AMOUNT_TILEENTS, new SerialInt(TileEntityManager.getAmountTileEntities())));
-				OpisPacketHandler.sendPacketToAllSwing(Packet_DataValue.create(Message.VALUE_AMOUNT_ENTITIES, new SerialInt(EntityManager.getAmountEntities())));
+				OpisPacketHandler.sendPacketToAllSwing(NetDataValue.create(Message.VALUE_AMOUNT_UPLOAD,   new SerialLong(PacketProfiler.instance().dataSizeOut)));
+				OpisPacketHandler.sendPacketToAllSwing(NetDataValue.create(Message.VALUE_AMOUNT_DOWNLOAD, new SerialLong(PacketProfiler.instance().dataSizeIn)));
+				OpisPacketHandler.sendPacketToAllSwing(NetDataValue.create(Message.VALUE_CHUNK_FORCED,    new SerialInt(ChunkManager.getForcedChunkAmount())));
+				OpisPacketHandler.sendPacketToAllSwing(NetDataValue.create(Message.VALUE_CHUNK_LOADED,    new SerialInt(ChunkManager.getLoadedChunkAmount())));
+				OpisPacketHandler.sendPacketToAllSwing(NetDataValue.create(Message.VALUE_TIMING_TICK,     TickProfiler.instance().stats));
+				OpisPacketHandler.sendPacketToAllSwing(NetDataValue.create(Message.VALUE_AMOUNT_TILEENTS, new SerialInt(TileEntityManager.getAmountTileEntities())));
+				OpisPacketHandler.sendPacketToAllSwing(NetDataValue.create(Message.VALUE_AMOUNT_ENTITIES, new SerialInt(EntityManager.getAmountEntities())));
 				
-				OpisPacketHandler.sendPacketToAllSwing(Packet_DataList.create(Message.LIST_PLAYERS,           EntityManager.getAllPlayers()));
+				OpisPacketHandler.sendPacketToAllSwing(NetDataList.create(Message.LIST_PLAYERS,           EntityManager.getAllPlayers()));
 				
 				for (Player player : PlayerTracker.instance().playersSwing){
-					OpisPacketHandler.validateAndSend(Packet_DataValue.create(Message.STATUS_ACCESS_LEVEL, new SerialInt(PlayerTracker.instance().getPlayerAccessLevel(player).ordinal())), player);
+					OpisPacketHandler.validateAndSend(NetDataValue.create(Message.STATUS_ACCESS_LEVEL, new SerialInt(PlayerTracker.instance().getPlayerAccessLevel(player).ordinal())), player);
 				}
 				
 				
 				if (modOpis.profilerRun){
-					OpisPacketHandler.sendPacketToAllSwing(Packet_DataValue.create(Message.STATUS_RUNNING,   new SerialInt(modOpis.profilerMaxTicks)));
-					OpisPacketHandler.sendPacketToAllSwing(Packet_DataValue.create(Message.STATUS_RUN_UPDATE,     new SerialInt(profilerRunningTicks)));
+					OpisPacketHandler.sendPacketToAllSwing(NetDataValue.create(Message.STATUS_RUNNING,   new SerialInt(modOpis.profilerMaxTicks)));
+					OpisPacketHandler.sendPacketToAllSwing(NetDataValue.create(Message.STATUS_RUN_UPDATE,     new SerialInt(profilerRunningTicks)));
 				}
 				
 				PacketProfiler.instance().dataSizeOut = 0L;
@@ -114,7 +114,7 @@ public class OpisServerTickHandler implements ITickHandler {
 				modOpis.profilerRun = false;
 				ProfilerRegistrar.turnOff();				
 				
-				OpisPacketHandler.sendPacketToAllSwing(Packet_DataValue.create(Message.STATUS_STOP, new SerialInt(modOpis.profilerMaxTicks)));
+				OpisPacketHandler.sendPacketToAllSwing(NetDataValue.create(Message.STATUS_STOP, new SerialInt(modOpis.profilerMaxTicks)));
 				
 				for (Player player : PlayerTracker.instance().playersSwing){
 					OpisPacketHandler.sendFullUpdate(player);
@@ -145,14 +145,14 @@ public class OpisServerTickHandler implements ITickHandler {
 		for (Player player : PlayerTracker.instance().playerOverlayStatus.keySet()){
 			
 			if (PlayerTracker.instance().playerOverlayStatus.get(player) == OverlayStatus.CHUNKSTATUS){
-				OpisPacketHandler.validateAndSend(Packet_DataList.create(Message.LIST_CHUNK_LOADED, ChunkManager.getLoadedChunks(PlayerTracker.instance().playerDimension.get(player))), player);	
+				OpisPacketHandler.validateAndSend(NetDataList.create(Message.LIST_CHUNK_LOADED, ChunkManager.getLoadedChunks(PlayerTracker.instance().playerDimension.get(player))), player);	
 				
 			}
 			
 			if (PlayerTracker.instance().playerOverlayStatus.get(player) == OverlayStatus.MEANTIME){
 				ArrayList<StatsChunk> timingChunks = ChunkManager.getTopChunks(100);
 				//OpisPacketHandler.validateAndSend(Packet_DataList.create(DataReq.LIST_TIMING_CHUNK, timingChunks), player);
-				OpisPacketHandler.validateAndSend(Packet_DataList.create(Message.LIST_TIMING_CHUNK, timingChunks), player);
+				OpisPacketHandler.validateAndSend(NetDataList.create(Message.LIST_TIMING_CHUNK, timingChunks), player);
 			}
 		}
 	}

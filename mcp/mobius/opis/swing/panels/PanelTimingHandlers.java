@@ -26,7 +26,7 @@ public class PanelTimingHandlers extends JPanel implements ActionListener{
 	private JTable table;
 	private JButtonAccess btnRun;
 	private JLabel lblSummary;
-
+	
 	/**
 	 * Create the panel.
 	 */

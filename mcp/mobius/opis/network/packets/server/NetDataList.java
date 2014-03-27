@@ -20,25 +20,29 @@ import mcp.mobius.opis.network.enums.Packets;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
 
-public class Packet_DataList extends Packet_DataAbstract{
+public class NetDataList extends NetDataRaw{
 
-	public ArrayList<ISerializable> data = new ArrayList<ISerializable>(); 
+	//public ArrayList<ISerializable> data = new ArrayList<ISerializable>(); 
 	
-	public Packet_DataList() {}
+	public NetDataList() {}
 	
-	public Packet_DataList(Packet250CustomPayload packet) {
+	public NetDataList(Packet250CustomPayload packet) {
 		DataInputStream istream = new DataInputStream(new ByteArrayInputStream(packet.data));
 		
 		try{
 			this.header   = istream.readByte();
 			this.msg  = Message.values()[istream.readInt()];
 			int ndata     = istream.readInt();
-			String datatype = "";
-			if (ndata > 0)
-				datatype = Packet.readString(istream, 255);
+			this.clazzStr = "";
+			if (ndata > 0){
+				this.clazzStr = Packet.readString(istream, 255);
+				this.clazz    = this.getClass(this.clazzStr);
+			}
+			
+			this.array = new ArrayList<ISerializable>();
 			
 			for (int i = 0; i < ndata; i++)
-				data.add(dataRead(datatype, istream));
+				this.array.add(dataRead(this.clazzStr, istream));
 		} catch (IOException e){}				
 	}
 
@@ -56,7 +60,7 @@ public class Packet_DataList extends Packet_DataAbstract{
 	*/
 	
 	//public static Packet250Metadata create(DataReq dataReq, ArrayList<? extends ISerializable> stats){
-	public static Packet_DataList create(Message msg, ArrayList<? extends ISerializable> data){
+	public static NetDataList create(Message msg, ArrayList<? extends ISerializable> data){
 		//Packet250Metadata packet      = new Packet250Metadata();
 		Packet250CustomPayload packet = new Packet250CustomPayload();
 		ByteArrayOutputStream bos     = new ByteArrayOutputStream(1);
@@ -81,7 +85,7 @@ public class Packet_DataList extends Packet_DataAbstract{
 		packet.data    = bos.toByteArray();
 		packet.length  = bos.size();		
 		
-		Packet_DataList capsule = new Packet_DataList();
+		NetDataList capsule = new NetDataList();
 		capsule.msg = msg;
 		capsule.header  = Packets.DATA_VALUE_GENERAL;
 		capsule.packet  = packet;
@@ -89,16 +93,6 @@ public class Packet_DataList extends Packet_DataAbstract{
 		return capsule;
 	}	
 	
-	private ISerializable dataRead(String datatypeStr, DataInputStream istream){
-		try{
-			Class  datatype = Class.forName(datatypeStr);
-			Method readFromStream = datatype.getMethod("readFromStream", DataInputStream.class);
-			
-			return (ISerializable)readFromStream.invoke(null, istream);
 
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
 	
 }

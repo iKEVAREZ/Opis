@@ -9,6 +9,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.util.ResourceLocation;
 import mapwriter.api.MwAPI;
 import mcp.mobius.opis.modOpis;
+import mcp.mobius.opis.api.MessageHandlerRegistrar;
 import mcp.mobius.opis.data.holders.stats.StatsChunk;
 import mcp.mobius.opis.data.holders.stats.StatsEntity;
 import mcp.mobius.opis.data.holders.stats.StatsMod;
@@ -20,6 +21,9 @@ import mcp.mobius.opis.gui.overlay.OverlayLoadedChunks;
 import mcp.mobius.opis.gui.overlay.OverlayMeanTime;
 import mcp.mobius.opis.gui.overlay.entperchunk.OverlayEntityPerChunk;
 import mcp.mobius.opis.gui.screens.ScreenBase;
+import mcp.mobius.opis.network.enums.Message;
+import mcp.mobius.opis.swing.SwingUI;
+import mcp.mobius.opis.swing.panels.PanelPlayers;
 
 public class ProxyClient extends ProxyServer {
 	
@@ -41,6 +45,8 @@ public class ProxyClient extends ProxyServer {
 		//fontMC24 = Fonts.createFont(new ResourceLocation("opis", "fonts/Minecraftia.ttf"), 24, true);
 		//fontMC8 = Fonts.loadSystemFont("Monospace", 12, true, Font.TRUETYPE_FONT | Font.BOLD);
 		fontMC8 = Fonts.createFont(new ResourceLocation("opis", "fonts/LiberationMono-Bold.ttf"), 14, true);
+		
+		MessageHandlerRegistrar.instance().registerHandler(Message.LIST_PLAYERS, SwingUI.instance().getPanelPlayers());
 	}
 
 }
