@@ -9,12 +9,15 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import mcp.mobius.opis.api.IMessageHandler;
 import mcp.mobius.opis.data.holders.ISerializable;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesChunk;
 import mcp.mobius.opis.data.holders.basetypes.TicketData;
 import mcp.mobius.opis.data.holders.stats.StatsChunk;
 import mcp.mobius.opis.data.holders.stats.StatsEntity;
 import mcp.mobius.opis.data.holders.stats.StatsTileEntity;
+import mcp.mobius.opis.network.enums.Message;
+import mcp.mobius.opis.network.packets.server.NetDataRaw;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.Chunk;
@@ -22,36 +25,38 @@ import net.minecraft.world.gen.ChunkProviderServer;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.ForgeChunkManager.Ticket;
 
-public class ChunkManager {
+public class ChunkManager implements IMessageHandler{
 	
-
+	private static ChunkManager _instance = new ChunkManager();
+	public  static ChunkManager instance(){return _instance;};
+	private ChunkManager(){}
 	
-	private static ArrayList<CoordinatesChunk>  chunksLoad = new ArrayList<CoordinatesChunk>();
-	private static HashMap<CoordinatesChunk, StatsChunk>  chunkMeanTime = new HashMap<CoordinatesChunk, StatsChunk>();
-	public  static ArrayList<TicketData> tickets = new ArrayList<TicketData>();
+	private ArrayList<CoordinatesChunk>  chunksLoad = new ArrayList<CoordinatesChunk>();
+	private HashMap<CoordinatesChunk, StatsChunk>  chunkMeanTime = new HashMap<CoordinatesChunk, StatsChunk>();
+	public  ArrayList<TicketData> tickets = new ArrayList<TicketData>();
 
-	public static void setLoadedChunks(ArrayList<ISerializable> data){
+	public void setLoadedChunks(ArrayList<ISerializable> data){
 		chunksLoad.clear();
 		for (ISerializable chunk : data){
 			chunksLoad.add((CoordinatesChunk)chunk);
 		}
 	}
 	
-	public static ArrayList<CoordinatesChunk> getLoadedChunks(){
+	public ArrayList<CoordinatesChunk> getLoadedChunks(){
 		return chunksLoad;
 	}	
 	
-	public static void setChunkMeanTime(ArrayList<ISerializable> data){
+	public void setChunkMeanTime(ArrayList<ISerializable> data){
 		chunkMeanTime.clear();
 		for (ISerializable stat : data)
 			chunkMeanTime.put(((StatsChunk)stat).getChunk(), (StatsChunk)stat);
 	}
 	
-	public static HashMap<CoordinatesChunk, StatsChunk> getChunkMeanTime(){
+	public HashMap<CoordinatesChunk, StatsChunk> getChunkMeanTime(){
 		return chunkMeanTime;
 	}
 	
-	public static ArrayList<CoordinatesChunk> getLoadedChunks(int dimension){
+	public ArrayList<CoordinatesChunk> getLoadedChunks(int dimension){
 		HashSet<CoordinatesChunk> chunkStatus = new HashSet<CoordinatesChunk>();
 		WorldServer world = DimensionManager.getWorld(dimension);
 		if (world != null)
@@ -69,7 +74,7 @@ public class ChunkManager {
 		return new ArrayList<CoordinatesChunk>(chunkStatus);
 	}
 
-	public static HashSet<TicketData> getTickets(){
+	public HashSet<TicketData> getTickets(){
 		HashSet<TicketData> tickets = new HashSet<TicketData>();
 		for (int dim : DimensionManager.getIDs())
 			for (Ticket ticket : DimensionManager.getWorld(dim).getPersistentChunks().values())
@@ -78,7 +83,7 @@ public class ChunkManager {
 		return tickets;
 	}
 	
-	public static ArrayList<StatsChunk> getChunksUpdateTime(){
+	public ArrayList<StatsChunk> getChunksUpdateTime(){
 		HashMap<CoordinatesChunk, StatsChunk> chunks = new HashMap<CoordinatesChunk, StatsChunk>();
 		
 		for (StatsTileEntity stat : TileEntityManager.stats.values()){
@@ -101,8 +106,8 @@ public class ChunkManager {
 		return chunksUpdate;
 	}
 	
-	public static ArrayList<StatsChunk> getTopChunks(int quantity){
-		ArrayList<StatsChunk> chunks  = ChunkManager.getChunksUpdateTime();
+	public ArrayList<StatsChunk> getTopChunks(int quantity){
+		ArrayList<StatsChunk> chunks  = this.getChunksUpdateTime();
 		ArrayList<StatsChunk> outList = new ArrayList<StatsChunk>();
 		Collections.sort(chunks);
 		
@@ -112,7 +117,7 @@ public class ChunkManager {
 		return outList;
 	}
 
-	public static int getLoadedChunkAmount(){	
+	public int getLoadedChunkAmount(){	
 		int loadedChunks = 0;
 		for (WorldServer world : DimensionManager.getWorlds()){
 			int loadedChunksForDim = world.getChunkProvider().getLoadedChunkCount();
@@ -123,11 +128,30 @@ public class ChunkManager {
 		return loadedChunks;
 	}
 	
-	public static int getForcedChunkAmount(){	
+	public int getForcedChunkAmount(){	
 		int forcedChunks = 0;
 		for (WorldServer world : DimensionManager.getWorlds()){
 			forcedChunks += world.getPersistentChunks().size();
 		}
 		return forcedChunks;
+	}
+
+	@Override
+	public boolean handleMessage(Message msg, NetDataRaw rawdata) {
+		switch(msg){
+		case LIST_TIMING_CHUNK:{
+			this.setChunkMeanTime(rawdata.array);
+			break;
+		}
+		case LIST_CHUNK_LOADED:{
+			this.setLoadedChunks(rawdata.array);	 
+			break;
+		}		
+		default:
+			return false;
+		}
+		
+		
+		return true;
 	}	
 }

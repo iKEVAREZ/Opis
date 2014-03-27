@@ -15,6 +15,7 @@ import mapwriter.api.IMwChunkOverlay;
 import mapwriter.api.IMwDataProvider;
 import mapwriter.map.MapView;
 import mapwriter.map.mapmode.MapMode;
+import mcp.mobius.opis.api.IMessageHandler;
 import mcp.mobius.opis.data.holders.ISerializable;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesBlock;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesChunk;
@@ -31,8 +32,9 @@ import mcp.mobius.opis.gui.widgets.tableview.ViewTable;
 import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.packets.client.Packet_ReqChunks;
 import mcp.mobius.opis.network.packets.client.Packet_ReqData;
+import mcp.mobius.opis.network.packets.server.NetDataRaw;
 
-public class OverlayEntityPerChunk implements IMwDataProvider {
+public class OverlayEntityPerChunk implements IMwDataProvider, IMessageHandler {
 
 	class ReducedData implements Comparable{
 		CoordinatesChunk chunk;
@@ -284,6 +286,22 @@ public class OverlayEntityPerChunk implements IMwDataProvider {
 		
 		if (chunks.size() > 0)
 			PacketDispatcher.sendPacketToServer(Packet_ReqChunks.create(dim, chunks));				
+	}
+
+	@Override
+	public boolean handleMessage(Message msg, NetDataRaw rawdata) {
+		switch(msg){
+		case LIST_CHUNK_ENTITIES:{
+			this.setEntStats(rawdata.array);
+			this.setupEntTable();
+			break;
+		}
+		default:
+			return false;
+		}
+		
+		
+		return true;
 	}	
 	
 }

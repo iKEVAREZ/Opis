@@ -62,7 +62,7 @@ public class ServerMessageHandler {
 		}
 		
 		else if (maintype == Message.OVERLAY_CHUNK_TIMING){
-			ArrayList<StatsChunk> timingChunks = ChunkManager.getTopChunks(100);
+			ArrayList<StatsChunk> timingChunks = ChunkManager.instance().getTopChunks(100);
 			OpisPacketHandler.validateAndSend(NetDataList.create(Message.LIST_TIMING_CHUNK,  timingChunks), (Player)player);
 		}		
 		
@@ -77,11 +77,11 @@ public class ServerMessageHandler {
 		else if (maintype == Message.LIST_CHUNK_LOADED){
 			PlayerTracker.instance().playerOverlayStatus.put(player, OverlayStatus.CHUNKSTATUS);
 			PlayerTracker.instance().playerDimension.put(player, ((SerialInt)param1).value);
-			OpisPacketHandler.validateAndSend(NetDataList.create(Message.LIST_CHUNK_LOADED, ChunkManager.getLoadedChunks(((SerialInt)param1).value)), player);
+			OpisPacketHandler.validateAndSend(NetDataList.create(Message.LIST_CHUNK_LOADED, ChunkManager.instance().getLoadedChunks(((SerialInt)param1).value)), player);
 		}		
 
 		else if (maintype == Message.LIST_CHUNK_TICKETS){
-			PacketDispatcher.sendPacketToPlayer(Packet_Tickets.create(ChunkManager.getTickets()), player);
+			PacketDispatcher.sendPacketToPlayer(Packet_Tickets.create(ChunkManager.instance().getTickets()), player);
 		}		
 		
 		else if (maintype == Message.LIST_TIMING_TILEENTS){
@@ -106,7 +106,7 @@ public class ServerMessageHandler {
 		}
 		
 		else if (maintype == Message.LIST_TIMING_CHUNK){
-			ArrayList<StatsChunk> timingChunks = ChunkManager.getTopChunks(100);
+			ArrayList<StatsChunk> timingChunks = ChunkManager.instance().getTopChunks(100);
 			OpisPacketHandler.validateAndSend(NetDataList.create(Message.LIST_TIMING_CHUNK,  timingChunks), (Player)player);
 		}
 

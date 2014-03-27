@@ -19,6 +19,7 @@ import mapwriter.api.IMwDataProvider;
 import mapwriter.map.MapView;
 import mapwriter.map.mapmode.MapMode;
 import mcp.mobius.opis.modOpis;
+import mcp.mobius.opis.api.IMessageHandler;
 import mcp.mobius.opis.data.holders.ISerializable;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesBlock;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesChunk;
@@ -37,8 +38,9 @@ import mcp.mobius.opis.gui.widgets.tableview.ViewTable;
 import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.packets.client.Packet_ReqChunks;
 import mcp.mobius.opis.network.packets.client.Packet_ReqData;
+import mcp.mobius.opis.network.packets.server.NetDataRaw;
 
-public class OverlayMeanTime implements IMwDataProvider {
+public class OverlayMeanTime implements IMwDataProvider, IMessageHandler{
 
 	public class EntitiesTable extends ViewTable{
 		MapView mapView;
@@ -144,16 +146,16 @@ public class OverlayMeanTime implements IMwDataProvider {
 		double minTime = 9999;
 		double maxTime = 0;
 
-		for (CoordinatesChunk chunk :   ChunkManager.getChunkMeanTime().keySet()){
-			minTime = Math.min(minTime, ChunkManager.getChunkMeanTime().get(chunk).getDataSum());
-			maxTime = Math.max(maxTime, ChunkManager.getChunkMeanTime().get(chunk).getDataSum());
+		for (CoordinatesChunk chunk :   ChunkManager.instance().getChunkMeanTime().keySet()){
+			minTime = Math.min(minTime, ChunkManager.instance().getChunkMeanTime().get(chunk).getDataSum());
+			maxTime = Math.max(maxTime, ChunkManager.instance().getChunkMeanTime().get(chunk).getDataSum());
 		}
 		
-		for (CoordinatesChunk chunk : ChunkManager.getChunkMeanTime().keySet()){
+		for (CoordinatesChunk chunk : ChunkManager.instance().getChunkMeanTime().keySet()){
 			if (this.selectedChunk != null)
-				overlays.add(new ChunkOverlay(chunk.chunkX, chunk.chunkZ, ChunkManager.getChunkMeanTime().get(chunk).tileEntities, ChunkManager.getChunkMeanTime().get(chunk).getDataSum(), minTime, maxTime, chunk.equals(this.selectedChunk)));
+				overlays.add(new ChunkOverlay(chunk.chunkX, chunk.chunkZ, ChunkManager.instance().getChunkMeanTime().get(chunk).tileEntities, ChunkManager.instance().getChunkMeanTime().get(chunk).getDataSum(), minTime, maxTime, chunk.equals(this.selectedChunk)));
 			else
-				overlays.add(new ChunkOverlay(chunk.chunkX, chunk.chunkZ, ChunkManager.getChunkMeanTime().get(chunk).tileEntities, ChunkManager.getChunkMeanTime().get(chunk).getDataSum(), minTime, maxTime, false));
+				overlays.add(new ChunkOverlay(chunk.chunkX, chunk.chunkZ, ChunkManager.instance().getChunkMeanTime().get(chunk).tileEntities, ChunkManager.instance().getChunkMeanTime().get(chunk).getDataSum(), minTime, maxTime, false));
 		}
 		return overlays;
 	}
@@ -164,11 +166,11 @@ public class OverlayMeanTime implements IMwDataProvider {
 		int zChunk = bZ >> 4;
 		CoordinatesChunk chunkCoord = new CoordinatesChunk(dim, xChunk, zChunk);
 		
-		if (ChunkManager.getChunkMeanTime().containsKey(chunkCoord))
+		if (ChunkManager.instance().getChunkMeanTime().containsKey(chunkCoord))
 			if (modOpis.microseconds)
-				return String.format("%.3f \u00B5s", ChunkManager.getChunkMeanTime().get(chunkCoord).getDataSum());
+				return String.format("%.3f \u00B5s", ChunkManager.instance().getChunkMeanTime().get(chunkCoord).getDataSum());
 			else
-				return String.format(", %.5f ms", ChunkManager.getChunkMeanTime().get(chunkCoord).getDataSum()/1000.0);
+				return String.format(", %.5f ms", ChunkManager.instance().getChunkMeanTime().get(chunkCoord).getDataSum()/1000.0);
 
 		else
 			return "";
@@ -182,7 +184,7 @@ public class OverlayMeanTime implements IMwDataProvider {
 		int chunkZ = bZ >> 4;		
 		CoordinatesChunk clickedChunk = new CoordinatesChunk(dim, chunkX, chunkZ); 
 		
-		if (ChunkManager.getChunkMeanTime().containsKey(clickedChunk)){
+		if (ChunkManager.instance().getChunkMeanTime().containsKey(clickedChunk)){
 			if (this.selectedChunk == null)
 				this.selectedChunk = clickedChunk;
 			else if (this.selectedChunk.equals(clickedChunk))
@@ -331,6 +333,21 @@ public class OverlayMeanTime implements IMwDataProvider {
 
 		if (chunks.size() > 0)
 			PacketDispatcher.sendPacketToServer(Packet_ReqChunks.create(dim, chunks));				
+	}
+
+	@Override
+	public boolean handleMessage(Message msg, NetDataRaw rawdata) {
+		switch(msg){
+		case LIST_CHUNK_TILEENTS:{
+			this.setupTable(rawdata.array);
+			break;
+		}
+		default:
+			return false;
+		}
+		
+		
+		return true;
 	}	
 	
 }

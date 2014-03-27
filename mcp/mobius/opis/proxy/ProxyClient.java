@@ -19,6 +19,7 @@ import mcp.mobius.opis.data.holders.stats.StatsEntity;
 import mcp.mobius.opis.data.holders.stats.StatsMod;
 import mcp.mobius.opis.data.holders.stats.StatsTickHandler;
 import mcp.mobius.opis.data.holders.stats.StatsTileEntity;
+import mcp.mobius.opis.data.managers.ChunkManager;
 import mcp.mobius.opis.data.managers.MetaManager;
 import mcp.mobius.opis.data.managers.TickHandlerManager;
 import mcp.mobius.opis.gui.font.Fonts;
@@ -106,7 +107,13 @@ public class ProxyClient extends ProxyServer implements IMessageHandler{
 		
 		MessageHandlerRegistrar.instance().registerHandler(Message.CLIENT_CLEAR_SELECTION,  modOpis.proxy);
 		MessageHandlerRegistrar.instance().registerHandler(Message.CLIENT_START_PROFILING,  modOpis.proxy);
-		MessageHandlerRegistrar.instance().registerHandler(Message.CLIENT_SHOW_RENDER_TICK, modOpis.proxy);		
+		MessageHandlerRegistrar.instance().registerHandler(Message.CLIENT_SHOW_RENDER_TICK, modOpis.proxy);
+		
+		MessageHandlerRegistrar.instance().registerHandler(Message.LIST_CHUNK_ENTITIES, OverlayEntityPerChunk.instance());
+		MessageHandlerRegistrar.instance().registerHandler(Message.LIST_CHUNK_TILEENTS, OverlayMeanTime.instance());
+		
+		MessageHandlerRegistrar.instance().registerHandler(Message.LIST_TIMING_CHUNK, ChunkManager.instance());
+		MessageHandlerRegistrar.instance().registerHandler(Message.LIST_CHUNK_LOADED, ChunkManager.instance());
 	}
 
 	@Override

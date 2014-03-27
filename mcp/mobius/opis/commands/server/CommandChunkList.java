@@ -46,10 +46,10 @@ public class CommandChunkList extends CommandBase implements IOpisCommand {
 		ArrayList<StatsChunk> chunks = new ArrayList<StatsChunk>();
 		
 		if (astring.length == 0)
-			chunks = ChunkManager.getTopChunks(20);
+			chunks = ChunkManager.instance().getTopChunks(20);
 		else
 			try{
-				chunks = ChunkManager.getTopChunks(Integer.valueOf(astring.length));	
+				chunks = ChunkManager.instance().getTopChunks(Integer.valueOf(astring.length));	
 			}catch (Exception e){return;}
 		
 		icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText("[DIM X Z] Time NTEs"));
