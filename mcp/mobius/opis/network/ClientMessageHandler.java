@@ -73,19 +73,7 @@ public class ClientMessageHandler {
 	
 	public void handle(Message msg, ArrayList<ISerializable> data){
 		
-		/*
-		if (msg == Message.LIST_TIMING_TILEENTS)
-			DataCache.instance().setTimingTileEnts(data);
-		
-		else if (msg == Message.LIST_TIMING_ENTITIES)
-			DataCache.instance().setTimingEntities(data);
-		
-		else if (msg == Message.LIST_TIMING_HANDLERS)
-			DataCache.instance().setTimingHandlers(data);		
-		*/
-		
 		if (msg == Message.LIST_TIMING_CHUNK){
-			//DataCache.instance().setTimingChunks(data);
 			ChunkManager.setChunkMeanTime(data);
 		}
 		
@@ -164,10 +152,6 @@ public class ClientMessageHandler {
 			SwingUI.instance().getPanelSummary().setProgressBar(-1, ((SerialInt)data).value, -1);
 		}			     
 	
-		else if (msg == Message.STATUS_CURRENT_TIME){
-			DataCache.instance().computeClockScrew(((SerialLong)data).value);
-		}
-	
 		else if (msg == Message.STATUS_TIME_LAST_RUN){
 			long serverLastRun = ((SerialLong)data).value;
 			if (serverLastRun == 0){
@@ -181,10 +165,6 @@ public class ClientMessageHandler {
 			}
 	
 		}	
-		     
-		else if(msg == Message.STATUS_ACCESS_LEVEL){
-			DataCache.instance().setAccessLevel( AccessLevel.values()[((SerialInt)data).value] );
-		}			     
 	
 		else if(msg == Message.CLIENT_HIGHLIGHT_BLOCK){
 			modOpis.selectedBlock = (CoordinatesBlock)data;

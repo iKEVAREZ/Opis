@@ -28,8 +28,11 @@ import org.jfree.data.xy.XYSeriesCollection;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
+import mcp.mobius.opis.api.IMessageHandler;
 import mcp.mobius.opis.data.holders.ISerializable;
 import mcp.mobius.opis.data.holders.basetypes.AmountHolder;
+import mcp.mobius.opis.data.holders.basetypes.SerialInt;
+import mcp.mobius.opis.data.holders.basetypes.SerialLong;
 import mcp.mobius.opis.data.holders.stats.StatAbstract;
 import mcp.mobius.opis.data.holders.stats.StatsChunk;
 import mcp.mobius.opis.data.holders.stats.StatsEntity;
@@ -39,70 +42,45 @@ import mcp.mobius.opis.data.holders.stats.StatsTickHandler;
 import mcp.mobius.opis.data.holders.stats.StatsTileEntity;
 import mcp.mobius.opis.helpers.ModIdentification;
 import mcp.mobius.opis.network.enums.AccessLevel;
+import mcp.mobius.opis.network.enums.Message;
+import mcp.mobius.opis.network.packets.server.NetDataRaw;
 import mcp.mobius.opis.swing.SwingUI;
 import mcp.mobius.opis.swing.widgets.JButtonAccess;
 
-public class DataCache {
+public class DataCache implements IMessageHandler{
 
 	private static DataCache _instance = new DataCache();
 	public  static DataCache instance() { return _instance; };
 	
-	private long   clockScrew          = 0;
-	
+	private long        clockScrew     = 0;
 	private AccessLevel clientAccess   = AccessLevel.NONE;
-	
-	private StatsTick timingTick = new StatsTick();
-	private ArrayList<Double> timingTickGraphData = new ArrayList<Double>();
-	//private DescriptiveStatistics timingTickGraphData = new DescriptiveStatistics(100);
-
-	public void setAccessLevel(AccessLevel level){
-		this.clientAccess = level;
-		
-		for (JButtonAccess button : SwingUI.registeredButtons){
-			if (level.ordinal() < button.getAccessLevel().ordinal()){
-				button.setEnabled(false);
-			} else {
-				button.setEnabled(true);
-			}
-		}
-	}
 	
 	public AccessLevel getAccessLevel(){
 		return this.clientAccess;
 	}
 	
-	public void computeClockScrew(long value){
-		clockScrew = System.currentTimeMillis() - value;
-		System.out.printf("Adjusting clock screw. Server differential is %d ms.\n", clockScrew);
-	}
-	
 	public long getClockScrew(){
 		return this.clockScrew;
 	}
-	
-	
-	private <U> int updateData(JTable table, DefaultTableModel model, ArrayList<U> dataarray, ArrayList<? extends ISerializable> newdata, Class<U> datatype){
-		int row = table.getSelectedRow();
+
+	@Override
+	public boolean handleMessage(Message msg, NetDataRaw rawdata) {
+		switch(msg){
+		case STATUS_ACCESS_LEVEL:{
+			this.clientAccess = AccessLevel.values()[((SerialInt)rawdata.value).value];
+			break;
+		}
 		
-		if (model.getRowCount() > 0)
-			for (int i = model.getRowCount() - 1; i >= 0; i--)
-				model.removeRow(i);		
-		
-		dataarray.clear();
-		
-		for (ISerializable stat : newdata)
-			dataarray.add(datatype.cast(stat));
-		
-		return row;
-	}
-	
-	private void dataUpdated(JTable table, DefaultTableModel model, int row){
-		model.fireTableDataChanged();
-		
-		try{
-			table.setRowSelectionInterval(row, row);
-		} catch (IllegalArgumentException e ){
-			
+		case STATUS_CURRENT_TIME:{
+			this.clockScrew = System.currentTimeMillis() - ((SerialLong)rawdata.value).value;
+			System.out.printf("Adjusting clock screw. Server differential is %d ms.\n", clockScrew);
+			break;
 		}		
+		
+		default:
+			return false;
+			
+		}
+		return true;
 	}
 }

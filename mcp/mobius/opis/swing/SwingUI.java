@@ -41,10 +41,12 @@ import mapwriter.Mw;
 import mapwriter.api.MwAPI;
 import mapwriter.gui.MwGui;
 import mcp.mobius.opis.modOpis;
+import mcp.mobius.opis.api.IMessageHandler;
 import mcp.mobius.opis.data.client.DataCache;
 import mcp.mobius.opis.data.holders.basetypes.AmountHolder;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesBlock;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesChunk;
+import mcp.mobius.opis.data.holders.basetypes.SerialInt;
 import mcp.mobius.opis.data.holders.basetypes.SerialString;
 import mcp.mobius.opis.data.holders.basetypes.TargetEntity;
 import mcp.mobius.opis.data.holders.stats.StatAbstract;
@@ -58,6 +60,7 @@ import mcp.mobius.opis.gui.overlay.entperchunk.OverlayEntityPerChunk;
 import mcp.mobius.opis.network.enums.AccessLevel;
 import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.packets.client.Packet_ReqData;
+import mcp.mobius.opis.network.packets.server.NetDataRaw;
 import mcp.mobius.opis.swing.panels.PanelAmountEntities;
 import mcp.mobius.opis.swing.panels.PanelPlayers;
 import mcp.mobius.opis.swing.panels.PanelSummary;
@@ -74,7 +77,7 @@ import javax.swing.JProgressBar;
 
 import net.miginfocom.swing.MigLayout;
 
-public class SwingUI extends JFrame implements WindowListener{
+public class SwingUI extends JFrame implements WindowListener, IMessageHandler{
 
 	public static HashSet<JButtonAccess> registeredButtons = new HashSet<JButtonAccess>();
 	
@@ -196,5 +199,28 @@ public class SwingUI extends JFrame implements WindowListener{
 		this.getPanelTimingEntities().getBtnRun().setText(s);
 		this.getPanelTimingHandlers().getBtnRun().setText(s);
 		this.getPanelTimingChunks().getBtnRun().setText(s);		
+	}
+
+	@Override
+	public boolean handleMessage(Message msg, NetDataRaw rawdata) {
+		switch(msg){
+		case STATUS_ACCESS_LEVEL:{
+			AccessLevel level =  AccessLevel.values()[((SerialInt)rawdata.value).value];
+			for (JButtonAccess button : SwingUI.registeredButtons){
+				if (level.ordinal() < button.getAccessLevel().ordinal()){
+					button.setEnabled(false);
+				} else {
+					button.setEnabled(true);
+				}
+			}
+			
+			break;
+		}
+		
+		default:
+			return false;
+			
+		}
+		return true;		
 	}
 }

@@ -10,6 +10,7 @@ import net.minecraft.util.ResourceLocation;
 import mapwriter.api.MwAPI;
 import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.api.MessageHandlerRegistrar;
+import mcp.mobius.opis.data.client.DataCache;
 import mcp.mobius.opis.data.holders.stats.StatsChunk;
 import mcp.mobius.opis.data.holders.stats.StatsEntity;
 import mcp.mobius.opis.data.holders.stats.StatsMod;
@@ -54,6 +55,9 @@ public class ProxyClient extends ProxyServer {
 		MessageHandlerRegistrar.instance().registerHandler(Message.LIST_TIMING_HANDLERS, SwingUI.instance().getPanelTimingHandlers());
 		MessageHandlerRegistrar.instance().registerHandler(Message.LIST_TIMING_CHUNK,    SwingUI.instance().getPanelTimingChunks());
 		
+		MessageHandlerRegistrar.instance().registerHandler(Message.STATUS_ACCESS_LEVEL,    DataCache.instance());
+		MessageHandlerRegistrar.instance().registerHandler(Message.STATUS_ACCESS_LEVEL,    SwingUI.instance());		
+		MessageHandlerRegistrar.instance().registerHandler(Message.STATUS_CURRENT_TIME,    DataCache.instance());
+		
 	}
-
 }
