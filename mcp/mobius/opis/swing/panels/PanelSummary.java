@@ -266,6 +266,17 @@ public class PanelSummary extends JPanel implements ActionListener{
 		chart.setBackgroundPaint(new Color(255,255,255,0));
 		xyPlot = chart.getXYPlot();
 		xyPlot.getRendererForDataset(dataset).setSeriesPaint(0, Color.BLUE);
+		
+		for (double y = 25.0; y < 500.0; y += 25.0){
+			ValueMarker marker = new ValueMarker(y);
+			marker.setPaint(Color.black);
+			xyPlot.addRangeMarker(marker);
+		}		
+
+		//ValueMarker marker = new ValueMarker(50.0);
+		//marker.setPaint(Color.red);
+		//xyPlot.addRangeMarker(marker);
+		
 		return new ChartPanel(chart);
 	}
 	
@@ -284,12 +295,6 @@ public class PanelSummary extends JPanel implements ActionListener{
 
 		dataset.removeAllSeries();
 		dataset.addSeries(xydata);
-		
-		for (double y = 25.0; y < 250.0; y += 25.0){
-			ValueMarker marker = new ValueMarker(y);
-			marker.setPaint(Color.black);
-			xyPlot.addRangeMarker(marker);
-		}
 		
 		Double verticalScale = 50.0 * (MathHelper.floor_double(xydata.getMaxY() / 50.0D) + 1);
 		((NumberAxis)xyPlot.getRangeAxis()).setRange(0.0, verticalScale);

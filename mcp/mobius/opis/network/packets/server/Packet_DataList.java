@@ -42,6 +42,19 @@ public class Packet_DataList extends Packet_DataAbstract{
 		} catch (IOException e){}				
 	}
 
+	/*
+	public static Packet_DataList create(Message msg){
+		ArrayList<ISerializable> list = new ArrayList<ISerializable>();
+		return create(msg, list);
+	}	
+	
+	public static Packet_DataList create(Message msg, ISerializable data){
+		ArrayList<ISerializable> list = new ArrayList<ISerializable>();
+		list.add(data);
+		return create(msg, list);
+	}
+	*/
+	
 	//public static Packet250Metadata create(DataReq dataReq, ArrayList<? extends ISerializable> stats){
 	public static Packet_DataList create(Message msg, ArrayList<? extends ISerializable> data){
 		//Packet250Metadata packet      = new Packet250Metadata();
