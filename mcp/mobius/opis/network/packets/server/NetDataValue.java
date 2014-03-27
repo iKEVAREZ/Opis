@@ -38,7 +38,7 @@ public class NetDataValue extends NetDataRaw{
 		DataOutputStream      ostream = new DataOutputStream(bos);
 
 		try{
-			ostream.writeByte(Packets.DATA_VALUE_GENERAL);
+			ostream.writeByte(Packets.NETDATAVALUE);
 			ostream.writeInt(dataReq.ordinal());
 			Packet.writeString(data.getClass().getCanonicalName(), ostream);
 			data.writeToStream(ostream);
@@ -54,7 +54,7 @@ public class NetDataValue extends NetDataRaw{
 		
 		NetDataValue capsule = new NetDataValue();
 		capsule.msg = dataReq;
-		capsule.header  = Packets.DATA_VALUE_GENERAL;
+		capsule.header  = Packets.NETDATAVALUE;
 		capsule.packet  = packet;
 		
 		return capsule;

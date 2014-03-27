@@ -67,7 +67,7 @@ public class NetDataList extends NetDataRaw{
 		DataOutputStream ostream = new DataOutputStream(bos);
 
 		try{
-			ostream.writeByte(Packets.DATA_LIST_GENERAL);
+			ostream.writeByte(Packets.NETDATALIST);
 			ostream.writeInt(msg.ordinal());
 			ostream.writeInt(data.size());
 			
@@ -87,7 +87,7 @@ public class NetDataList extends NetDataRaw{
 		
 		NetDataList capsule = new NetDataList();
 		capsule.msg = msg;
-		capsule.header  = Packets.DATA_VALUE_GENERAL;
+		capsule.header  = Packets.NETDATAVALUE;
 		capsule.packet  = packet;
 		
 		return capsule;

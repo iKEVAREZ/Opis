@@ -27,7 +27,7 @@ public class NetDataCommand extends NetDataRaw{
 		DataOutputStream outputStream = new DataOutputStream(bos);
 
 		try{
-			outputStream.writeByte(Packets.CLIENT_CMD);
+			outputStream.writeByte(Packets.NETDATACOMMAND);
 			outputStream.writeInt(msg.ordinal());
 		}catch(IOException e){}
 		

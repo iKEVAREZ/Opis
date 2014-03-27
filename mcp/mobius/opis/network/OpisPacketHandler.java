@@ -103,17 +103,17 @@ public class OpisPacketHandler implements IPacketHandler {
 			OverlayEntityPerChunk.instance().setupChunkTable();
 		}
 		
-		else if (header == Packets.CLIENT_CMD){
+		else if (header == Packets.NETDATACOMMAND){
 			NetDataRaw rawdata = new NetDataCommand(packet);
 			MessageHandlerRegistrar.instance().routeMessage(rawdata.msg, rawdata);			
 		}		
 		
-		else if (header == Packets.DATA_LIST_GENERAL){
+		else if (header == Packets.NETDATALIST){
 			NetDataRaw rawdata = new NetDataList(packet);
 			MessageHandlerRegistrar.instance().routeMessage(rawdata.msg, rawdata);
 		}		
 		
-		else if (header == Packets.DATA_VALUE_GENERAL){
+		else if (header == Packets.NETDATAVALUE){
 			NetDataRaw rawdata = new NetDataValue(packet);
 			MessageHandlerRegistrar.instance().routeMessage(rawdata.msg, rawdata);
 		}
