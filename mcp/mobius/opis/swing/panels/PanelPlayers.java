@@ -97,8 +97,9 @@ public class PanelPlayers extends JPanelMsgHandler implements ActionListener{
 	public void actionPerformed(ActionEvent e) {}
 
 	@Override
-	public void handleMessage(Message msg, NetDataRaw rawdata) {
-		if (msg == Message.LIST_PLAYERS){
+	public boolean handleMessage(Message msg, NetDataRaw rawdata) {
+		switch(msg){
+		case LIST_PLAYERS:{
 			DefaultTableModel model = (DefaultTableModel)this.getTable().getModel();
 			int               row   = this.updateData(table, model, StatsPlayer.class);
 
@@ -112,6 +113,15 @@ public class PanelPlayers extends JPanelMsgHandler implements ActionListener{
 			}
 			
 			this.dataUpdated(table, model, row);			
+			
+			break;
 		}
+		
+		default:
+			return false;
+			
+		}
+		return true;
+
 	}
 }

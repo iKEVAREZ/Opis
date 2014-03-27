@@ -46,7 +46,14 @@ public class ProxyClient extends ProxyServer {
 		//fontMC8 = Fonts.loadSystemFont("Monospace", 12, true, Font.TRUETYPE_FONT | Font.BOLD);
 		fontMC8 = Fonts.createFont(new ResourceLocation("opis", "fonts/LiberationMono-Bold.ttf"), 14, true);
 		
-		MessageHandlerRegistrar.instance().registerHandler(Message.LIST_PLAYERS, SwingUI.instance().getPanelPlayers());
+		MessageHandlerRegistrar.instance().registerHandler(Message.LIST_PLAYERS,         SwingUI.instance().getPanelPlayers());
+		MessageHandlerRegistrar.instance().registerHandler(Message.LIST_AMOUNT_ENTITIES, SwingUI.instance().getPanelAmountEntities());
+		
+		MessageHandlerRegistrar.instance().registerHandler(Message.LIST_TIMING_TILEENTS, SwingUI.instance().getPanelTimingTileEnts());
+		MessageHandlerRegistrar.instance().registerHandler(Message.LIST_TIMING_ENTITIES, SwingUI.instance().getPanelTimingEntities());
+		MessageHandlerRegistrar.instance().registerHandler(Message.LIST_TIMING_HANDLERS, SwingUI.instance().getPanelTimingHandlers());
+		MessageHandlerRegistrar.instance().registerHandler(Message.LIST_TIMING_CHUNK,    SwingUI.instance().getPanelTimingChunks());
+		
 	}
 
 }

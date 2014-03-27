@@ -6,8 +6,12 @@ import java.awt.event.ActionListener;
 import javax.swing.JPanel;
 
 import mcp.mobius.opis.data.holders.stats.StatAbstract;
+import mcp.mobius.opis.data.holders.stats.StatsEntity;
 import mcp.mobius.opis.network.enums.AccessLevel;
+import mcp.mobius.opis.network.enums.Message;
+import mcp.mobius.opis.network.packets.server.NetDataRaw;
 import mcp.mobius.opis.swing.widgets.JButtonAccess;
+import mcp.mobius.opis.swing.widgets.JPanelMsgHandler;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.JButton;
@@ -18,7 +22,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
-public class PanelTimingEntities extends JPanel implements ActionListener{
+public class PanelTimingEntities extends JPanelMsgHandler implements ActionListener{
 	private JTable table;
 	private JButtonAccess btnRun;
 	private JButtonAccess btnPull;
@@ -93,4 +97,33 @@ public class PanelTimingEntities extends JPanel implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {}
+
+	@Override
+	public boolean handleMessage(Message msg, NetDataRaw rawdata) {
+		switch(msg){
+		case LIST_TIMING_ENTITIES:{
+			DefaultTableModel model = (DefaultTableModel)table.getModel();
+			int               row   = this.updateData(table, model, StatsEntity.class);	
+			
+			for (Object o : rawdata.array){
+				StatsEntity stat = (StatsEntity)o;
+				model.addRow(new Object[]  {stat.getName(), 
+											stat.getID(),
+											stat.getCoordinates().dim,
+											String.format("[ %4d %4d %4d ]", 	stat.getCoordinates().x, stat.getCoordinates().y, stat.getCoordinates().z), 
+											stat,
+											String.valueOf(stat.getDataPoints())});
+			}
+			
+			this.dataUpdated(table, model, row);			
+			
+			break;
+		}
+		
+		default:
+			return false;
+			
+		}
+		return true;
+	}
 }

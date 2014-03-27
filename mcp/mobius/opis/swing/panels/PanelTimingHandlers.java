@@ -6,10 +6,13 @@ import java.awt.event.ActionListener;
 import javax.swing.JPanel;
 
 import mcp.mobius.opis.data.holders.stats.StatAbstract;
+import mcp.mobius.opis.data.holders.stats.StatsTickHandler;
 import mcp.mobius.opis.network.enums.AccessLevel;
 import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.packets.client.Packet_ReqData;
+import mcp.mobius.opis.network.packets.server.NetDataRaw;
 import mcp.mobius.opis.swing.widgets.JButtonAccess;
+import mcp.mobius.opis.swing.widgets.JPanelMsgHandler;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.JButton;
@@ -22,7 +25,7 @@ import javax.swing.table.DefaultTableModel;
 
 import cpw.mods.fml.common.network.PacketDispatcher;
 
-public class PanelTimingHandlers extends JPanel implements ActionListener{
+public class PanelTimingHandlers extends JPanelMsgHandler implements ActionListener{
 	private JTable table;
 	private JButtonAccess btnRun;
 	private JLabel lblSummary;
@@ -84,5 +87,29 @@ public class PanelTimingHandlers extends JPanel implements ActionListener{
 		if (e.getSource() == this.getBtnRun()){
 			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.COMMAND_START));
 		}		
+	}
+
+	@Override
+	public boolean handleMessage(Message msg, NetDataRaw rawdata) {
+		switch(msg){
+		case LIST_TIMING_HANDLERS:{
+			DefaultTableModel model = (DefaultTableModel)table.getModel();
+			int               row   = this.updateData(table, model, StatsTickHandler.class);	
+			
+			for (Object o : rawdata.array){
+				StatsTickHandler stat = (StatsTickHandler)o;
+				model.addRow(new Object[] {stat.getName(), stat});
+			}
+
+			this.dataUpdated(table, model, row);			
+			
+			break;
+		}
+		
+		default:
+			return false;
+			
+		}
+		return true;
 	}
 }

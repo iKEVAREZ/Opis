@@ -7,8 +7,12 @@ import java.awt.event.ItemListener;
 
 import javax.swing.JPanel;
 
+import mcp.mobius.opis.data.holders.basetypes.AmountHolder;
 import mcp.mobius.opis.network.enums.AccessLevel;
+import mcp.mobius.opis.network.enums.Message;
+import mcp.mobius.opis.network.packets.server.NetDataRaw;
 import mcp.mobius.opis.swing.widgets.JButtonAccess;
+import mcp.mobius.opis.swing.widgets.JPanelMsgHandler;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.JCheckBox;
@@ -20,7 +24,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
-public class PanelAmountEntities extends JPanel implements ActionListener,  ItemListener{
+public class PanelAmountEntities extends JPanelMsgHandler implements ActionListener, ItemListener{
 	private JTable table;
 	private JCheckBox chckbxFilter;
 	private JButtonAccess btnKillAll;
@@ -92,4 +96,29 @@ public class PanelAmountEntities extends JPanel implements ActionListener,  Item
 
 	@Override
 	public void itemStateChanged(ItemEvent arg0) {}
+
+	@Override
+	public boolean handleMessage(Message msg, NetDataRaw rawdata) {
+		switch(msg){
+		case LIST_AMOUNT_ENTITIES:{
+			DefaultTableModel model = (DefaultTableModel)this.getTable().getModel();
+			int               row   = this.updateData(table, model, AmountHolder.class);	
+			int totalEntities = 0;
+
+			for (Object o : rawdata.array){
+				AmountHolder entity = (AmountHolder)o;
+				model.addRow(new Object[] {entity.key, entity.value});
+				totalEntities += entity.value;
+			}			
+			
+			this.getLblSummary().setText("Total : " + String.valueOf(totalEntities));
+			this.dataUpdated(table, model, row);
+			break;
+		}
+		default:
+			return false;
+			
+		}
+		return true;
+	}
 }

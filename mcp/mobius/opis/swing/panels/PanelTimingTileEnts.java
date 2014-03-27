@@ -6,9 +6,15 @@ import java.awt.event.ActionListener;
 import javax.swing.JPanel;
 
 import mcp.mobius.opis.data.holders.stats.StatAbstract;
+import mcp.mobius.opis.data.holders.stats.StatsTileEntity;
+import mcp.mobius.opis.helpers.ModIdentification;
 import mcp.mobius.opis.network.enums.AccessLevel;
+import mcp.mobius.opis.network.enums.Message;
+import mcp.mobius.opis.network.packets.server.NetDataRaw;
 import mcp.mobius.opis.swing.widgets.JButtonAccess;
+import mcp.mobius.opis.swing.widgets.JPanelMsgHandler;
 import net.miginfocom.swing.MigLayout;
+import net.minecraft.item.ItemStack;
 
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
@@ -18,7 +24,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
-public class PanelTimingTileEnts extends JPanel implements ActionListener{
+public class PanelTimingTileEnts extends JPanelMsgHandler implements ActionListener{
 	private JTable table;
 	private JButtonAccess btnCenter;
 	private JButtonAccess btnTeleport;
@@ -94,4 +100,43 @@ public class PanelTimingTileEnts extends JPanel implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {}
+
+	@Override
+	public boolean handleMessage(Message msg, NetDataRaw rawdata) {
+		switch(msg){
+		case LIST_TIMING_TILEENTS:{
+			DefaultTableModel model = (DefaultTableModel)table.getModel();
+			int               row   = this.updateData(table, model, StatsTileEntity.class);
+
+			for (Object o : rawdata.array){
+				StatsTileEntity stat = (StatsTileEntity)o;
+				ItemStack is;
+				String name  = String.format("te.%d.%d", stat.getID(), stat.getMeta());
+				String modID = "<UNKNOWN>";
+				
+				try{
+					is = new ItemStack(stat.getID(), 1, stat.getMeta());
+					name  = is.getDisplayName();
+					modID = ModIdentification.idFromStack(is);
+				}  catch (Exception e) {	}			
+				
+				model.addRow(new Object[]  {
+						 name,
+						 modID,
+					     stat.getCoordinates().dim,
+					     String.format("[ %4d %4d %4d ]", 	stat.getCoordinates().x, stat.getCoordinates().y, stat.getCoordinates().z),  
+					     stat});
+			}
+			
+			this.dataUpdated(table, model, row);			
+			
+			break;
+		}
+		
+		default:
+			return false;
+			
+		}
+		return true;
+	}
 }

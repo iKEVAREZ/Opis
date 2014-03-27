@@ -12,7 +12,10 @@ import javax.swing.JPanel;
 import mcp.mobius.opis.data.holders.ISerializable;
 import mcp.mobius.opis.data.holders.stats.StatsTick;
 import mcp.mobius.opis.network.enums.AccessLevel;
+import mcp.mobius.opis.network.enums.Message;
+import mcp.mobius.opis.network.packets.server.NetDataRaw;
 import mcp.mobius.opis.swing.widgets.JButtonAccess;
+import mcp.mobius.opis.swing.widgets.JPanelMsgHandler;
 import net.miginfocom.swing.MigLayout;
 import net.minecraft.util.MathHelper;
 
@@ -34,7 +37,7 @@ import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
-public class PanelSummary extends JPanel implements ActionListener{
+public class PanelSummary extends JPanelMsgHandler implements ActionListener{
 	private JLabel lblTimingWorldTick;
 	private JLabel lblTimingTileEnts;
 	private JLabel lblTimingEntities;
@@ -303,5 +306,10 @@ public class PanelSummary extends JPanel implements ActionListener{
 
 	private double getProfiledTickTotalTime(){
 		return (timingWorldTickTotal + timingHandlersTotal + timingTileEntsTotal + timingEntitiesTotal)/1000.;
+	}
+
+	@Override
+	public boolean handleMessage(Message msg, NetDataRaw rawdata) {
+		return false;
 	}
 }

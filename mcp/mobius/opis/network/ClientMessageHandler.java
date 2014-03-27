@@ -73,6 +73,7 @@ public class ClientMessageHandler {
 	
 	public void handle(Message msg, ArrayList<ISerializable> data){
 		
+		/*
 		if (msg == Message.LIST_TIMING_TILEENTS)
 			DataCache.instance().setTimingTileEnts(data);
 		
@@ -81,15 +82,13 @@ public class ClientMessageHandler {
 		
 		else if (msg == Message.LIST_TIMING_HANDLERS)
 			DataCache.instance().setTimingHandlers(data);		
+		*/
 		
-		else if (msg == Message.LIST_TIMING_CHUNK){
-			DataCache.instance().setTimingChunks(data);
+		if (msg == Message.LIST_TIMING_CHUNK){
+			//DataCache.instance().setTimingChunks(data);
 			ChunkManager.setChunkMeanTime(data);
 		}
 		
-		else if (msg == Message.LIST_AMOUNT_ENTITIES)
-			DataCache.instance().setAmountEntities(data);			
-	
 		else if (msg == Message.LIST_CHUNK_ENTITIES){
 			OverlayEntityPerChunk.instance().setEntStats(data);
 			OverlayEntityPerChunk.instance().setupEntTable();		
@@ -97,12 +96,6 @@ public class ClientMessageHandler {
 		else if (msg == Message.LIST_CHUNK_TILEENTS){
 			OverlayMeanTime.instance().setupTable(data);	 
 		}			     
-		
-		/*
-		else if (msg == Message.LIST_PLAYERS){
-			DataCache.instance().setListPlayers(data);	 
-		}
-		*/	
 		
 		else if (msg == Message.LIST_CHUNK_LOADED){
 			ChunkManager.setLoadedChunks(data);	 

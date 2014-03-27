@@ -23,10 +23,15 @@ public class MessageHandlerRegistrar {
 	}
 	
 	public void routeMessage(Message msg, NetDataRaw rawdata){
-		if (msgHandlers.containsKey(msg))
-			for (IMessageHandler handler : msgHandlers.get(msg))
-				handler.handleMessage(msg, rawdata);
-		else
+		if (msgHandlers.containsKey(msg)){
+			for (IMessageHandler handler : msgHandlers.get(msg)){
+				if (!handler.handleMessage(msg, rawdata)){
+					modOpis.log.warning(String.format("Unhandled msg %s in handler %s", msg, handler));
+				}
+			}
+		}
+		else{
 			modOpis.log.warning(String.format("Unhandled msg : %s", msg));
+		}
 	}
 }
