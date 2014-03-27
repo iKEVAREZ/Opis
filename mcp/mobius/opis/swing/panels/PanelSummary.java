@@ -5,10 +5,13 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.swing.JPanel;
 
+import mcp.mobius.opis.data.client.DataCache;
 import mcp.mobius.opis.data.holders.ISerializable;
 import mcp.mobius.opis.data.holders.basetypes.SerialDouble;
 import mcp.mobius.opis.data.holders.basetypes.SerialInt;
@@ -327,7 +330,40 @@ public class PanelSummary extends JPanelMsgHandler implements ActionListener{
 		case VALUE_TIMING_WORLDTICK:{
 			this.timingWorldTickTotal = ((SerialDouble)rawdata.value).value;
 			this.getLblTimingWorldTick().setText(String.format("%.3f", timingWorldTickTotal/1000.));
-			this.getLblTimingTotal().setText(String.format("%.3f", this.getProfiledTickTotalTime() ));			
+			this.getLblTimingTotal().setText(String.format("%.3f", this.getProfiledTickTotalTime() ));	
+			break;
+		}
+		case STATUS_START:{
+			this.getBtnRun().setText("Running...");
+			this.setProgressBar(0, ((SerialInt)rawdata.value).value, 0);	
+			break;
+		}
+		case STATUS_STOP:{
+			this.getBtnRun().setText("Run Opis");
+			this.setProgressBar(0, ((SerialInt)rawdata.value).value, ((SerialInt)rawdata.value).value);	
+			break;
+		}		
+		case STATUS_RUN_UPDATE:{
+			this.setProgressBar(-1, ((SerialInt)rawdata.value).value, -1);	
+			break;
+		}		
+		case STATUS_RUNNING:{
+			this.getBtnRun().setText("Running...");
+			this.setProgressBar(-1, ((SerialInt)rawdata.value).value, -1);
+			break;
+		}
+		case STATUS_TIME_LAST_RUN:{
+			long serverLastRun = ((SerialLong)rawdata.value).value;
+			if (serverLastRun == 0){
+				this.getLblTimeStamp().setText("Last run : <Never>");
+			} else {
+				long clientLastRun = serverLastRun + DataCache.instance().getClockScrew();
+		        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		        Date resultdate = new Date(clientLastRun);
+				
+		        this.getLblTimeStamp().setText(String.format("Last run : %s", sdf.format(resultdate)));
+			}
+			break;
 		}
 		
 		default:

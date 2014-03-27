@@ -94,39 +94,6 @@ public class ClientMessageHandler {
 		if (msg == Message.VALUE_TIMING_ENTUPDATE)
 			SwingUI.instance().getPanelSummary().setTimingEntUpdateTotal(((SerialDouble)data).value);						
 
-		else if (msg == Message.STATUS_START){
-			SwingUI.instance().setTextRunButton("Running...");
-			SwingUI.instance().getPanelSummary().setProgressBar(0, ((SerialInt)data).value, 0);
-		}
-		     
-		else if (msg == Message.STATUS_STOP){
-			SwingUI.instance().setTextRunButton("Run Opis");
-			SwingUI.instance().getPanelSummary().setProgressBar(0, ((SerialInt)data).value, ((SerialInt)data).value);
-		}
-		     
-		else if (msg == Message.STATUS_RUN_UPDATE){
-			SwingUI.instance().getPanelSummary().setProgressBar(-1, -1, ((SerialInt)data).value);			
-		}
-		     
-		else if (msg == Message.STATUS_RUNNING){
-			SwingUI.instance().setTextRunButton("Running...");
-			SwingUI.instance().getPanelSummary().setProgressBar(-1, ((SerialInt)data).value, -1);
-		}			     
-	
-		else if (msg == Message.STATUS_TIME_LAST_RUN){
-			long serverLastRun = ((SerialLong)data).value;
-			if (serverLastRun == 0){
-				SwingUI.instance().getPanelSummary().getLblTimeStamp().setText("Last run : <Never>");
-			} else {
-				long clientLastRun = serverLastRun + DataCache.instance().getClockScrew();
-		        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		        Date resultdate = new Date(clientLastRun);
-				
-		        SwingUI.instance().getPanelSummary().getLblTimeStamp().setText(String.format("Last run : %s", sdf.format(resultdate)));
-			}
-	
-		}	
-	
 		else if(msg == Message.CLIENT_HIGHLIGHT_BLOCK){
 			modOpis.selectedBlock = (CoordinatesBlock)data;
 			SwingUI.instance().getPanelTimingTileEnts().getBtnReset().setEnabled(true);

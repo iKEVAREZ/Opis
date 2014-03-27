@@ -133,11 +133,22 @@ public class PanelTimingTileEnts extends JPanelMsgHandler implements ActionListe
 			
 			break;
 		}
-		
 		case VALUE_TIMING_TILEENTS:{
 			this.getLblSummary().setText(String.format("Total update time : %.3f µs", ((SerialDouble)rawdata.value).value));	
+			break;
 		}
-		
+		case STATUS_START:{
+			this.getBtnRun().setText("Running...");
+			break;
+		}
+		case STATUS_STOP:{
+			this.getBtnRun().setText("Run Opis");
+			break;
+		}		
+		case STATUS_RUNNING:{
+			this.getBtnRun().setText("Running...");
+			break;
+		}		
 		default:
 			return false;
 			

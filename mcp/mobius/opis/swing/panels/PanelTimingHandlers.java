@@ -108,7 +108,19 @@ public class PanelTimingHandlers extends JPanelMsgHandler implements ActionListe
 		}
 		case VALUE_TIMING_HANDLERS:{
 			this.getLblSummary().setText(String.format("Total update time : %.3f µs", ((SerialDouble)rawdata.value).value));	
-		}			
+		}
+		case STATUS_START:{
+			this.getBtnRun().setText("Running...");
+			break;
+		}
+		case STATUS_STOP:{
+			this.getBtnRun().setText("Run Opis");
+			break;
+		}		
+		case STATUS_RUNNING:{
+			this.getBtnRun().setText("Running...");
+			break;
+		}		
 		default:
 			return false;
 			

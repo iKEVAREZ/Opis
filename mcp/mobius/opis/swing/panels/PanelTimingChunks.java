@@ -139,7 +139,18 @@ public class PanelTimingChunks extends JPanelMsgHandler implements ActionListene
 			
 			break;
 		}
-		
+		case STATUS_START:{
+			this.getBtnRun().setText("Running...");
+			break;
+		}
+		case STATUS_STOP:{
+			this.getBtnRun().setText("Run Opis");
+			break;
+		}		
+		case STATUS_RUNNING:{
+			this.getBtnRun().setText("Running...");
+			break;
+		}		
 		default:
 			return false;
 			

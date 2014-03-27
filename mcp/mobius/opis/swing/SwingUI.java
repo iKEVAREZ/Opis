@@ -193,14 +193,6 @@ public class SwingUI extends JFrame implements WindowListener, IMessageHandler{
 		return panelSummary;
 	}
 	
-	public void setTextRunButton(String s){
-		this.getPanelSummary().getBtnRun().setText(s);
-		this.getPanelTimingTileEnts().getBtnRun().setText(s);
-		this.getPanelTimingEntities().getBtnRun().setText(s);
-		this.getPanelTimingHandlers().getBtnRun().setText(s);
-		this.getPanelTimingChunks().getBtnRun().setText(s);		
-	}
-
 	@Override
 	public boolean handleMessage(Message msg, NetDataRaw rawdata) {
 		switch(msg){
