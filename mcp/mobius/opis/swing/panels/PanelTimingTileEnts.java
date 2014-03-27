@@ -5,6 +5,8 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JPanel;
 
+import mcp.mobius.opis.modOpis;
+import mcp.mobius.opis.data.holders.basetypes.CoordinatesBlock;
 import mcp.mobius.opis.data.holders.basetypes.SerialDouble;
 import mcp.mobius.opis.data.holders.stats.StatAbstract;
 import mcp.mobius.opis.data.holders.stats.StatsTileEntity;
@@ -149,6 +151,10 @@ public class PanelTimingTileEnts extends JPanelMsgHandler implements ActionListe
 			this.getBtnRun().setText("Running...");
 			break;
 		}		
+		case CLIENT_HIGHLIGHT_BLOCK:{
+			modOpis.selectedBlock = (CoordinatesBlock)rawdata.value;
+			this.getBtnReset().setEnabled(true);			
+		}
 		default:
 			return false;
 			

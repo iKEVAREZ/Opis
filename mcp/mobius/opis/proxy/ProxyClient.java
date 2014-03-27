@@ -55,6 +55,7 @@ public class ProxyClient extends ProxyServer {
 		MessageHandlerRegistrar.instance().registerHandler(Message.STATUS_START,          SwingUI.instance().getPanelTimingTileEnts());
 		MessageHandlerRegistrar.instance().registerHandler(Message.STATUS_STOP,           SwingUI.instance().getPanelTimingTileEnts());
 		MessageHandlerRegistrar.instance().registerHandler(Message.STATUS_RUNNING,        SwingUI.instance().getPanelTimingTileEnts());
+		MessageHandlerRegistrar.instance().registerHandler(Message.CLIENT_HIGHLIGHT_BLOCK,SwingUI.instance().getPanelTimingTileEnts());		
 		
 		MessageHandlerRegistrar.instance().registerHandler(Message.LIST_TIMING_ENTITIES,  SwingUI.instance().getPanelTimingEntities());
 		MessageHandlerRegistrar.instance().registerHandler(Message.VALUE_TIMING_ENTITIES, SwingUI.instance().getPanelTimingEntities());
@@ -93,16 +94,7 @@ public class ProxyClient extends ProxyServer {
 		MessageHandlerRegistrar.instance().registerHandler(Message.STATUS_STOP,            SwingUI.instance().getPanelSummary());
 		MessageHandlerRegistrar.instance().registerHandler(Message.STATUS_RUN_UPDATE,      SwingUI.instance().getPanelSummary());
 		MessageHandlerRegistrar.instance().registerHandler(Message.STATUS_RUNNING,         SwingUI.instance().getPanelSummary());
-		MessageHandlerRegistrar.instance().registerHandler(Message.STATUS_TIME_LAST_RUN,   SwingUI.instance().getPanelSummary());		
-
-
-		
-
-		
-
-		
-		
-
-		
+		MessageHandlerRegistrar.instance().registerHandler(Message.STATUS_TIME_LAST_RUN,   SwingUI.instance().getPanelSummary());
+		MessageHandlerRegistrar.instance().registerHandler(Message.VALUE_TIMING_ENTUPDATE, SwingUI.instance().getPanelSummary());		
 	}
 }

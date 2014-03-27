@@ -111,15 +111,11 @@ public class OpisPacketHandler implements IPacketHandler {
 		else if (header == Packets.DATA_LIST_GENERAL){
 			NetDataRaw rawdata = new NetDataList(packet);
 			MessageHandlerRegistrar.instance().routeMessage(rawdata.msg, rawdata);
-			//NetDataList castedPacket = new NetDataList(packet);
-			//ClientMessageHandler.instance().handle(castedPacket.msg, castedPacket.array);
 		}		
 		
 		else if (header == Packets.DATA_VALUE_GENERAL){
 			NetDataRaw rawdata = new NetDataValue(packet);
 			MessageHandlerRegistrar.instance().routeMessage(rawdata.msg, rawdata);
-			//NetDataValue castedPacket = new NetDataValue(packet);
-			//ClientMessageHandler.instance().handle(castedPacket.msg, castedPacket.value);			
 		}
 	}
 

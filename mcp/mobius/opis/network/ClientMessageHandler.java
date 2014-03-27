@@ -89,14 +89,4 @@ public class ClientMessageHandler {
 			ChunkManager.setLoadedChunks(data);	 
 		}			
 	}
-	
-	public void handle(Message msg, ISerializable data){
-		if (msg == Message.VALUE_TIMING_ENTUPDATE)
-			SwingUI.instance().getPanelSummary().setTimingEntUpdateTotal(((SerialDouble)data).value);						
-
-		else if(msg == Message.CLIENT_HIGHLIGHT_BLOCK){
-			modOpis.selectedBlock = (CoordinatesBlock)data;
-			SwingUI.instance().getPanelTimingTileEnts().getBtnReset().setEnabled(true);
-		}
-	}
 }

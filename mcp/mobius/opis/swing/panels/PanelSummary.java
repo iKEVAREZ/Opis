@@ -365,6 +365,9 @@ public class PanelSummary extends JPanelMsgHandler implements ActionListener{
 			}
 			break;
 		}
+		case VALUE_TIMING_ENTUPDATE:{
+			break;
+		}
 		
 		default:
 			return false;
