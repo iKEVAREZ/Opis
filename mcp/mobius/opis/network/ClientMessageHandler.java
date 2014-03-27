@@ -11,6 +11,7 @@ import javax.swing.table.DefaultTableModel;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import mcp.mobius.mobiuscore.profiler.ProfilerRegistrar;
 import mcp.mobius.opis.modOpis;
+import mcp.mobius.opis.api.IMessageHandler;
 import mcp.mobius.opis.data.client.DataCache;
 import mcp.mobius.opis.data.client.TickHandlerClientProfiler;
 import mcp.mobius.opis.data.holders.ISerializable;
@@ -23,6 +24,7 @@ import mcp.mobius.opis.gui.overlay.OverlayMeanTime;
 import mcp.mobius.opis.gui.overlay.entperchunk.OverlayEntityPerChunk;
 import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.packets.client.Packet_ReqData;
+import mcp.mobius.opis.network.packets.server.NetDataRaw;
 import mcp.mobius.opis.swing.SwingUI;
 import mcp.mobius.opis.data.holders.basetypes.AmountHolder;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesBlock;
@@ -35,7 +37,7 @@ import mcp.mobius.opis.network.enums.AccessLevel;
 import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.enums.Packets;
 
-public class ClientMessageHandler {
+public class ClientMessageHandler implements IMessageHandler{
 	
 	private static ClientMessageHandler _instance;
 	private ClientMessageHandler(){}
@@ -44,31 +46,6 @@ public class ClientMessageHandler {
 		if(_instance == null)
 			_instance = new ClientMessageHandler();			
 		return _instance;
-	}
-	
-	public void handle(Message cmd){
-		if (cmd == Message.CLIENT_START_PROFILING){
-			modOpis.log.log(Level.INFO, "Started profiling");
-			
-			MetaManager.reset();		
-			modOpis.profilerRun = true;
-			ProfilerRegistrar.turnOn();		
-		}
-		else if (cmd == Message.CLIENT_SHOW_RENDER_TICK){
-			modOpis.log.log(Level.INFO, "=== RENDER TICK ===");
-			ArrayList<StatsTickHandler> stats = TickHandlerManager.getCumulatedStats();
-			for (StatsTickHandler stat : stats){
-				System.out.printf("%s \n", stat);
-			}
-		}
-		
-		else if (cmd == Message.CLIENT_SHOW_SWING){
-			SwingUI.instance().showUI();		
-		}
-		
-		else if (cmd == Message.CLIENT_CLEAR_SELECTION){
-			modOpis.selectedBlock = null;			
-		}
 	}
 	
 	public void handle(Message msg, ArrayList<ISerializable> data){
@@ -88,5 +65,10 @@ public class ClientMessageHandler {
 		else if (msg == Message.LIST_CHUNK_LOADED){
 			ChunkManager.setLoadedChunks(data);	 
 		}			
+	}
+
+	@Override
+	public boolean handleMessage(Message msg, NetDataRaw rawdata) {
+		return false;
 	}
 }

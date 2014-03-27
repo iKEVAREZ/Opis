@@ -207,7 +207,10 @@ public class SwingUI extends JFrame implements WindowListener, IMessageHandler{
 			}
 			break;
 		}
-		
+		case CLIENT_SHOW_SWING:{
+			this.showUI();
+			break;
+		}
 		default:
 			return false;
 			

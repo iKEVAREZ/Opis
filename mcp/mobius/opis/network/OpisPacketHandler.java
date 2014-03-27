@@ -104,8 +104,8 @@ public class OpisPacketHandler implements IPacketHandler {
 		}
 		
 		else if (header == Packets.CLIENT_CMD){
-			NetDataCommand castedPacket = new NetDataCommand(packet);
-			ClientMessageHandler.instance().handle(castedPacket.msg);
+			NetDataRaw rawdata = new NetDataCommand(packet);
+			MessageHandlerRegistrar.instance().routeMessage(rawdata.msg, rawdata);			
 		}		
 		
 		else if (header == Packets.DATA_LIST_GENERAL){
