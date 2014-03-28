@@ -336,12 +336,12 @@ public class PanelSummary extends JPanelMsgHandler{
 			break;
 		}		
 		case STATUS_RUN_UPDATE:{
-			this.setProgressBar(-1, ((SerialInt)rawdata.value).value, -1);	
+			this.setProgressBar(-1, -1, ((SerialInt)rawdata.value).value);	
 			break;
 		}		
 		case STATUS_RUNNING:{
 			this.getBtnRun().setText("Running...");
-			this.setProgressBar(-1, ((SerialInt)rawdata.value).value, -1);
+			this.setProgressBar(-1, -1, ((SerialInt)rawdata.value).value);
 			break;
 		}
 		case STATUS_TIME_LAST_RUN:{
