@@ -37,7 +37,7 @@ public class PanelTimingEntities extends JPanelMsgHandler{
 	 * Create the panel.
 	 */
 	public PanelTimingEntities() {
-		setLayout(new MigLayout("", "[grow][][][grow][]", "[][grow][]"));
+		setLayout(new MigLayout("", "[][][][grow][]", "[][grow][]"));
 		
 		btnCenter = new JButtonAccess("Center Map", AccessLevel.NONE);
 		add(btnCenter, "cell 0 0");

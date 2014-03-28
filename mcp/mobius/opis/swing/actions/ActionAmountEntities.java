@@ -35,14 +35,20 @@ public class ActionAmountEntities implements ActionListener, ItemListener {
 		}				
 		
 		if (e.getSource() == SwingUI.instance().getPanelAmountEntities().getBtnRefresh()){
-			
+			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.LIST_AMOUNT_ENTITIES));
 		}
 		
 	}
 
 	@Override
-	public void itemStateChanged(ItemEvent arg0) {
-
+	public void itemStateChanged(ItemEvent e) {
+        if      (e.getStateChange() == ItemEvent.SELECTED){
+            PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.COMMAND_FILTERING_TRUE));
+        }
+        else if (e.getStateChange() == ItemEvent.DESELECTED){
+            PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.COMMAND_FILTERING_FALSE));
+        }
+        PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.LIST_AMOUNT_ENTITIES));
 	}
 
 }

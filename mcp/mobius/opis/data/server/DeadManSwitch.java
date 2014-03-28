@@ -31,7 +31,7 @@ public class DeadManSwitch implements Runnable{
 				int npermits = deadManSwitch.drainPermits();
 				
 				if (npermits == 0){
-					System.out.printf("==== Main thread is staled ! %d ticks last seen ====\n", this.nTickWithoutAccident);
+					//System.out.printf("==== Main thread is staled ! %d ticks last seen ====\n", this.nTickWithoutAccident);
 					this.nTickWithoutAccident = 0;
 				} else {
 					nTickWithoutAccident += 1;

@@ -47,6 +47,10 @@ public class ActionTimingTileEnts implements ActionListener {
             PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.COMMAND_TELEPORT_BLOCK, coord));
             Minecraft.getMinecraft().setIngameFocus(); 
 		}
+		
+		if (e.getSource() == SwingUI.instance().getPanelTimingTileEnts().getBtnReset()){
+			modOpis.selectedBlock = null;
+		}		
 	}
 
 }

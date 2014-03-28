@@ -155,7 +155,8 @@ public class PanelTimingTileEnts extends JPanelMsgHandler{
 		}		
 		case CLIENT_HIGHLIGHT_BLOCK:{
 			modOpis.selectedBlock = (CoordinatesBlock)rawdata.value;
-			this.getBtnReset().setEnabled(true);			
+			this.getBtnReset().setEnabled(true);
+			break;
 		}
 		default:
 			return false;

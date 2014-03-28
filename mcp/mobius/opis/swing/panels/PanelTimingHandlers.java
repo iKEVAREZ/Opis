@@ -102,7 +102,8 @@ public class PanelTimingHandlers extends JPanelMsgHandler{
 			break;
 		}
 		case VALUE_TIMING_HANDLERS:{
-			this.getLblSummary().setText(String.format("Total update time : %.3f µs", ((SerialDouble)rawdata.value).value));	
+			this.getLblSummary().setText(String.format("Total update time : %.3f µs", ((SerialDouble)rawdata.value).value));
+			break;
 		}
 		case STATUS_START:{
 			this.getBtnRun().setText("Running...");

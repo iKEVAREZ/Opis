@@ -95,6 +95,8 @@ public class PanelAmountEntities extends JPanelMsgHandler{
 	public boolean handleMessage(Message msg, NetDataRaw rawdata) {
 		switch(msg){
 		case LIST_AMOUNT_ENTITIES:{
+			((JTableStats)this.getTable()).setStatistics(rawdata.array);
+			
 			DefaultTableModel model = (DefaultTableModel)this.getTable().getModel();
 			int               row   = this.updateData(table, model, AmountHolder.class);	
 			int totalEntities = 0;

@@ -42,8 +42,5 @@ public class ActionTimingChunks implements ActionListener {
 		if (e.getSource() == SwingUI.instance().getPanelTimingChunks().getBtnTeleport()){
             PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.COMMAND_TELEPORT_CHUNK, data.getChunk()));
 		}
-		
-
 	}
-
 }
