@@ -202,8 +202,8 @@ public class OpisPacketHandler implements IPacketHandler {
 		SerialDouble totalTimeTE      = new SerialDouble(TileEntityManager.getTotalUpdateTime());
 		SerialDouble totalTimeEnt     = new SerialDouble(EntityManager.getTotalUpdateTime());
 		SerialDouble totalTimeHandler = new SerialDouble(TickHandlerManager.getTotalUpdateTime());
-		SerialDouble totalWorldTick   = new SerialDouble(GlobalTimingManager.getTotalStats(GlobalTimingManager.worldTickStats));
-		SerialDouble totalEntUpdate   = new SerialDouble(GlobalTimingManager.getTotalStats(GlobalTimingManager.entUpdateStats));
+		SerialDouble totalWorldTick   = new SerialDouble(GlobalTimingManager.INSTANCE.getTotalStats(GlobalTimingManager.INSTANCE.worldTickStats));
+		SerialDouble totalEntUpdate   = new SerialDouble(GlobalTimingManager.INSTANCE.getTotalStats(GlobalTimingManager.INSTANCE.entUpdateStats));
 
 		OpisPacketHandler.validateAndSend(NetDataList.create(Message.LIST_TIMING_HANDLERS,    timingHandlers),   player);
 		OpisPacketHandler.validateAndSend(NetDataList.create(Message.LIST_TIMING_ENTITIES,    timingEntities),   player);

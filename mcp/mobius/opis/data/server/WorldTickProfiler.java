@@ -1,6 +1,11 @@
 package mcp.mobius.opis.data.server;
 
+import net.minecraft.world.ChunkCoordIntPair;
+
+import com.google.common.collect.HashBasedTable;
+
 import mcp.mobius.mobiuscore.profiler.IProfilerWorldTick;
+import mcp.mobius.opis.data.holders.basetypes.CoordinatesChunk;
 import mcp.mobius.opis.data.holders.stats.StatsWorld;
 import mcp.mobius.opis.data.managers.GlobalTimingManager;
 
@@ -10,12 +15,8 @@ public class WorldTickProfiler extends AbstractProfiler implements IProfilerWorl
 	//public  static WorldTickProfiler instance() {return _instance;}	
 	//public  StatsBase  stats = new StatsBase();
 	
-	protected Clock clock_1 = new Clock();
-	protected Clock clock_2 = new Clock();
-	protected Clock clock_3 = new Clock();
-	protected Clock clock_4 = new Clock();
-	protected Clock clock_5 = new Clock();
-	protected Clock clock_6 = new Clock();	
+	HashBasedTable<Integer, String, Clock>           clocksDim   = HashBasedTable.create();
+	HashBasedTable<CoordinatesChunk, String, Clock> clocksChunk = HashBasedTable.create();	
 	
 	@Override
 	public void WorldTickStart(int id) {
@@ -25,73 +26,38 @@ public class WorldTickProfiler extends AbstractProfiler implements IProfilerWorl
 	@Override
 	public void WorldTickEnd(int id) {
 		this.clock.stop();
-		GlobalTimingManager.addStat(id, this.clock.timeDelta, GlobalTimingManager.worldTickStats);
+		GlobalTimingManager.INSTANCE.addStat(id, this.clock.timeDelta, GlobalTimingManager.INSTANCE.worldTickStats);
 	}
 
 	@Override
-	public void UpdatesS(int dim) {
-		this.clock_1.start();
+	public void startDim(int dim, String subsection) {
+		if (!clocksDim.contains(dim, subsection)){
+			clocksDim.put(dim, subsection, new Clock());
+		}
+		clocksDim.get(dim, subsection).start();
 	}
 
 	@Override
-	public void UpdatesE(int dim) {
-		this.clock_1.stop();
-		GlobalTimingManager.addStat(dim, this.clock_1.timeDelta, GlobalTimingManager.worldUpdatesStats);		
+	public void stopDim(int dim, String subsection) {
+		clocksDim.get(dim, subsection).stop();
+		GlobalTimingManager.INSTANCE.addStat(dim, subsection, clocksDim.get(dim, subsection).timeDelta);
 	}
 
 	@Override
-	public void BlocksAndAmbianceS(int dim) {
-		this.clock_2.start();		
+	public void startChunk(int dim, ChunkCoordIntPair chunk, String subsection) {
+		CoordinatesChunk coord = new CoordinatesChunk(dim, chunk);
+		if (!clocksChunk.contains(coord, subsection)){
+			clocksChunk.put(coord, subsection, new Clock());
+		}
+		clocksChunk.get(coord, subsection).start();
+		
 	}
 
 	@Override
-	public void BlocksAndAmbianceE(int dim) {
-		this.clock_2.stop();
-		GlobalTimingManager.addStat(dim, this.clock_2.timeDelta, GlobalTimingManager.worldBlocksAndAmbianceStats);
+	public void stopChunk(int dim, ChunkCoordIntPair chunk, String subsection) {
+		CoordinatesChunk coord = new CoordinatesChunk(dim, chunk);
+		clocksChunk.get(coord, subsection).stop();
+		GlobalTimingManager.INSTANCE.addStat(coord, subsection, clocksChunk.get(coord, subsection).timeDelta);
+		
 	}
-
-	@Override
-	public void PlayerInstancesS(int dim) {
-		this.clock_3.start();		
-	}
-
-	@Override
-	public void PlayerInstancesE(int dim) {
-		this.clock_3.stop();
-		GlobalTimingManager.addStat(dim, this.clock_3.timeDelta, GlobalTimingManager.worldPlayerInstancesStats);
-	}
-
-	@Override
-	public void VillageCollectionS(int dim) {
-		this.clock_4.start();
-	}
-
-	@Override
-	public void VillageCollectionE(int dim) {
-		this.clock_4.stop();
-		GlobalTimingManager.addStat(dim, this.clock_4.timeDelta, GlobalTimingManager.worldVillageCollectionStats);
-	}
-
-	@Override
-	public void VillageSiegeS(int dim) {
-		this.clock_5.start();
-	}
-
-	@Override
-	public void VillageSiegeE(int dim) {
-		this.clock_5.stop();
-		GlobalTimingManager.addStat(dim, this.clock_5.timeDelta, GlobalTimingManager.worldVillageSiegeStats);
-	}
-
-	@Override
-	public void ApplyBlockEventsS(int dim) {
-		this.clock_6.start();
-	}
-
-	@Override
-	public void ApplyBlockEventsE(int dim) {
-		this.clock_6.stop();
-		GlobalTimingManager.addStat(dim, this.clock_6.timeDelta, GlobalTimingManager.worldApplyBlockEventsStats);
-	}
-
 }

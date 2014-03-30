@@ -5,16 +5,20 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import com.google.common.collect.Table;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.packet.Packet3Chat;
 import net.minecraft.util.ChatMessageComponent;
 import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.data.holders.basetypes.AmountHolder;
+import mcp.mobius.opis.data.holders.basetypes.CoordinatesChunk;
 import mcp.mobius.opis.data.holders.basetypes.SerialDouble;
 import mcp.mobius.opis.data.holders.basetypes.SerialInt;
 import mcp.mobius.opis.data.holders.basetypes.SerialLong;
 import mcp.mobius.opis.data.holders.stats.StatsChunk;
+import mcp.mobius.opis.data.holders.stats.StatsChunkMedian;
 import mcp.mobius.opis.data.holders.stats.StatsEntity;
 import mcp.mobius.opis.data.holders.stats.StatsTickHandler;
 import mcp.mobius.opis.data.holders.stats.StatsTileEntity;
@@ -120,12 +124,19 @@ public class OpisServerTickHandler implements ITickHandler {
 					OpisPacketHandler.sendFullUpdate(player);
 				}
 				
-				System.out.printf("worldUpdatesStats : %s µs\n", GlobalTimingManager.getTotalStats(GlobalTimingManager.worldUpdatesStats));
-				System.out.printf("worldBlocksAndAmbianceStats : %s µs\n", GlobalTimingManager.getTotalStats(GlobalTimingManager.worldBlocksAndAmbianceStats));
-				System.out.printf("worldPlayerInstancesStats : %s µs\n", GlobalTimingManager.getTotalStats(GlobalTimingManager.worldPlayerInstancesStats));
-				System.out.printf("worldVillageCollectionStats : %s µs\n", GlobalTimingManager.getTotalStats(GlobalTimingManager.worldVillageCollectionStats));
-				System.out.printf("worldVillageSiegeStats : %s µs\n", GlobalTimingManager.getTotalStats(GlobalTimingManager.worldVillageSiegeStats));
-				System.out.printf("worldApplyBlockEventsStats : %s µs\n", GlobalTimingManager.getTotalStats(GlobalTimingManager.worldApplyBlockEventsStats));				
+				for(Table.Cell<Integer, String, Double> cell : GlobalTimingManager.INSTANCE.getStatsDim().cellSet()){
+					System.out.printf("[ %4d ] %20s : %.3f µs\n", cell.getRowKey(), cell.getColumnKey(), cell.getValue());
+				}
+
+				for(Table.Cell<Integer, String, Double> cell : GlobalTimingManager.INSTANCE.getStatsDimPerSection().cellSet()){
+					System.out.printf("[ %4d ] %20s : %.3f µs\n", cell.getRowKey(), cell.getColumnKey(), cell.getValue());
+				}				
+				
+				/*
+				for(Table.Cell<CoordinatesChunk, String, Double> cell : GlobalTimingManager.INSTANCE.getStatsChunk().cellSet()){
+					System.out.printf("[ %s ] %20s : %.3f µs\n", cell.getRowKey(), cell.getColumnKey(), cell.getValue());
+				}
+				*/				
 				
 			}			
 		}

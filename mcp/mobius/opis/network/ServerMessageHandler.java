@@ -111,11 +111,11 @@ public class ServerMessageHandler {
 		}
 
 		else if (maintype == Message.VALUE_TIMING_WORLDTICK){
-			OpisPacketHandler.validateAndSend(NetDataValue.create(Message.VALUE_TIMING_WORLDTICK, new SerialDouble(GlobalTimingManager.getTotalStats(GlobalTimingManager.worldTickStats))), (Player)player);
+			OpisPacketHandler.validateAndSend(NetDataValue.create(Message.VALUE_TIMING_WORLDTICK, new SerialDouble(GlobalTimingManager.INSTANCE.getTotalStats(GlobalTimingManager.INSTANCE.worldTickStats))), (Player)player);
 		}		
 
 		else if (maintype == Message.VALUE_TIMING_ENTUPDATE){
-			OpisPacketHandler.validateAndSend(NetDataValue.create(Message.VALUE_TIMING_ENTUPDATE, new SerialDouble(GlobalTimingManager.getTotalStats(GlobalTimingManager.entUpdateStats))), (Player)player);
+			OpisPacketHandler.validateAndSend(NetDataValue.create(Message.VALUE_TIMING_ENTUPDATE, new SerialDouble(GlobalTimingManager.INSTANCE.getTotalStats(GlobalTimingManager.INSTANCE.entUpdateStats))), (Player)player);
 		}				
 		
 		else if (maintype == Message.LIST_AMOUNT_ENTITIES){
