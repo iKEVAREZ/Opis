@@ -11,11 +11,11 @@ import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 
 public abstract class StatAbstract implements Comparable, ISerializable{
 	protected DescriptiveStatistics dstat = new DescriptiveStatistics();
-	public    Long   dataPoints  = 0L;
+	public    Long   dataPoints      = 0L;
 	protected Double geomMean        = null;
 	protected Double dataSum         = null;
-	protected CoordinatesBlock coord = new CoordinatesBlock(0,0,0,0);
-	protected CoordinatesChunk chunk = new CoordinatesChunk(0,0,0);
+	protected CoordinatesBlock coord = CoordinatesBlock.INVALID;
+	protected CoordinatesChunk chunk = CoordinatesChunk.INVALID;
 	protected String name;
 	
 	/*

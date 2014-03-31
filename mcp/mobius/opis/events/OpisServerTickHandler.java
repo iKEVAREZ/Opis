@@ -163,9 +163,6 @@ public class OpisServerTickHandler implements ITickHandler {
 			if (PlayerTracker.instance().playerOverlayStatus.get(player) == OverlayStatus.CHUNKSTATUS){
 				OpisPacketHandler.validateAndSend(NetDataCommand.create(Message.LIST_CHUNK_LOADED_CLEAR), player);
 				OpisPacketHandler.splitAndSend(Message.LIST_CHUNK_LOADED, ChunkManager.instance().getLoadedChunks(PlayerTracker.instance().playerDimension.get(player)), player);				
-				
-				//OpisPacketHandler.validateAndSend(NetDataList.create(Message.LIST_CHUNK_LOADED, ChunkManager.instance().getLoadedChunks(PlayerTracker.instance().playerDimension.get(player))), player);	
-				
 			}
 			
 			if (PlayerTracker.instance().playerOverlayStatus.get(player) == OverlayStatus.MEANTIME){

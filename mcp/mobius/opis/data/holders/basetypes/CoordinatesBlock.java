@@ -13,6 +13,8 @@ public final class CoordinatesBlock implements ISerializable {
 	public final int chunkX, chunkZ;
 	//public boolean isChunk;
 	
+	public final static CoordinatesBlock INVALID = new CoordinatesBlock(Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE); 
+	
 	public CoordinatesBlock(int dim, int x, int y, int z){
 		this.dim = dim;
 		this.x = x; 
@@ -83,6 +85,10 @@ public final class CoordinatesBlock implements ISerializable {
 		//else
 			return (this.dim == c.dim) && (this.x == c.x) && (this.y == c.y) && (this.z == c.z);
 	};
+	
+	public boolean isInvalid(){
+		return this.equals(CoordinatesBlock.INVALID);
+	}
 	
 	public int hashCode() {
 		//if (this.isChunk)

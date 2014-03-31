@@ -14,6 +14,8 @@ public final class CoordinatesChunk implements ISerializable {
 	public final byte metadata;
 	//public boolean isChunk;
 	
+	public final static CoordinatesChunk INVALID = new CoordinatesChunk(Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE);
+	
 	public CoordinatesChunk(CoordinatesBlock coord){
 		this.dim    = coord.dim;
 		this.chunkX = coord.chunkX;
@@ -85,6 +87,10 @@ public final class CoordinatesChunk implements ISerializable {
 		
 		this.metadata = 0;
 	}	
+	
+	public boolean isInvalid(){
+		return this.equals(CoordinatesChunk.INVALID);
+	}
 	
 	public String toString(){
 		return String.format("[%6d %6d %6d]", this.dim, this.chunkX, this.chunkZ);
