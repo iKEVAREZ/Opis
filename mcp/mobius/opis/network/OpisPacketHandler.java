@@ -183,12 +183,14 @@ public class OpisPacketHandler implements IPacketHandler {
 			OpisPacketHandler.validateAndSend(capsule, player);
 	}
 
-	/*
-	public static void sendPacketToAllSwing(Packet250CustomPayload packet){
-		for (Player player : PlayerTracker.instance().playersSwing)
-			PacketDispatcher.sendPacketToPlayer(packet, player);
+	public static void splitAndSend(Message msg, ArrayList<? extends ISerializable> data, Player player){
+		int i = 0;
+		while (i < data.size()){
+			validateAndSend(NetDataList.create(msg, data.subList(i, Math.min(i + 500, data.size()))), player);
+			i += 500;
+		}
+		
 	}
-	*/	
 	
 	public static void sendChatMsg(String msg, Player player){
 		PacketDispatcher.sendPacketToPlayer(new Packet3Chat(ChatMessageComponent.createFromText(msg)), player);		

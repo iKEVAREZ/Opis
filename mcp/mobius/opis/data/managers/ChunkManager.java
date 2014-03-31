@@ -35,8 +35,8 @@ public class ChunkManager implements IMessageHandler{
 	private HashMap<CoordinatesChunk, StatsChunk>  chunkMeanTime = new HashMap<CoordinatesChunk, StatsChunk>();
 	public  ArrayList<TicketData> tickets = new ArrayList<TicketData>();
 
-	public void setLoadedChunks(ArrayList<ISerializable> data){
-		chunksLoad.clear();
+	public void addLoadedChunks(ArrayList<ISerializable> data){
+		//chunksLoad.clear();
 		for (ISerializable chunk : data){
 			chunksLoad.add((CoordinatesChunk)chunk);
 		}
@@ -144,9 +144,13 @@ public class ChunkManager implements IMessageHandler{
 			break;
 		}
 		case LIST_CHUNK_LOADED:{
-			this.setLoadedChunks(rawdata.array);	 
+			this.addLoadedChunks(rawdata.array);	 
 			break;
 		}		
+		case LIST_CHUNK_LOADED_CLEAR:{
+			chunksLoad.clear();
+			break;
+		}
 		default:
 			return false;
 		}

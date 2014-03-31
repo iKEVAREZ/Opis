@@ -38,6 +38,7 @@ import mcp.mobius.opis.data.server.WorldTickProfiler;
 import mcp.mobius.opis.events.PlayerTracker;
 import mcp.mobius.opis.gui.overlay.OverlayStatus;
 import mcp.mobius.opis.network.enums.Message;
+import mcp.mobius.opis.network.packets.server.NetDataCommand;
 import mcp.mobius.opis.network.packets.server.NetDataList;
 import mcp.mobius.opis.network.packets.server.Packet_DataOverlayChunkEntities;
 import mcp.mobius.opis.network.packets.server.NetDataValue;
@@ -77,7 +78,8 @@ public class ServerMessageHandler {
 		else if (maintype == Message.LIST_CHUNK_LOADED){
 			PlayerTracker.instance().playerOverlayStatus.put(player, OverlayStatus.CHUNKSTATUS);
 			PlayerTracker.instance().playerDimension.put(player, ((SerialInt)param1).value);
-			OpisPacketHandler.validateAndSend(NetDataList.create(Message.LIST_CHUNK_LOADED, ChunkManager.instance().getLoadedChunks(((SerialInt)param1).value)), player);
+			OpisPacketHandler.validateAndSend(NetDataCommand.create(Message.LIST_CHUNK_LOADED_CLEAR), player);
+			OpisPacketHandler.splitAndSend(Message.LIST_CHUNK_LOADED, ChunkManager.instance().getLoadedChunks(((SerialInt)param1).value), player);
 		}		
 
 		else if (maintype == Message.LIST_CHUNK_TICKETS){

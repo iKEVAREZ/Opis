@@ -34,6 +34,7 @@ import mcp.mobius.opis.data.server.TickProfiler;
 import mcp.mobius.opis.gui.overlay.OverlayStatus;
 import mcp.mobius.opis.network.OpisPacketHandler;
 import mcp.mobius.opis.network.enums.Message;
+import mcp.mobius.opis.network.packets.server.NetDataCommand;
 import mcp.mobius.opis.network.packets.server.NetDataList;
 import mcp.mobius.opis.network.packets.server.NetDataValue;
 import cpw.mods.fml.common.ITickHandler;
@@ -160,7 +161,10 @@ public class OpisServerTickHandler implements ITickHandler {
 		for (Player player : PlayerTracker.instance().playerOverlayStatus.keySet()){
 			
 			if (PlayerTracker.instance().playerOverlayStatus.get(player) == OverlayStatus.CHUNKSTATUS){
-				OpisPacketHandler.validateAndSend(NetDataList.create(Message.LIST_CHUNK_LOADED, ChunkManager.instance().getLoadedChunks(PlayerTracker.instance().playerDimension.get(player))), player);	
+				OpisPacketHandler.validateAndSend(NetDataCommand.create(Message.LIST_CHUNK_LOADED_CLEAR), player);
+				OpisPacketHandler.splitAndSend(Message.LIST_CHUNK_LOADED, ChunkManager.instance().getLoadedChunks(PlayerTracker.instance().playerDimension.get(player)), player);				
+				
+				//OpisPacketHandler.validateAndSend(NetDataList.create(Message.LIST_CHUNK_LOADED, ChunkManager.instance().getLoadedChunks(PlayerTracker.instance().playerDimension.get(player))), player);	
 				
 			}
 			

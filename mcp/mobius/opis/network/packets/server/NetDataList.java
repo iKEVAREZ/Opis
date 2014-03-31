@@ -7,6 +7,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.List;
 
 import mcp.mobius.opis.data.holders.ISerializable;
 import mcp.mobius.opis.data.holders.basetypes.AmountHolder;
@@ -60,7 +61,7 @@ public class NetDataList extends NetDataRaw{
 	*/
 	
 	//public static Packet250Metadata create(DataReq dataReq, ArrayList<? extends ISerializable> stats){
-	public static NetDataList create(Message msg, ArrayList<? extends ISerializable> data){
+	public static NetDataList create(Message msg, List<? extends ISerializable> data){
 		//Packet250Metadata packet      = new Packet250Metadata();
 		Packet250CustomPayload packet = new Packet250CustomPayload();
 		ByteArrayOutputStream bos     = new ByteArrayOutputStream(1);

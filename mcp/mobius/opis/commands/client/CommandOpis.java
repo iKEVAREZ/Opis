@@ -40,7 +40,9 @@ public class CommandOpis extends CommandBase {
 		}
 		
 		PlayerTracker.instance().playersSwing.add((Player)icommandsender);
-		((EntityPlayerMP)icommandsender).playerNetServerHandler.sendPacketToPlayer(NetDataCommand.create(Message.CLIENT_SHOW_SWING));
+		//((EntityPlayerMP)icommandsender).playerNetServerHandler.sendPacketToPlayer(NetDataCommand.create(Message.CLIENT_SHOW_SWING));
+		if (icommandsender instanceof Player)
+			OpisPacketHandler.validateAndSend(NetDataCommand.create(Message.CLIENT_SHOW_SWING), (Player)icommandsender);		
 		OpisPacketHandler.sendFullUpdate((Player)icommandsender);
 	}
 	

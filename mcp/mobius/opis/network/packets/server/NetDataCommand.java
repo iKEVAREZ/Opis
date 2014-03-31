@@ -12,6 +12,8 @@ import net.minecraft.network.packet.Packet250CustomPayload;
 
 public class NetDataCommand extends NetDataRaw{
 
+	public NetDataCommand(){};
+	
 	public NetDataCommand(Packet250CustomPayload packet) {
 		DataInputStream inputStream = new DataInputStream(new ByteArrayInputStream(packet.data));
 		try{
@@ -21,7 +23,7 @@ public class NetDataCommand extends NetDataRaw{
 		
 	}
 
-	public static Packet250CustomPayload create(Message msg){
+	public static NetDataCommand create(Message msg){
 		Packet250CustomPayload packet = new Packet250CustomPayload();
 		ByteArrayOutputStream bos     = new ByteArrayOutputStream(1);
 		DataOutputStream outputStream = new DataOutputStream(bos);
@@ -35,7 +37,12 @@ public class NetDataCommand extends NetDataRaw{
 		packet.data    = bos.toByteArray();
 		packet.length  = bos.size();		
 		
-		return packet;
+		NetDataCommand capsule = new NetDataCommand();
+		capsule.msg     = msg;
+		capsule.header  = Packets.NETDATACOMMAND;
+		capsule.packet  = packet;
+		
+		return capsule;		
 	}	
 	
 }

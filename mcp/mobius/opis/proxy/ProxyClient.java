@@ -114,6 +114,7 @@ public class ProxyClient extends ProxyServer implements IMessageHandler{
 		
 		MessageHandlerRegistrar.instance().registerHandler(Message.LIST_TIMING_CHUNK, ChunkManager.instance());
 		MessageHandlerRegistrar.instance().registerHandler(Message.LIST_CHUNK_LOADED, ChunkManager.instance());
+		MessageHandlerRegistrar.instance().registerHandler(Message.LIST_CHUNK_LOADED_CLEAR, ChunkManager.instance());
 	}
 
 	@Override
