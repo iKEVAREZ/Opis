@@ -13,6 +13,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
@@ -336,4 +337,18 @@ public enum EntityManager {
 		return amountEntities;		
 	}	
 	
+	public int killAllHostiles(int dim){
+		WorldServer world = DimensionManager.getWorld(dim);
+		if (world == null) return -1;
+		
+		int killedEnts = 0;
+		
+		for (Entity entity : (ArrayList<Entity>)world.loadedEntityList){
+			if (entity instanceof EntityMob){
+				entity.setDead();
+				killedEnts += 1;
+			}
+		}
+		return killedEnts;
+	}
 }

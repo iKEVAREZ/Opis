@@ -200,7 +200,7 @@ public class OpisPacketHandler implements IPacketHandler {
 		ArrayList<StatsTickHandler> timingHandlers = TickHandlerManager.getCumulatedStats();
 		ArrayList<StatsEntity>      timingEntities = EntityManager.INSTANCE.getTopEntities(100);
 		ArrayList<StatsTileEntity>  timingTileEnts = TileEntityManager.getTopEntities(100);
-		ArrayList<StatsChunk>         timingChunks = ChunkManager.instance().getTopChunks(100);
+		ArrayList<StatsChunk>         timingChunks = ChunkManager.INSTANCE.getTopChunks(100);
 		SerialDouble totalTimeTE      = new SerialDouble(TileEntityManager.getTotalUpdateTime());
 		SerialDouble totalTimeEnt     = new SerialDouble(EntityManager.INSTANCE.getTotalUpdateTime());
 		SerialDouble totalTimeHandler = new SerialDouble(TickHandlerManager.getTotalUpdateTime());

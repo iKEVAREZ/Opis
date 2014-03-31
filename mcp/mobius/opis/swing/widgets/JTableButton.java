@@ -2,9 +2,12 @@ package mcp.mobius.opis.swing.widgets;
 
 import java.awt.*;
 import java.awt.event.*;
+
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.table.*;
+
+import mcp.mobius.opis.network.enums.AccessLevel;
 
 
 
@@ -30,11 +33,13 @@ public class JTableButton extends AbstractCellEditor
 	private Border originalBorder;
 	private Border focusBorder;
 
-	private JButton renderButton;
-	private JButton editButton;
+	private JButtonAccess renderButton;
+	private JButtonAccess editButton;
 	private Object editorValue;
 	private boolean isButtonColumnEditor;
 
+	private AccessLevel level;
+	
 	/**
 	 *  Create the ButtonColumn to be used as a renderer and editor. The
 	 *  renderer and editor will automatically be installed on the TableColumn
@@ -44,13 +49,14 @@ public class JTableButton extends AbstractCellEditor
 	 *  @param action the Action to be invoked when the button is invoked
 	 *  @param column the column to which the button renderer/editor is added
 	 */
-	public JTableButton(JTable table, ActionListener action, int column)
+	public JTableButton(JTable table, ActionListener action, int column, AccessLevel level)
 	{
 		this.table = table;
 		this.action = action;
+		this.level  = level;
 		
-		renderButton = new JButton();
-		editButton = new JButton();
+		renderButton = new JButtonAccess(level);
+		editButton   = new JButtonAccess(level);
 		editButton.setFocusPainted( false );
 		editButton.addActionListener( this );
 		originalBorder = editButton.getBorder();

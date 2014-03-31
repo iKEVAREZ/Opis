@@ -5,9 +5,11 @@ import javax.swing.JPanel;
 import mcp.mobius.opis.api.IMessageHandler;
 import mcp.mobius.opis.api.ITabPanel;
 import mcp.mobius.opis.data.holders.DimensionData;
+import mcp.mobius.opis.network.enums.AccessLevel;
 import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.packets.server.NetDataRaw;
 import mcp.mobius.opis.swing.actions.ActionDimensions;
+import mcp.mobius.opis.swing.widgets.JButtonAccess;
 import mcp.mobius.opis.swing.widgets.JPanelMsgHandler;
 import mcp.mobius.opis.swing.widgets.JTableButton;
 import mcp.mobius.opis.swing.widgets.JTableStats;
@@ -22,13 +24,14 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.JButton;
 
 public class PanelDimensions extends JPanelMsgHandler implements IMessageHandler,	ITabPanel {
-	private JButton btnPurgeAll;
+	private JButtonAccess btnPurgeAll;
 	
 	public PanelDimensions() {
 		setLayout(new MigLayout("", "[grow]", "[][grow]"));
 		
-		btnPurgeAll = new JButton("Purge All");
+		btnPurgeAll = new JButtonAccess("Purge All", AccessLevel.PRIVILEGED);
 		add(btnPurgeAll, "cell 0 0");
+		btnPurgeAll.addActionListener(new ActionDimensions());
 		
 		JScrollPane scrollPane = new JScrollPane();
 		add(scrollPane, "cell 0 1,grow");
@@ -66,7 +69,7 @@ public class PanelDimensions extends JPanelMsgHandler implements IMessageHandler
 		for (int i = 0; i < table.getColumnCount(); i++)
 			table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
 		
-		JTableButton buttonColumn = new JTableButton(table, new ActionDimensions(), 9);
+		JTableButton buttonColumn = new JTableButton(table, new ActionDimensions(), 9, AccessLevel.PRIVILEGED);
 	}
 
 	

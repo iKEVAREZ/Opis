@@ -25,11 +25,8 @@ import net.minecraft.world.gen.ChunkProviderServer;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.ForgeChunkManager.Ticket;
 
-public class ChunkManager implements IMessageHandler{
-	
-	private static ChunkManager _instance = new ChunkManager();
-	public  static ChunkManager instance(){return _instance;};
-	private ChunkManager(){}
+public enum ChunkManager implements IMessageHandler{
+	INSTANCE;
 	
 	private ArrayList<CoordinatesChunk>  chunksLoad = new ArrayList<CoordinatesChunk>();
 	private HashMap<CoordinatesChunk, StatsChunk>  chunkMeanTime = new HashMap<CoordinatesChunk, StatsChunk>();
@@ -134,6 +131,21 @@ public class ChunkManager implements IMessageHandler{
 			forcedChunks += world.getPersistentChunks().size();
 		}
 		return forcedChunks;
+	}
+	
+	public void purgeChunks(int dim){
+		WorldServer world = DimensionManager.getWorld(dim);
+		if (world == null) return;
+		
+		int loadedChunksDelta = 100;
+		
+		((ChunkProviderServer)world.getChunkProvider()).unloadAllChunks();
+		
+		while(loadedChunksDelta >= 100){
+			int loadedBefore = world.getChunkProvider().getLoadedChunkCount();
+			world.getChunkProvider().unloadQueuedChunks();
+			loadedChunksDelta = loadedBefore - world.getChunkProvider().getLoadedChunkCount();
+		}		
 	}
 
 	@Override

@@ -63,7 +63,7 @@ public class ServerMessageHandler {
 		}
 		
 		else if (maintype == Message.OVERLAY_CHUNK_TIMING){
-			ArrayList<StatsChunk> timingChunks = ChunkManager.instance().getTopChunks(100);
+			ArrayList<StatsChunk> timingChunks = ChunkManager.INSTANCE.getTopChunks(100);
 			OpisPacketHandler.validateAndSend(NetDataList.create(Message.LIST_TIMING_CHUNK,  timingChunks), (Player)player);
 		}		
 		
@@ -79,11 +79,11 @@ public class ServerMessageHandler {
 			PlayerTracker.instance().playerOverlayStatus.put(player, OverlayStatus.CHUNKSTATUS);
 			PlayerTracker.instance().playerDimension.put(player, ((SerialInt)param1).value);
 			OpisPacketHandler.validateAndSend(NetDataCommand.create(Message.LIST_CHUNK_LOADED_CLEAR), player);
-			OpisPacketHandler.splitAndSend(Message.LIST_CHUNK_LOADED, ChunkManager.instance().getLoadedChunks(((SerialInt)param1).value), player);
+			OpisPacketHandler.splitAndSend(Message.LIST_CHUNK_LOADED, ChunkManager.INSTANCE.getLoadedChunks(((SerialInt)param1).value), player);
 		}		
 
 		else if (maintype == Message.LIST_CHUNK_TICKETS){
-			PacketDispatcher.sendPacketToPlayer(Packet_Tickets.create(ChunkManager.instance().getTickets()), player);
+			PacketDispatcher.sendPacketToPlayer(Packet_Tickets.create(ChunkManager.INSTANCE.getTickets()), player);
 		}		
 		
 		else if (maintype == Message.LIST_TIMING_TILEENTS){
@@ -108,7 +108,7 @@ public class ServerMessageHandler {
 		}
 		
 		else if (maintype == Message.LIST_TIMING_CHUNK){
-			ArrayList<StatsChunk> timingChunks = ChunkManager.instance().getTopChunks(100);
+			ArrayList<StatsChunk> timingChunks = ChunkManager.INSTANCE.getTopChunks(100);
 			OpisPacketHandler.validateAndSend(NetDataList.create(Message.LIST_TIMING_CHUNK,  timingChunks), (Player)player);
 		}
 
@@ -187,19 +187,21 @@ public class ServerMessageHandler {
 		}
 		
 		else if(maintype == Message.COMMAND_KILL_HOSTILE_ALL){
-			
+			for (int dim : DimensionManager.getIDs())
+				EntityManager.INSTANCE.killAllHostiles(dim);
 		}
 		
 		else if(maintype == Message.COMMAND_KILL_HOSTILE_DIM){
-			
+			EntityManager.INSTANCE.killAllHostiles(((SerialInt)param1).value);			
 		}
 		
 		else if(maintype == Message.COMMAND_PURGE_CHUNKS_ALL){
-			
+			for (int dim : DimensionManager.getIDs())
+				ChunkManager.INSTANCE.purgeChunks(dim);			
 		}
 		
 		else if(maintype == Message.COMMAND_PURGE_CHUNKS_DIM){
-			
+			ChunkManager.INSTANCE.purgeChunks(((SerialInt)param1).value);			
 		}		
 		
 		else{

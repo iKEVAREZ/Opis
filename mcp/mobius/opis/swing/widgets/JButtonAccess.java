@@ -7,6 +7,12 @@ import mcp.mobius.opis.swing.SwingUI;
 
 public class JButtonAccess extends JButton {
 	private AccessLevel al = AccessLevel.NONE;
+
+	public JButtonAccess(AccessLevel level){
+		super();
+		this.al = level;
+		SwingUI.registeredButtons.add(this);		
+	}	
 	
 	public JButtonAccess(String label){
 		super(label);

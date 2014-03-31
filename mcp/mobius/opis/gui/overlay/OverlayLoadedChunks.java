@@ -122,7 +122,7 @@ public class OverlayLoadedChunks implements IMwDataProvider {
 	public ArrayList<IMwChunkOverlay> getChunksOverlay(int dim, double centerX,	double centerZ, double minX, double minZ, double maxX, double maxZ) {
 		ArrayList<IMwChunkOverlay> overlays = new ArrayList<IMwChunkOverlay>();
 		
-		for (CoordinatesChunk chunk : ChunkManager.instance().getLoadedChunks()){
+		for (CoordinatesChunk chunk : ChunkManager.INSTANCE.getLoadedChunks()){
 			overlays.add(new ChunkOverlay(chunk.chunkX, chunk.chunkZ, chunk.metadata == 0 ? false : true));
 		}
 		return overlays;
@@ -133,7 +133,7 @@ public class OverlayLoadedChunks implements IMwDataProvider {
 		int xChunk = bX >> 4;
 		int zChunk = bZ >> 4;
 		
-		for (CoordinatesChunk chunk : ChunkManager.instance().getLoadedChunks()){
+		for (CoordinatesChunk chunk : ChunkManager.INSTANCE.getLoadedChunks()){
 			if (chunk.chunkX == xChunk && chunk.chunkZ == zChunk && chunk.metadata == 0)
 				return ", Game loaded";
 			

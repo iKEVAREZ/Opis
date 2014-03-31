@@ -146,16 +146,16 @@ public class OverlayMeanTime implements IMwDataProvider, IMessageHandler{
 		double minTime = 9999;
 		double maxTime = 0;
 
-		for (CoordinatesChunk chunk :   ChunkManager.instance().getChunkMeanTime().keySet()){
-			minTime = Math.min(minTime, ChunkManager.instance().getChunkMeanTime().get(chunk).getDataSum());
-			maxTime = Math.max(maxTime, ChunkManager.instance().getChunkMeanTime().get(chunk).getDataSum());
+		for (CoordinatesChunk chunk :   ChunkManager.INSTANCE.getChunkMeanTime().keySet()){
+			minTime = Math.min(minTime, ChunkManager.INSTANCE.getChunkMeanTime().get(chunk).getDataSum());
+			maxTime = Math.max(maxTime, ChunkManager.INSTANCE.getChunkMeanTime().get(chunk).getDataSum());
 		}
 		
-		for (CoordinatesChunk chunk : ChunkManager.instance().getChunkMeanTime().keySet()){
+		for (CoordinatesChunk chunk : ChunkManager.INSTANCE.getChunkMeanTime().keySet()){
 			if (this.selectedChunk != null)
-				overlays.add(new ChunkOverlay(chunk.chunkX, chunk.chunkZ, ChunkManager.instance().getChunkMeanTime().get(chunk).tileEntities, ChunkManager.instance().getChunkMeanTime().get(chunk).getDataSum(), minTime, maxTime, chunk.equals(this.selectedChunk)));
+				overlays.add(new ChunkOverlay(chunk.chunkX, chunk.chunkZ, ChunkManager.INSTANCE.getChunkMeanTime().get(chunk).tileEntities, ChunkManager.INSTANCE.getChunkMeanTime().get(chunk).getDataSum(), minTime, maxTime, chunk.equals(this.selectedChunk)));
 			else
-				overlays.add(new ChunkOverlay(chunk.chunkX, chunk.chunkZ, ChunkManager.instance().getChunkMeanTime().get(chunk).tileEntities, ChunkManager.instance().getChunkMeanTime().get(chunk).getDataSum(), minTime, maxTime, false));
+				overlays.add(new ChunkOverlay(chunk.chunkX, chunk.chunkZ, ChunkManager.INSTANCE.getChunkMeanTime().get(chunk).tileEntities, ChunkManager.INSTANCE.getChunkMeanTime().get(chunk).getDataSum(), minTime, maxTime, false));
 		}
 		return overlays;
 	}
@@ -166,11 +166,11 @@ public class OverlayMeanTime implements IMwDataProvider, IMessageHandler{
 		int zChunk = bZ >> 4;
 		CoordinatesChunk chunkCoord = new CoordinatesChunk(dim, xChunk, zChunk);
 		
-		if (ChunkManager.instance().getChunkMeanTime().containsKey(chunkCoord))
+		if (ChunkManager.INSTANCE.getChunkMeanTime().containsKey(chunkCoord))
 			if (modOpis.microseconds)
-				return String.format("%.3f \u00B5s", ChunkManager.instance().getChunkMeanTime().get(chunkCoord).getDataSum());
+				return String.format("%.3f \u00B5s", ChunkManager.INSTANCE.getChunkMeanTime().get(chunkCoord).getDataSum());
 			else
-				return String.format(", %.5f ms", ChunkManager.instance().getChunkMeanTime().get(chunkCoord).getDataSum()/1000.0);
+				return String.format(", %.5f ms", ChunkManager.INSTANCE.getChunkMeanTime().get(chunkCoord).getDataSum()/1000.0);
 
 		else
 			return "";
@@ -184,7 +184,7 @@ public class OverlayMeanTime implements IMwDataProvider, IMessageHandler{
 		int chunkZ = bZ >> 4;		
 		CoordinatesChunk clickedChunk = new CoordinatesChunk(dim, chunkX, chunkZ); 
 		
-		if (ChunkManager.instance().getChunkMeanTime().containsKey(clickedChunk)){
+		if (ChunkManager.INSTANCE.getChunkMeanTime().containsKey(clickedChunk)){
 			if (this.selectedChunk == null)
 				this.selectedChunk = clickedChunk;
 			else if (this.selectedChunk.equals(clickedChunk))
