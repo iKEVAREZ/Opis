@@ -13,6 +13,7 @@ import mcp.mobius.mobiuscore.profiler.ProfilerRegistrar;
 import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.api.IMessageHandler;
 import mcp.mobius.opis.api.MessageHandlerRegistrar;
+import mcp.mobius.opis.api.TabPanelRegistrar;
 import mcp.mobius.opis.data.client.DataCache;
 import mcp.mobius.opis.data.holders.stats.StatsChunk;
 import mcp.mobius.opis.data.holders.stats.StatsEntity;
@@ -31,7 +32,13 @@ import mcp.mobius.opis.gui.screens.ScreenBase;
 import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.packets.server.NetDataRaw;
 import mcp.mobius.opis.swing.SwingUI;
+import mcp.mobius.opis.swing.panels.PanelAmountEntities;
 import mcp.mobius.opis.swing.panels.PanelPlayers;
+import mcp.mobius.opis.swing.panels.PanelSummary;
+import mcp.mobius.opis.swing.panels.PanelTimingChunks;
+import mcp.mobius.opis.swing.panels.PanelTimingEntities;
+import mcp.mobius.opis.swing.panels.PanelTimingHandlers;
+import mcp.mobius.opis.swing.panels.PanelTimingTileEnts;
 
 public class ProxyClient extends ProxyServer implements IMessageHandler{
 	
@@ -53,68 +60,76 @@ public class ProxyClient extends ProxyServer implements IMessageHandler{
 		//fontMC24 = Fonts.createFont(new ResourceLocation("opis", "fonts/Minecraftia.ttf"), 24, true);
 		//fontMC8 = Fonts.loadSystemFont("Monospace", 12, true, Font.TRUETYPE_FONT | Font.BOLD);
 		fontMC8 = Fonts.createFont(new ResourceLocation("opis", "fonts/LiberationMono-Bold.ttf"), 14, true);
+
+		IMessageHandler panelSummary        = (IMessageHandler)TabPanelRegistrar.INSTANCE.registerTab(new PanelSummary());		
+		IMessageHandler panelPlayers        = (IMessageHandler)TabPanelRegistrar.INSTANCE.registerTab(new PanelPlayers());
+		IMessageHandler panelAmountEntities = (IMessageHandler)TabPanelRegistrar.INSTANCE.registerTab(new PanelAmountEntities());
+		IMessageHandler panelTimingTileEnts = (IMessageHandler)TabPanelRegistrar.INSTANCE.registerTab(new PanelTimingTileEnts());
+		IMessageHandler panelTimingEntities = (IMessageHandler)TabPanelRegistrar.INSTANCE.registerTab(new PanelTimingEntities());
+		IMessageHandler panelTimingHandlers = (IMessageHandler)TabPanelRegistrar.INSTANCE.registerTab(new PanelTimingHandlers());
+		IMessageHandler panelTimingChunks   = (IMessageHandler)TabPanelRegistrar.INSTANCE.registerTab(new PanelTimingChunks());
 		
-		MessageHandlerRegistrar.instance().registerHandler(Message.LIST_PLAYERS,          SwingUI.instance().getPanelPlayers());
-		MessageHandlerRegistrar.instance().registerHandler(Message.LIST_AMOUNT_ENTITIES,  SwingUI.instance().getPanelAmountEntities());
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.LIST_PLAYERS,          panelPlayers);
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.LIST_AMOUNT_ENTITIES,  panelAmountEntities);
 		
-		MessageHandlerRegistrar.instance().registerHandler(Message.LIST_TIMING_TILEENTS,  SwingUI.instance().getPanelTimingTileEnts());
-		MessageHandlerRegistrar.instance().registerHandler(Message.VALUE_TIMING_TILEENTS, SwingUI.instance().getPanelTimingTileEnts());
-		MessageHandlerRegistrar.instance().registerHandler(Message.STATUS_START,          SwingUI.instance().getPanelTimingTileEnts());
-		MessageHandlerRegistrar.instance().registerHandler(Message.STATUS_STOP,           SwingUI.instance().getPanelTimingTileEnts());
-		MessageHandlerRegistrar.instance().registerHandler(Message.STATUS_RUNNING,        SwingUI.instance().getPanelTimingTileEnts());
-		MessageHandlerRegistrar.instance().registerHandler(Message.CLIENT_HIGHLIGHT_BLOCK,SwingUI.instance().getPanelTimingTileEnts());		
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.LIST_TIMING_TILEENTS,  panelTimingTileEnts);
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.VALUE_TIMING_TILEENTS, panelTimingTileEnts);
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.STATUS_START,          panelTimingTileEnts);
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.STATUS_STOP,           panelTimingTileEnts);
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.STATUS_RUNNING,        panelTimingTileEnts);
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.CLIENT_HIGHLIGHT_BLOCK,panelTimingTileEnts);		
 		
-		MessageHandlerRegistrar.instance().registerHandler(Message.LIST_TIMING_ENTITIES,  SwingUI.instance().getPanelTimingEntities());
-		MessageHandlerRegistrar.instance().registerHandler(Message.VALUE_TIMING_ENTITIES, SwingUI.instance().getPanelTimingEntities());
-		MessageHandlerRegistrar.instance().registerHandler(Message.STATUS_START,          SwingUI.instance().getPanelTimingEntities());
-		MessageHandlerRegistrar.instance().registerHandler(Message.STATUS_STOP,           SwingUI.instance().getPanelTimingEntities());
-		MessageHandlerRegistrar.instance().registerHandler(Message.STATUS_RUNNING,        SwingUI.instance().getPanelTimingEntities());
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.LIST_TIMING_ENTITIES,  panelTimingEntities);
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.VALUE_TIMING_ENTITIES, panelTimingEntities);
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.STATUS_START,          panelTimingEntities);
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.STATUS_STOP,           panelTimingEntities);
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.STATUS_RUNNING,        panelTimingEntities);
 		
-		MessageHandlerRegistrar.instance().registerHandler(Message.LIST_TIMING_HANDLERS,  SwingUI.instance().getPanelTimingHandlers());
-		MessageHandlerRegistrar.instance().registerHandler(Message.VALUE_TIMING_HANDLERS, SwingUI.instance().getPanelTimingHandlers());
-		MessageHandlerRegistrar.instance().registerHandler(Message.STATUS_START,          SwingUI.instance().getPanelTimingHandlers());
-		MessageHandlerRegistrar.instance().registerHandler(Message.STATUS_STOP,           SwingUI.instance().getPanelTimingHandlers());
-		MessageHandlerRegistrar.instance().registerHandler(Message.STATUS_RUNNING,        SwingUI.instance().getPanelTimingHandlers());		
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.LIST_TIMING_HANDLERS,  panelTimingHandlers);
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.VALUE_TIMING_HANDLERS, panelTimingHandlers);
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.STATUS_START,          panelTimingHandlers);
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.STATUS_STOP,           panelTimingHandlers);
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.STATUS_RUNNING,        panelTimingHandlers);		
 		
-		MessageHandlerRegistrar.instance().registerHandler(Message.LIST_TIMING_CHUNK,     SwingUI.instance().getPanelTimingChunks());
-		MessageHandlerRegistrar.instance().registerHandler(Message.STATUS_START,          SwingUI.instance().getPanelTimingChunks());
-		MessageHandlerRegistrar.instance().registerHandler(Message.STATUS_STOP,           SwingUI.instance().getPanelTimingChunks());
-		MessageHandlerRegistrar.instance().registerHandler(Message.STATUS_RUNNING,        SwingUI.instance().getPanelTimingChunks());
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.LIST_TIMING_CHUNK,     panelTimingChunks);
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.STATUS_START,          panelTimingChunks);
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.STATUS_STOP,           panelTimingChunks);
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.STATUS_RUNNING,        panelTimingChunks);
 		
-		MessageHandlerRegistrar.instance().registerHandler(Message.STATUS_ACCESS_LEVEL,   DataCache.instance());
-		MessageHandlerRegistrar.instance().registerHandler(Message.STATUS_CURRENT_TIME,   DataCache.instance());
-		MessageHandlerRegistrar.instance().registerHandler(Message.STATUS_ACCESS_LEVEL,   SwingUI.instance());
-		MessageHandlerRegistrar.instance().registerHandler(Message.CLIENT_SHOW_SWING,     SwingUI.instance());	
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.STATUS_ACCESS_LEVEL,   DataCache.instance());
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.STATUS_CURRENT_TIME,   DataCache.instance());
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.STATUS_ACCESS_LEVEL,   SwingUI.instance());
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.CLIENT_SHOW_SWING,     SwingUI.instance());	
 		
-		MessageHandlerRegistrar.instance().registerHandler(Message.VALUE_AMOUNT_TILEENTS,  SwingUI.instance().getPanelSummary());
-		MessageHandlerRegistrar.instance().registerHandler(Message.VALUE_AMOUNT_ENTITIES,  SwingUI.instance().getPanelSummary());
-		MessageHandlerRegistrar.instance().registerHandler(Message.VALUE_AMOUNT_HANDLERS,  SwingUI.instance().getPanelSummary());
-		MessageHandlerRegistrar.instance().registerHandler(Message.VALUE_AMOUNT_UPLOAD,    SwingUI.instance().getPanelSummary());
-		MessageHandlerRegistrar.instance().registerHandler(Message.VALUE_AMOUNT_DOWNLOAD,  SwingUI.instance().getPanelSummary());
-		MessageHandlerRegistrar.instance().registerHandler(Message.VALUE_TIMING_TICK,      SwingUI.instance().getPanelSummary());
-		MessageHandlerRegistrar.instance().registerHandler(Message.VALUE_CHUNK_FORCED,     SwingUI.instance().getPanelSummary());	
-		MessageHandlerRegistrar.instance().registerHandler(Message.VALUE_CHUNK_LOADED,     SwingUI.instance().getPanelSummary());
-		MessageHandlerRegistrar.instance().registerHandler(Message.VALUE_TIMING_TILEENTS,  SwingUI.instance().getPanelSummary());		
-		MessageHandlerRegistrar.instance().registerHandler(Message.VALUE_TIMING_ENTITIES,  SwingUI.instance().getPanelSummary());
-		MessageHandlerRegistrar.instance().registerHandler(Message.VALUE_TIMING_HANDLERS,  SwingUI.instance().getPanelSummary());		
-		MessageHandlerRegistrar.instance().registerHandler(Message.VALUE_TIMING_WORLDTICK, SwingUI.instance().getPanelSummary());
-		MessageHandlerRegistrar.instance().registerHandler(Message.STATUS_START,           SwingUI.instance().getPanelSummary());
-		MessageHandlerRegistrar.instance().registerHandler(Message.STATUS_STOP,            SwingUI.instance().getPanelSummary());
-		MessageHandlerRegistrar.instance().registerHandler(Message.STATUS_RUN_UPDATE,      SwingUI.instance().getPanelSummary());
-		MessageHandlerRegistrar.instance().registerHandler(Message.STATUS_RUNNING,         SwingUI.instance().getPanelSummary());
-		MessageHandlerRegistrar.instance().registerHandler(Message.STATUS_TIME_LAST_RUN,   SwingUI.instance().getPanelSummary());
-		MessageHandlerRegistrar.instance().registerHandler(Message.VALUE_TIMING_ENTUPDATE, SwingUI.instance().getPanelSummary());	
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.VALUE_AMOUNT_TILEENTS,  panelSummary);
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.VALUE_AMOUNT_ENTITIES,  panelSummary);
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.VALUE_AMOUNT_HANDLERS,  panelSummary);
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.VALUE_AMOUNT_UPLOAD,    panelSummary);
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.VALUE_AMOUNT_DOWNLOAD,  panelSummary);
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.VALUE_TIMING_TICK,      panelSummary);
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.VALUE_CHUNK_FORCED,     panelSummary);	
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.VALUE_CHUNK_LOADED,     panelSummary);
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.VALUE_TIMING_TILEENTS,  panelSummary);		
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.VALUE_TIMING_ENTITIES,  panelSummary);
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.VALUE_TIMING_HANDLERS,  panelSummary);		
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.VALUE_TIMING_WORLDTICK, panelSummary);
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.STATUS_START,           panelSummary);
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.STATUS_STOP,            panelSummary);
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.STATUS_RUN_UPDATE,      panelSummary);
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.STATUS_RUNNING,         panelSummary);
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.STATUS_TIME_LAST_RUN,   panelSummary);
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.VALUE_TIMING_ENTUPDATE, panelSummary);	
 		
-		MessageHandlerRegistrar.instance().registerHandler(Message.CLIENT_CLEAR_SELECTION,  modOpis.proxy);
-		MessageHandlerRegistrar.instance().registerHandler(Message.CLIENT_START_PROFILING,  modOpis.proxy);
-		MessageHandlerRegistrar.instance().registerHandler(Message.CLIENT_SHOW_RENDER_TICK, modOpis.proxy);
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.CLIENT_CLEAR_SELECTION,  modOpis.proxy);
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.CLIENT_START_PROFILING,  modOpis.proxy);
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.CLIENT_SHOW_RENDER_TICK, modOpis.proxy);
 		
-		MessageHandlerRegistrar.instance().registerHandler(Message.LIST_CHUNK_ENTITIES, OverlayEntityPerChunk.instance());
-		MessageHandlerRegistrar.instance().registerHandler(Message.LIST_CHUNK_TILEENTS, OverlayMeanTime.instance());
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.LIST_CHUNK_ENTITIES, OverlayEntityPerChunk.instance());
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.LIST_CHUNK_TILEENTS, OverlayMeanTime.instance());
 		
-		MessageHandlerRegistrar.instance().registerHandler(Message.LIST_TIMING_CHUNK, ChunkManager.instance());
-		MessageHandlerRegistrar.instance().registerHandler(Message.LIST_CHUNK_LOADED, ChunkManager.instance());
-		MessageHandlerRegistrar.instance().registerHandler(Message.LIST_CHUNK_LOADED_CLEAR, ChunkManager.instance());
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.LIST_TIMING_CHUNK, ChunkManager.instance());
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.LIST_CHUNK_LOADED, ChunkManager.instance());
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.LIST_CHUNK_LOADED_CLEAR, ChunkManager.instance());
 	}
 
 	@Override

@@ -105,17 +105,17 @@ public class OpisPacketHandler implements IPacketHandler {
 		
 		else if (header == Packets.NETDATACOMMAND){
 			NetDataRaw rawdata = new NetDataCommand(packet);
-			MessageHandlerRegistrar.instance().routeMessage(rawdata.msg, rawdata);			
+			MessageHandlerRegistrar.INSTANCE.routeMessage(rawdata.msg, rawdata);			
 		}		
 		
 		else if (header == Packets.NETDATALIST){
 			NetDataRaw rawdata = new NetDataList(packet);
-			MessageHandlerRegistrar.instance().routeMessage(rawdata.msg, rawdata);
+			MessageHandlerRegistrar.INSTANCE.routeMessage(rawdata.msg, rawdata);
 		}		
 		
 		else if (header == Packets.NETDATAVALUE){
 			NetDataRaw rawdata = new NetDataValue(packet);
-			MessageHandlerRegistrar.instance().routeMessage(rawdata.msg, rawdata);
+			MessageHandlerRegistrar.INSTANCE.routeMessage(rawdata.msg, rawdata);
 		}
 	}
 

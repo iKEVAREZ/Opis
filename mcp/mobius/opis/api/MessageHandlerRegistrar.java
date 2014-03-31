@@ -8,10 +8,8 @@ import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.packets.server.NetDataRaw;
 
-public class MessageHandlerRegistrar {
-	private static MessageHandlerRegistrar _instance = new MessageHandlerRegistrar();
-	private MessageHandlerRegistrar(){};
-	public static  MessageHandlerRegistrar instance(){return _instance;}
+public enum MessageHandlerRegistrar {
+	INSTANCE;
 	
 	private HashMap<Message, HashSet<IMessageHandler>> msgHandlers = new HashMap<Message, HashSet<IMessageHandler>>();
 	

@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import mcp.mobius.opis.modOpis;
+import mcp.mobius.opis.api.ITabPanel;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesBlock;
 import mcp.mobius.opis.data.holders.basetypes.SerialDouble;
 import mcp.mobius.opis.data.holders.stats.StatAbstract;
@@ -30,7 +31,7 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
-public class PanelTimingTileEnts extends JPanelMsgHandler{
+public class PanelTimingTileEnts extends JPanelMsgHandler implements ITabPanel{
 	private JButtonAccess btnCenter;
 	private JButtonAccess btnTeleport;
 	private JButtonAccess btnReset;
@@ -163,5 +164,15 @@ public class PanelTimingTileEnts extends JPanelMsgHandler{
 			
 		}
 		return true;
+	}
+
+	@Override
+	public String getTabTitle() {
+		return "TileEntities timing";
+	}
+
+	@Override
+	public String getTabRefName() {
+		return "opis.timingtileents";
 	}
 }

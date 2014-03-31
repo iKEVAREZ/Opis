@@ -9,6 +9,7 @@ import java.util.Date;
 
 import javax.swing.JPanel;
 
+import mcp.mobius.opis.api.ITabPanel;
 import mcp.mobius.opis.data.client.DataCache;
 import mcp.mobius.opis.data.holders.ISerializable;
 import mcp.mobius.opis.data.holders.basetypes.SerialDouble;
@@ -38,7 +39,7 @@ import org.jfree.chart.plot.XYPlot;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
-public class PanelSummary extends JPanelMsgHandler{
+public class PanelSummary extends JPanelMsgHandler implements ITabPanel{
 	private JLabel lblTimingWorldTick;
 	private JLabel lblTimingTileEnts;
 	private JLabel lblTimingEntities;
@@ -366,5 +367,15 @@ public class PanelSummary extends JPanelMsgHandler{
 			
 		}
 		return true;
+	}
+
+	@Override
+	public String getTabTitle() {
+		return "Summary";
+	}
+
+	@Override
+	public String getTabRefName() {
+		return "opis.summary";
 	}
 }

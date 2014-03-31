@@ -11,11 +11,13 @@ import mapwriter.gui.MwGui;
 import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.packets.client.Packet_ReqData;
 import mcp.mobius.opis.swing.SwingUI;
+import mcp.mobius.opis.swing.panels.PanelTimingEntities;
 import mcp.mobius.opis.swing.widgets.JTableStats;
 
 import javax.swing.JButton;
 
 import cpw.mods.fml.common.network.PacketDispatcher;
+import mcp.mobius.opis.api.TabPanelRegistrar;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesBlock;
 import mcp.mobius.opis.data.holders.basetypes.TargetEntity;
 import mcp.mobius.opis.data.holders.stats.StatAbstract;
@@ -29,12 +31,14 @@ public class ActionTimingEntities implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		JTableStats table       = SwingUI.instance().getPanelTimingEntities().getTable();
+		PanelTimingEntities panel = (PanelTimingEntities)TabPanelRegistrar.INSTANCE.getTab("opis.timingents");
+		
+		JTableStats table       = panel.getTable();
 		if (table == null || table.getSelectedRow() == -1) return;
 		int indexData           = table.convertRowIndexToModel(table.getSelectedRow());
 		StatsEntity data        = (StatsEntity)table.getStatistics().get(indexData);
 
-		if (e.getSource() == SwingUI.instance().getPanelTimingEntities().getBtnCenter()){
+		if (e.getSource() == panel.getBtnCenter()){
             CoordinatesBlock coord = data.getCoordinates();
             PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.OVERLAY_CHUNK_ENTITIES));
             PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.LIST_CHUNK_ENTITIES, data.getChunk()));           
@@ -43,14 +47,14 @@ public class ActionTimingEntities implements ActionListener {
             Minecraft.getMinecraft().displayGuiScreen(new MwGui(Mw.instance, coord.dim, coord.x, coord.z));              			
 		}				
 		
-		if (e.getSource() == SwingUI.instance().getPanelTimingEntities().getBtnTeleport()){
+		if (e.getSource() == panel.getBtnTeleport()){
             int eid = data.getID();
             int dim = data.getCoordinates().dim;
             PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.COMMAND_TELEPORT_TO_ENTITY, new TargetEntity(eid, dim)));
             Minecraft.getMinecraft().setIngameFocus(); 
 		}
 		
-		if (e.getSource() == SwingUI.instance().getPanelTimingEntities().getBtnPull()){
+		if (e.getSource() == panel.getBtnPull()){
             int eid = data.getID();
             int dim = data.getCoordinates().dim;
             PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.COMMAND_TELEPORT_PULL_ENTITY, new TargetEntity(eid, dim)));    	

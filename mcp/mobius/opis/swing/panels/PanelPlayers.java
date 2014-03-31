@@ -3,6 +3,7 @@ package mcp.mobius.opis.swing.panels;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import mcp.mobius.opis.api.ITabPanel;
 import mcp.mobius.opis.data.holders.stats.StatsPlayer;
 import mcp.mobius.opis.gui.overlay.entperchunk.OverlayEntityPerChunk;
 import mcp.mobius.opis.network.enums.AccessLevel;
@@ -22,7 +23,7 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
-public class PanelPlayers extends JPanelMsgHandler{
+public class PanelPlayers extends JPanelMsgHandler implements ITabPanel{
 	private JButtonAccess btnCenter;
 	private JButtonAccess btnTeleport;
 	private JButtonAccess btnPull;
@@ -121,5 +122,15 @@ public class PanelPlayers extends JPanelMsgHandler{
 		}
 		return true;
 
+	}
+
+	@Override
+	public String getTabTitle() {
+		return "Players";
+	}
+
+	@Override
+	public String getTabRefName() {
+		return "opis.players";
 	}
 }

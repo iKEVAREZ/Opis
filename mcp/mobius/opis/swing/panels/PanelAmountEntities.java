@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
+import mcp.mobius.opis.api.ITabPanel;
 import mcp.mobius.opis.data.holders.basetypes.AmountHolder;
 import mcp.mobius.opis.network.enums.AccessLevel;
 import mcp.mobius.opis.network.enums.Message;
@@ -25,7 +26,7 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
-public class PanelAmountEntities extends JPanelMsgHandler{
+public class PanelAmountEntities extends JPanelMsgHandler implements ITabPanel{
 	private JCheckBox chckbxFilter;
 	private JButtonAccess btnKillAll;
 	private JButtonAccess btnRefresh;
@@ -116,5 +117,15 @@ public class PanelAmountEntities extends JPanelMsgHandler{
 			
 		}
 		return true;
+	}
+
+	@Override
+	public String getTabTitle() {
+		return "Entities amount";
+	}
+
+	@Override
+	public String getTabRefName() {
+		return "opis.amountents";
 	}
 }

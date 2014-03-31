@@ -3,6 +3,7 @@ package mcp.mobius.opis.swing.panels;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import mcp.mobius.opis.api.ITabPanel;
 import mcp.mobius.opis.data.holders.stats.StatAbstract;
 import mcp.mobius.opis.data.holders.stats.StatsChunk;
 import mcp.mobius.opis.gui.overlay.OverlayMeanTime;
@@ -25,7 +26,7 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
-public class PanelTimingChunks extends JPanelMsgHandler{
+public class PanelTimingChunks extends JPanelMsgHandler implements ITabPanel{
 	private JButtonAccess btnRun;
 	private JButtonAccess btnTeleport;
 	private JButtonAccess btnCenter;
@@ -127,5 +128,15 @@ public class PanelTimingChunks extends JPanelMsgHandler{
 			
 		}
 		return true;
+	}
+
+	@Override
+	public String getTabTitle() {
+		return "Chunks timing";
+	}
+
+	@Override
+	public String getTabRefName() {
+		return "opis.timingchunks";
 	}
 }

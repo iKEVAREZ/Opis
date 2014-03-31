@@ -12,11 +12,13 @@ import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.packets.client.Packet_ReqData;
 import mcp.mobius.opis.swing.SwingUI;
+import mcp.mobius.opis.swing.panels.PanelTimingTileEnts;
 import mcp.mobius.opis.swing.widgets.JTableStats;
 
 import javax.swing.JButton;
 
 import cpw.mods.fml.common.network.PacketDispatcher;
+import mcp.mobius.opis.api.TabPanelRegistrar;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesBlock;
 import mcp.mobius.opis.data.holders.stats.StatAbstract;
 import mcp.mobius.opis.data.holders.stats.StatsTileEntity;
@@ -29,26 +31,28 @@ public class ActionTimingTileEnts implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		JTableStats table       = SwingUI.instance().getPanelTimingTileEnts().getTable();
+		PanelTimingTileEnts panel = (PanelTimingTileEnts)TabPanelRegistrar.INSTANCE.getTab("opis.timingtileents");
+		
+		JTableStats table       = panel.getTable();
 		if (table == null || table.getSelectedRow() == -1) return;
 		int indexData           = table.convertRowIndexToModel(table.getSelectedRow());
 		StatsTileEntity data    = (StatsTileEntity)table.getStatistics().get(indexData);
 		
-		if (e.getSource() == SwingUI.instance().getPanelTimingTileEnts().getBtnCenter()){
+		if (e.getSource() == panel.getBtnCenter()){
             CoordinatesBlock coord = data.getCoordinates();
             OverlayMeanTime.instance().setSelectedChunk(coord.dim, coord.x >> 4, coord.z >> 4);
             MwAPI.setCurrentDataProvider(OverlayMeanTime.instance());
             Minecraft.getMinecraft().displayGuiScreen(new MwGui(Mw.instance, coord.dim, coord.x, coord.z));            			
 		}				
 		
-		if (e.getSource() == SwingUI.instance().getPanelTimingTileEnts().getBtnTeleport()){
+		if (e.getSource() == panel.getBtnTeleport()){
             CoordinatesBlock coord = data.getCoordinates();
             modOpis.selectedBlock = coord;
             PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.COMMAND_TELEPORT_BLOCK, coord));
             Minecraft.getMinecraft().setIngameFocus(); 
 		}
 		
-		if (e.getSource() == SwingUI.instance().getPanelTimingTileEnts().getBtnReset()){
+		if (e.getSource() == panel.getBtnReset()){
 			modOpis.selectedBlock = null;
 		}		
 	}
