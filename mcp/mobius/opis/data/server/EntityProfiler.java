@@ -60,7 +60,7 @@ public class EntityProfiler extends AbstractProfiler implements IProfilerEntity 
 			throw new RuntimeException(String.format("Mismatched entities during the profiling ! %s %s", ent, this.currentEntity));
 		
 
-		EntityManager.addEntity(ent, this.clock.timeDelta);
+		EntityManager.INSTANCE.addEntity(ent, this.clock.timeDelta);
 		this.currentEntity = null;
 
 	}

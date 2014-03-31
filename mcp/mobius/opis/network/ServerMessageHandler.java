@@ -72,7 +72,7 @@ public class ServerMessageHandler {
 		}		
 		
 		else if (maintype == Message.LIST_CHUNK_ENTITIES){
-			OpisPacketHandler.validateAndSend(NetDataList.create(Message.LIST_CHUNK_ENTITIES,  EntityManager.getEntitiesInChunk((CoordinatesChunk)param1)), (Player)player);
+			OpisPacketHandler.validateAndSend(NetDataList.create(Message.LIST_CHUNK_ENTITIES,  EntityManager.INSTANCE.getEntitiesInChunk((CoordinatesChunk)param1)), (Player)player);
 		}
 
 		else if (maintype == Message.LIST_CHUNK_LOADED){
@@ -94,8 +94,8 @@ public class ServerMessageHandler {
 		}
 		
 		else if (maintype == Message.LIST_TIMING_ENTITIES){
-			ArrayList<StatsEntity>      timingEntities = EntityManager.getTopEntities(100);
-			SerialDouble totalTime = new SerialDouble(EntityManager.getTotalUpdateTime());			
+			ArrayList<StatsEntity>      timingEntities = EntityManager.INSTANCE.getTopEntities(100);
+			SerialDouble totalTime = new SerialDouble(EntityManager.INSTANCE.getTotalUpdateTime());			
 			OpisPacketHandler.validateAndSend(NetDataList.create(Message.LIST_TIMING_ENTITIES,  timingEntities), (Player)player);
 			OpisPacketHandler.validateAndSend(NetDataValue.create(Message.VALUE_TIMING_ENTITIES, totalTime),      (Player)player);			
 		}
@@ -125,7 +125,7 @@ public class ServerMessageHandler {
 			if (PlayerTracker.instance().filteredAmount.containsKey(name))
 				filtered = PlayerTracker.instance().filteredAmount.get(name);
 			
-			ArrayList<AmountHolder> ents = EntityManager.getCumulativeEntities(filtered);
+			ArrayList<AmountHolder> ents = EntityManager.INSTANCE.getCumulativeEntities(filtered);
 			OpisPacketHandler.validateAndSend(NetDataList.create(Message.LIST_AMOUNT_ENTITIES,  ents), (Player)player);
 		}
 		
@@ -150,16 +150,16 @@ public class ServerMessageHandler {
 		}		
 		
 		else if (maintype == Message.COMMAND_TELEPORT_BLOCK){
-			EntityManager.teleportPlayer((CoordinatesBlock)param1, (EntityPlayerMP)player);
+			EntityManager.INSTANCE.teleportPlayer((CoordinatesBlock)param1, (EntityPlayerMP)player);
 			OpisPacketHandler.validateAndSend(NetDataValue.create(Message.CLIENT_HIGHLIGHT_BLOCK, param1), (Player)player);
 		}	
 		
 		else if (maintype == Message.COMMAND_TELEPORT_TO_ENTITY){
-			EntityManager.teleportEntity((EntityPlayerMP)player, EntityManager.getEntity(((TargetEntity)param1).entityID, ((TargetEntity)param1).dim), player);
+			EntityManager.INSTANCE.teleportEntity((EntityPlayerMP)player, EntityManager.INSTANCE.getEntity(((TargetEntity)param1).entityID, ((TargetEntity)param1).dim), player);
 		}			
 		
 		else if (maintype == Message.COMMAND_TELEPORT_PULL_ENTITY){
-			EntityManager.teleportEntity(EntityManager.getEntity(((TargetEntity)param1).entityID, ((TargetEntity)param1).dim), (EntityPlayerMP)player, player);
+			EntityManager.INSTANCE.teleportEntity(EntityManager.INSTANCE.getEntity(((TargetEntity)param1).entityID, ((TargetEntity)param1).dim), (EntityPlayerMP)player, player);
 		}		
 		
 		else if (maintype == Message.COMMAND_TELEPORT_CHUNK){
@@ -169,12 +169,12 @@ public class ServerMessageHandler {
 			
 			CoordinatesBlock blockCoord = new CoordinatesBlock(chunkCoord.dim, chunkCoord.x + 8, world.getTopSolidOrLiquidBlock(chunkCoord.x, chunkCoord.z), chunkCoord.z + 8);
 			
-			EntityManager.teleportPlayer(blockCoord, (EntityPlayerMP)player);
+			EntityManager.INSTANCE.teleportPlayer(blockCoord, (EntityPlayerMP)player);
 		}		
 				
 		
 		else if (maintype == Message.COMMAND_KILLALL){
-			EntityManager.killAll(((SerialString)param1).value);
+			EntityManager.INSTANCE.killAll(((SerialString)param1).value);
 			//this.handle(Message.LIST_AMOUNT_ENTITIES, null, null, player);
 		}			
 		
@@ -209,7 +209,7 @@ public class ServerMessageHandler {
 	
 	public void handleOverlayChunkEntities(CoordinatesChunk coord, Player player){
 		
-		HashMap<CoordinatesChunk, ArrayList<StatsEntity>> entities = EntityManager.getAllEntitiesPerChunk();
+		HashMap<CoordinatesChunk, ArrayList<StatsEntity>> entities = EntityManager.INSTANCE.getAllEntitiesPerChunk();
 		HashMap<CoordinatesChunk, Integer> perChunk = new HashMap<CoordinatesChunk, Integer>();
 		
 		for (CoordinatesChunk chunk : entities.keySet())

@@ -36,12 +36,13 @@ import mcp.mobius.opis.data.holders.stats.StatsEntity;
 import mcp.mobius.opis.data.holders.stats.StatsPlayer;
 import mcp.mobius.opis.helpers.Teleport;
 
-public class EntityManager {
-
-	public static HashMap<Integer, StatsEntity> stats = new HashMap<Integer, StatsEntity>();
+public enum EntityManager {
+	INSTANCE;
+	
+	public HashMap<Integer, StatsEntity> stats = new HashMap<Integer, StatsEntity>();
 	
 	/* Add an entity to the stat array, with timing data */
-	public static void addEntity(Entity ent, long timing){
+	public void addEntity(Entity ent, long timing){
 		int entID = ent.entityId;
 		String entName;
 		entName = getEntityName(ent); //ent.getClass().getName();
@@ -52,8 +53,8 @@ public class EntityManager {
 	}	
 
 	/* Returns the x slowest entities in all dimensions (with timing data) */
-	public static ArrayList<StatsEntity> getTopEntities(int quantity){
-		ArrayList<StatsEntity> sortedEntities = new ArrayList(EntityManager.stats.values());
+	public ArrayList<StatsEntity> getTopEntities(int quantity){
+		ArrayList<StatsEntity> sortedEntities = new ArrayList(this.stats.values());
 		ArrayList<StatsEntity> topEntities    = new ArrayList<StatsEntity>();
 		Collections.sort(sortedEntities);
 		
@@ -87,16 +88,16 @@ public class EntityManager {
 	}	
 	
 	/* Returns all the entities in all dimensions (without timing data) */
-	public static ArrayList<StatsEntity> getAllEntities(){
+	public ArrayList<StatsEntity> getAllEntities(){
 		ArrayList<StatsEntity> entities    = new ArrayList<StatsEntity>();
 		for (int i : DimensionManager.getIDs()){
-			entities.addAll(EntityManager.getEntitiesInDim(i));
+			entities.addAll(this.getEntitiesInDim(i));
 		}
 		return entities;
 	}
 	
 	/* Returns all the entities in the given dimension (without timing data) */
-	public static ArrayList<StatsEntity> getEntitiesInDim(int dim){
+	public ArrayList<StatsEntity> getEntitiesInDim(int dim){
 		ArrayList<StatsEntity> entities    = new ArrayList<StatsEntity>();
 		
 		World world = DimensionManager.getWorld(dim);
@@ -114,16 +115,16 @@ public class EntityManager {
 	}		
 	
 	/* Returns a hashmap of all entities per chunk (not timing) */
-	public static HashMap<CoordinatesChunk, ArrayList<StatsEntity>> getAllEntitiesPerChunk(){
+	public HashMap<CoordinatesChunk, ArrayList<StatsEntity>> getAllEntitiesPerChunk(){
 		HashMap<CoordinatesChunk, ArrayList<StatsEntity>> entities = new HashMap<CoordinatesChunk, ArrayList<StatsEntity>>();
 		for (int i : DimensionManager.getIDs()){
-			entities.putAll(EntityManager.getEntitiesPerChunkInDim(i));
+			entities.putAll(this.getEntitiesPerChunkInDim(i));
 		}
 		return entities;		
 	}
 	
 	/* Returns a hashmap of entities in the given dimension (not timing) */
-	public static HashMap<CoordinatesChunk, ArrayList<StatsEntity>> getEntitiesPerChunkInDim(int dim){
+	public HashMap<CoordinatesChunk, ArrayList<StatsEntity>> getEntitiesPerChunkInDim(int dim){
 		HashMap<CoordinatesChunk, ArrayList<StatsEntity>> entities = new HashMap<CoordinatesChunk, ArrayList<StatsEntity>>();
 		World world = DimensionManager.getWorld(dim);
 		if (world == null) return entities;
@@ -145,7 +146,7 @@ public class EntityManager {
 	}
 	
 	/* Returns an array of all entities in a given chunk */
-	public static ArrayList<StatsEntity> getEntitiesInChunk(CoordinatesChunk coord){
+	public ArrayList<StatsEntity> getEntitiesInChunk(CoordinatesChunk coord){
 		ArrayList<StatsEntity> entities = new  ArrayList<StatsEntity>();
 		
 		World world = DimensionManager.getWorld(coord.dim);
@@ -165,7 +166,7 @@ public class EntityManager {
 	}
 	
 	/* Returns a hashmap with the entity name and amount of it on the server */
-	public static ArrayList<AmountHolder> getCumulativeEntities(boolean filtered){
+	public ArrayList<AmountHolder> getCumulativeEntities(boolean filtered){
 		ArrayList<AmountHolder>  cumData  = new ArrayList<AmountHolder>();
 		HashMap<String, Integer> entities = new HashMap<String, Integer>();
 		
@@ -193,7 +194,7 @@ public class EntityManager {
 		return cumData;
 	}
 	
-	public static boolean teleportPlayer(CoordinatesBlock coord, EntityPlayerMP player){
+	public boolean teleportPlayer(CoordinatesBlock coord, EntityPlayerMP player){
 		//System.out.printf("%s %s\n", coord, getTeleportTarget(coord));
 		CoordinatesBlock target = Teleport.instance().getTeleportTarget(coord);
 		if (target == null) return false;
@@ -210,7 +211,7 @@ public class EntityManager {
 		return true;
 	}
 
-	public static boolean teleportEntity(Entity src, Entity trg, Player msgtrg){
+	public boolean teleportEntity(Entity src, Entity trg, Player msgtrg){
 		if ((src == null) && (msgtrg != null)) {
 			PacketDispatcher.sendPacketToPlayer(new Packet3Chat(ChatMessageComponent.createFromText(String.format("\u00A7oCannot find source entity %s", src))), (Player)msgtrg);
 			return false;
@@ -238,7 +239,7 @@ public class EntityManager {
 		
 	}
 
-	public static Entity getEntity(int eid, int dim){
+	public Entity getEntity(int eid, int dim){
 		World world = DimensionManager.getWorld(dim);
 		if (world == null) return null;
 		
@@ -246,11 +247,11 @@ public class EntityManager {
 		return entity;
 	}
 	
-	public static String getEntityName(Entity ent){
+	public String getEntityName(Entity ent){
 		return getEntityName(ent, false);
 	}
 	
-	public static String getEntityName(Entity ent, boolean filtered){
+	public String getEntityName(Entity ent, boolean filtered){
 		if (ent instanceof EntityItem && filtered){
 			return "Dropped Item";
 		} else if (ent instanceof EntityItem && !filtered){
@@ -277,7 +278,7 @@ public class EntityManager {
 		return name;
 	}
 	
-	public static double getTotalUpdateTime(){
+	public double getTotalUpdateTime(){
 		ArrayList<StatsEntity> entities = new ArrayList(stats.values());
 		double updateTime = 0D;
 		for (StatsEntity data : entities){
@@ -286,7 +287,7 @@ public class EntityManager {
 		return updateTime;
 	}	
 
-	public static int killAll(String entName){
+	public int killAll(String entName){
 		int nkilled = 0;
 		
 		if (entName.contains("Player")){
@@ -302,8 +303,8 @@ public class EntityManager {
 			
 			for (Object o : copyList){
 				Entity ent  = (Entity)o;
-				String nameFiltered   = EntityManager.getEntityName(ent, true).toLowerCase();
-				String nameUnfiltered = EntityManager.getEntityName(ent, false).toLowerCase();
+				String nameFiltered   = this.getEntityName(ent, true).toLowerCase();
+				String nameUnfiltered = this.getEntityName(ent, false).toLowerCase();
 				
 				if (nameFiltered.equals(entName.toLowerCase()) || nameUnfiltered.equals(entName.toLowerCase())){
 					ent.setDead();
@@ -317,7 +318,7 @@ public class EntityManager {
 		return nkilled;		
 	}
 	
-	public static ArrayList<StatsPlayer> getAllPlayers(){
+	public ArrayList<StatsPlayer> getAllPlayers(){
 		List players = MinecraftServer.getServerConfigurationManager(MinecraftServer.getServer()).playerEntityList;
 		ArrayList<StatsPlayer> outList = new ArrayList<StatsPlayer>();
 		
@@ -327,7 +328,7 @@ public class EntityManager {
 		return outList;
 	}
 	
-	public static int getAmountEntities(){
+	public int getAmountEntities(){
 		int amountEntities = 0;
 		for (WorldServer world : DimensionManager.getWorlds()){
 			amountEntities += world.loadedEntityList.size();

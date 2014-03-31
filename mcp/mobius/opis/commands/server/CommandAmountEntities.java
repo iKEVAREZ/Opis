@@ -49,9 +49,9 @@ public class CommandAmountEntities extends CommandBase implements IOpisCommand{
 		ArrayList<AmountHolder> ents; 
 		
 		if (astring.length == 1 && astring[0].equals("all"))
-			ents = EntityManager.getCumulativeEntities(false);
+			ents = EntityManager.INSTANCE.getCumulativeEntities(false);
 		else
-			ents = EntityManager.getCumulativeEntities(true);
+			ents = EntityManager.INSTANCE.getCumulativeEntities(true);
 		
 		for (AmountHolder s : ents)
 			icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText(String.format("%s : %s", s.key, s.value)));

@@ -198,11 +198,11 @@ public class OpisPacketHandler implements IPacketHandler {
 	
 	public static void sendFullUpdate(Player player){
 		ArrayList<StatsTickHandler> timingHandlers = TickHandlerManager.getCumulatedStats();
-		ArrayList<StatsEntity>      timingEntities = EntityManager.getTopEntities(100);
+		ArrayList<StatsEntity>      timingEntities = EntityManager.INSTANCE.getTopEntities(100);
 		ArrayList<StatsTileEntity>  timingTileEnts = TileEntityManager.getTopEntities(100);
 		ArrayList<StatsChunk>         timingChunks = ChunkManager.instance().getTopChunks(100);
 		SerialDouble totalTimeTE      = new SerialDouble(TileEntityManager.getTotalUpdateTime());
-		SerialDouble totalTimeEnt     = new SerialDouble(EntityManager.getTotalUpdateTime());
+		SerialDouble totalTimeEnt     = new SerialDouble(EntityManager.INSTANCE.getTotalUpdateTime());
 		SerialDouble totalTimeHandler = new SerialDouble(TickHandlerManager.getTotalUpdateTime());
 		SerialDouble totalWorldTick   = new SerialDouble(GlobalTimingManager.INSTANCE.getTotalStats(GlobalTimingManager.INSTANCE.worldTickStats));
 		SerialDouble totalEntUpdate   = new SerialDouble(GlobalTimingManager.INSTANCE.getTotalStats(GlobalTimingManager.INSTANCE.entUpdateStats));
@@ -228,7 +228,7 @@ public class OpisPacketHandler implements IPacketHandler {
 		boolean filtered = false;
 		if (PlayerTracker.instance().filteredAmount.containsKey(name))
 			filtered = PlayerTracker.instance().filteredAmount.get(name);
-		ArrayList<AmountHolder> amountEntities = EntityManager.getCumulativeEntities(filtered);
+		ArrayList<AmountHolder> amountEntities = EntityManager.INSTANCE.getCumulativeEntities(filtered);
 
 		// Here we send a full update to the player
 		//OpisPacketHandler.validateAndSend(Packet_DataList.create(DataReq.LIST_AMOUNT_ENTITIES, amountEntities), player);

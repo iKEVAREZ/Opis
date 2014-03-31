@@ -45,7 +45,7 @@ public class CommandKillAll extends CommandBase implements IOpisCommand {
 		
 		String searchname = StringUtils.join(astring, " ").toLowerCase();
 		
-		int nkilled = EntityManager.killAll(searchname);
+		int nkilled = EntityManager.INSTANCE.killAll(searchname);
 		
 		if (nkilled == -1){
 			icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText(String.format("\u00A7oSeriously ? I can't, seriously, I can't. I should remove you from the OP list !")));

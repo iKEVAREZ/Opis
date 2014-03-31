@@ -88,9 +88,9 @@ public class OpisServerTickHandler implements ITickHandler {
 				OpisPacketHandler.sendPacketToAllSwing(NetDataValue.create(Message.VALUE_CHUNK_LOADED,    new SerialInt(ChunkManager.instance().getLoadedChunkAmount())));
 				OpisPacketHandler.sendPacketToAllSwing(NetDataValue.create(Message.VALUE_TIMING_TICK,     TickProfiler.instance().stats));
 				OpisPacketHandler.sendPacketToAllSwing(NetDataValue.create(Message.VALUE_AMOUNT_TILEENTS, new SerialInt(TileEntityManager.getAmountTileEntities())));
-				OpisPacketHandler.sendPacketToAllSwing(NetDataValue.create(Message.VALUE_AMOUNT_ENTITIES, new SerialInt(EntityManager.getAmountEntities())));
+				OpisPacketHandler.sendPacketToAllSwing(NetDataValue.create(Message.VALUE_AMOUNT_ENTITIES, new SerialInt(EntityManager.INSTANCE.getAmountEntities())));
 				
-				OpisPacketHandler.sendPacketToAllSwing(NetDataList.create(Message.LIST_PLAYERS,           EntityManager.getAllPlayers()));
+				OpisPacketHandler.sendPacketToAllSwing(NetDataList.create(Message.LIST_PLAYERS,           EntityManager.INSTANCE.getAllPlayers()));
 				
 				for (Player player : PlayerTracker.instance().playersSwing){
 					OpisPacketHandler.validateAndSend(NetDataValue.create(Message.STATUS_ACCESS_LEVEL, new SerialInt(PlayerTracker.instance().getPlayerAccessLevel(player).ordinal())), player);

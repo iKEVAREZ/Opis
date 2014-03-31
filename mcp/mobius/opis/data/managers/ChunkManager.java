@@ -94,7 +94,7 @@ public class ChunkManager implements IMessageHandler{
 			chunks.get(stat.getChunk()).addMeasure(stat.getGeometricMean());
 		}
 		
-		for (StatsEntity stat : EntityManager.stats.values()){
+		for (StatsEntity stat : EntityManager.INSTANCE.stats.values()){
 			if (!chunks.containsKey(stat.getChunk()))
 				chunks.put(stat.getChunk(), new StatsChunk(stat.getChunk()));
 			

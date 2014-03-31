@@ -14,7 +14,7 @@ public class MetaManager {
 		OpisServerTickHandler.instance.profilerRunningTicks = 0;
 		TileEntityManager.references.clear();
 		TileEntityManager.stats.clear();
-		EntityManager.stats.clear();
+		EntityManager.INSTANCE.stats.clear();
 		TickHandlerManager.startStats.clear();
 		TickHandlerManager.endStats.clear();
 		GlobalTimingManager.INSTANCE.worldTickStats.clear();		

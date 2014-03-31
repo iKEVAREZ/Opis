@@ -47,11 +47,11 @@ public class CommandTimingEntities extends CommandBase implements IOpisCommand {
 		
 		ArrayList<StatsEntity> ents = new ArrayList<StatsEntity>(); 
 		if (astring.length == 0){
-			ents = EntityManager.getTopEntities(20);
+			ents = EntityManager.INSTANCE.getTopEntities(20);
 		}
 		else{
 			try{
-				ents = EntityManager.getTopEntities(Integer.valueOf(astring[0]));
+				ents = EntityManager.INSTANCE.getTopEntities(Integer.valueOf(astring[0]));
 			} catch (Exception e) {return;}
 		}
 		
