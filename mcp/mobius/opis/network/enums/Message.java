@@ -107,6 +107,7 @@ public enum Message {
 		Message.LIST_TIMING_CHUNK.setAccessLevel(level);
 		Message.LIST_AMOUNT_ENTITIES.setAccessLevel(level);
 		Message.LIST_PLAYERS.setAccessLevel(level);
+		Message.LIST_DIMENSION_DATA.setAccessLevel(level);
 	}
 	
 	public static void setOverlaysMinimumLevel(AccessLevel level){

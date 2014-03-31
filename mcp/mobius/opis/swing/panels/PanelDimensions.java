@@ -39,20 +39,24 @@ public class PanelDimensions extends JPanelMsgHandler implements IMessageHandler
 		table = new JTableStats();
 		table.setModel(new DefaultTableModel(
 			new Object[][] {
-				{null, null, null, null, null, null, null, null, null, null},
+				//{null, null, null, null, null, null, null, null, null, null},
+					{null, null, null, null, null, null, null, null, null},
 			},
 			new String[] {
-				"Dim", "Name", "Players", "Forced chunks", "Loaded chunks", "Monsters", "Animals", "Entities", "Update time", "Purge"
+				//"Dim", "Name", "Players", "Forced chunks", "Loaded chunks", "Monsters", "Animals", "Entities", "Update time", "Purge"
+					"Dim", "Name", "Players", "Forced chunks", "Loaded chunks", "Monsters", "Animals", "Entities", "Purge"
 			}
 		) {
 			Class[] columnTypes = new Class[] {
-				Integer.class, String.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Object.class, JTableButton.class
+				//Integer.class, String.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Object.class, JTableButton.class
+				Integer.class, String.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, JTableButton.class
 			};
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
 			}
 			boolean[] columnEditables = new boolean[] {
-				false, false, false, false, false,false,false,false, false, true
+				//false, false, false, false, false,false,false,false, false, true
+				false, false, false, false, false,false,false,false, true
 			};
 			public boolean isCellEditable(int row, int column) {
 				return columnEditables[column];
@@ -69,7 +73,7 @@ public class PanelDimensions extends JPanelMsgHandler implements IMessageHandler
 		for (int i = 0; i < table.getColumnCount(); i++)
 			table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
 		
-		JTableButton buttonColumn = new JTableButton(table, new ActionDimensions(), 9, AccessLevel.PRIVILEGED);
+		JTableButton buttonColumn = new JTableButton(table, new ActionDimensions(), 8, AccessLevel.PRIVILEGED);
 	}
 
 	
@@ -99,8 +103,8 @@ public class PanelDimensions extends JPanelMsgHandler implements IMessageHandler
 						data.mobs,
 						data.neutral,
 						data.entities,
-						data.update,
-						"Purge chunks"
+						//data.update,
+						"Purge"
 				});
 			}			
 			this.dataUpdated(table, model, row);
