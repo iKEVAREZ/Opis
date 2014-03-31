@@ -28,7 +28,7 @@ import mcp.mobius.opis.data.managers.GlobalTimingManager;
 import mcp.mobius.opis.data.managers.TickHandlerManager;
 import mcp.mobius.opis.data.managers.TileEntityManager;
 import mcp.mobius.opis.data.server.EntUpdateProfiler;
-import mcp.mobius.opis.data.server.PacketProfiler;
+import mcp.mobius.opis.data.server.NetworkProfiler;
 import mcp.mobius.opis.data.server.WorldTickProfiler;
 import mcp.mobius.opis.data.server.TickProfiler;
 import mcp.mobius.opis.gui.overlay.OverlayStatus;
@@ -79,8 +79,8 @@ public class OpisServerTickHandler implements ITickHandler {
 			if (System.nanoTime() - timer1000 > 1000000000L){
 				timer1000 = System.nanoTime();
 
-				OpisPacketHandler.sendPacketToAllSwing(NetDataValue.create(Message.VALUE_AMOUNT_UPLOAD,   new SerialLong(PacketProfiler.instance().dataSizeOut)));
-				OpisPacketHandler.sendPacketToAllSwing(NetDataValue.create(Message.VALUE_AMOUNT_DOWNLOAD, new SerialLong(PacketProfiler.instance().dataSizeIn)));
+				OpisPacketHandler.sendPacketToAllSwing(NetDataValue.create(Message.VALUE_AMOUNT_UPLOAD,   new SerialLong(NetworkProfiler.INSTANCE.dataSizeOut)));
+				OpisPacketHandler.sendPacketToAllSwing(NetDataValue.create(Message.VALUE_AMOUNT_DOWNLOAD, new SerialLong(NetworkProfiler.INSTANCE.dataSizeIn)));
 				OpisPacketHandler.sendPacketToAllSwing(NetDataValue.create(Message.VALUE_CHUNK_FORCED,    new SerialInt(ChunkManager.instance().getForcedChunkAmount())));
 				OpisPacketHandler.sendPacketToAllSwing(NetDataValue.create(Message.VALUE_CHUNK_LOADED,    new SerialInt(ChunkManager.instance().getLoadedChunkAmount())));
 				OpisPacketHandler.sendPacketToAllSwing(NetDataValue.create(Message.VALUE_TIMING_TICK,     TickProfiler.instance().stats));
@@ -99,8 +99,8 @@ public class OpisServerTickHandler implements ITickHandler {
 					OpisPacketHandler.sendPacketToAllSwing(NetDataValue.create(Message.STATUS_RUN_UPDATE,     new SerialInt(profilerRunningTicks)));
 				}
 				
-				PacketProfiler.instance().dataSizeOut = 0L;
-				PacketProfiler.instance().dataSizeIn  = 0L;
+				NetworkProfiler.INSTANCE.dataSizeOut = 0L;
+				NetworkProfiler.INSTANCE.dataSizeIn  = 0L;
 			}
 			
 			// Five second timer
@@ -131,6 +131,10 @@ public class OpisServerTickHandler implements ITickHandler {
 				for(Table.Cell<Integer, String, Double> cell : GlobalTimingManager.INSTANCE.getStatsDimPerSection().cellSet()){
 					System.out.printf("[ %4d ] %20s : %.3f µs\n", cell.getRowKey(), cell.getColumnKey(), cell.getValue());
 				}				
+				
+				for(String key : NetworkProfiler.INSTANCE.stats.keySet()){
+					System.out.printf("[ %s ] : %.3f µs\n", key, NetworkProfiler.INSTANCE.stats.get(key).getGeometricMean());
+				}
 				
 				/*
 				for(Table.Cell<CoordinatesChunk, String, Double> cell : GlobalTimingManager.INSTANCE.getStatsChunk().cellSet()){

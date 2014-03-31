@@ -35,7 +35,7 @@ import mcp.mobius.opis.data.server.DeadManSwitch;
 import mcp.mobius.opis.data.server.EntUpdateProfiler;
 import mcp.mobius.opis.data.server.EntityProfiler;
 import mcp.mobius.opis.data.server.HandlerProfiler;
-import mcp.mobius.opis.data.server.PacketProfiler;
+import mcp.mobius.opis.data.server.NetworkProfiler;
 import mcp.mobius.opis.data.server.WorldTickProfiler;
 import mcp.mobius.opis.data.server.TickProfiler;
 import mcp.mobius.opis.data.server.TileEntityProfiler;
@@ -139,7 +139,7 @@ public class modOpis {
 		ProfilerRegistrar.registerProfilerWorldTick(new WorldTickProfiler());
 		ProfilerRegistrar.registerProfilerTick(TickProfiler.instance());
 		ProfilerRegistrar.registerProfilerEntUpdate(new EntUpdateProfiler());
-		ProfilerRegistrar.registerProfilerPacket(PacketProfiler.instance());
+		ProfilerRegistrar.registerProfilerPacket(NetworkProfiler.INSTANCE);
 
 		if (lagGenID != -1){
 			Block blockDemo = new BlockLag(lagGenID, Material.wood);
