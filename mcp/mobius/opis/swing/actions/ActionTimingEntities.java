@@ -36,7 +36,7 @@ public class ActionTimingEntities implements ActionListener {
 		JTableStats table       = panel.getTable();
 		if (table == null || table.getSelectedRow() == -1) return;
 		int indexData           = table.convertRowIndexToModel(table.getSelectedRow());
-		StatsEntity data        = (StatsEntity)table.getStatistics().get(indexData);
+		StatsEntity data        = (StatsEntity)table.getTableData().get(indexData);
 
 		if (e.getSource() == panel.getBtnCenter()){
             CoordinatesBlock coord = data.getCoordinates();

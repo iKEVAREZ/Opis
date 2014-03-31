@@ -32,7 +32,7 @@ public class ActionAmountEntities implements ActionListener, ItemListener {
 		JTableStats table       = panel.getTable();
 		if (table == null || table.getSelectedRow() == -1) return;
 		int indexData           = table.convertRowIndexToModel(table.getSelectedRow());
-		AmountHolder data       = (AmountHolder)table.getStatistics().get(indexData);
+		AmountHolder data       = (AmountHolder)table.getTableData().get(indexData);
 		
 		if (e.getSource() == panel.getBtnKillAll()){
             PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.COMMAND_KILLALL, new SerialString(data.key)));

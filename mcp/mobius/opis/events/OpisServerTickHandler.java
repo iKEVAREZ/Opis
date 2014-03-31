@@ -11,7 +11,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.packet.Packet3Chat;
 import net.minecraft.util.ChatMessageComponent;
+import net.minecraftforge.common.DimensionManager;
 import mcp.mobius.opis.modOpis;
+import mcp.mobius.opis.data.holders.DimensionData;
 import mcp.mobius.opis.data.holders.basetypes.AmountHolder;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesChunk;
 import mcp.mobius.opis.data.holders.basetypes.SerialDouble;
@@ -93,11 +95,18 @@ public class OpisServerTickHandler implements ITickHandler {
 				for (Player player : PlayerTracker.instance().playersSwing){
 					OpisPacketHandler.validateAndSend(NetDataValue.create(Message.STATUS_ACCESS_LEVEL, new SerialInt(PlayerTracker.instance().getPlayerAccessLevel(player).ordinal())), player);
 				}
-				
-				
+
+				// Dimension data update.
+				ArrayList<DimensionData> dimData = new ArrayList<DimensionData>();
+				for (int dim : DimensionManager.getIDs()){
+					dimData.add(new DimensionData().fill(dim));
+				}
+				OpisPacketHandler.sendPacketToAllSwing(NetDataList.create(Message.LIST_DIMENSION_DATA, dimData));
+
+				// Profiler update (if running)
 				if (modOpis.profilerRun){
-					OpisPacketHandler.sendPacketToAllSwing(NetDataValue.create(Message.STATUS_RUNNING,   new SerialInt(modOpis.profilerMaxTicks)));
-					OpisPacketHandler.sendPacketToAllSwing(NetDataValue.create(Message.STATUS_RUN_UPDATE,     new SerialInt(profilerRunningTicks)));
+					OpisPacketHandler.sendPacketToAllSwing(NetDataValue.create(Message.STATUS_RUNNING,    new SerialInt(modOpis.profilerMaxTicks)));
+					OpisPacketHandler.sendPacketToAllSwing(NetDataValue.create(Message.STATUS_RUN_UPDATE, new SerialInt(profilerRunningTicks)));
 				}
 				
 				NetworkProfiler.INSTANCE.dataSizeOut = 0L;

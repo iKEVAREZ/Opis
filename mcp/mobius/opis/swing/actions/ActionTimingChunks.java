@@ -35,7 +35,7 @@ public class ActionTimingChunks implements ActionListener {
 		JTableStats table       = panel.getTable();
 		if (table == null || table.getSelectedRow() == -1) return;
 		int indexData           = table.convertRowIndexToModel(table.getSelectedRow());
-		StatsChunk data         = (StatsChunk)table.getStatistics().get(indexData);
+		StatsChunk data         = (StatsChunk)table.getTableData().get(indexData);
 
 		if (e.getSource() == panel.getBtnCenter()){
             OverlayMeanTime.instance().setSelectedChunk(data.getChunk().dim, data.getChunk().chunkX, data.getChunk().chunkZ);

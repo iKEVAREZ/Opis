@@ -97,7 +97,7 @@ public class PanelPlayers extends JPanelMsgHandler implements ITabPanel{
 		switch(msg){
 		case LIST_PLAYERS:{
 			
-			((JTableStats)this.getTable()).setStatistics(rawdata.array);
+			((JTableStats)this.getTable()).setTableData(rawdata.array);
 			
 			DefaultTableModel model = (DefaultTableModel)this.getTable().getModel();
 			int               row   = this.updateData(table, model, StatsPlayer.class);

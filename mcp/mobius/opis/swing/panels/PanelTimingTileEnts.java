@@ -109,7 +109,7 @@ public class PanelTimingTileEnts extends JPanelMsgHandler implements ITabPanel{
 		switch(msg){
 		case LIST_TIMING_TILEENTS:{
 			
-			((JTableStats)this.getTable()).setStatistics(rawdata.array);
+			((JTableStats)this.getTable()).setTableData(rawdata.array);
 			
 			DefaultTableModel model = (DefaultTableModel)table.getModel();
 			int               row   = this.updateData(table, model, StatsTileEntity.class);

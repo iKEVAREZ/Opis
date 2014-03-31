@@ -36,7 +36,7 @@ public class ActionPlayers implements ActionListener {
 		JTableStats table = panel.getTable();
 		if (table == null || table.getSelectedRow() == -1) return;
 		int indexData     = table.convertRowIndexToModel(table.getSelectedRow());
-		StatsPlayer data  = (StatsPlayer)table.getStatistics().get(indexData);
+		StatsPlayer data  = (StatsPlayer)table.getTableData().get(indexData);
 
 		if (e.getSource() == panel.getBtnCenter()){
             CoordinatesBlock coord = data.getCoordinates();

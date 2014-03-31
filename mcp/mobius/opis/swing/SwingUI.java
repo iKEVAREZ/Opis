@@ -45,17 +45,6 @@ public class SwingUI extends JFrame implements WindowListener, IMessageHandler{
 	private JPanel contentPane;
 	private JTabbedPane tabbedPane;
 	
-	
-	/*
-	private PanelSummary        panelSummary;
-	private PanelPlayers        panelPlayers;	
-	private PanelAmountEntities panelAmountEntities;	
-	private PanelTimingTileEnts panelTimingTileEnts;
-	private PanelTimingEntities panelTimingEntities;
-	private PanelTimingHandlers panelTimingHandlers;	
-	private PanelTimingChunks   panelTimingChunks;
-	*/
-	
 	public void showUI(){
 		EventQueue.invokeLater(new Runnable() {
 			@Override
@@ -84,35 +73,6 @@ public class SwingUI extends JFrame implements WindowListener, IMessageHandler{
 		tabbedPane = new JTabbedPane(SwingConstants.TOP);
 		contentPane.add(tabbedPane, BorderLayout.CENTER);
 
-		/*
-		for (ITabPanel panel : TabPanelRegistrar.INSTANCE.getTabs()){
-			tabbedPane.addTab(panel.getTabTitle(), (JPanel)panel);
-		}
-		*/
-		
-		/*
-		panelSummary = new PanelSummary();
-		tabbedPane.addTab("Summary", null, panelSummary, null);		
-		
-		panelPlayers = new PanelPlayers();
-		tabbedPane.addTab("Players", null, panelPlayers, null);		
-
-		panelAmountEntities = new PanelAmountEntities();
-		tabbedPane.addTab("Entities amount", null, panelAmountEntities, null);		
-		
-		panelTimingTileEnts = new PanelTimingTileEnts();
-		tabbedPane.addTab("TileEntities timing", null, panelTimingTileEnts, null);		
-		
-		panelTimingEntities = new PanelTimingEntities();
-		tabbedPane.addTab("Entities timing", null, panelTimingEntities, null);		
-		
-		panelTimingHandlers = new PanelTimingHandlers();
-		tabbedPane.addTab("Handlers timing", null, panelTimingHandlers, null);		
-		
-		panelTimingChunks = new PanelTimingChunks();
-		tabbedPane.addTab("Chunks timing", null, panelTimingChunks, null);		
-		*/
-		
 		this.addWindowListener(this);
 	}
 
@@ -142,30 +102,6 @@ public class SwingUI extends JFrame implements WindowListener, IMessageHandler{
 	public JTabbedPane getTabbedPane() {
 		return tabbedPane;
 	}
-	
-	/*
-	public PanelTimingChunks getPanelTimingChunks() {
-		return panelTimingChunks;
-	}
-	public PanelTimingHandlers getPanelTimingHandlers() {
-		return panelTimingHandlers;
-	}
-	public PanelTimingEntities getPanelTimingEntities() {
-		return panelTimingEntities;
-	}
-	public PanelTimingTileEnts getPanelTimingTileEnts() {
-		return panelTimingTileEnts;
-	}
-	public PanelAmountEntities getPanelAmountEntities() {
-		return panelAmountEntities;
-	}
-	public PanelPlayers getPanelPlayers() {
-		return panelPlayers;
-	}
-	public PanelSummary getPanelSummary() {
-		return panelSummary;
-	}
-	*/
 	
 	@Override
 	public boolean handleMessage(Message msg, NetDataRaw rawdata) {

@@ -11,11 +11,11 @@ public class JTableStats extends JTable {
 
 	protected ArrayList<ISerializable> statistics;
 	
-	public ArrayList<ISerializable> getStatistics(){
+	public ArrayList<ISerializable> getTableData(){
 		return this.statistics;
 	}
 	
-	public void setStatistics(ArrayList<ISerializable> statistics){
+	public void setTableData(ArrayList<ISerializable> statistics){
 		this.statistics = statistics;
 	}
 

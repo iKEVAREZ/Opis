@@ -186,6 +186,22 @@ public class ServerMessageHandler {
 			OpisPacketHandler.validateAndSend(NetDataValue.create(Message.STATUS_TIME_LAST_RUN,  new SerialLong(ProfilerRegistrar.timeStampLastRun)), (Player)player);
 		}
 		
+		else if(maintype == Message.COMMAND_KILL_HOSTILE_ALL){
+			
+		}
+		
+		else if(maintype == Message.COMMAND_KILL_HOSTILE_DIM){
+			
+		}
+		
+		else if(maintype == Message.COMMAND_PURGE_CHUNKS_ALL){
+			
+		}
+		
+		else if(maintype == Message.COMMAND_PURGE_CHUNKS_DIM){
+			
+		}		
+		
 		else{
 			modOpis.log.log(Level.WARNING, String.format("Unknown data request : %s ", maintype));
 		}
