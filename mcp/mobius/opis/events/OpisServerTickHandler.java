@@ -40,7 +40,7 @@ import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.TickType;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
-import mcp.mobius.mobiuscore.profiler_v2.ProfilerSection;
+import mcp.mobius.mobiuscore.profiler.ProfilerSection;
 
 public class OpisServerTickHandler implements ITickHandler {
 

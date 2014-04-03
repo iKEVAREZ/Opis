@@ -23,7 +23,7 @@ import net.minecraft.network.packet.Packet3Chat;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.dedicated.DedicatedServer;
 import net.minecraft.util.ChatMessageComponent;
-import mcp.mobius.mobiuscore.profiler_v2.ProfilerSection;
+import mcp.mobius.mobiuscore.profiler.ProfilerSection;
 
 public class CommandStart extends CommandBase implements IOpisCommand {
 

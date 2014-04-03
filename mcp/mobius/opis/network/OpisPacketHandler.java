@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.logging.Level;
 
 import mapwriter.Mw;
-import mcp.mobius.mobiuscore.profiler_v2.ProfilerSection;
+import mcp.mobius.mobiuscore.profiler.ProfilerSection;
 import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.api.MessageHandlerRegistrar;
 import mcp.mobius.opis.data.client.DataCache;

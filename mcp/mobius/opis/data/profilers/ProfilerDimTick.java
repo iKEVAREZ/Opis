@@ -5,7 +5,7 @@ import java.util.HashMap;
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 
 import net.minecraft.world.World;
-import mcp.mobius.mobiuscore.profiler_v2.IProfilerBase;
+import mcp.mobius.mobiuscore.profiler.IProfilerBase;
 
 public class ProfilerDimTick extends ProfilerAbstract implements IProfilerBase {
 

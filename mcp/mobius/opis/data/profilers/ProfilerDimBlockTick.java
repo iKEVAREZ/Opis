@@ -6,7 +6,7 @@ import net.minecraftforge.common.DimensionManager;
 
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 
-import mcp.mobius.mobiuscore.profiler_v2.IProfilerBase;
+import mcp.mobius.mobiuscore.profiler.IProfilerBase;
 
 public class ProfilerDimBlockTick extends ProfilerAbstract implements IProfilerBase {
 

@@ -1,6 +1,6 @@
 package mcp.mobius.opis.data.profilers;
 
-import mcp.mobius.mobiuscore.profiler_v2.IProfilerBase;
+import mcp.mobius.mobiuscore.profiler.IProfilerBase;
 
 public abstract class ProfilerAbstract implements IProfilerBase {
 

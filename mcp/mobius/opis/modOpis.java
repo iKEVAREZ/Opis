@@ -8,7 +8,7 @@ import net.minecraft.network.packet.Packet;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.MinecraftForge;
-import mcp.mobius.mobiuscore.profiler_v2.ProfilerSection;
+import mcp.mobius.mobiuscore.profiler.ProfilerSection;
 import mcp.mobius.opis.commands.client.CommandClientShowRenderTick;
 import mcp.mobius.opis.commands.client.CommandClientStart;
 import mcp.mobius.opis.commands.client.CommandOpis;

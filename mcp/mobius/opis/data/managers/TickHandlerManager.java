@@ -7,7 +7,7 @@ import java.util.HashMap;
 
 import cpw.mods.fml.common.IScheduledTickHandler;
 import cpw.mods.fml.common.SingleIntervalHandler;
-import mcp.mobius.mobiuscore.profiler_v2.ProfilerSection;
+import mcp.mobius.mobiuscore.profiler.ProfilerSection;
 import mcp.mobius.opis.data.holders.newtypes.DataHandler;
 import mcp.mobius.opis.data.holders.newtypes.DataTiming;
 import mcp.mobius.opis.data.profilers.ProfilerHandlerServer;

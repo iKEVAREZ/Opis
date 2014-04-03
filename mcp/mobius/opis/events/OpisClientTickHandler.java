@@ -3,7 +3,7 @@ package mcp.mobius.opis.events;
 import java.util.EnumSet;
 import java.util.logging.Level;
 
-import mcp.mobius.mobiuscore.profiler_v2.ProfilerSection;
+import mcp.mobius.mobiuscore.profiler.ProfilerSection;
 import mcp.mobius.opis.modOpis;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.TickType;
