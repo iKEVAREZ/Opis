@@ -17,8 +17,6 @@ import mcp.mobius.opis.api.TabPanelRegistrar;
 import mcp.mobius.opis.data.client.DataCache;
 import mcp.mobius.opis.data.holders.newtypes.DataHandler;
 import mcp.mobius.opis.data.holders.stats.StatsChunk;
-import mcp.mobius.opis.data.holders.stats.StatsEntity;
-import mcp.mobius.opis.data.holders.stats.StatsTileEntity;
 import mcp.mobius.opis.data.managers.ChunkManager;
 import mcp.mobius.opis.data.managers.MetaManager;
 import mcp.mobius.opis.data.managers.TickHandlerManager;

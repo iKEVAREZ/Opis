@@ -29,8 +29,6 @@ import mcp.mobius.opis.data.holders.newtypes.DataHandler;
 import mcp.mobius.opis.data.holders.newtypes.DataTileEntity;
 import mcp.mobius.opis.data.holders.newtypes.DataTiming;
 import mcp.mobius.opis.data.holders.stats.StatsChunk;
-import mcp.mobius.opis.data.holders.stats.StatsEntity;
-import mcp.mobius.opis.data.holders.stats.StatsTileEntity;
 import mcp.mobius.opis.data.managers.ChunkManager;
 import mcp.mobius.opis.data.managers.EntityManager;
 import mcp.mobius.opis.data.managers.MetaManager;
@@ -211,7 +209,7 @@ public class ServerMessageHandler {
 	
 	public void handleOverlayChunkEntities(CoordinatesChunk coord, Player player){
 		
-		HashMap<CoordinatesChunk, ArrayList<StatsEntity>> entities = EntityManager.INSTANCE.getAllEntitiesPerChunk();
+		HashMap<CoordinatesChunk, ArrayList<DataEntity>> entities = EntityManager.INSTANCE.getAllEntitiesPerChunk();
 		HashMap<CoordinatesChunk, Integer> perChunk = new HashMap<CoordinatesChunk, Integer>();
 		
 		for (CoordinatesChunk chunk : entities.keySet())

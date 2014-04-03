@@ -7,7 +7,6 @@ import cpw.mods.fml.common.network.Player;
 import mcp.mobius.opis.commands.IOpisCommand;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesChunk;
 import mcp.mobius.opis.data.holders.newtypes.DataEntity;
-import mcp.mobius.opis.data.holders.stats.StatsEntity;
 import mcp.mobius.opis.data.managers.EntityManager;
 import mcp.mobius.opis.events.PlayerTracker;
 import mcp.mobius.opis.network.OpisPacketHandler;

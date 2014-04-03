@@ -18,8 +18,6 @@ import mcp.mobius.opis.data.holders.basetypes.TicketData;
 import mcp.mobius.opis.data.holders.newtypes.DataEntity;
 import mcp.mobius.opis.data.holders.newtypes.DataTileEntity;
 import mcp.mobius.opis.data.holders.stats.StatsChunk;
-import mcp.mobius.opis.data.holders.stats.StatsEntity;
-import mcp.mobius.opis.data.holders.stats.StatsTileEntity;
 import mcp.mobius.opis.data.profilers.ProfilerEntityUpdate;
 import mcp.mobius.opis.data.profilers.ProfilerTileEntityUpdate;
 import mcp.mobius.opis.network.enums.Message;

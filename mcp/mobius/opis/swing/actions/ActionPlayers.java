@@ -20,8 +20,8 @@ import cpw.mods.fml.common.network.PacketDispatcher;
 import mcp.mobius.opis.api.TabPanelRegistrar;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesBlock;
 import mcp.mobius.opis.data.holders.basetypes.TargetEntity;
+import mcp.mobius.opis.data.holders.newtypes.DataEntity;
 import mcp.mobius.opis.data.holders.stats.StatAbstract;
-import mcp.mobius.opis.data.holders.stats.StatsPlayer;
 import mcp.mobius.opis.gui.overlay.entperchunk.OverlayEntityPerChunk;
 import mcp.mobius.opis.swing.widgets.JPanelMsgHandler;
 import mcp.mobius.opis.swing.widgets.JTableStats;
@@ -36,27 +36,27 @@ public class ActionPlayers implements ActionListener {
 		JTableStats table = panel.getTable();
 		if (table == null || table.getSelectedRow() == -1) return;
 		int indexData     = table.convertRowIndexToModel(table.getSelectedRow());
-		StatsPlayer data  = (StatsPlayer)table.getTableData().get(indexData);
+		DataEntity data  = (DataEntity)table.getTableData().get(indexData);
 
 		if (e.getSource() == panel.getBtnCenter()){
-            CoordinatesBlock coord = data.getCoordinates();
+            CoordinatesBlock coord = data.pos;
             PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.OVERLAY_CHUNK_ENTITIES));
-            PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.LIST_CHUNK_ENTITIES, data.getChunk()));           
+            PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.LIST_CHUNK_ENTITIES, data.pos.asCoordinatesChunk()));           
             OverlayEntityPerChunk.instance().selectedChunk = coord.asCoordinatesChunk();
             MwAPI.setCurrentDataProvider(OverlayEntityPerChunk.instance());
             Minecraft.getMinecraft().displayGuiScreen(new MwGui(Mw.instance, coord.dim, coord.x, coord.z));         			
 		}				
 		
 		if (e.getSource() == panel.getBtnTeleport()){
-            int eid = data.getEID();
-            int dim = data.getCoordinates().dim;
+            int eid = data.eid;
+            int dim = data.pos.dim;
             PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.COMMAND_TELEPORT_TO_ENTITY, new TargetEntity(eid, dim)));
             Minecraft.getMinecraft().setIngameFocus();
 		}
 		
 		if (e.getSource() == panel.getBtnPull()){
-            int eid = data.getEID();
-            int dim = data.getCoordinates().dim;
+            int eid = data.eid;
+            int dim = data.pos.dim;
             PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.COMMAND_TELEPORT_PULL_ENTITY, new TargetEntity(eid, dim)));			
 		}
 	}

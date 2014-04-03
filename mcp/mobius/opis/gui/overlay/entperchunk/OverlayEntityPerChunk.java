@@ -19,7 +19,7 @@ import mcp.mobius.opis.api.IMessageHandler;
 import mcp.mobius.opis.data.holders.ISerializable;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesBlock;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesChunk;
-import mcp.mobius.opis.data.holders.stats.StatsEntity;
+import mcp.mobius.opis.data.holders.newtypes.DataEntity;
 import mcp.mobius.opis.gui.events.MouseEvent;
 import mcp.mobius.opis.gui.interfaces.CType;
 import mcp.mobius.opis.gui.interfaces.IWidget;
@@ -57,7 +57,7 @@ public class OverlayEntityPerChunk implements IMwDataProvider, IMessageHandler {
 	public LayoutCanvas canvas = null;
 	public HashMap<CoordinatesChunk, Integer> overlayData = new HashMap<CoordinatesChunk, Integer>(); 
 	public ArrayList<ReducedData> reducedData = new ArrayList<ReducedData>();
-	public ArrayList<StatsEntity> entStats    = new ArrayList<StatsEntity>();
+	public ArrayList<DataEntity> entStats    = new ArrayList<DataEntity>();
 	public CoordinatesChunk selectedChunk = null;
 	
 	private OverlayEntityPerChunk(){}
@@ -71,7 +71,7 @@ public class OverlayEntityPerChunk implements IMwDataProvider, IMessageHandler {
 	public void setEntStats(ArrayList<ISerializable> data){
 		this.entStats.clear();
 		for (ISerializable stat : data)
-			this.entStats.add((StatsEntity)stat);
+			this.entStats.add((DataEntity)stat);
 	}
 	
 	public void reduceData(){
@@ -239,13 +239,13 @@ public class OverlayEntityPerChunk implements IMwDataProvider, IMessageHandler {
 			 .setFontSize(1.0f);
 
 		int nrows = 0;
-		for (StatsEntity data : this.entStats){
+		for (DataEntity data : this.entStats){
 			//String[] namelst = data.getName().split("\\.");
 			//String name = namelst[namelst.length - 1];
 			
-			String name = data.getName();
+			String name = data.name;
 			
-			table.addRow(data, name, String.format("[ %d %d %d ]", data.getCoordinates().x, data.getCoordinates().y, data.getCoordinates().z));
+			table.addRow(data, name, String.format("[ %d %d %d ]", data.pos.x, data.pos.y, data.pos.z));
 			nrows++;
 			if (nrows > 100) break;
 		}

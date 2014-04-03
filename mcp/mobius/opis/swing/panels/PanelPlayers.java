@@ -4,7 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import mcp.mobius.opis.api.ITabPanel;
-import mcp.mobius.opis.data.holders.stats.StatsPlayer;
+import mcp.mobius.opis.data.holders.newtypes.DataEntity;
 import mcp.mobius.opis.gui.overlay.entperchunk.OverlayEntityPerChunk;
 import mcp.mobius.opis.network.enums.AccessLevel;
 import mcp.mobius.opis.network.enums.Message;
@@ -100,14 +100,14 @@ public class PanelPlayers extends JPanelMsgHandler implements ITabPanel{
 			((JTableStats)this.getTable()).setTableData(rawdata.array);
 			
 			DefaultTableModel model = (DefaultTableModel)this.getTable().getModel();
-			int               row   = this.updateData(table, model, StatsPlayer.class);
+			int               row   = this.updateData(table, model, DataEntity.class);
 
 			for (Object o : rawdata.array){
-				StatsPlayer player = (StatsPlayer)o;
+				DataEntity player = (DataEntity)o;
 				model.addRow(new Object[]  {
-					player.getName(),
-					player.getCoordinates().dim,
-					String.format("[ %4d %4d %4d ]", 	player.getCoordinates().x, player.getCoordinates().y, player.getCoordinates().z),  
+					player.name,
+					player.pos.dim,
+					String.format("[ %4d %4d %4d ]", 	player.pos.x, player.pos.y, player.pos.z),  
 					 });
 			}
 			

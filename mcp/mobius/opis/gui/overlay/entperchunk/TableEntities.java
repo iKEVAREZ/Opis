@@ -7,7 +7,7 @@ import mapwriter.map.MapView;
 import mapwriter.map.mapmode.MapMode;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesBlock;
 import mcp.mobius.opis.data.holders.basetypes.TargetEntity;
-import mcp.mobius.opis.data.holders.stats.StatsEntity;
+import mcp.mobius.opis.data.holders.newtypes.DataEntity;
 import mcp.mobius.opis.gui.events.MouseEvent;
 import mcp.mobius.opis.gui.interfaces.IWidget;
 import mcp.mobius.opis.gui.overlay.entperchunk.OverlayEntityPerChunk.ReducedData;
@@ -37,8 +37,8 @@ public class TableEntities extends ViewTable {
 		if (row != null){
 			//CoordinatesBlock coord = ((EntityStats)row.getObject()).getCoord();
 			//PacketDispatcher.sendPacketToServer(Packet_ReqTeleport.create(coord));
-			int eid = ((StatsEntity)row.getObject()).getID();
-			int dim = ((StatsEntity)row.getObject()).getCoordinates().dim;
+			int eid = ((DataEntity)row.getObject()).eid;
+			int dim = ((DataEntity)row.getObject()).pos.dim;
 			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.COMMAND_TELEPORT_TO_ENTITY, new TargetEntity(eid, dim)));
 			Minecraft.getMinecraft().setIngameFocus();			
 		}

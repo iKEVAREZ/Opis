@@ -36,8 +36,6 @@ import mcp.mobius.opis.data.holders.basetypes.CoordinatesBlock;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesChunk;
 import mcp.mobius.opis.data.holders.newtypes.DataEntity;
 import mcp.mobius.opis.data.holders.newtypes.DataTiming;
-import mcp.mobius.opis.data.holders.stats.StatsEntity;
-import mcp.mobius.opis.data.holders.stats.StatsPlayer;
 import mcp.mobius.opis.data.profilers.ProfilerEntityUpdate;
 import mcp.mobius.opis.helpers.Teleport;
 
@@ -67,8 +65,8 @@ public enum EntityManager {
 	}
 	
 	/* Returns all the entities in all dimensions (without timing data) */
-	public ArrayList<StatsEntity> getAllEntities(){
-		ArrayList<StatsEntity> entities    = new ArrayList<StatsEntity>();
+	public ArrayList<DataEntity> getAllEntities(){
+		ArrayList<DataEntity> entities    = new ArrayList<DataEntity>();
 		for (int i : DimensionManager.getIDs()){
 			entities.addAll(this.getEntitiesInDim(i));
 		}
@@ -76,8 +74,8 @@ public enum EntityManager {
 	}
 	
 	/* Returns all the entities in the given dimension (without timing data) */
-	public ArrayList<StatsEntity> getEntitiesInDim(int dim){
-		ArrayList<StatsEntity> entities    = new ArrayList<StatsEntity>();
+	public ArrayList<DataEntity> getEntitiesInDim(int dim){
+		ArrayList<DataEntity> entities    = new ArrayList<DataEntity>();
 		
 		World world = DimensionManager.getWorld(dim);
 		if (world == null) return entities;
@@ -86,16 +84,15 @@ public enum EntityManager {
 		
 		for (int i = 0; i < copyList.size(); i++){
 			Entity ent = (Entity)copyList.get(i);
-			//entities.add(new EntityStats(ent.entityId, ent.getClass().getName(), ent.dimension, ent.posX, ent.posY, ent.posZ));
-			entities.add(new StatsEntity(ent.entityId, getEntityName(ent), ent.dimension, ent.posX, ent.posY, ent.posZ));
+			entities.add(new DataEntity().fill(ent));
 		}
 		
 		return entities;
 	}		
 	
 	/* Returns a hashmap of all entities per chunk (not timing) */
-	public HashMap<CoordinatesChunk, ArrayList<StatsEntity>> getAllEntitiesPerChunk(){
-		HashMap<CoordinatesChunk, ArrayList<StatsEntity>> entities = new HashMap<CoordinatesChunk, ArrayList<StatsEntity>>();
+	public HashMap<CoordinatesChunk, ArrayList<DataEntity>> getAllEntitiesPerChunk(){
+		HashMap<CoordinatesChunk, ArrayList<DataEntity>> entities = new HashMap<CoordinatesChunk, ArrayList<DataEntity>>();
 		for (int i : DimensionManager.getIDs()){
 			entities.putAll(this.getEntitiesPerChunkInDim(i));
 		}
@@ -103,8 +100,8 @@ public enum EntityManager {
 	}
 	
 	/* Returns a hashmap of entities in the given dimension (not timing) */
-	public HashMap<CoordinatesChunk, ArrayList<StatsEntity>> getEntitiesPerChunkInDim(int dim){
-		HashMap<CoordinatesChunk, ArrayList<StatsEntity>> entities = new HashMap<CoordinatesChunk, ArrayList<StatsEntity>>();
+	public HashMap<CoordinatesChunk, ArrayList<DataEntity>> getEntitiesPerChunkInDim(int dim){
+		HashMap<CoordinatesChunk, ArrayList<DataEntity>> entities = new HashMap<CoordinatesChunk, ArrayList<DataEntity>>();
 		World world = DimensionManager.getWorld(dim);
 		if (world == null) return entities;
 		
@@ -115,18 +112,18 @@ public enum EntityManager {
 			CoordinatesChunk chunk = new CoordinatesBlock(ent.dimension, (int)ent.posX, (int)ent.posY, (int)ent.posZ).asCoordinatesChunk();
 			
 			if (!entities.containsKey(chunk))
-				entities.put(chunk, new ArrayList<StatsEntity>());
+				entities.put(chunk, new ArrayList<DataEntity>());
 			
 			//entities.get(chunk).add(new EntityStats(ent.entityId, ent.getClass().getName(), ent.dimension, ent.posX, ent.posY, ent.posZ));
-			entities.get(chunk).add(new StatsEntity(ent.entityId, getEntityName(ent), ent.dimension, ent.posX, ent.posY, ent.posZ));
+			entities.get(chunk).add(new DataEntity().fill(ent));
 		}
 		
 		return entities;
 	}
 	
 	/* Returns an array of all entities in a given chunk */
-	public ArrayList<StatsEntity> getEntitiesInChunk(CoordinatesChunk coord){
-		ArrayList<StatsEntity> entities = new  ArrayList<StatsEntity>();
+	public ArrayList<DataEntity> getEntitiesInChunk(CoordinatesChunk coord){
+		ArrayList<DataEntity> entities = new  ArrayList<DataEntity>();
 		
 		World world = DimensionManager.getWorld(coord.dim);
 		if (world == null) return entities;
@@ -138,7 +135,7 @@ public enum EntityManager {
 			CoordinatesChunk chunk = new CoordinatesBlock(ent.dimension, (int)ent.posX, (int)ent.posY, (int)ent.posZ).asCoordinatesChunk();
 			if (chunk.equals(coord))
 				//entities.add(new EntityStats(ent.entityId, ent.getClass().getName(), ent.dimension, ent.posX, ent.posY, ent.posZ));
-				entities.add(new StatsEntity(ent.entityId, getEntityName(ent), ent.dimension, ent.posX, ent.posY, ent.posZ));
+				entities.add(new DataEntity().fill(ent));
 		}		
 		
 		return entities;
@@ -296,12 +293,12 @@ public enum EntityManager {
 		return nkilled;		
 	}
 	
-	public ArrayList<StatsPlayer> getAllPlayers(){
+	public ArrayList<DataEntity> getAllPlayers(){
 		List players = MinecraftServer.getServerConfigurationManager(MinecraftServer.getServer()).playerEntityList;
-		ArrayList<StatsPlayer> outList = new ArrayList<StatsPlayer>();
+		ArrayList<DataEntity> outList = new ArrayList<DataEntity>();
 		
 		for (Object p : players)
-			outList.add(new StatsPlayer((EntityPlayer) p));
+			outList.add(new DataEntity().fill((EntityPlayer) p));
 		
 		return outList;
 	}
