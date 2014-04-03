@@ -2,6 +2,8 @@ package mcp.mobius.opis.data.profilers;
 
 import java.util.HashMap;
 
+import net.minecraftforge.common.DimensionManager;
+
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 
 import mcp.mobius.mobiuscore.profiler_v2.IProfilerBase;
@@ -15,6 +17,7 @@ public class ProfilerDimBlockTick implements IProfilerBase {
 	@Override
 	public void start(Object key) {
 		Integer dim = (Integer)key;
+		if (DimensionManager.getWorld(dim).isRemote) return;
 		
 		if (!data.containsKey(dim))
 			data.put(dim, new DescriptiveStatistics(20));
@@ -23,7 +26,9 @@ public class ProfilerDimBlockTick implements IProfilerBase {
 	
 	@Override
 	public void stop(Object key) {
-		Integer dim = (Integer)key;		
+		Integer dim = (Integer)key;
+		if (DimensionManager.getWorld(dim).isRemote) return;
+		
 		clock.stop();
 		data.get(dim).addValue((double)clock.timeDelta);
 	}
