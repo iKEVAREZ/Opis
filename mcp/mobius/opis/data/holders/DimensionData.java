@@ -5,12 +5,15 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import mcp.mobius.mobiuscore.profiler_v2.ProfilerSection;
+import mcp.mobius.opis.data.profilers.ProfilerDimTick;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
+
 
 /* Data holder for infos about dimensions */
 
@@ -24,17 +27,17 @@ public class DimensionData implements ISerializable {
 	public int    entities;
 	public int    mobs;
 	public int    neutral;
-	public double update;
+	public TimingData update;
 	
 	public DimensionData fill(int dim){
 		WorldServer  world = DimensionManager.getWorld(dim);
 		
-		this.dim     = dim;
-		this.name    = world.provider.getDimensionName();
-		this.players = world.playerEntities.size();
-		this.forced  = world.getPersistentChunks().size();
-		this.loaded  = world.getChunkProvider().getLoadedChunkCount();
-		this.update  = 0.0D;
+		this.dim      = dim;
+		this.name     = world.provider.getDimensionName();
+		this.players  = world.playerEntities.size();
+		this.forced   = world.getPersistentChunks().size();
+		this.loaded   = world.getChunkProvider().getLoadedChunkCount();
+		this.update   = new TimingData(((ProfilerDimTick)(ProfilerSection.DIMENSION_TICK.getProfiler())).data.get(dim).getGeometricMean());
 		this.mobs     = 0;
 		this.neutral  = 0;
 		this.entities = world.loadedEntityList.size();		
@@ -58,7 +61,8 @@ public class DimensionData implements ISerializable {
 		stream.writeInt(entities);
 		stream.writeInt(mobs);
 		stream.writeInt(neutral);
-		stream.writeDouble(update);
+		//stream.writeDouble(update);
+		this.update.writeToStream(stream);
 		Packet.writeString(name, stream);
 	}
 
@@ -71,7 +75,8 @@ public class DimensionData implements ISerializable {
 		retVal.entities= stream.readInt();
 		retVal.mobs    = stream.readInt();
 		retVal.neutral = stream.readInt();
-		retVal.update  = stream.readDouble();
+		//retVal.update  = stream.readDouble();
+		retVal.update  = TimingData.readFromStream(stream);
 		retVal.name    = Packet.readString(stream, 255);
 		return retVal;
 	}

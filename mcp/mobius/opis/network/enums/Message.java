@@ -55,8 +55,8 @@ public enum Message {
 	COMMAND_UNREGISTER_SWING,
 	COMMAND_OPEN_SWING,
 	
-	COMMAND_KILL_HOSTILE_DIM(PRIVILEGED),	// This will kill all hostile in the dim given as argument
-	COMMAND_KILL_HOSTILE_ALL(PRIVILEGED),	// This will kill all hostile in all the dimensions
+	COMMAND_KILL_HOSTILES_DIM(PRIVILEGED),	// This will kill all hostile in the dim given as argument
+	COMMAND_KILL_HOSTILES_ALL(PRIVILEGED),	// This will kill all hostile in all the dimensions
 	COMMAND_PURGE_CHUNKS_DIM(PRIVILEGED),	// This will purge the chunks in the dim given as argument
 	COMMAND_PURGE_CHUNKS_ALL(PRIVILEGED),	// This will purge the chunks in all dimensions
 	

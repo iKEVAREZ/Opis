@@ -186,12 +186,12 @@ public class ServerMessageHandler {
 			OpisPacketHandler.validateAndSend(NetDataValue.create(Message.STATUS_TIME_LAST_RUN,  new SerialLong(ProfilerRegistrar.timeStampLastRun)), (Player)player);
 		}
 		
-		else if(maintype == Message.COMMAND_KILL_HOSTILE_ALL){
+		else if(maintype == Message.COMMAND_KILL_HOSTILES_ALL){
 			for (int dim : DimensionManager.getIDs())
 				EntityManager.INSTANCE.killAllHostiles(dim);
 		}
 		
-		else if(maintype == Message.COMMAND_KILL_HOSTILE_DIM){
+		else if(maintype == Message.COMMAND_KILL_HOSTILES_DIM){
 			EntityManager.INSTANCE.killAllHostiles(((SerialInt)param1).value);			
 		}
 		

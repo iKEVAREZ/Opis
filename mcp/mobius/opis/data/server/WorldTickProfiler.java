@@ -9,11 +9,16 @@ import mcp.mobius.opis.data.holders.basetypes.CoordinatesChunk;
 import mcp.mobius.opis.data.holders.stats.StatsWorld;
 import mcp.mobius.opis.data.managers.GlobalTimingManager;
 
-public class WorldTickProfiler extends AbstractProfiler implements IProfilerWorldTick {
+public final class WorldTickProfiler extends AbstractProfiler implements IProfilerWorldTick {
 
-	//private static WorldTickProfiler _instance = new WorldTickProfiler();
-	//public  static WorldTickProfiler instance() {return _instance;}	
+	private static WorldTickProfiler _instance = new WorldTickProfiler();
+	public  static WorldTickProfiler instance() {return _instance;}	
+	
+	
+	
 	//public  StatsBase  stats = new StatsBase();
+	
+	//HashMap<Integer, DescriptiveStatistics> worldTick = 
 	
 	HashBasedTable<Integer, String, Clock>           clocksDim   = HashBasedTable.create();
 	HashBasedTable<CoordinatesChunk, String, Clock> clocksChunk = HashBasedTable.create();	

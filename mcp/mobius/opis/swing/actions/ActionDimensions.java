@@ -19,7 +19,7 @@ public class ActionDimensions implements ActionListener {
 		PanelDimensions panel = (PanelDimensions)TabPanelRegistrar.INSTANCE.getTab("opis.dimensions");
 		
 		if (e.getSource() == panel.getBtnPurgeAll()){
-			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.COMMAND_KILL_HOSTILE_ALL));
+			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.COMMAND_KILL_HOSTILES_ALL));
 			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.COMMAND_PURGE_CHUNKS_ALL));
 			
 		} else {
@@ -28,7 +28,7 @@ public class ActionDimensions implements ActionListener {
 			int indexData           = table.convertRowIndexToModel(table.getSelectedRow());
 			DimensionData data         = (DimensionData)table.getTableData().get(indexData);
 			
-			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.COMMAND_KILL_HOSTILE_DIM, new SerialInt(data.dim)));
+			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.COMMAND_KILL_HOSTILES_DIM, new SerialInt(data.dim)));
 			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.COMMAND_PURGE_CHUNKS_DIM, new SerialInt(data.dim)));			
 		}
 		

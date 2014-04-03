@@ -9,6 +9,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.MinecraftForge;
 import mcp.mobius.mobiuscore.profiler.ProfilerRegistrar;
+import mcp.mobius.mobiuscore.profiler_v2.ProfilerSection;
 import mcp.mobius.opis.commands.client.CommandClientShowRenderTick;
 import mcp.mobius.opis.commands.client.CommandClientStart;
 import mcp.mobius.opis.commands.client.CommandOpis;
@@ -31,6 +32,7 @@ import mcp.mobius.opis.commands.server.CommandTimingEntities;
 import mcp.mobius.opis.commands.server.CommandTimingTileEntities;
 import mcp.mobius.opis.data.client.TickHandlerClientProfiler;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesBlock;
+import mcp.mobius.opis.data.profilers.ProfilerDimTick;
 import mcp.mobius.opis.data.server.DeadManSwitch;
 import mcp.mobius.opis.data.server.EntUpdateProfiler;
 import mcp.mobius.opis.data.server.EntityProfiler;
@@ -146,6 +148,8 @@ public class modOpis {
 			GameRegistry.registerBlock(blockDemo, "opis.laggen");
 			GameRegistry.registerTileEntity(TileLag.class, "opis.laggen");
 		}
+		
+		ProfilerSection.DIMENSION_TICK.setProfiler(new ProfilerDimTick());
 		
 	}
 	
