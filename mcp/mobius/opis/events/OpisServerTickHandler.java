@@ -136,14 +136,6 @@ public class OpisServerTickHandler implements ITickHandler {
 					OpisPacketHandler.sendFullUpdate(player);
 				}
 				
-				for(Table.Cell<Integer, String, Double> cell : GlobalTimingManager.INSTANCE.getStatsDim().cellSet()){
-					System.out.printf("[ %4d ] %20s : %.3f µs\n", cell.getRowKey(), cell.getColumnKey(), cell.getValue());
-				}
-
-				for(Table.Cell<Integer, String, Double> cell : GlobalTimingManager.INSTANCE.getStatsDimPerSection().cellSet()){
-					System.out.printf("[ %4d ] %20s : %.3f µs\n", cell.getRowKey(), cell.getColumnKey(), cell.getValue());
-				}				
-				
 				for(String key : NetworkProfiler.INSTANCE.stats.keySet()){
 					System.out.printf("[ %s ] : %.3f µs\n", key, NetworkProfiler.INSTANCE.stats.get(key).getGeometricMean());
 				}

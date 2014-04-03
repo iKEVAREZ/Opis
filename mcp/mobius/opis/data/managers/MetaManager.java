@@ -20,7 +20,6 @@ public class MetaManager {
 		TickHandlerManager.endStats.clear();
 		GlobalTimingManager.INSTANCE.worldTickStats.clear();		
 		GlobalTimingManager.INSTANCE.entUpdateStats.clear();
-		GlobalTimingManager.INSTANCE.statsDim.clear();
 		ProfilerRegistrar.turnOff();
 		
 		ProfilerSection.desactivateAll();

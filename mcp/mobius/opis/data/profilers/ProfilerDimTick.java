@@ -13,20 +13,22 @@ public class ProfilerDimTick implements IProfilerBase {
 	public  HashMap<Integer, DescriptiveStatistics> data = new HashMap<Integer, DescriptiveStatistics>();
 	
 	@Override
-	public void start(World key) {
-		if (key.isRemote) return;
+	public void start(Object key) {
+		World world = (World)key;
+		if (world.isRemote) return;
 		
-		if (!data.containsKey(key.provider.dimensionId))
-			data.put(key.provider.dimensionId, new DescriptiveStatistics(20));
+		if (!data.containsKey(world.provider.dimensionId))
+			data.put(world.provider.dimensionId, new DescriptiveStatistics(20));
 		clock.start();
 	}
 	
 	@Override
-	public void stop(World key) {
-		if (key.isRemote) return;
+	public void stop(Object key) {
+		World world = (World)key;		
+		if (world.isRemote) return;
 		
 		clock.stop();
-		data.get(key.provider.dimensionId).addValue((double)clock.timeDelta);
+		data.get(world.provider.dimensionId).addValue((double)clock.timeDelta);
 	}
 
 	/* UNUSED */
@@ -35,7 +37,8 @@ public class ProfilerDimTick implements IProfilerBase {
 	@Override
 	public void stop() {/*UNUSED*/}
 	@Override
-	public void start(Integer key) {/*UNUSED*/}
+	public void start(Object key1, Object key2) {/*UNUSED*/}
 	@Override
-	public void stop(Integer key) {/*UNUSED*/}	
+	public void stop(Object key1, Object key2) {/*UNUSED*/}
+	
 }

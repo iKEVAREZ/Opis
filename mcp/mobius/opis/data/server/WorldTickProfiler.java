@@ -33,36 +33,4 @@ public final class WorldTickProfiler extends AbstractProfiler implements IProfil
 		this.clock.stop();
 		GlobalTimingManager.INSTANCE.addStat(id, this.clock.timeDelta, GlobalTimingManager.INSTANCE.worldTickStats);
 	}
-
-	@Override
-	public void startDim(int dim, String subsection) {
-		if (!clocksDim.contains(dim, subsection)){
-			clocksDim.put(dim, subsection, new Clock());
-		}
-		clocksDim.get(dim, subsection).start();
-	}
-
-	@Override
-	public void stopDim(int dim, String subsection) {
-		clocksDim.get(dim, subsection).stop();
-		GlobalTimingManager.INSTANCE.addStat(dim, subsection, clocksDim.get(dim, subsection).timeDelta);
-	}
-
-	@Override
-	public void startChunk(int dim, ChunkCoordIntPair chunk, String subsection) {
-		CoordinatesChunk coord = new CoordinatesChunk(dim, chunk);
-		if (!clocksChunk.contains(coord, subsection)){
-			clocksChunk.put(coord, subsection, new Clock());
-		}
-		clocksChunk.get(coord, subsection).start();
-		
-	}
-
-	@Override
-	public void stopChunk(int dim, ChunkCoordIntPair chunk, String subsection) {
-		CoordinatesChunk coord = new CoordinatesChunk(dim, chunk);
-		clocksChunk.get(coord, subsection).stop();
-		GlobalTimingManager.INSTANCE.addStat(coord, subsection, clocksChunk.get(coord, subsection).timeDelta);
-		
-	}
 }
