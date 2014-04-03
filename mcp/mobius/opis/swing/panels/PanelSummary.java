@@ -11,7 +11,10 @@ import javax.swing.JPanel;
 
 import mcp.mobius.opis.api.ITabPanel;
 import mcp.mobius.opis.data.client.DataCache;
+import mcp.mobius.opis.data.holders.BlockTickData;
 import mcp.mobius.opis.data.holders.ISerializable;
+import mcp.mobius.opis.data.holders.TimingData;
+import mcp.mobius.opis.data.holders.TimingDataMillisecond;
 import mcp.mobius.opis.data.holders.basetypes.SerialDouble;
 import mcp.mobius.opis.data.holders.basetypes.SerialInt;
 import mcp.mobius.opis.data.holders.basetypes.SerialLong;
@@ -80,10 +83,7 @@ public class PanelSummary extends JPanelMsgHandler implements ITabPanel{
 		add(lblNewLabel, "cell 1 2");
 		
 		lblTimingWorldTick = new JLabel("0");
-		add(lblTimingWorldTick, "cell 3 2,alignx right");
-		
-		JLabel lblNewLabel_13 = new JLabel("ms");
-		add(lblNewLabel_13, "cell 4 2");
+		add(lblTimingWorldTick, "cell 3 2 2 1,alignx right");
 		
 		JLabel lblNewLabel_20 = new JLabel("Upload");
 		add(lblNewLabel_20, "cell 8 2");
@@ -208,7 +208,7 @@ public class PanelSummary extends JPanelMsgHandler implements ITabPanel{
 			this.getProgressBarRun().setValue(value);			
 	}
 	
-	private double timingWorldTickTotal;
+	private TimingDataMillisecond timingWorldTickTotal = new TimingDataMillisecond();
 	private double timingHandlersTotal;
 	private double timingTileEntsTotal;
 	private double timingEntitiesTotal;
@@ -262,7 +262,7 @@ public class PanelSummary extends JPanelMsgHandler implements ITabPanel{
 	}
 
 	private double getProfiledTickTotalTime(){
-		return (timingWorldTickTotal + timingHandlersTotal + timingTileEntsTotal + timingEntitiesTotal)/1000.;
+		return (timingWorldTickTotal.timing + (timingHandlersTotal + timingTileEntsTotal + timingEntitiesTotal)/1000.);
 	}
 
 	@Override
@@ -321,8 +321,8 @@ public class PanelSummary extends JPanelMsgHandler implements ITabPanel{
 			break;
 		}					
 		case VALUE_TIMING_WORLDTICK:{
-			this.timingWorldTickTotal = ((SerialDouble)rawdata.value).value;
-			this.getLblTimingWorldTick().setText(String.format("%.3f", timingWorldTickTotal/1000.));
+			this.timingWorldTickTotal = ((BlockTickData)rawdata.value).total.asMillisecond();
+			this.getLblTimingWorldTick().setText(this.timingWorldTickTotal.toString());
 			this.getLblTimingTotal().setText(String.format("%.3f", this.getProfiledTickTotalTime() ));	
 			break;
 		}

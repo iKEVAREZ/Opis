@@ -15,6 +15,7 @@ import mcp.mobius.mobiuscore.profiler_v2.ProfilerSection;
 import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.commands.server.CommandAmountEntities;
 import mcp.mobius.opis.data.client.DataCache;
+import mcp.mobius.opis.data.holders.BlockTickData;
 import mcp.mobius.opis.data.holders.ISerializable;
 import mcp.mobius.opis.data.holders.basetypes.AmountHolder;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesBlock;
@@ -30,12 +31,9 @@ import mcp.mobius.opis.data.holders.stats.StatsTickHandler;
 import mcp.mobius.opis.data.holders.stats.StatsTileEntity;
 import mcp.mobius.opis.data.managers.ChunkManager;
 import mcp.mobius.opis.data.managers.EntityManager;
-import mcp.mobius.opis.data.managers.GlobalTimingManager;
 import mcp.mobius.opis.data.managers.MetaManager;
 import mcp.mobius.opis.data.managers.TickHandlerManager;
 import mcp.mobius.opis.data.managers.TileEntityManager;
-import mcp.mobius.opis.data.server.EntUpdateProfiler;
-import mcp.mobius.opis.data.server.WorldTickProfiler;
 import mcp.mobius.opis.events.PlayerTracker;
 import mcp.mobius.opis.gui.overlay.OverlayStatus;
 import mcp.mobius.opis.network.enums.Message;
@@ -114,11 +112,10 @@ public class ServerMessageHandler {
 		}
 
 		else if (maintype == Message.VALUE_TIMING_WORLDTICK){
-			OpisPacketHandler.validateAndSend(NetDataValue.create(Message.VALUE_TIMING_WORLDTICK, new SerialDouble(GlobalTimingManager.INSTANCE.getTotalStats(GlobalTimingManager.INSTANCE.worldTickStats))), (Player)player);
+			OpisPacketHandler.validateAndSend(NetDataValue.create(Message.VALUE_TIMING_WORLDTICK, new BlockTickData().fill()), (Player)player);
 		}		
 
 		else if (maintype == Message.VALUE_TIMING_ENTUPDATE){
-			OpisPacketHandler.validateAndSend(NetDataValue.create(Message.VALUE_TIMING_ENTUPDATE, new SerialDouble(GlobalTimingManager.INSTANCE.getTotalStats(GlobalTimingManager.INSTANCE.entUpdateStats))), (Player)player);
 		}				
 		
 		else if (maintype == Message.LIST_AMOUNT_ENTITIES){

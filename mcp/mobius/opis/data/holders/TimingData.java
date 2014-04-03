@@ -15,6 +15,10 @@ public class TimingData implements Comparable, ISerializable{
 		return timing.compareTo(((TimingData)o).timing);
 	}
 	
+	public TimingDataMillisecond asMillisecond(){
+		return new TimingDataMillisecond(this.timing);
+	}
+	
 	public String toString(){
 		return String.format("%.3f µs", this.timing / 1000.0);
 	}

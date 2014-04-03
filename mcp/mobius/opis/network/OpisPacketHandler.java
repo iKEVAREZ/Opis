@@ -13,6 +13,7 @@ import mcp.mobius.mobiuscore.profiler.ProfilerRegistrar;
 import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.api.MessageHandlerRegistrar;
 import mcp.mobius.opis.data.client.DataCache;
+import mcp.mobius.opis.data.holders.BlockTickData;
 import mcp.mobius.opis.data.holders.ISerializable;
 import mcp.mobius.opis.data.holders.basetypes.AmountHolder;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesBlock;
@@ -27,7 +28,6 @@ import mcp.mobius.opis.data.holders.stats.StatsTickHandler;
 import mcp.mobius.opis.data.holders.stats.StatsTileEntity;
 import mcp.mobius.opis.data.managers.ChunkManager;
 import mcp.mobius.opis.data.managers.EntityManager;
-import mcp.mobius.opis.data.managers.GlobalTimingManager;
 import mcp.mobius.opis.data.managers.TickHandlerManager;
 import mcp.mobius.opis.data.managers.TileEntityManager;
 import mcp.mobius.opis.events.PlayerTracker;
@@ -204,8 +204,9 @@ public class OpisPacketHandler implements IPacketHandler {
 		SerialDouble totalTimeTE      = new SerialDouble(TileEntityManager.getTotalUpdateTime());
 		SerialDouble totalTimeEnt     = new SerialDouble(EntityManager.INSTANCE.getTotalUpdateTime());
 		SerialDouble totalTimeHandler = new SerialDouble(TickHandlerManager.getTotalUpdateTime());
-		SerialDouble totalWorldTick   = new SerialDouble(GlobalTimingManager.INSTANCE.getTotalStats(GlobalTimingManager.INSTANCE.worldTickStats));
-		SerialDouble totalEntUpdate   = new SerialDouble(GlobalTimingManager.INSTANCE.getTotalStats(GlobalTimingManager.INSTANCE.entUpdateStats));
+		
+		BlockTickData totalWorldTick  = new BlockTickData().fill();
+
 
 		OpisPacketHandler.validateAndSend(NetDataList.create(Message.LIST_TIMING_HANDLERS,    timingHandlers),   player);
 		OpisPacketHandler.validateAndSend(NetDataList.create(Message.LIST_TIMING_ENTITIES,    timingEntities),   player);
@@ -215,7 +216,6 @@ public class OpisPacketHandler implements IPacketHandler {
 		OpisPacketHandler.validateAndSend(NetDataValue.create(Message.VALUE_TIMING_ENTITIES,  totalTimeEnt),     player);
 		OpisPacketHandler.validateAndSend(NetDataValue.create(Message.VALUE_TIMING_HANDLERS,  totalTimeHandler), player);
 		OpisPacketHandler.validateAndSend(NetDataValue.create(Message.VALUE_TIMING_WORLDTICK, totalWorldTick),   player);		
-		OpisPacketHandler.validateAndSend(NetDataValue.create(Message.VALUE_TIMING_ENTUPDATE, totalEntUpdate),   player);					
 		
 		OpisPacketHandler.validateAndSend(NetDataValue.create(Message.VALUE_AMOUNT_HANDLERS, new SerialInt(TickHandlerManager.startStats.size())), player);
 		
