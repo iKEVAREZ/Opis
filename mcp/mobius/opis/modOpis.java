@@ -35,10 +35,10 @@ import mcp.mobius.opis.data.holders.basetypes.CoordinatesBlock;
 import mcp.mobius.opis.data.profilers.ProfilerDimBlockTick;
 import mcp.mobius.opis.data.profilers.ProfilerDimTick;
 import mcp.mobius.opis.data.profilers.ProfilerEntityUpdate;
+import mcp.mobius.opis.data.profilers.ProfilerTick;
 import mcp.mobius.opis.data.server.DeadManSwitch;
 import mcp.mobius.opis.data.server.HandlerProfiler;
 import mcp.mobius.opis.data.server.NetworkProfiler;
-import mcp.mobius.opis.data.server.TickProfiler;
 import mcp.mobius.opis.data.server.TileEntityProfiler;
 import mcp.mobius.opis.events.OpisClientEventHandler;
 import mcp.mobius.opis.events.OpisClientTickHandler;
@@ -136,7 +136,6 @@ public class modOpis {
 		
 		ProfilerRegistrar.registerProfilerTileEntity(new TileEntityProfiler());
 		ProfilerRegistrar.registerProfilerHandler(new HandlerProfiler());
-		ProfilerRegistrar.registerProfilerTick(TickProfiler.instance());
 		ProfilerRegistrar.registerProfilerPacket(NetworkProfiler.INSTANCE);
 
 		if (lagGenID != -1){
@@ -148,6 +147,7 @@ public class modOpis {
 		ProfilerSection.DIMENSION_TICK     .setProfiler(new ProfilerDimTick());
 		ProfilerSection.DIMENSION_BLOCKTICK.setProfiler(new ProfilerDimBlockTick());
 		ProfilerSection.ENTITY_UPDATETIME  .setProfiler(new ProfilerEntityUpdate());
+		ProfilerSection.TICK               .setProfiler(new ProfilerTick());		
 		
 	}
 	

@@ -170,10 +170,7 @@ public class PanelSummary extends JPanelMsgHandler implements ITabPanel{
 		add(lblNewLabel_31, "cell 1 9");
 		
 		lblTickTime = new JLabel("0");
-		add(lblTickTime, "cell 3 9,alignx right");
-		
-		JLabel lblNewLabel_33 = new JLabel("ms");
-		add(lblNewLabel_33, "cell 4 9,alignx left");
+		add(lblTickTime, "cell 3 9 2 1,alignx right");
 		
 		JPanel panel = this.createGraph();
 		add(panel, "cell 0 10 15 1,grow");
@@ -241,11 +238,11 @@ public class PanelSummary extends JPanelMsgHandler implements ITabPanel{
 	}
 	
 	public void setTimingTick(ISerializable tickStat){
-		double ticktime = ((StatsTick)tickStat).getGeometricMean()/1000.;
+		DataTimingMillisecond ticktime = ((DataTiming)tickStat).asMillisecond();
 		
-		this.getLblTickTime().setText(String.valueOf(String.format("%.3f", ((StatsTick)tickStat).getGeometricMean()/1000.)));
+		this.getLblTickTime().setText(ticktime.toString());
 
-		datapoints.add(ticktime);
+		datapoints.add(ticktime.timing/1000./1000.);
 		if (datapoints.size() > 101)
 			datapoints.remove(0);
 		
