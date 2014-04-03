@@ -11,8 +11,6 @@ public class MetaManager {
 		modOpis.profilerRun   = false;
 		modOpis.selectedBlock = null;
 		OpisServerTickHandler.instance.profilerRunningTicks = 0;
-		TileEntityManager.references.clear();
-		TileEntityManager.stats.clear();
 		TickHandlerManager.startStats.clear();
 		TickHandlerManager.endStats.clear();
 		ProfilerRegistrar.turnOff();

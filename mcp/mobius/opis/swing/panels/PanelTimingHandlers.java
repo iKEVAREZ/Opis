@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 
 import mcp.mobius.opis.api.ITabPanel;
 import mcp.mobius.opis.data.holders.basetypes.SerialDouble;
+import mcp.mobius.opis.data.holders.newtypes.DataTiming;
 import mcp.mobius.opis.data.holders.stats.StatAbstract;
 import mcp.mobius.opis.data.holders.stats.StatsTickHandler;
 import mcp.mobius.opis.network.enums.AccessLevel;
@@ -103,7 +104,7 @@ public class PanelTimingHandlers extends JPanelMsgHandler implements ITabPanel{
 			break;
 		}
 		case VALUE_TIMING_HANDLERS:{
-			this.getLblSummary().setText(String.format("Total update time : %.3f µs", ((SerialDouble)rawdata.value).value));
+			this.getLblSummary().setText(String.format("Total update time : %s", ((DataTiming)rawdata.value).toString()));
 			break;
 		}
 		case STATUS_START:{

@@ -7,6 +7,7 @@ import java.util.HashMap;
 
 import cpw.mods.fml.common.IScheduledTickHandler;
 import cpw.mods.fml.common.SingleIntervalHandler;
+import mcp.mobius.opis.data.holders.newtypes.DataTiming;
 import mcp.mobius.opis.data.holders.stats.StatsTickHandler;
 
 public class TickHandlerManager {
@@ -81,12 +82,12 @@ public class TickHandlerManager {
 		return name;
 	}
 	
-	public static double getTotalUpdateTime(){
+	public static DataTiming getTotalUpdateTime(){
 		ArrayList<StatsTickHandler> tickCumul = getCumulatedStats();
 		double updateTime = 0D;
 		for (StatsTickHandler data : tickCumul){
 			updateTime += data.getGeometricMean();
 		}
-		return updateTime;
+		return new DataTiming(updateTime);
 	}	
 }

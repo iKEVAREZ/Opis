@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import cpw.mods.fml.common.network.Player;
 import mcp.mobius.opis.commands.IOpisCommand;
+import mcp.mobius.opis.data.holders.newtypes.DataTileEntity;
 import mcp.mobius.opis.data.holders.stats.StatsTileEntity;
 import mcp.mobius.opis.data.managers.TileEntityManager;
 import mcp.mobius.opis.events.PlayerTracker;
@@ -43,17 +44,17 @@ public class CommandTimingTileEntities extends CommandBase implements IOpisComma
 			return;
 		}				
 		
-		ArrayList<StatsTileEntity> tes = new ArrayList<StatsTileEntity>(); 
+		ArrayList<DataTileEntity> tes = new ArrayList<DataTileEntity>(); 
 		if (astring.length == 0){
-			tes = TileEntityManager.getTopEntities(20);
+			tes = TileEntityManager.INSTANCE.getWorses(20);
 		}
 		else{
 			try{
-				tes = TileEntityManager.getTopEntities(Integer.valueOf(astring[0]));
+				tes = TileEntityManager.INSTANCE.getWorses(Integer.valueOf(astring[0]));
 			} catch (Exception e) {return;}
 		}
 		
-		for (StatsTileEntity stat : tes){
+		for (DataTileEntity stat : tes){
 			icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText(stat.toString()));
 		}
 			

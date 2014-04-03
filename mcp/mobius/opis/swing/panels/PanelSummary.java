@@ -16,6 +16,7 @@ import mcp.mobius.opis.data.holders.basetypes.SerialDouble;
 import mcp.mobius.opis.data.holders.basetypes.SerialInt;
 import mcp.mobius.opis.data.holders.basetypes.SerialLong;
 import mcp.mobius.opis.data.holders.newtypes.DataBlockTick;
+import mcp.mobius.opis.data.holders.newtypes.DataTileEntity;
 import mcp.mobius.opis.data.holders.newtypes.DataTiming;
 import mcp.mobius.opis.data.holders.newtypes.DataTimingMillisecond;
 import mcp.mobius.opis.data.holders.stats.StatsTick;
@@ -101,10 +102,7 @@ public class PanelSummary extends JPanelMsgHandler implements ITabPanel{
 		add(lblNewLabel_1, "cell 1 3");
 		
 		lblTimingTileEnts = new JLabel("0");
-		add(lblTimingTileEnts, "cell 3 3,alignx right");
-		
-		JLabel lblNewLabel_12 = new JLabel("ms");
-		add(lblNewLabel_12, "cell 4 3");
+		add(lblTimingTileEnts, "cell 3 3 2 1,alignx right");
 		
 		lblAmountTileEnts = new JLabel("0");
 		add(lblAmountTileEnts, "cell 6 3,alignx right");
@@ -125,10 +123,7 @@ public class PanelSummary extends JPanelMsgHandler implements ITabPanel{
 		add(lblNewLabel_2, "cell 1 4");
 		
 		lblTimingEntities = new JLabel("0");
-		add(lblTimingEntities, "cell 3 4,alignx right");
-		
-		JLabel lblNewLabel_11 = new JLabel("ms");
-		add(lblNewLabel_11, "cell 4 4");
+		add(lblTimingEntities, "cell 3 4 2 1,alignx right");
 		
 		lblAmountEntities = new JLabel("0");
 		add(lblAmountEntities, "cell 6 4,alignx right");
@@ -137,10 +132,7 @@ public class PanelSummary extends JPanelMsgHandler implements ITabPanel{
 		add(lblNewLabel_3, "cell 1 5");
 		
 		lblTimingHandlers = new JLabel("0");
-		add(lblTimingHandlers, "cell 3 5,alignx right");
-		
-		JLabel lblNewLabel_10 = new JLabel("ms");
-		add(lblNewLabel_10, "cell 4 5");
+		add(lblTimingHandlers, "cell 3 5 2 1,alignx right");
 		
 		lblAmountHandlers = new JLabel("0");
 		add(lblAmountHandlers, "cell 6 5,alignx right");
@@ -161,10 +153,7 @@ public class PanelSummary extends JPanelMsgHandler implements ITabPanel{
 		add(lblNewLabel_4, "cell 1 7");
 		
 		lblTimingTotal = new JLabel("0");
-		add(lblTimingTotal, "cell 3 7,alignx right");
-		
-		JLabel lblNewLabel_15 = new JLabel("ms");
-		add(lblNewLabel_15, "cell 4 7");
+		add(lblTimingTotal, "cell 3 7 2 1,alignx right");
 		
 		JLabel lblNewLabel_31 = new JLabel("Tick Time");
 		add(lblNewLabel_31, "cell 1 9");
@@ -206,9 +195,9 @@ public class PanelSummary extends JPanelMsgHandler implements ITabPanel{
 	}
 	
 	private DataTimingMillisecond timingWorldTickTotal = new DataTimingMillisecond();
-	private double timingHandlersTotal;
-	private double timingTileEntsTotal;
-	private double timingEntitiesTotal;
+	private DataTimingMillisecond timingHandlersTotal  = new DataTimingMillisecond();
+	private DataTimingMillisecond timingTileEntsTotal  = new DataTimingMillisecond();
+	private DataTimingMillisecond timingEntitiesTotal  = new DataTimingMillisecond();
 	
 	public void setTimingEntUpdateTotal(double value){
 	}	
@@ -258,8 +247,8 @@ public class PanelSummary extends JPanelMsgHandler implements ITabPanel{
 		((NumberAxis)xyPlot.getDomainAxis()).setRange(0.0, 100.0);
 	}
 
-	private double getProfiledTickTotalTime(){
-		return (timingWorldTickTotal.timing + (timingHandlersTotal + timingTileEntsTotal + timingEntitiesTotal)/1000.);
+	private DataTimingMillisecond getProfiledTickTotalTime(){
+		return new DataTimingMillisecond(timingWorldTickTotal.timing + timingTileEntsTotal.timing + timingEntitiesTotal.timing + timingHandlersTotal.timing);
 	}
 
 	@Override
@@ -300,27 +289,27 @@ public class PanelSummary extends JPanelMsgHandler implements ITabPanel{
 			break;
 		}
 		case VALUE_TIMING_TILEENTS:{
-			this.timingTileEntsTotal = ((SerialDouble)rawdata.value).value;
-			this.getLblTimingTileEnts().setText(String.format("%.3f", this.timingTileEntsTotal/1000.));
-			this.getLblTimingTotal().setText(String.format("%.3f", this.getProfiledTickTotalTime() ));	
+			this.timingTileEntsTotal = ((DataTiming)rawdata.value).asMillisecond();
+			this.getLblTimingTileEnts().setText(this.timingTileEntsTotal.toString());
+			this.getLblTimingTotal().setText(String.format("%s", this.getProfiledTickTotalTime().toString() ));	
 			break;
 		}			
 		case VALUE_TIMING_ENTITIES:{
-			this.timingEntitiesTotal = ((SerialDouble)rawdata.value).value;
-			this.getLblTimingEntities().setText(String.format("%.3f", this.timingEntitiesTotal/1000.));
-			this.getLblTimingTotal().setText(String.format("%.3f", this.getProfiledTickTotalTime() ));
+			this.timingEntitiesTotal = ((DataTiming)rawdata.value).asMillisecond();
+			this.getLblTimingEntities().setText(this.timingEntitiesTotal.toString());
+			this.getLblTimingTotal().setText(String.format("%s", this.getProfiledTickTotalTime().toString() ));
 			break;
 		}			
 		case VALUE_TIMING_HANDLERS:{
-			this.timingHandlersTotal = ((SerialDouble)rawdata.value).value;
-			this.getLblTimingHandlers().setText(String.format("%.3f", this.timingHandlersTotal/1000.));
-			this.getLblTimingTotal().setText(String.format("%.3f", this.getProfiledTickTotalTime() ));
+			this.timingHandlersTotal = ((DataTiming)rawdata.value).asMillisecond();
+			this.getLblTimingHandlers().setText(this.timingHandlersTotal.toString());
+			this.getLblTimingTotal().setText(String.format("%s", this.getProfiledTickTotalTime().toString() ));
 			break;
 		}					
 		case VALUE_TIMING_WORLDTICK:{
 			this.timingWorldTickTotal = ((DataBlockTick)rawdata.value).total.asMillisecond();
 			this.getLblTimingWorldTick().setText(this.timingWorldTickTotal.toString());
-			this.getLblTimingTotal().setText(String.format("%.3f", this.getProfiledTickTotalTime() ));	
+			this.getLblTimingTotal().setText(String.format("%s", this.getProfiledTickTotalTime().toString() ));	
 			break;
 		}
 		case STATUS_START:{

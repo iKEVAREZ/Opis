@@ -126,7 +126,7 @@ public class PanelTimingEntities extends JPanelMsgHandler implements ITabPanel{
 			break;
 		}
 		case VALUE_TIMING_ENTITIES:{
-			this.getLblSummary().setText(String.format("Total update time : %.3f µs", ((SerialDouble)rawdata.value).value));	
+			this.getLblSummary().setText(String.format("Total update time : %s", ((DataTiming)rawdata.value).toString()));	
 			break;
 		}		
 		case STATUS_START:{

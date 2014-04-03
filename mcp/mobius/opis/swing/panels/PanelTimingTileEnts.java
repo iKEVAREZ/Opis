@@ -7,6 +7,8 @@ import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.api.ITabPanel;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesBlock;
 import mcp.mobius.opis.data.holders.basetypes.SerialDouble;
+import mcp.mobius.opis.data.holders.newtypes.DataTileEntity;
+import mcp.mobius.opis.data.holders.newtypes.DataTiming;
 import mcp.mobius.opis.data.holders.stats.StatAbstract;
 import mcp.mobius.opis.data.holders.stats.StatsTileEntity;
 import mcp.mobius.opis.gui.overlay.OverlayMeanTime;
@@ -74,7 +76,7 @@ public class PanelTimingTileEnts extends JPanelMsgHandler implements ITabPanel{
 			}
 		) {
 			Class[] columnTypes = new Class[] {
-				String.class, String.class, Integer.class, Object.class, StatAbstract.class
+				String.class, String.class, Integer.class, Object.class, DataTiming.class
 			};
 			boolean[] columnEditables = new boolean[] {
 					false, false, false, false, false
@@ -112,16 +114,16 @@ public class PanelTimingTileEnts extends JPanelMsgHandler implements ITabPanel{
 			((JTableStats)this.getTable()).setTableData(rawdata.array);
 			
 			DefaultTableModel model = (DefaultTableModel)table.getModel();
-			int               row   = this.updateData(table, model, StatsTileEntity.class);
+			int               row   = this.updateData(table, model, DataTileEntity.class);
 
 			for (Object o : rawdata.array){
-				StatsTileEntity stat = (StatsTileEntity)o;
+				DataTileEntity data = (DataTileEntity)o;
 				ItemStack is;
-				String name  = String.format("te.%d.%d", stat.getID(), stat.getMeta());
+				String name  = String.format("te.%d.%d", data.id, data.meta);
 				String modID = "<UNKNOWN>";
 				
 				try{
-					is = new ItemStack(stat.getID(), 1, stat.getMeta());
+					is = new ItemStack(data.id, 1, data.meta);
 					name  = is.getDisplayName();
 					modID = ModIdentification.idFromStack(is);
 				}  catch (Exception e) {	}			
@@ -129,9 +131,9 @@ public class PanelTimingTileEnts extends JPanelMsgHandler implements ITabPanel{
 				model.addRow(new Object[]  {
 						 name,
 						 modID,
-					     stat.getCoordinates().dim,
-					     String.format("[ %4d %4d %4d ]", 	stat.getCoordinates().x, stat.getCoordinates().y, stat.getCoordinates().z),  
-					     stat});
+					     data.pos.dim,
+					     String.format("[ %4d %4d %4d ]", data.pos.x, data.pos.y, data.pos.z),  
+					     data.update});
 			}
 			
 			this.dataUpdated(table, model, row);			
@@ -139,7 +141,7 @@ public class PanelTimingTileEnts extends JPanelMsgHandler implements ITabPanel{
 			break;
 		}
 		case VALUE_TIMING_TILEENTS:{
-			this.getLblSummary().setText(String.format("Total update time : %.3f µs", ((SerialDouble)rawdata.value).value));	
+			this.getLblSummary().setText(String.format("Total update time : %s", ((DataTiming)rawdata.value).toString()));	
 			break;
 		}
 		case STATUS_START:{

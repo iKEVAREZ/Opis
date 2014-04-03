@@ -35,6 +35,7 @@ import mcp.mobius.opis.data.holders.basetypes.AmountHolder;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesBlock;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesChunk;
 import mcp.mobius.opis.data.holders.newtypes.DataEntity;
+import mcp.mobius.opis.data.holders.newtypes.DataTiming;
 import mcp.mobius.opis.data.holders.stats.StatsEntity;
 import mcp.mobius.opis.data.holders.stats.StatsPlayer;
 import mcp.mobius.opis.data.profilers.ProfilerEntityUpdate;
@@ -256,12 +257,12 @@ public enum EntityManager {
 		return name;
 	}
 	
-	public double getTotalUpdateTime(){
+	public DataTiming getTotalUpdateTime(){
 		double updateTime = 0D;
 		for (Entity entity : ((ProfilerEntityUpdate)ProfilerSection.ENTITY_UPDATETIME.getProfiler()).data.keySet()){
-			updateTime = ((ProfilerEntityUpdate)ProfilerSection.ENTITY_UPDATETIME.getProfiler()).data.get(entity).getGeometricMean();
+			updateTime += ((ProfilerEntityUpdate)ProfilerSection.ENTITY_UPDATETIME.getProfiler()).data.get(entity).getGeometricMean();
 		}
-		return updateTime;
+		return new DataTiming(updateTime);
 	}	
 
 	public int killAll(String entName){

@@ -24,6 +24,7 @@ import mcp.mobius.opis.data.holders.ISerializable;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesBlock;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesChunk;
 import mcp.mobius.opis.data.holders.basetypes.SerialInt;
+import mcp.mobius.opis.data.holders.newtypes.DataTileEntity;
 import mcp.mobius.opis.data.holders.stats.StatsTileEntity;
 import mcp.mobius.opis.data.managers.ChunkManager;
 import mcp.mobius.opis.gui.events.MouseEvent;
@@ -280,13 +281,13 @@ public class OverlayMeanTime implements IMwDataProvider, IMessageHandler{
 	    
 		for (ISerializable uncasted : entities){
 			
-			StatsTileEntity data = (StatsTileEntity)uncasted;
+			DataTileEntity data = (DataTileEntity)uncasted;
 			
 			ItemStack is;
-			String name  = String.format("te.%d.%d", data.getID(), data.getMeta());
+			String name  = String.format("te.%d.%d", data.id, data.meta);
 			
 			try{
-				is = new ItemStack(data.getID(), 1, data.getMeta());
+				is = new ItemStack(data.id, 1, data.meta);
 				name  = is.getDisplayName();
 			}  catch (Exception e) {	}
 			
@@ -298,9 +299,9 @@ public class OverlayMeanTime implements IMwDataProvider, IMessageHandler{
         	*/
         	
 			if (modOpis.microseconds)
-				table.addRow(data, name, String.format("[ %s %s %s ]", data.getCoordinates().x, data.getCoordinates().y, data.getCoordinates().z),  String.format("%.5f \u00B5s",data.getGeometricMean()));
+				table.addRow(data, name, String.format("[ %s %s %s ]", data.pos.x, data.pos.y, data.pos.z),  data.update.asMillisecond().toString());			
 			else
-				table.addRow(data, name, String.format("[ %s %s %s ]", data.getCoordinates().x, data.getCoordinates().y, data.getCoordinates().z),  String.format("%.5f ms",data.getGeometricMean()/1000.0));				
+				table.addRow(data, name, String.format("[ %s %s %s ]", data.pos.x, data.pos.y, data.pos.z),  data.update.toString());				
 		}
 
 		this.showList = true;

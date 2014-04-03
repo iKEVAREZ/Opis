@@ -12,16 +12,20 @@ import java.util.Set;
 import mcp.mobius.mobiuscore.profiler_v2.ProfilerSection;
 import mcp.mobius.opis.api.IMessageHandler;
 import mcp.mobius.opis.data.holders.ISerializable;
+import mcp.mobius.opis.data.holders.basetypes.CoordinatesBlock;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesChunk;
 import mcp.mobius.opis.data.holders.basetypes.TicketData;
 import mcp.mobius.opis.data.holders.newtypes.DataEntity;
+import mcp.mobius.opis.data.holders.newtypes.DataTileEntity;
 import mcp.mobius.opis.data.holders.stats.StatsChunk;
 import mcp.mobius.opis.data.holders.stats.StatsEntity;
 import mcp.mobius.opis.data.holders.stats.StatsTileEntity;
 import mcp.mobius.opis.data.profilers.ProfilerEntityUpdate;
+import mcp.mobius.opis.data.profilers.ProfilerTileEntityUpdate;
 import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.packets.server.NetDataRaw;
 import net.minecraft.entity.Entity;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.WorldServer;
@@ -88,13 +92,17 @@ public enum ChunkManager implements IMessageHandler{
 	public ArrayList<StatsChunk> getChunksUpdateTime(){
 		HashMap<CoordinatesChunk, StatsChunk> chunks = new HashMap<CoordinatesChunk, StatsChunk>();
 		
-		for (StatsTileEntity stat : TileEntityManager.stats.values()){
-			if (!chunks.containsKey(stat.getChunk()))
-				chunks.put(stat.getChunk(), new StatsChunk(stat.getChunk()));
+		for (CoordinatesBlock coords : ((ProfilerTileEntityUpdate)ProfilerSection.TILEENT_UPDATETIME.getProfiler()).data.keySet()){
+			DataTileEntity   data  = new DataTileEntity().fill(coords);
+			CoordinatesChunk chunk = data.pos.asCoordinatesChunk();
 			
-			chunks.get(stat.getChunk()).addTileEntity();
-			chunks.get(stat.getChunk()).addMeasure(stat.getGeometricMean());
-		}
+			if (!chunks.containsKey(chunk))
+				chunks.put(chunk, new StatsChunk(chunk));
+			
+			chunks.get(chunk).addTileEntity();
+			chunks.get(chunk).addMeasure(data.update.timing);
+						
+		}		
 		
 		for (Entity entity : ((ProfilerEntityUpdate)ProfilerSection.ENTITY_UPDATETIME.getProfiler()).data.keySet()){
 			DataEntity       data  = new DataEntity().fill(entity);

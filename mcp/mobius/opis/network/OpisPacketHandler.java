@@ -23,6 +23,8 @@ import mcp.mobius.opis.data.holders.basetypes.SerialLong;
 import mcp.mobius.opis.data.holders.basetypes.TicketData;
 import mcp.mobius.opis.data.holders.newtypes.DataBlockTick;
 import mcp.mobius.opis.data.holders.newtypes.DataEntity;
+import mcp.mobius.opis.data.holders.newtypes.DataTileEntity;
+import mcp.mobius.opis.data.holders.newtypes.DataTiming;
 import mcp.mobius.opis.data.holders.stats.StatsChunk;
 import mcp.mobius.opis.data.holders.stats.StatsEntity;
 import mcp.mobius.opis.data.holders.stats.StatsTickHandler;
@@ -200,11 +202,11 @@ public class OpisPacketHandler implements IPacketHandler {
 	public static void sendFullUpdate(Player player){
 		ArrayList<StatsTickHandler> timingHandlers = TickHandlerManager.getCumulatedStats();
 		ArrayList<DataEntity>       timingEntities = EntityManager.INSTANCE.getWorses(100);
-		ArrayList<StatsTileEntity>  timingTileEnts = TileEntityManager.getTopEntities(100);
+		ArrayList<DataTileEntity>   timingTileEnts = TileEntityManager.INSTANCE.getWorses(100);
 		ArrayList<StatsChunk>         timingChunks = ChunkManager.INSTANCE.getTopChunks(100);
-		SerialDouble totalTimeTE      = new SerialDouble(TileEntityManager.getTotalUpdateTime());
-		SerialDouble totalTimeEnt     = new SerialDouble(EntityManager.INSTANCE.getTotalUpdateTime());
-		SerialDouble totalTimeHandler = new SerialDouble(TickHandlerManager.getTotalUpdateTime());
+		DataTiming   totalTimeTE      = TileEntityManager.INSTANCE.getTotalUpdateTime();
+		DataTiming   totalTimeEnt     = EntityManager.INSTANCE.getTotalUpdateTime();
+		DataTiming totalTimeHandler   = TickHandlerManager.getTotalUpdateTime();
 		
 		DataBlockTick totalWorldTick  = new DataBlockTick().fill();
 

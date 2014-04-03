@@ -26,6 +26,8 @@ import mcp.mobius.opis.data.holders.basetypes.SerialString;
 import mcp.mobius.opis.data.holders.basetypes.TargetEntity;
 import mcp.mobius.opis.data.holders.newtypes.DataBlockTick;
 import mcp.mobius.opis.data.holders.newtypes.DataEntity;
+import mcp.mobius.opis.data.holders.newtypes.DataTileEntity;
+import mcp.mobius.opis.data.holders.newtypes.DataTiming;
 import mcp.mobius.opis.data.holders.stats.StatsChunk;
 import mcp.mobius.opis.data.holders.stats.StatsEntity;
 import mcp.mobius.opis.data.holders.stats.StatsTickHandler;
@@ -68,7 +70,7 @@ public class ServerMessageHandler {
 		}		
 		
 		else if (maintype == Message.LIST_CHUNK_TILEENTS){
-			OpisPacketHandler.validateAndSend(NetDataList.create(Message.LIST_CHUNK_TILEENTS, TileEntityManager.getTileEntitiesInChunk((CoordinatesChunk)param1)), player);
+			OpisPacketHandler.validateAndSend(NetDataList.create(Message.LIST_CHUNK_TILEENTS, TileEntityManager.INSTANCE.getTileEntitiesInChunk((CoordinatesChunk)param1)), player);
 		}		
 		
 		else if (maintype == Message.LIST_CHUNK_ENTITIES){
@@ -87,24 +89,24 @@ public class ServerMessageHandler {
 		}		
 		
 		else if (maintype == Message.LIST_TIMING_TILEENTS){
-			ArrayList<StatsTileEntity>  timingTileEnts = TileEntityManager.getTopEntities(100);
-			SerialDouble totalTime = new SerialDouble(TileEntityManager.getTotalUpdateTime());
+			ArrayList<DataTileEntity>  timingTileEnts = TileEntityManager.INSTANCE.getWorses(100);
+			DataTiming totalTime = TileEntityManager.INSTANCE.getTotalUpdateTime();
 			OpisPacketHandler.validateAndSend(NetDataList.create (Message.LIST_TIMING_TILEENTS, timingTileEnts), (Player)player);
-			OpisPacketHandler.validateAndSend(NetDataValue.create(Message.VALUE_TIMING_TILEENTS, totalTime),      (Player)player);
+			OpisPacketHandler.validateAndSend(NetDataValue.create(Message.VALUE_TIMING_TILEENTS, totalTime),     (Player)player);
 		}
 		
 		else if (maintype == Message.LIST_TIMING_ENTITIES){
 			ArrayList<DataEntity>      timingEntities = EntityManager.INSTANCE.getWorses(100);
-			SerialDouble totalTime = new SerialDouble(EntityManager.INSTANCE.getTotalUpdateTime());			
+			DataTiming totalTime = EntityManager.INSTANCE.getTotalUpdateTime();			
 			OpisPacketHandler.validateAndSend(NetDataList.create(Message.LIST_TIMING_ENTITIES,  timingEntities), (Player)player);
-			OpisPacketHandler.validateAndSend(NetDataValue.create(Message.VALUE_TIMING_ENTITIES, totalTime),      (Player)player);			
+			OpisPacketHandler.validateAndSend(NetDataValue.create(Message.VALUE_TIMING_ENTITIES, totalTime),     (Player)player);			
 		}
 		
 		else if (maintype == Message.LIST_TIMING_HANDLERS){
 			ArrayList<StatsTickHandler> timingHandlers = TickHandlerManager.getCumulatedStats();
-			SerialDouble totalTime = new SerialDouble(TickHandlerManager.getTotalUpdateTime());
+			DataTiming totalTime = TickHandlerManager.getTotalUpdateTime();
 			OpisPacketHandler.validateAndSend(NetDataList.create(Message.LIST_TIMING_HANDLERS,  timingHandlers), (Player)player);
-			OpisPacketHandler.validateAndSend(NetDataValue.create(Message.VALUE_TIMING_HANDLERS, totalTime),      (Player)player);			
+			OpisPacketHandler.validateAndSend(NetDataValue.create(Message.VALUE_TIMING_HANDLERS, totalTime),     (Player)player);			
 		}
 		
 		else if (maintype == Message.LIST_TIMING_CHUNK){
