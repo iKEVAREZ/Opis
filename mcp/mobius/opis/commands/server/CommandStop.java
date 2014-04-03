@@ -17,6 +17,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.dedicated.DedicatedServer;
 import net.minecraft.util.ChatMessageComponent;
 import mcp.mobius.mobiuscore.profiler.ProfilerRegistrar;
+import mcp.mobius.mobiuscore.profiler_v2.ProfilerSection;
 
 public class CommandStop extends CommandBase implements IOpisCommand {
 
@@ -39,6 +40,7 @@ public class CommandStop extends CommandBase implements IOpisCommand {
 	public void processCommand(ICommandSender icommandsender, String[] astring) {
 		modOpis.profilerRun = false;
 		ProfilerRegistrar.turnOff();
+		ProfilerSection.desactivateAll();
 		icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText(String.format("\u00A7oOpis stopped.")));
 	}
 

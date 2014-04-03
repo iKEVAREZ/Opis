@@ -1,6 +1,7 @@
 package mcp.mobius.opis.data.managers;
 
 import mcp.mobius.mobiuscore.profiler.ProfilerRegistrar;
+import mcp.mobius.mobiuscore.profiler_v2.ProfilerSection;
 import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.data.server.EntUpdateProfiler;
 import mcp.mobius.opis.data.server.WorldTickProfiler;
@@ -20,7 +21,9 @@ public class MetaManager {
 		GlobalTimingManager.INSTANCE.worldTickStats.clear();		
 		GlobalTimingManager.INSTANCE.entUpdateStats.clear();
 		GlobalTimingManager.INSTANCE.statsDim.clear();
-		ProfilerRegistrar.turnOff();				
+		ProfilerRegistrar.turnOff();
+		
+		ProfilerSection.desactivateAll();
 	}
 	
 }

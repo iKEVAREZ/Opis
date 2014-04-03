@@ -5,6 +5,7 @@ import java.util.logging.Level;
 
 import mcp.mobius.mobiuscore.profiler.DummyProfiler;
 import mcp.mobius.mobiuscore.profiler.ProfilerRegistrar;
+import mcp.mobius.mobiuscore.profiler_v2.ProfilerSection;
 import mcp.mobius.opis.modOpis;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.TickType;
@@ -36,6 +37,7 @@ public class OpisClientTickHandler implements ITickHandler {
 				profilerRunningTicks = 0;
 				modOpis.profilerRun = false;
 				ProfilerRegistrar.turnOff();
+				ProfilerSection.desactivateAll();
 				
 				//TODO : Print something to the client chat
 				System.out.printf("Profiling done\n");				

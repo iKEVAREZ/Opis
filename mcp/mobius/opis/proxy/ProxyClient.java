@@ -10,6 +10,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.util.ResourceLocation;
 import mapwriter.api.MwAPI;
 import mcp.mobius.mobiuscore.profiler.ProfilerRegistrar;
+import mcp.mobius.mobiuscore.profiler_v2.ProfilerSection;
 import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.api.IMessageHandler;
 import mcp.mobius.opis.api.MessageHandlerRegistrar;
@@ -147,7 +148,8 @@ public class ProxyClient extends ProxyServer implements IMessageHandler{
 			modOpis.log.log(Level.INFO, "Started profiling");
 			MetaManager.reset();		
 			modOpis.profilerRun = true;
-			ProfilerRegistrar.turnOn();				
+			ProfilerRegistrar.turnOn();	
+			ProfilerSection.activateAll();
 			break;
 		}
 		case CLIENT_SHOW_RENDER_TICK:{

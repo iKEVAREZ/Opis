@@ -11,6 +11,7 @@ import net.minecraftforge.common.DimensionManager;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
 import mcp.mobius.mobiuscore.profiler.ProfilerRegistrar;
+import mcp.mobius.mobiuscore.profiler_v2.ProfilerSection;
 import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.commands.server.CommandAmountEntities;
 import mcp.mobius.opis.data.client.DataCache;
@@ -146,6 +147,7 @@ public class ServerMessageHandler {
 			MetaManager.reset();	
 			modOpis.profilerRun = true;
 			ProfilerRegistrar.turnOn();
+			ProfilerSection.activateAll();
 			OpisPacketHandler.sendPacketToAllSwing(NetDataValue.create(Message.STATUS_START, new SerialInt(modOpis.profilerMaxTicks)));			
 		}		
 		

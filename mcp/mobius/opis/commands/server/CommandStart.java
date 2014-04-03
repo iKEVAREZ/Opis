@@ -27,6 +27,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.dedicated.DedicatedServer;
 import net.minecraft.util.ChatMessageComponent;
 import mcp.mobius.mobiuscore.profiler.ProfilerRegistrar;
+import mcp.mobius.mobiuscore.profiler_v2.ProfilerSection;
 
 public class CommandStart extends CommandBase implements IOpisCommand {
 
@@ -55,6 +56,7 @@ public class CommandStart extends CommandBase implements IOpisCommand {
 		MetaManager.reset();	
 		modOpis.profilerRun = true;
 		ProfilerRegistrar.turnOn();
+		ProfilerSection.activateAll();
 
 		OpisPacketHandler.sendPacketToAllSwing(NetDataValue.create(Message.STATUS_START, new SerialInt(modOpis.profilerMaxTicks)));		
 		icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText(String.format("\u00A7oOpis started with a tick delay %s.", modOpis.profilerDelay)));
