@@ -1,6 +1,7 @@
 package mcp.mobius.opis.data.profilers;
 
 import java.util.HashMap;
+import java.util.WeakHashMap;
 
 import net.minecraft.entity.Entity;
 
@@ -11,11 +12,11 @@ import mcp.mobius.mobiuscore.profiler_v2.IProfilerBase;
 public class ProfilerEntityUpdate extends ProfilerAbstract implements IProfilerBase {
 
 	private Clock clock = new Clock();
-	public  HashMap<Integer, DescriptiveStatistics> data = new HashMap<Integer, DescriptiveStatistics>();
+	public  WeakHashMap<Entity, DescriptiveStatistics> data = new WeakHashMap<Entity, DescriptiveStatistics>();
 	
 	@Override
 	public void reset() {
-		this.data.clear();
+		this.data = new WeakHashMap<Entity, DescriptiveStatistics>();
 	}	
 	
 	@Override
@@ -23,8 +24,8 @@ public class ProfilerEntityUpdate extends ProfilerAbstract implements IProfilerB
 		Entity entity = (Entity)key;
 		if (entity.worldObj.isRemote) return;
 		
-		if (!data.containsKey(entity.entityId))
-			data.put(entity.entityId, new DescriptiveStatistics());
+		if (!data.containsKey(entity))
+			data.put(entity, new DescriptiveStatistics());
 		clock.start();
 	}
 	
@@ -34,6 +35,6 @@ public class ProfilerEntityUpdate extends ProfilerAbstract implements IProfilerB
 		if (entity.worldObj.isRemote) return;
 		
 		clock.stop();
-		data.get(entity.entityId).addValue((double)clock.timeDelta);
+		data.get(entity).addValue((double)clock.timeDelta);
 	}
 }

@@ -11,13 +11,13 @@ import javax.swing.JPanel;
 
 import mcp.mobius.opis.api.ITabPanel;
 import mcp.mobius.opis.data.client.DataCache;
-import mcp.mobius.opis.data.holders.BlockTickData;
 import mcp.mobius.opis.data.holders.ISerializable;
-import mcp.mobius.opis.data.holders.TimingData;
-import mcp.mobius.opis.data.holders.TimingDataMillisecond;
 import mcp.mobius.opis.data.holders.basetypes.SerialDouble;
 import mcp.mobius.opis.data.holders.basetypes.SerialInt;
 import mcp.mobius.opis.data.holders.basetypes.SerialLong;
+import mcp.mobius.opis.data.holders.newtypes.DataBlockTick;
+import mcp.mobius.opis.data.holders.newtypes.DataTiming;
+import mcp.mobius.opis.data.holders.newtypes.DataTimingMillisecond;
 import mcp.mobius.opis.data.holders.stats.StatsTick;
 import mcp.mobius.opis.network.enums.AccessLevel;
 import mcp.mobius.opis.network.enums.Message;
@@ -208,7 +208,7 @@ public class PanelSummary extends JPanelMsgHandler implements ITabPanel{
 			this.getProgressBarRun().setValue(value);			
 	}
 	
-	private TimingDataMillisecond timingWorldTickTotal = new TimingDataMillisecond();
+	private DataTimingMillisecond timingWorldTickTotal = new DataTimingMillisecond();
 	private double timingHandlersTotal;
 	private double timingTileEntsTotal;
 	private double timingEntitiesTotal;
@@ -321,7 +321,7 @@ public class PanelSummary extends JPanelMsgHandler implements ITabPanel{
 			break;
 		}					
 		case VALUE_TIMING_WORLDTICK:{
-			this.timingWorldTickTotal = ((BlockTickData)rawdata.value).total.asMillisecond();
+			this.timingWorldTickTotal = ((DataBlockTick)rawdata.value).total.asMillisecond();
 			this.getLblTimingWorldTick().setText(this.timingWorldTickTotal.toString());
 			this.getLblTimingTotal().setText(String.format("%.3f", this.getProfiledTickTotalTime() ));	
 			break;

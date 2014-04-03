@@ -1,11 +1,15 @@
-package mcp.mobius.opis.data.holders;
+package mcp.mobius.opis.data.holders.newtypes;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+
+import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 
 import mcp.mobius.mobiuscore.profiler_v2.ProfilerSection;
+import mcp.mobius.opis.data.holders.ISerializable;
 import mcp.mobius.opis.data.profilers.ProfilerDimTick;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.EntityMob;
@@ -17,7 +21,7 @@ import net.minecraftforge.common.DimensionManager;
 
 /* Data holder for infos about dimensions */
 
-public class DimensionData implements ISerializable {
+public class DataDimension implements ISerializable {
 
 	public int    dim;
 	public String name;
@@ -27,9 +31,9 @@ public class DimensionData implements ISerializable {
 	public int    entities;
 	public int    mobs;
 	public int    neutral;
-	public TimingData update;
+	public DataTiming update;
 	
-	public DimensionData fill(int dim){
+	public DataDimension fill(int dim){
 		WorldServer  world = DimensionManager.getWorld(dim);
 		
 		this.dim      = dim;
@@ -37,7 +41,10 @@ public class DimensionData implements ISerializable {
 		this.players  = world.playerEntities.size();
 		this.forced   = world.getPersistentChunks().size();
 		this.loaded   = world.getChunkProvider().getLoadedChunkCount();
-		this.update   = new TimingData(((ProfilerDimTick)(ProfilerSection.DIMENSION_TICK.getProfiler())).data.get(dim).getGeometricMean());
+		
+		HashMap<Integer, DescriptiveStatistics> data = ((ProfilerDimTick)(ProfilerSection.DIMENSION_TICK.getProfiler())).data;
+		this.update  = new DataTiming(data.containsKey(dim) ? data.get(dim).getGeometricMean() : 0.0D);		
+		
 		this.mobs     = 0;
 		this.neutral  = 0;
 		this.entities = world.loadedEntityList.size();		
@@ -66,8 +73,8 @@ public class DimensionData implements ISerializable {
 		Packet.writeString(name, stream);
 	}
 
-	public static DimensionData readFromStream(DataInputStream stream) throws IOException {
-		DimensionData retVal = new DimensionData();
+	public static DataDimension readFromStream(DataInputStream stream) throws IOException {
+		DataDimension retVal = new DataDimension();
 		retVal.dim     = stream.readInt();
 		retVal.players = stream.readInt();
 		retVal.forced  = stream.readInt();
@@ -76,7 +83,7 @@ public class DimensionData implements ISerializable {
 		retVal.mobs    = stream.readInt();
 		retVal.neutral = stream.readInt();
 		//retVal.update  = stream.readDouble();
-		retVal.update  = TimingData.readFromStream(stream);
+		retVal.update  = DataTiming.readFromStream(stream);
 		retVal.name    = Packet.readString(stream, 255);
 		return retVal;
 	}

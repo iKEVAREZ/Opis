@@ -15,7 +15,6 @@ import mcp.mobius.mobiuscore.profiler_v2.ProfilerSection;
 import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.commands.server.CommandAmountEntities;
 import mcp.mobius.opis.data.client.DataCache;
-import mcp.mobius.opis.data.holders.BlockTickData;
 import mcp.mobius.opis.data.holders.ISerializable;
 import mcp.mobius.opis.data.holders.basetypes.AmountHolder;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesBlock;
@@ -25,6 +24,8 @@ import mcp.mobius.opis.data.holders.basetypes.SerialInt;
 import mcp.mobius.opis.data.holders.basetypes.SerialLong;
 import mcp.mobius.opis.data.holders.basetypes.SerialString;
 import mcp.mobius.opis.data.holders.basetypes.TargetEntity;
+import mcp.mobius.opis.data.holders.newtypes.DataBlockTick;
+import mcp.mobius.opis.data.holders.newtypes.DataEntity;
 import mcp.mobius.opis.data.holders.stats.StatsChunk;
 import mcp.mobius.opis.data.holders.stats.StatsEntity;
 import mcp.mobius.opis.data.holders.stats.StatsTickHandler;
@@ -93,7 +94,7 @@ public class ServerMessageHandler {
 		}
 		
 		else if (maintype == Message.LIST_TIMING_ENTITIES){
-			ArrayList<StatsEntity>      timingEntities = EntityManager.INSTANCE.getTopEntities(100);
+			ArrayList<DataEntity>      timingEntities = EntityManager.INSTANCE.getWorses(100);
 			SerialDouble totalTime = new SerialDouble(EntityManager.INSTANCE.getTotalUpdateTime());			
 			OpisPacketHandler.validateAndSend(NetDataList.create(Message.LIST_TIMING_ENTITIES,  timingEntities), (Player)player);
 			OpisPacketHandler.validateAndSend(NetDataValue.create(Message.VALUE_TIMING_ENTITIES, totalTime),      (Player)player);			
@@ -112,7 +113,7 @@ public class ServerMessageHandler {
 		}
 
 		else if (maintype == Message.VALUE_TIMING_WORLDTICK){
-			OpisPacketHandler.validateAndSend(NetDataValue.create(Message.VALUE_TIMING_WORLDTICK, new BlockTickData().fill()), (Player)player);
+			OpisPacketHandler.validateAndSend(NetDataValue.create(Message.VALUE_TIMING_WORLDTICK, new DataBlockTick().fill()), (Player)player);
 		}		
 
 		else if (maintype == Message.VALUE_TIMING_ENTUPDATE){

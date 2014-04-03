@@ -1,4 +1,4 @@
-package mcp.mobius.opis.data.holders;
+package mcp.mobius.opis.data.holders.newtypes;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -8,18 +8,19 @@ import java.util.HashMap;
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 
 import mcp.mobius.mobiuscore.profiler_v2.ProfilerSection;
+import mcp.mobius.opis.data.holders.ISerializable;
 import mcp.mobius.opis.data.profilers.ProfilerDimBlockTick;
 
-public class BlockTickData implements ISerializable{
-	public HashMap<Integer, TimingData> perdim = new HashMap<Integer, TimingData>();
-	public TimingData total;
+public class DataBlockTick implements ISerializable{
+	public HashMap<Integer, DataTiming> perdim = new HashMap<Integer, DataTiming>();
+	public DataTiming total;
 	
-	public BlockTickData fill(){
-		this.total = new TimingData();
+	public DataBlockTick fill(){
+		this.total = new DataTiming();
 		HashMap<Integer, DescriptiveStatistics> data = ((ProfilerDimBlockTick)ProfilerSection.DIMENSION_BLOCKTICK.getProfiler()).data;
 		
 		for (Integer dim : data.keySet()){
-			this.perdim.put(dim, new TimingData(data.get(dim).getGeometricMean()));
+			this.perdim.put(dim, new DataTiming(data.get(dim).getGeometricMean()));
 			this.total.timing += data.get(dim).getGeometricMean();
 		}
 		
@@ -36,12 +37,12 @@ public class BlockTickData implements ISerializable{
 		this.total.writeToStream(stream);
 	}
 	
-	public static BlockTickData readFromStream(DataInputStream stream) throws IOException {
-		BlockTickData retVal = new BlockTickData();
+	public static DataBlockTick readFromStream(DataInputStream stream) throws IOException {
+		DataBlockTick retVal = new DataBlockTick();
 		int nkeys = stream.readShort();
 		for (int i = 0; i < nkeys; i++)
-			retVal.perdim.put(stream.readInt(), TimingData.readFromStream(stream));
-		retVal.total = TimingData.readFromStream(stream);
+			retVal.perdim.put(stream.readInt(), DataTiming.readFromStream(stream));
+		retVal.total = DataTiming.readFromStream(stream);
 		return retVal;
 	}
 }

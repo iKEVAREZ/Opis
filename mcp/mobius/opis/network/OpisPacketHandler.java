@@ -13,7 +13,6 @@ import mcp.mobius.mobiuscore.profiler.ProfilerRegistrar;
 import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.api.MessageHandlerRegistrar;
 import mcp.mobius.opis.data.client.DataCache;
-import mcp.mobius.opis.data.holders.BlockTickData;
 import mcp.mobius.opis.data.holders.ISerializable;
 import mcp.mobius.opis.data.holders.basetypes.AmountHolder;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesBlock;
@@ -22,6 +21,8 @@ import mcp.mobius.opis.data.holders.basetypes.SerialDouble;
 import mcp.mobius.opis.data.holders.basetypes.SerialInt;
 import mcp.mobius.opis.data.holders.basetypes.SerialLong;
 import mcp.mobius.opis.data.holders.basetypes.TicketData;
+import mcp.mobius.opis.data.holders.newtypes.DataBlockTick;
+import mcp.mobius.opis.data.holders.newtypes.DataEntity;
 import mcp.mobius.opis.data.holders.stats.StatsChunk;
 import mcp.mobius.opis.data.holders.stats.StatsEntity;
 import mcp.mobius.opis.data.holders.stats.StatsTickHandler;
@@ -198,14 +199,14 @@ public class OpisPacketHandler implements IPacketHandler {
 	
 	public static void sendFullUpdate(Player player){
 		ArrayList<StatsTickHandler> timingHandlers = TickHandlerManager.getCumulatedStats();
-		ArrayList<StatsEntity>      timingEntities = EntityManager.INSTANCE.getTopEntities(100);
+		ArrayList<DataEntity>       timingEntities = EntityManager.INSTANCE.getWorses(100);
 		ArrayList<StatsTileEntity>  timingTileEnts = TileEntityManager.getTopEntities(100);
 		ArrayList<StatsChunk>         timingChunks = ChunkManager.INSTANCE.getTopChunks(100);
 		SerialDouble totalTimeTE      = new SerialDouble(TileEntityManager.getTotalUpdateTime());
 		SerialDouble totalTimeEnt     = new SerialDouble(EntityManager.INSTANCE.getTotalUpdateTime());
 		SerialDouble totalTimeHandler = new SerialDouble(TickHandlerManager.getTotalUpdateTime());
 		
-		BlockTickData totalWorldTick  = new BlockTickData().fill();
+		DataBlockTick totalWorldTick  = new DataBlockTick().fill();
 
 
 		OpisPacketHandler.validateAndSend(NetDataList.create(Message.LIST_TIMING_HANDLERS,    timingHandlers),   player);

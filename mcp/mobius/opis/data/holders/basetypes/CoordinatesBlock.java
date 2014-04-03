@@ -5,6 +5,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 import mcp.mobius.opis.data.holders.ISerializable;
+import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 
@@ -14,6 +15,16 @@ public final class CoordinatesBlock implements ISerializable {
 	//public boolean isChunk;
 	
 	public final static CoordinatesBlock INVALID = new CoordinatesBlock(Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE); 
+	
+	public CoordinatesBlock(Entity entity){
+		this.dim = entity.worldObj.provider.dimensionId;
+		this.x = MathHelper.floor_double(entity.posX);  
+		this.y = MathHelper.floor_double(entity.posY); 
+		this.z = MathHelper.floor_double(entity.posZ);
+		this.chunkX = x >> 4;
+		this.chunkZ = z >> 4;
+		//this.isChunk = false;
+	}	
 	
 	public CoordinatesBlock(int dim, int x, int y, int z){
 		this.dim = dim;

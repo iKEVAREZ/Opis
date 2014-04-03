@@ -13,12 +13,12 @@ import net.minecraft.network.packet.Packet3Chat;
 import net.minecraft.util.ChatMessageComponent;
 import net.minecraftforge.common.DimensionManager;
 import mcp.mobius.opis.modOpis;
-import mcp.mobius.opis.data.holders.DimensionData;
 import mcp.mobius.opis.data.holders.basetypes.AmountHolder;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesChunk;
 import mcp.mobius.opis.data.holders.basetypes.SerialDouble;
 import mcp.mobius.opis.data.holders.basetypes.SerialInt;
 import mcp.mobius.opis.data.holders.basetypes.SerialLong;
+import mcp.mobius.opis.data.holders.newtypes.DataDimension;
 import mcp.mobius.opis.data.holders.stats.StatsChunk;
 import mcp.mobius.opis.data.holders.stats.StatsChunkMedian;
 import mcp.mobius.opis.data.holders.stats.StatsEntity;
@@ -95,9 +95,9 @@ public class OpisServerTickHandler implements ITickHandler {
 				}
 
 				// Dimension data update.
-				ArrayList<DimensionData> dimData = new ArrayList<DimensionData>();
+				ArrayList<DataDimension> dimData = new ArrayList<DataDimension>();
 				for (int dim : DimensionManager.getIDs()){
-					dimData.add(new DimensionData().fill(dim));
+					dimData.add(new DataDimension().fill(dim));
 				}
 				OpisPacketHandler.sendPacketToAllSwing(NetDataList.create(Message.LIST_DIMENSION_DATA, dimData));
 

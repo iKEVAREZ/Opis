@@ -30,63 +30,40 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
+import mcp.mobius.mobiuscore.profiler_v2.ProfilerSection;
 import mcp.mobius.opis.data.holders.basetypes.AmountHolder;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesBlock;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesChunk;
+import mcp.mobius.opis.data.holders.newtypes.DataEntity;
 import mcp.mobius.opis.data.holders.stats.StatsEntity;
 import mcp.mobius.opis.data.holders.stats.StatsPlayer;
+import mcp.mobius.opis.data.profilers.ProfilerEntityUpdate;
 import mcp.mobius.opis.helpers.Teleport;
 
 public enum EntityManager {
 	INSTANCE;
 	
-	public HashMap<Integer, StatsEntity> stats = new HashMap<Integer, StatsEntity>();
-	
-	/* Add an entity to the stat array, with timing data */
-	public void addEntity(Entity ent, long timing){
-		int entID = ent.entityId;
-		String entName;
-		entName = getEntityName(ent); //ent.getClass().getName();
+	public ArrayList<DataEntity> getWorses(int amount){
+		ArrayList<DataEntity> sorted      = new ArrayList<DataEntity>();
+		ArrayList<DataEntity> topEntities = new ArrayList<DataEntity>();
+		
+		for (Entity entity : ((ProfilerEntityUpdate)ProfilerSection.ENTITY_UPDATETIME.getProfiler()).data.keySet())
+			sorted.add(new DataEntity().fill(entity));
 
-		if (!(stats.containsKey(entID)))
-			stats.put(entID, new StatsEntity(entID, entName, ent.dimension, ent.posX, ent.posY, ent.posZ));
-		stats.get(entID).addMeasure(timing);
-	}	
-
-	/* Returns the x slowest entities in all dimensions (with timing data) */
-	public ArrayList<StatsEntity> getTopEntities(int quantity){
-		ArrayList<StatsEntity> sortedEntities = new ArrayList(this.stats.values());
-		ArrayList<StatsEntity> topEntities    = new ArrayList<StatsEntity>();
-		Collections.sort(sortedEntities);
+		Collections.sort(sorted);
 		
 		int i = 0;
-		while (topEntities.size() < Math.min(quantity, sortedEntities.size()) && (i < sortedEntities.size()) ){
-		//for (int i = 0; i < Math.min(quantity, sortedEntities.size()); i++){
-			StatsEntity testats = sortedEntities.get(i);
+		while (topEntities.size() < Math.min(amount, sorted.size()) && (i < sorted.size()) ){
+			DataEntity testats = sorted.get(i);
 			
-			if (testats.getDataPoints() < 40){
-				i++;
-				continue;
-			}
-			
-			World world = DimensionManager.getWorld(testats.getCoordinates().dim);
-			if (world == null) {
-				i++;
-				continue;				
-			};
-			
-			Entity entity = world.getEntityByID(testats.getID());
-			if (entity == null) {
-				i++;
-				continue;
-			}			
-			
+			if (testats.npoints < 40){ i++; continue; }
+			if (DimensionManager.getWorld(testats.pos.dim) == null) { i++; continue; }
+
 			topEntities.add(testats);
 			i++;
 		}
-		
-		return topEntities;
-	}	
+		return topEntities;		
+	}
 	
 	/* Returns all the entities in all dimensions (without timing data) */
 	public ArrayList<StatsEntity> getAllEntities(){
@@ -280,10 +257,9 @@ public enum EntityManager {
 	}
 	
 	public double getTotalUpdateTime(){
-		ArrayList<StatsEntity> entities = new ArrayList(stats.values());
 		double updateTime = 0D;
-		for (StatsEntity data : entities){
-			updateTime += data.getGeometricMean();
+		for (Entity entity : ((ProfilerEntityUpdate)ProfilerSection.ENTITY_UPDATETIME.getProfiler()).data.keySet()){
+			updateTime = ((ProfilerEntityUpdate)ProfilerSection.ENTITY_UPDATETIME.getProfiler()).data.get(entity).getGeometricMean();
 		}
 		return updateTime;
 	}	

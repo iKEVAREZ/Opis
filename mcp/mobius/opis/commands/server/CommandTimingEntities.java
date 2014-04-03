@@ -6,6 +6,7 @@ import java.util.HashMap;
 import cpw.mods.fml.common.network.Player;
 import mcp.mobius.opis.commands.IOpisCommand;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesChunk;
+import mcp.mobius.opis.data.holders.newtypes.DataEntity;
 import mcp.mobius.opis.data.holders.stats.StatsEntity;
 import mcp.mobius.opis.data.managers.EntityManager;
 import mcp.mobius.opis.events.PlayerTracker;
@@ -45,18 +46,18 @@ public class CommandTimingEntities extends CommandBase implements IOpisCommand {
 			return;
 		}				
 		
-		ArrayList<StatsEntity> ents = new ArrayList<StatsEntity>(); 
+		ArrayList<DataEntity> ents = new ArrayList<DataEntity>(); 
 		if (astring.length == 0){
-			ents = EntityManager.INSTANCE.getTopEntities(20);
+			ents = EntityManager.INSTANCE.getWorses(20);
 		}
 		else{
 			try{
-				ents = EntityManager.INSTANCE.getTopEntities(Integer.valueOf(astring[0]));
+				ents = EntityManager.INSTANCE.getWorses(Integer.valueOf(astring[0]));
 			} catch (Exception e) {return;}
 		}
 		
 		icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText("[DIM X Z] Time NTEs"));
-		for (StatsEntity stat : ents){
+		for (DataEntity stat : ents){
 			icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText(stat.toString()));
 		}
 	

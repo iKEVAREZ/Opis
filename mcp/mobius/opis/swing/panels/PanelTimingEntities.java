@@ -5,6 +5,8 @@ import java.awt.event.ActionListener;
 
 import mcp.mobius.opis.api.ITabPanel;
 import mcp.mobius.opis.data.holders.basetypes.SerialDouble;
+import mcp.mobius.opis.data.holders.newtypes.DataEntity;
+import mcp.mobius.opis.data.holders.newtypes.DataTiming;
 import mcp.mobius.opis.data.holders.stats.StatAbstract;
 import mcp.mobius.opis.data.holders.stats.StatsEntity;
 import mcp.mobius.opis.gui.overlay.entperchunk.OverlayEntityPerChunk;
@@ -69,7 +71,7 @@ public class PanelTimingEntities extends JPanelMsgHandler implements ITabPanel{
 			}
 		) {
 			Class[] columnTypes = new Class[] {
-				String.class, Integer.class, Integer.class, Object.class, StatAbstract.class, Integer.class
+				String.class, Integer.class, Integer.class, Object.class, DataTiming.class, Integer.class
 			};
 			boolean[] columnEditables = new boolean[] {
 					false, false, false, false, false, false
@@ -107,16 +109,16 @@ public class PanelTimingEntities extends JPanelMsgHandler implements ITabPanel{
 			((JTableStats)this.getTable()).setTableData(rawdata.array);
 			
 			DefaultTableModel model = (DefaultTableModel)table.getModel();
-			int               row   = this.updateData(table, model, StatsEntity.class);	
+			int               row   = this.updateData(table, model, DataEntity.class);	
 			
 			for (Object o : rawdata.array){
-				StatsEntity stat = (StatsEntity)o;
-				model.addRow(new Object[]  {stat.getName(), 
-											stat.getID(),
-											stat.getCoordinates().dim,
-											String.format("[ %4d %4d %4d ]", 	stat.getCoordinates().x, stat.getCoordinates().y, stat.getCoordinates().z), 
-											stat,
-											String.valueOf(stat.getDataPoints())});
+				DataEntity data = (DataEntity)o;
+				model.addRow(new Object[]  {data.name, 
+											data.eid,
+											data.pos.dim,
+											String.format("[ %4d %4d %4d ]",data.pos.x,data.pos.y,data.pos.z), 
+											data.update,
+											data.npoints});
 			}
 			
 			this.dataUpdated(table, model, row);			

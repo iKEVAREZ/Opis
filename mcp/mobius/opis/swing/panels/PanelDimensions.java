@@ -4,8 +4,8 @@ import javax.swing.JPanel;
 
 import mcp.mobius.opis.api.IMessageHandler;
 import mcp.mobius.opis.api.ITabPanel;
-import mcp.mobius.opis.data.holders.DimensionData;
-import mcp.mobius.opis.data.holders.TimingData;
+import mcp.mobius.opis.data.holders.newtypes.DataDimension;
+import mcp.mobius.opis.data.holders.newtypes.DataTiming;
 import mcp.mobius.opis.network.enums.AccessLevel;
 import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.packets.server.NetDataRaw;
@@ -49,7 +49,7 @@ public class PanelDimensions extends JPanelMsgHandler implements IMessageHandler
 			}
 		) {
 			Class[] columnTypes = new Class[] {
-				Integer.class, String.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, TimingData.class, JTableButton.class
+				Integer.class, String.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, DataTiming.class, JTableButton.class
 				//Integer.class, String.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, JTableButton.class
 			};
 			public Class getColumnClass(int columnIndex) {
@@ -92,10 +92,10 @@ public class PanelDimensions extends JPanelMsgHandler implements IMessageHandler
 			((JTableStats)this.getTable()).setTableData(rawdata.array);
 			
 			DefaultTableModel model = (DefaultTableModel)this.getTable().getModel();
-			int               row   = this.updateData(table, model, DimensionData.class);	
+			int               row   = this.updateData(table, model, DataDimension.class);	
 
 			for (Object o : rawdata.array){
-				DimensionData data = (DimensionData)o;
+				DataDimension data = (DataDimension)o;
 				model.addRow(new Object[] {
 						data.dim,
 						data.name,
