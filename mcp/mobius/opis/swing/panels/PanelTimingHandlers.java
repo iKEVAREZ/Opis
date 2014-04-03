@@ -5,9 +5,9 @@ import java.awt.event.ActionListener;
 
 import mcp.mobius.opis.api.ITabPanel;
 import mcp.mobius.opis.data.holders.basetypes.SerialDouble;
+import mcp.mobius.opis.data.holders.newtypes.DataHandler;
 import mcp.mobius.opis.data.holders.newtypes.DataTiming;
 import mcp.mobius.opis.data.holders.stats.StatAbstract;
-import mcp.mobius.opis.data.holders.stats.StatsTickHandler;
 import mcp.mobius.opis.network.enums.AccessLevel;
 import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.packets.client.Packet_ReqData;
@@ -57,7 +57,7 @@ public class PanelTimingHandlers extends JPanelMsgHandler implements ITabPanel{
 			}
 		) {
 			Class[] columnTypes = new Class[] {
-				String.class, StatAbstract.class
+				String.class, DataTiming.class
 			};
 			boolean[] columnEditables = new boolean[] {
 					false, false
@@ -92,11 +92,11 @@ public class PanelTimingHandlers extends JPanelMsgHandler implements ITabPanel{
 			((JTableStats)this.getTable()).setTableData(rawdata.array);
 			
 			DefaultTableModel model = (DefaultTableModel)table.getModel();
-			int               row   = this.updateData(table, model, StatsTickHandler.class);	
+			int               row   = this.updateData(table, model, DataHandler.class);	
 			
 			for (Object o : rawdata.array){
-				StatsTickHandler stat = (StatsTickHandler)o;
-				model.addRow(new Object[] {stat.getName(), stat});
+				DataHandler data = (DataHandler)o;
+				model.addRow(new Object[] {data.name, data.update});
 			}
 
 			this.dataUpdated(table, model, row);			

@@ -30,15 +30,14 @@ import mcp.mobius.opis.commands.server.CommandStop;
 import mcp.mobius.opis.commands.server.CommandTicks;
 import mcp.mobius.opis.commands.server.CommandTimingEntities;
 import mcp.mobius.opis.commands.server.CommandTimingTileEntities;
-import mcp.mobius.opis.data.client.TickHandlerClientProfiler;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesBlock;
 import mcp.mobius.opis.data.profilers.ProfilerDimBlockTick;
 import mcp.mobius.opis.data.profilers.ProfilerDimTick;
 import mcp.mobius.opis.data.profilers.ProfilerEntityUpdate;
+import mcp.mobius.opis.data.profilers.ProfilerHandlerServer;
 import mcp.mobius.opis.data.profilers.ProfilerTick;
 import mcp.mobius.opis.data.profilers.ProfilerTileEntityUpdate;
 import mcp.mobius.opis.data.server.DeadManSwitch;
-import mcp.mobius.opis.data.server.HandlerProfiler;
 import mcp.mobius.opis.data.server.NetworkProfiler;
 import mcp.mobius.opis.events.OpisClientEventHandler;
 import mcp.mobius.opis.events.OpisClientTickHandler;
@@ -134,7 +133,6 @@ public class modOpis {
 		TickRegistry.registerTickHandler(new OpisServerTickHandler(), Side.SERVER);
 		TickRegistry.registerTickHandler(new OpisClientTickHandler(), Side.CLIENT);
 		
-		ProfilerRegistrar.registerProfilerHandler(new HandlerProfiler());
 		ProfilerRegistrar.registerProfilerPacket(NetworkProfiler.INSTANCE);
 
 		if (lagGenID != -1){
@@ -148,6 +146,8 @@ public class modOpis {
 		ProfilerSection.ENTITY_UPDATETIME  .setProfiler(new ProfilerEntityUpdate());
 		ProfilerSection.TICK               .setProfiler(new ProfilerTick());
 		ProfilerSection.TILEENT_UPDATETIME .setProfiler(new ProfilerTileEntityUpdate());
+		ProfilerSection.HANDLER_TICKSTART  .setProfiler(new ProfilerHandlerServer());
+		ProfilerSection.HANDLER_TICKSTOP   .setProfiler(new ProfilerHandlerServer());
 		
 	}
 	

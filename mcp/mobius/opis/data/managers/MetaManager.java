@@ -11,8 +11,6 @@ public class MetaManager {
 		modOpis.profilerRun   = false;
 		modOpis.selectedBlock = null;
 		OpisServerTickHandler.instance.profilerRunningTicks = 0;
-		TickHandlerManager.startStats.clear();
-		TickHandlerManager.endStats.clear();
 		ProfilerRegistrar.turnOff();
 		
 		ProfilerSection.resetAll();

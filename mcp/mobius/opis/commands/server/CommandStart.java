@@ -9,7 +9,6 @@ import mcp.mobius.opis.data.managers.EntityManager;
 import mcp.mobius.opis.data.managers.MetaManager;
 import mcp.mobius.opis.data.managers.TickHandlerManager;
 import mcp.mobius.opis.data.managers.TileEntityManager;
-import mcp.mobius.opis.data.server.HandlerProfiler;
 import mcp.mobius.opis.events.OpisServerTickHandler;
 import mcp.mobius.opis.events.PlayerTracker;
 import mcp.mobius.opis.network.OpisPacketHandler;
@@ -53,7 +52,6 @@ public class CommandStart extends CommandBase implements IOpisCommand {
 		
 		MetaManager.reset();	
 		modOpis.profilerRun = true;
-		ProfilerRegistrar.turnOn();
 		ProfilerSection.activateAll();
 
 		OpisPacketHandler.sendPacketToAllSwing(NetDataValue.create(Message.STATUS_START, new SerialInt(modOpis.profilerMaxTicks)));		

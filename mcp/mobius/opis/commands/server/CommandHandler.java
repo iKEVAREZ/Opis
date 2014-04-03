@@ -6,7 +6,7 @@ import java.util.HashMap;
 
 import cpw.mods.fml.common.network.Player;
 import mcp.mobius.opis.commands.IOpisCommand;
-import mcp.mobius.opis.data.holders.stats.StatsTickHandler;
+import mcp.mobius.opis.data.holders.newtypes.DataHandler;
 import mcp.mobius.opis.data.managers.TickHandlerManager;
 import mcp.mobius.opis.events.PlayerTracker;
 import mcp.mobius.opis.network.OpisPacketHandler;
@@ -44,10 +44,10 @@ public class CommandHandler extends CommandBase  implements IOpisCommand {
 			return;
 		}				
 		
-		ArrayList<StatsTickHandler> stats = TickHandlerManager.getCumulatedStats();
+		ArrayList<DataHandler> stats = TickHandlerManager.getCumulatedStats();
 		
-		for (StatsTickHandler s : stats)
-			icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText(String.format("%s : %.2f", s.getName(), s.getGeometricMean())));
+		for (DataHandler s : stats)
+			icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText(String.format("%s : %.2f", s.name, s.update.toString())));
 	}
 
 	@Override

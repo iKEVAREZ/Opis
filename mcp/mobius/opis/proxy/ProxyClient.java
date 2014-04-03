@@ -16,10 +16,9 @@ import mcp.mobius.opis.api.IMessageHandler;
 import mcp.mobius.opis.api.MessageHandlerRegistrar;
 import mcp.mobius.opis.api.TabPanelRegistrar;
 import mcp.mobius.opis.data.client.DataCache;
+import mcp.mobius.opis.data.holders.newtypes.DataHandler;
 import mcp.mobius.opis.data.holders.stats.StatsChunk;
 import mcp.mobius.opis.data.holders.stats.StatsEntity;
-import mcp.mobius.opis.data.holders.stats.StatsMod;
-import mcp.mobius.opis.data.holders.stats.StatsTickHandler;
 import mcp.mobius.opis.data.holders.stats.StatsTileEntity;
 import mcp.mobius.opis.data.managers.ChunkManager;
 import mcp.mobius.opis.data.managers.MetaManager;
@@ -148,14 +147,13 @@ public class ProxyClient extends ProxyServer implements IMessageHandler{
 			modOpis.log.log(Level.INFO, "Started profiling");
 			MetaManager.reset();		
 			modOpis.profilerRun = true;
-			ProfilerRegistrar.turnOn();	
 			ProfilerSection.activateAll();
 			break;
 		}
 		case CLIENT_SHOW_RENDER_TICK:{
 			modOpis.log.log(Level.INFO, "=== RENDER TICK ===");
-			ArrayList<StatsTickHandler> stats = TickHandlerManager.getCumulatedStats();
-			for (StatsTickHandler stat : stats){
+			ArrayList<DataHandler> stats = TickHandlerManager.getCumulatedStats();
+			for (DataHandler stat : stats){
 				System.out.printf("%s \n", stat);
 			}			
 			break;

@@ -26,11 +26,11 @@ import mcp.mobius.opis.data.holders.basetypes.SerialString;
 import mcp.mobius.opis.data.holders.basetypes.TargetEntity;
 import mcp.mobius.opis.data.holders.newtypes.DataBlockTick;
 import mcp.mobius.opis.data.holders.newtypes.DataEntity;
+import mcp.mobius.opis.data.holders.newtypes.DataHandler;
 import mcp.mobius.opis.data.holders.newtypes.DataTileEntity;
 import mcp.mobius.opis.data.holders.newtypes.DataTiming;
 import mcp.mobius.opis.data.holders.stats.StatsChunk;
 import mcp.mobius.opis.data.holders.stats.StatsEntity;
-import mcp.mobius.opis.data.holders.stats.StatsTickHandler;
 import mcp.mobius.opis.data.holders.stats.StatsTileEntity;
 import mcp.mobius.opis.data.managers.ChunkManager;
 import mcp.mobius.opis.data.managers.EntityManager;
@@ -103,7 +103,7 @@ public class ServerMessageHandler {
 		}
 		
 		else if (maintype == Message.LIST_TIMING_HANDLERS){
-			ArrayList<StatsTickHandler> timingHandlers = TickHandlerManager.getCumulatedStats();
+			ArrayList<DataHandler> timingHandlers = TickHandlerManager.getCumulatedStats();
 			DataTiming totalTime = TickHandlerManager.getTotalUpdateTime();
 			OpisPacketHandler.validateAndSend(NetDataList.create(Message.LIST_TIMING_HANDLERS,  timingHandlers), (Player)player);
 			OpisPacketHandler.validateAndSend(NetDataValue.create(Message.VALUE_TIMING_HANDLERS, totalTime),     (Player)player);			
@@ -146,7 +146,6 @@ public class ServerMessageHandler {
 		else if (maintype == Message.COMMAND_START){
 			MetaManager.reset();	
 			modOpis.profilerRun = true;
-			ProfilerRegistrar.turnOn();
 			ProfilerSection.activateAll();
 			OpisPacketHandler.sendPacketToAllSwing(NetDataValue.create(Message.STATUS_START, new SerialInt(modOpis.profilerMaxTicks)));			
 		}		

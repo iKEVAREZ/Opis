@@ -7,13 +7,13 @@ import java.util.HashMap;
 
 import cpw.mods.fml.common.IScheduledTickHandler;
 import cpw.mods.fml.common.SingleIntervalHandler;
+import mcp.mobius.mobiuscore.profiler_v2.ProfilerSection;
+import mcp.mobius.opis.data.holders.newtypes.DataHandler;
 import mcp.mobius.opis.data.holders.newtypes.DataTiming;
-import mcp.mobius.opis.data.holders.stats.StatsTickHandler;
+import mcp.mobius.opis.data.profilers.ProfilerHandlerServer;
 
 public class TickHandlerManager {
 
-	public static HashMap<String, StatsTickHandler> startStats = new HashMap<String, StatsTickHandler>();
-	public static HashMap<String, StatsTickHandler> endStats   = new HashMap<String, StatsTickHandler>();	
 	public static Class SingleIntervalHandlerReflect;
 	public static Field wrapped;
 	
@@ -30,35 +30,14 @@ public class TickHandlerManager {
 		}
 	}
 	
-	public static void addHandlerStart(IScheduledTickHandler handler, long timing){
-		String name = getHandlerName(handler);			
+	public static ArrayList<DataHandler> getCumulatedStats(){
+		ArrayList<DataHandler> retVal = new ArrayList<DataHandler>();
+		for (IScheduledTickHandler ticker : ((ProfilerHandlerServer)(ProfilerSection.HANDLER_TICKSTART.getProfiler())).data.keySet())
+			retVal.add(new DataHandler().fill(ticker));
 		
-		if (!(startStats.containsKey(name)))
-			startStats.put(name, new StatsTickHandler(name));
-		startStats.get(name).addMeasure(timing);		
-	}	
-	
-	public static void addHandlerEnd(IScheduledTickHandler handler, long timing){
-		String name = getHandlerName(handler);			
+		Collections.sort(retVal);
 		
-		if (!(endStats.containsKey(name)))
-			endStats.put(name, new StatsTickHandler(name));
-		endStats.get(name).addMeasure(timing);
-	}	
-	
-	public static ArrayList<StatsTickHandler> getCumulatedStats(){
-		HashMap<String, StatsTickHandler> totalStats = new HashMap<String, StatsTickHandler>();
-		
-		for (String key : startStats.keySet()){
-			totalStats.put(key, new StatsTickHandler(key));
-			totalStats.get(key).setGeometricMean(startStats.get(key).getGeometricMean() + endStats.get(key).getGeometricMean());
-			totalStats.get(key).dataPoints = startStats.get(key).getDataPoints() + endStats.get(key).getDataPoints();
-		}
-		
-		ArrayList<StatsTickHandler> sortedStats   = new ArrayList(totalStats.values());
-		Collections.sort(sortedStats);
-		
-		return sortedStats;
+		return retVal;
 	}
 	
 	public static String getHandlerName(IScheduledTickHandler handler){
@@ -83,11 +62,10 @@ public class TickHandlerManager {
 	}
 	
 	public static DataTiming getTotalUpdateTime(){
-		ArrayList<StatsTickHandler> tickCumul = getCumulatedStats();
 		double updateTime = 0D;
-		for (StatsTickHandler data : tickCumul){
-			updateTime += data.getGeometricMean();
-		}
+		for (IScheduledTickHandler ticker : ((ProfilerHandlerServer)(ProfilerSection.HANDLER_TICKSTART.getProfiler())).data.keySet())
+			updateTime += new DataHandler().fill(ticker).update.timing;
+		
 		return new DataTiming(updateTime);
 	}	
 }

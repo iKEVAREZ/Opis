@@ -11,11 +11,6 @@ import java.util.List;
 
 import mcp.mobius.opis.data.holders.ISerializable;
 import mcp.mobius.opis.data.holders.basetypes.AmountHolder;
-import mcp.mobius.opis.data.holders.stats.StatAbstract;
-import mcp.mobius.opis.data.holders.stats.StatsChunk;
-import mcp.mobius.opis.data.holders.stats.StatsEntity;
-import mcp.mobius.opis.data.holders.stats.StatsTickHandler;
-import mcp.mobius.opis.data.holders.stats.StatsTileEntity;
 import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.enums.Packets;
 import net.minecraft.network.packet.Packet;

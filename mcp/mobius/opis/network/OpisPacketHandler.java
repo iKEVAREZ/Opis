@@ -23,11 +23,11 @@ import mcp.mobius.opis.data.holders.basetypes.SerialLong;
 import mcp.mobius.opis.data.holders.basetypes.TicketData;
 import mcp.mobius.opis.data.holders.newtypes.DataBlockTick;
 import mcp.mobius.opis.data.holders.newtypes.DataEntity;
+import mcp.mobius.opis.data.holders.newtypes.DataHandler;
 import mcp.mobius.opis.data.holders.newtypes.DataTileEntity;
 import mcp.mobius.opis.data.holders.newtypes.DataTiming;
 import mcp.mobius.opis.data.holders.stats.StatsChunk;
 import mcp.mobius.opis.data.holders.stats.StatsEntity;
-import mcp.mobius.opis.data.holders.stats.StatsTickHandler;
 import mcp.mobius.opis.data.holders.stats.StatsTileEntity;
 import mcp.mobius.opis.data.managers.ChunkManager;
 import mcp.mobius.opis.data.managers.EntityManager;
@@ -200,14 +200,14 @@ public class OpisPacketHandler implements IPacketHandler {
 	}
 	
 	public static void sendFullUpdate(Player player){
-		ArrayList<StatsTickHandler> timingHandlers = TickHandlerManager.getCumulatedStats();
 		ArrayList<DataEntity>       timingEntities = EntityManager.INSTANCE.getWorses(100);
 		ArrayList<DataTileEntity>   timingTileEnts = TileEntityManager.INSTANCE.getWorses(100);
+		ArrayList<DataHandler>      timingHandlers = TickHandlerManager.getCumulatedStats();
 		ArrayList<StatsChunk>         timingChunks = ChunkManager.INSTANCE.getTopChunks(100);
+		
 		DataTiming   totalTimeTE      = TileEntityManager.INSTANCE.getTotalUpdateTime();
 		DataTiming   totalTimeEnt     = EntityManager.INSTANCE.getTotalUpdateTime();
 		DataTiming totalTimeHandler   = TickHandlerManager.getTotalUpdateTime();
-		
 		DataBlockTick totalWorldTick  = new DataBlockTick().fill();
 
 
@@ -220,7 +220,7 @@ public class OpisPacketHandler implements IPacketHandler {
 		OpisPacketHandler.validateAndSend(NetDataValue.create(Message.VALUE_TIMING_HANDLERS,  totalTimeHandler), player);
 		OpisPacketHandler.validateAndSend(NetDataValue.create(Message.VALUE_TIMING_WORLDTICK, totalWorldTick),   player);		
 		
-		OpisPacketHandler.validateAndSend(NetDataValue.create(Message.VALUE_AMOUNT_HANDLERS, new SerialInt(TickHandlerManager.startStats.size())), player);
+		OpisPacketHandler.validateAndSend(NetDataValue.create(Message.VALUE_AMOUNT_HANDLERS, new SerialInt(timingHandlers.size())), player);
 		
 		OpisPacketHandler.validateAndSend(NetDataValue.create(Message.STATUS_TIME_LAST_RUN, new SerialLong(ProfilerRegistrar.timeStampLastRun)), player);
 		
