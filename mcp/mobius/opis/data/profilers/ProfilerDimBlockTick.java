@@ -15,12 +15,17 @@ public class ProfilerDimBlockTick implements IProfilerBase {
 	
 	
 	@Override
+	public void reset() {
+		this.data.clear();
+	}	
+	
+	@Override
 	public void start(Object key) {
 		Integer dim = (Integer)key;
 		if (DimensionManager.getWorld(dim).isRemote) return;
 		
 		if (!data.containsKey(dim))
-			data.put(dim, new DescriptiveStatistics(20));
+			data.put(dim, new DescriptiveStatistics());
 		clock.start();
 	}
 	
@@ -44,5 +49,4 @@ public class ProfilerDimBlockTick implements IProfilerBase {
 	public void start(Object key1, Object key2) {}
 	@Override
 	public void stop(Object key1, Object key2) {}
-
 }

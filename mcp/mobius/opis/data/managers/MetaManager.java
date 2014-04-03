@@ -18,6 +18,7 @@ public class MetaManager {
 		TickHandlerManager.endStats.clear();
 		ProfilerRegistrar.turnOff();
 		
+		ProfilerSection.resetAll();
 		ProfilerSection.desactivateAll();
 	}
 	

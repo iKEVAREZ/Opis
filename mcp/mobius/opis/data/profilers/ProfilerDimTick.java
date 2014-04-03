@@ -13,6 +13,11 @@ public class ProfilerDimTick implements IProfilerBase {
 	public  HashMap<Integer, DescriptiveStatistics> data = new HashMap<Integer, DescriptiveStatistics>();
 	
 	@Override
+	public void reset() {
+		this.data.clear();
+	}	
+	
+	@Override
 	public void start(Object key) {
 		World world = (World)key;
 		if (world.isRemote) return;
