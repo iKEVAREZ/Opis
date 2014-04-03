@@ -8,7 +8,7 @@ import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 
 import mcp.mobius.mobiuscore.profiler_v2.IProfilerBase;
 
-public class ProfilerDimBlockTick implements IProfilerBase {
+public class ProfilerDimBlockTick extends ProfilerAbstract implements IProfilerBase {
 
 	private Clock clock = new Clock();
 	public  HashMap<Integer, DescriptiveStatistics> data = new HashMap<Integer, DescriptiveStatistics>();
@@ -37,16 +37,4 @@ public class ProfilerDimBlockTick implements IProfilerBase {
 		clock.stop();
 		data.get(dim).addValue((double)clock.timeDelta);
 	}
-
-	
-	
-	/* UNUSED */
-	@Override
-	public void start() {}
-	@Override
-	public void stop() {}
-	@Override
-	public void start(Object key1, Object key2) {}
-	@Override
-	public void stop(Object key1, Object key2) {}
 }

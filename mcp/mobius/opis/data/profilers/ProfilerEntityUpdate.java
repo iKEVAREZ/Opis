@@ -2,12 +2,13 @@ package mcp.mobius.opis.data.profilers;
 
 import java.util.HashMap;
 
+import net.minecraft.entity.Entity;
+
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 
-import net.minecraft.world.World;
 import mcp.mobius.mobiuscore.profiler_v2.IProfilerBase;
 
-public class ProfilerDimTick extends ProfilerAbstract implements IProfilerBase {
+public class ProfilerEntityUpdate extends ProfilerAbstract implements IProfilerBase {
 
 	private Clock clock = new Clock();
 	public  HashMap<Integer, DescriptiveStatistics> data = new HashMap<Integer, DescriptiveStatistics>();
@@ -19,20 +20,20 @@ public class ProfilerDimTick extends ProfilerAbstract implements IProfilerBase {
 	
 	@Override
 	public void start(Object key) {
-		World world = (World)key;
-		if (world.isRemote) return;
+		Entity entity = (Entity)key;
+		if (entity.worldObj.isRemote) return;
 		
-		if (!data.containsKey(world.provider.dimensionId))
-			data.put(world.provider.dimensionId, new DescriptiveStatistics(20));
+		if (!data.containsKey(entity.entityId))
+			data.put(entity.entityId, new DescriptiveStatistics());
 		clock.start();
 	}
 	
 	@Override
 	public void stop(Object key) {
-		World world = (World)key;		
-		if (world.isRemote) return;
+		Entity entity = (Entity)key;
+		if (entity.worldObj.isRemote) return;
 		
 		clock.stop();
-		data.get(world.provider.dimensionId).addValue((double)clock.timeDelta);
+		data.get(entity.entityId).addValue((double)clock.timeDelta);
 	}
 }
