@@ -2,8 +2,6 @@ package mcp.mobius.opis.data.profilers;
 
 import java.util.ArrayList;
 
-import mcp.mobius.opis.data.server.DeadManSwitch;
-
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 
 public class ProfilerTick extends ProfilerAbstract {

@@ -8,7 +8,6 @@ import net.minecraft.network.packet.Packet;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.MinecraftForge;
-import mcp.mobius.mobiuscore.profiler.ProfilerRegistrar;
 import mcp.mobius.mobiuscore.profiler_v2.ProfilerSection;
 import mcp.mobius.opis.commands.client.CommandClientShowRenderTick;
 import mcp.mobius.opis.commands.client.CommandClientStart;
@@ -31,14 +30,14 @@ import mcp.mobius.opis.commands.server.CommandTicks;
 import mcp.mobius.opis.commands.server.CommandTimingEntities;
 import mcp.mobius.opis.commands.server.CommandTimingTileEntities;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesBlock;
+import mcp.mobius.opis.data.profilers.DeadManSwitch;
 import mcp.mobius.opis.data.profilers.ProfilerDimBlockTick;
 import mcp.mobius.opis.data.profilers.ProfilerDimTick;
 import mcp.mobius.opis.data.profilers.ProfilerEntityUpdate;
 import mcp.mobius.opis.data.profilers.ProfilerHandlerServer;
+import mcp.mobius.opis.data.profilers.ProfilerPacket;
 import mcp.mobius.opis.data.profilers.ProfilerTick;
 import mcp.mobius.opis.data.profilers.ProfilerTileEntityUpdate;
-import mcp.mobius.opis.data.server.DeadManSwitch;
-import mcp.mobius.opis.data.server.NetworkProfiler;
 import mcp.mobius.opis.events.OpisClientEventHandler;
 import mcp.mobius.opis.events.OpisClientTickHandler;
 import mcp.mobius.opis.events.OpisServerEventHandler;
@@ -133,8 +132,6 @@ public class modOpis {
 		TickRegistry.registerTickHandler(new OpisServerTickHandler(), Side.SERVER);
 		TickRegistry.registerTickHandler(new OpisClientTickHandler(), Side.CLIENT);
 		
-		ProfilerRegistrar.registerProfilerPacket(NetworkProfiler.INSTANCE);
-
 		if (lagGenID != -1){
 			Block blockDemo = new BlockLag(lagGenID, Material.wood);
 			GameRegistry.registerBlock(blockDemo, "opis.laggen");
@@ -148,6 +145,8 @@ public class modOpis {
 		ProfilerSection.TILEENT_UPDATETIME .setProfiler(new ProfilerTileEntityUpdate());
 		ProfilerSection.HANDLER_TICKSTART  .setProfiler(new ProfilerHandlerServer());
 		ProfilerSection.HANDLER_TICKSTOP   .setProfiler(new ProfilerHandlerServer());
+		ProfilerSection.PACKET_INBOUND     .setProfiler(new ProfilerPacket());
+		ProfilerSection.PACKET_OUTBOUND    .setProfiler(new ProfilerPacket());		
 		
 	}
 	

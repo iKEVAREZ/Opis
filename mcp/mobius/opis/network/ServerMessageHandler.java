@@ -10,7 +10,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
-import mcp.mobius.mobiuscore.profiler.ProfilerRegistrar;
 import mcp.mobius.mobiuscore.profiler_v2.ProfilerSection;
 import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.commands.server.CommandAmountEntities;
@@ -184,7 +183,7 @@ public class ServerMessageHandler {
 		}
 			
 		else if(maintype == Message.STATUS_TIME_LAST_RUN){	
-			OpisPacketHandler.validateAndSend(NetDataValue.create(Message.STATUS_TIME_LAST_RUN,  new SerialLong(ProfilerRegistrar.timeStampLastRun)), (Player)player);
+			OpisPacketHandler.validateAndSend(NetDataValue.create(Message.STATUS_TIME_LAST_RUN,  new SerialLong(ProfilerSection.timeStampLastRun)), (Player)player);
 		}
 		
 		else if(maintype == Message.COMMAND_KILL_HOSTILES_ALL){

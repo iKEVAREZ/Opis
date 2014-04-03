@@ -1,4 +1,4 @@
-package mcp.mobius.opis.data.server;
+package mcp.mobius.opis.data.profilers;
 
 import java.util.Set;
 import java.util.concurrent.Semaphore;

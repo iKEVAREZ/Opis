@@ -28,8 +28,8 @@ import mcp.mobius.opis.data.managers.ChunkManager;
 import mcp.mobius.opis.data.managers.EntityManager;
 import mcp.mobius.opis.data.managers.TickHandlerManager;
 import mcp.mobius.opis.data.managers.TileEntityManager;
+import mcp.mobius.opis.data.profilers.ProfilerPacket;
 import mcp.mobius.opis.data.profilers.ProfilerTick;
-import mcp.mobius.opis.data.server.NetworkProfiler;
 import mcp.mobius.opis.gui.overlay.OverlayStatus;
 import mcp.mobius.opis.network.OpisPacketHandler;
 import mcp.mobius.opis.network.enums.Message;
@@ -40,8 +40,6 @@ import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.TickType;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
-import mcp.mobius.mobiuscore.profiler.DummyProfiler;
-import mcp.mobius.mobiuscore.profiler.ProfilerRegistrar;
 import mcp.mobius.mobiuscore.profiler_v2.ProfilerSection;
 
 public class OpisServerTickHandler implements ITickHandler {
@@ -80,8 +78,8 @@ public class OpisServerTickHandler implements ITickHandler {
 			if (System.nanoTime() - timer1000 > 1000000000L){
 				timer1000 = System.nanoTime();
 
-				OpisPacketHandler.sendPacketToAllSwing(NetDataValue.create(Message.VALUE_AMOUNT_UPLOAD,   new SerialLong(NetworkProfiler.INSTANCE.dataSizeOut)));
-				OpisPacketHandler.sendPacketToAllSwing(NetDataValue.create(Message.VALUE_AMOUNT_DOWNLOAD, new SerialLong(NetworkProfiler.INSTANCE.dataSizeIn)));
+				OpisPacketHandler.sendPacketToAllSwing(NetDataValue.create(Message.VALUE_AMOUNT_UPLOAD,   new SerialLong(((ProfilerPacket)ProfilerSection.PACKET_OUTBOUND.getProfiler()).data)));
+				OpisPacketHandler.sendPacketToAllSwing(NetDataValue.create(Message.VALUE_AMOUNT_DOWNLOAD, new SerialLong(((ProfilerPacket)ProfilerSection.PACKET_INBOUND.getProfiler()).data)));
 				OpisPacketHandler.sendPacketToAllSwing(NetDataValue.create(Message.VALUE_CHUNK_FORCED,    new SerialInt(ChunkManager.INSTANCE.getForcedChunkAmount())));
 				OpisPacketHandler.sendPacketToAllSwing(NetDataValue.create(Message.VALUE_CHUNK_LOADED,    new SerialInt(ChunkManager.INSTANCE.getLoadedChunkAmount())));
 				OpisPacketHandler.sendPacketToAllSwing(NetDataValue.create(Message.VALUE_TIMING_TICK,     new DataTiming(((ProfilerTick)ProfilerSection.TICK.getProfiler()).data.getGeometricMean())));
@@ -107,8 +105,8 @@ public class OpisServerTickHandler implements ITickHandler {
 					OpisPacketHandler.sendPacketToAllSwing(NetDataValue.create(Message.STATUS_RUN_UPDATE, new SerialInt(profilerRunningTicks)));
 				}
 				
-				NetworkProfiler.INSTANCE.dataSizeOut = 0L;
-				NetworkProfiler.INSTANCE.dataSizeIn  = 0L;
+				((ProfilerPacket)ProfilerSection.PACKET_INBOUND.getProfiler()).data = 0L;
+				((ProfilerPacket)ProfilerSection.PACKET_OUTBOUND.getProfiler()).data = 0L;
 			}
 			
 			// Five second timer
@@ -124,7 +122,6 @@ public class OpisServerTickHandler implements ITickHandler {
 			}else if (profilerRunningTicks >= modOpis.profilerMaxTicks && modOpis.profilerRun){
 				profilerRunningTicks = 0;
 				modOpis.profilerRun = false;
-				ProfilerRegistrar.turnOff();
 				ProfilerSection.desactivateAll();
 				
 				OpisPacketHandler.sendPacketToAllSwing(NetDataValue.create(Message.STATUS_STOP, new SerialInt(modOpis.profilerMaxTicks)));
@@ -132,16 +129,6 @@ public class OpisServerTickHandler implements ITickHandler {
 				for (Player player : PlayerTracker.instance().playersSwing){
 					OpisPacketHandler.sendFullUpdate(player);
 				}
-				
-				for(String key : NetworkProfiler.INSTANCE.stats.keySet()){
-					System.out.printf("[ %s ] : %.3f µs\n", key, NetworkProfiler.INSTANCE.stats.get(key).getGeometricMean());
-				}
-				
-				/*
-				for(Table.Cell<CoordinatesChunk, String, Double> cell : GlobalTimingManager.INSTANCE.getStatsChunk().cellSet()){
-					System.out.printf("[ %s ] %20s : %.3f µs\n", cell.getRowKey(), cell.getColumnKey(), cell.getValue());
-				}
-				*/				
 				
 			}			
 		}

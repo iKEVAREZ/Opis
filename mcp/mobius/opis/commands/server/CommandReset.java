@@ -2,8 +2,6 @@ package mcp.mobius.opis.commands.server;
 
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
-import mcp.mobius.mobiuscore.profiler.DummyProfiler;
-import mcp.mobius.mobiuscore.profiler.ProfilerRegistrar;
 import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.commands.IOpisCommand;
 import mcp.mobius.opis.data.managers.EntityManager;

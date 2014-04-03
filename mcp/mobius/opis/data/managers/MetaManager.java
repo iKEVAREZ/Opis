@@ -1,6 +1,5 @@
 package mcp.mobius.opis.data.managers;
 
-import mcp.mobius.mobiuscore.profiler.ProfilerRegistrar;
 import mcp.mobius.mobiuscore.profiler_v2.ProfilerSection;
 import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.events.OpisServerTickHandler;
@@ -11,7 +10,6 @@ public class MetaManager {
 		modOpis.profilerRun   = false;
 		modOpis.selectedBlock = null;
 		OpisServerTickHandler.instance.profilerRunningTicks = 0;
-		ProfilerRegistrar.turnOff();
 		
 		ProfilerSection.resetAll();
 		ProfilerSection.desactivateAll();

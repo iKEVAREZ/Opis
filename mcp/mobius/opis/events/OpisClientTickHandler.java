@@ -3,8 +3,6 @@ package mcp.mobius.opis.events;
 import java.util.EnumSet;
 import java.util.logging.Level;
 
-import mcp.mobius.mobiuscore.profiler.DummyProfiler;
-import mcp.mobius.mobiuscore.profiler.ProfilerRegistrar;
 import mcp.mobius.mobiuscore.profiler_v2.ProfilerSection;
 import mcp.mobius.opis.modOpis;
 import cpw.mods.fml.common.ITickHandler;
@@ -36,7 +34,6 @@ public class OpisClientTickHandler implements ITickHandler {
 			else if (profilerRunningTicks >= modOpis.profilerMaxTicks && modOpis.profilerRun){
 				profilerRunningTicks = 0;
 				modOpis.profilerRun = false;
-				ProfilerRegistrar.turnOff();
 				ProfilerSection.desactivateAll();
 				
 				//TODO : Print something to the client chat
