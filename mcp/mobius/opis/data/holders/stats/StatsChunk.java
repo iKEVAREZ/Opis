@@ -66,6 +66,6 @@ public class StatsChunk extends StatAbstract{
 	}		
 	
 	public String toString(){
-		return String.format("%.3f µs", this.getDataSum());
+		return String.format("%.3f µs", this.getDataSum()/1000.0);
 	}	
 }
