@@ -325,4 +325,19 @@ public enum EntityManager {
 		}
 		return killedEnts;
 	}
+	
+	public int killAllStacks(int dim){
+		WorldServer world = DimensionManager.getWorld(dim);
+		if (world == null) return -1;
+		
+		int killedEnts = 0;
+		
+		for (Entity entity : (ArrayList<Entity>)world.loadedEntityList){
+			if (entity instanceof EntityItem){
+				entity.setDead();
+				killedEnts += 1;
+			}
+		}
+		return killedEnts;
+	}	
 }

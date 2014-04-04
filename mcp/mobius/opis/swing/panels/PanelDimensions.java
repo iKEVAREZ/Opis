@@ -44,7 +44,7 @@ public class PanelDimensions extends JPanelMsgHandler implements IMessageHandler
 				//	{null, null, null, null, null, null, null, null, null},
 			},
 			new String[] {
-				"Dim", "Name", "Players", "Forced chunks", "Loaded chunks", "Monsters", "Animals", "Entities", "Update time", "Purge"
+				"Dim", "Name", "Players", "Forced chunks", "Loaded chunks", "Monsters", "Animals", "Stacks", "Update time", "Purge"
 				//	"Dim", "Name", "Players", "Forced chunks", "Loaded chunks", "Monsters", "Animals", "Entities", "Purge"
 			}
 		) {
@@ -104,7 +104,7 @@ public class PanelDimensions extends JPanelMsgHandler implements IMessageHandler
 						data.loaded,
 						data.mobs,
 						data.neutral,
-						data.entities,
+						data.itemstacks,
 						data.update,
 						"Purge"
 				});

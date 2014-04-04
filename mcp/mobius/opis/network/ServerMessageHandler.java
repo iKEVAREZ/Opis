@@ -193,6 +193,15 @@ public class ServerMessageHandler {
 			EntityManager.INSTANCE.killAllHostiles(((SerialInt)param1).value);			
 		}
 		
+		else if(maintype == Message.COMMAND_KILL_STACKS_ALL){
+			for (int dim : DimensionManager.getIDs())
+				EntityManager.INSTANCE.killAllStacks(dim);
+		}
+		
+		else if(maintype == Message.COMMAND_KILL_STACKS_DIM){
+			EntityManager.INSTANCE.killAllStacks(((SerialInt)param1).value);			
+		}		
+		
 		else if(maintype == Message.COMMAND_PURGE_CHUNKS_ALL){
 			for (int dim : DimensionManager.getIDs())
 				ChunkManager.INSTANCE.purgeChunks(dim);			

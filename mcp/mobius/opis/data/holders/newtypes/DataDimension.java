@@ -12,6 +12,7 @@ import mcp.mobius.mobiuscore.profiler.ProfilerSection;
 import mcp.mobius.opis.data.holders.ISerializable;
 import mcp.mobius.opis.data.profilers.ProfilerDimTick;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.network.packet.Packet;
@@ -31,6 +32,7 @@ public class DataDimension implements ISerializable {
 	public int    entities;
 	public int    mobs;
 	public int    neutral;
+	public int    itemstacks;
 	public DataTiming update;
 	
 	public DataDimension fill(int dim){
@@ -54,6 +56,8 @@ public class DataDimension implements ISerializable {
 				this.mobs += 1;
 			if (entity instanceof EntityAnimal)
 				this.neutral += 1;
+			if (entity instanceof EntityItem)
+				this.itemstacks += 1;
 		}
 		
 		return this;
@@ -68,6 +72,7 @@ public class DataDimension implements ISerializable {
 		stream.writeInt(entities);
 		stream.writeInt(mobs);
 		stream.writeInt(neutral);
+		stream.writeInt(itemstacks);
 		//stream.writeDouble(update);
 		this.update.writeToStream(stream);
 		Packet.writeString(name, stream);
@@ -82,6 +87,7 @@ public class DataDimension implements ISerializable {
 		retVal.entities= stream.readInt();
 		retVal.mobs    = stream.readInt();
 		retVal.neutral = stream.readInt();
+		retVal.itemstacks = stream.readInt();
 		//retVal.update  = stream.readDouble();
 		retVal.update  = DataTiming.readFromStream(stream);
 		retVal.name    = Packet.readString(stream, 255);

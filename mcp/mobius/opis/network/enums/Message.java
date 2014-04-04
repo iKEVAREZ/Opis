@@ -59,6 +59,8 @@ public enum Message {
 	COMMAND_KILL_HOSTILES_ALL(PRIVILEGED),	// This will kill all hostile in all the dimensions
 	COMMAND_PURGE_CHUNKS_DIM(PRIVILEGED),	// This will purge the chunks in the dim given as argument
 	COMMAND_PURGE_CHUNKS_ALL(PRIVILEGED),	// This will purge the chunks in all dimensions
+	COMMAND_KILL_STACKS_DIM(PRIVILEGED),	// This will kill all stacks in the dim given as argument
+	COMMAND_KILL_STACKS_ALL(PRIVILEGED),	// This will kill all stacks in all the dimensions
 	
 	OVERLAY_CHUNK_ENTITIES,
 	OVERLAY_CHUNK_TIMING,
