@@ -15,6 +15,8 @@ import java.util.HashSet;
 
 import javax.swing.SwingConstants;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiChat;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import mcp.mobius.opis.api.IMessageHandler;
 import mcp.mobius.opis.api.ITabPanel;
@@ -74,6 +76,7 @@ public class SwingUI extends JFrame implements WindowListener, IMessageHandler{
 		contentPane.add(tabbedPane, BorderLayout.CENTER);
 
 		this.addWindowListener(this);
+
 	}
 
 	@Override
@@ -119,6 +122,7 @@ public class SwingUI extends JFrame implements WindowListener, IMessageHandler{
 		}
 		case CLIENT_SHOW_SWING:{
 			this.showUI();
+			Minecraft.getMinecraft().displayGuiScreen(new GuiChat());
 			break;
 		}
 		default:

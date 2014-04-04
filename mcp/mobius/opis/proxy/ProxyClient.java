@@ -32,6 +32,8 @@ import mcp.mobius.opis.swing.SwingUI;
 import mcp.mobius.opis.swing.panels.PanelAmountEntities;
 import mcp.mobius.opis.swing.panels.PanelDimensions;
 import mcp.mobius.opis.swing.panels.PanelPlayers;
+import mcp.mobius.opis.swing.panels.PanelRenderEntities;
+import mcp.mobius.opis.swing.panels.PanelRenderTileEnts;
 import mcp.mobius.opis.swing.panels.PanelSummary;
 import mcp.mobius.opis.swing.panels.PanelTimingChunks;
 import mcp.mobius.opis.swing.panels.PanelTimingEntities;
@@ -67,6 +69,9 @@ public class ProxyClient extends ProxyServer implements IMessageHandler{
 		IMessageHandler panelTimingHandlers = (IMessageHandler)TabPanelRegistrar.INSTANCE.registerTab(new PanelTimingHandlers());
 		IMessageHandler panelTimingChunks   = (IMessageHandler)TabPanelRegistrar.INSTANCE.registerTab(new PanelTimingChunks());
 		IMessageHandler panelDimensions     = (IMessageHandler)TabPanelRegistrar.INSTANCE.registerTab(new PanelDimensions());
+		
+		TabPanelRegistrar.INSTANCE.registerTab(new PanelRenderTileEnts());
+		TabPanelRegistrar.INSTANCE.registerTab(new PanelRenderEntities());
 		
 		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.LIST_PLAYERS,          panelPlayers);
 		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.LIST_AMOUNT_ENTITIES,  panelAmountEntities);

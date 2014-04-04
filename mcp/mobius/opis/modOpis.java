@@ -36,6 +36,8 @@ import mcp.mobius.opis.data.profilers.ProfilerDimTick;
 import mcp.mobius.opis.data.profilers.ProfilerEntityUpdate;
 import mcp.mobius.opis.data.profilers.ProfilerHandlerServer;
 import mcp.mobius.opis.data.profilers.ProfilerPacket;
+import mcp.mobius.opis.data.profilers.ProfilerRenderEntity;
+import mcp.mobius.opis.data.profilers.ProfilerRenderTileEntity;
 import mcp.mobius.opis.data.profilers.ProfilerTick;
 import mcp.mobius.opis.data.profilers.ProfilerTileEntityUpdate;
 import mcp.mobius.opis.events.OpisClientEventHandler;
@@ -81,8 +83,9 @@ public class modOpis {
 	@SidedProxy(clientSide="mcp.mobius.opis.proxy.ProxyClient", serverSide="mcp.mobius.opis.proxy.ProxyServer")
 	public static ProxyServer proxy;		
 
-	public static int profilerDelay    = 1;
-	public static boolean profilerRun  = false; 
+	public static int profilerDelay          = 1;
+	public static boolean profilerRun        = false;
+	public static boolean profilerRunClient  = false;
 	public static int profilerMaxTicks = 250;
 	public static boolean microseconds = true;
 	private static int lagGenID        = -1;
@@ -146,7 +149,9 @@ public class modOpis {
 		ProfilerSection.HANDLER_TICKSTART  .setProfiler(new ProfilerHandlerServer());
 		ProfilerSection.HANDLER_TICKSTOP   .setProfiler(new ProfilerHandlerServer());
 		ProfilerSection.PACKET_INBOUND     .setProfiler(new ProfilerPacket());
-		ProfilerSection.PACKET_OUTBOUND    .setProfiler(new ProfilerPacket());		
+		ProfilerSection.PACKET_OUTBOUND    .setProfiler(new ProfilerPacket());	
+		ProfilerSection.RENDER_TILEENTITY  .setProfiler(new ProfilerRenderTileEntity());
+		ProfilerSection.RENDER_ENTITY      .setProfiler(new ProfilerRenderEntity());
 		
 	}
 	

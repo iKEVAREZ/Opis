@@ -10,9 +10,9 @@ import mcp.mobius.opis.data.holders.stats.StatAbstract;
 
 public abstract class JPanelMsgHandler extends JPanel implements IMessageHandler {
 	
-	protected JTableStats table;
+	public JTableStats table;
 	
-	protected <U> int updateData(JTable table, DefaultTableModel model, Class<U> datatype){
+	public <U> int updateData(JTable table, DefaultTableModel model, Class<U> datatype){
 		int row = table.getSelectedRow();
 		
 		if (model.getRowCount() > 0)
@@ -22,7 +22,7 @@ public abstract class JPanelMsgHandler extends JPanel implements IMessageHandler
 		return row;
 	}
 	
-	protected void dataUpdated(JTable table, DefaultTableModel model, int row){
+	public void dataUpdated(JTable table, DefaultTableModel model, int row){
 		model.fireTableDataChanged();
 		
 		try{
