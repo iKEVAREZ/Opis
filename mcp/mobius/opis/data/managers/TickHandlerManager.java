@@ -42,21 +42,22 @@ public class TickHandlerManager {
 	
 	public static String getHandlerName(IScheduledTickHandler handler){
 		String name = handler.getLabel();
-		if (name == null || name.equals(""))
+		if (name == null || name.equals("")){
 			if (handler instanceof SingleIntervalHandler){
 				try{
 					Object ticker = wrapped.get(handler);
 					name = ticker.getClass().getName();
 				} catch (Exception e) {
-					throw new RuntimeException(e);
+					name = "<Unnamed SingleIntervalHandler>";
 				}
-				
-				
-				//name = ((SingleIntervalHandler)handler).wrapped.getClass().getName();
-				name = "<Unnamed SingleIntervalHandler>"; // This part should be done via reflection to get the handler name./opis
 			}
-			else
-				name = handler.getClass().getName();
+		}else{
+			name = handler.getClass().getName();
+		}
+		
+		if (name == null || name.equals("")){
+			name = "<Unnamed SingleIntervalHandler>";
+		}
 		
 		return name;
 	}
