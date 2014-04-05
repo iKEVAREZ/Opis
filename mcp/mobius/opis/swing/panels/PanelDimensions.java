@@ -6,6 +6,7 @@ import mcp.mobius.opis.api.IMessageHandler;
 import mcp.mobius.opis.api.ITabPanel;
 import mcp.mobius.opis.data.holders.newtypes.DataDimension;
 import mcp.mobius.opis.data.holders.newtypes.DataTiming;
+import mcp.mobius.opis.data.holders.newtypes.DataTimingMillisecond;
 import mcp.mobius.opis.network.enums.AccessLevel;
 import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.packets.server.NetDataRaw;
@@ -49,7 +50,7 @@ public class PanelDimensions extends JPanelMsgHandler implements IMessageHandler
 			}
 		) {
 			Class[] columnTypes = new Class[] {
-				Integer.class, String.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, DataTiming.class, JTableButton.class
+				Integer.class, String.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, DataTimingMillisecond.class, JTableButton.class
 				//Integer.class, String.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, JTableButton.class
 			};
 			public Class getColumnClass(int columnIndex) {
@@ -105,7 +106,7 @@ public class PanelDimensions extends JPanelMsgHandler implements IMessageHandler
 						data.mobs,
 						data.neutral,
 						data.itemstacks,
-						data.update,
+						data.update.asMillisecond(),
 						"Purge"
 				});
 			}			
