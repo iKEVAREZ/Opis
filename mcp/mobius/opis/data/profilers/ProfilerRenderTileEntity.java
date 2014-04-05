@@ -4,6 +4,7 @@ import java.util.WeakHashMap;
 
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 
+import mcp.mobius.opis.modOpis;
 import net.minecraft.tileentity.TileEntity;
 
 public class ProfilerRenderTileEntity extends ProfilerAbstract {
@@ -28,6 +29,10 @@ public class ProfilerRenderTileEntity extends ProfilerAbstract {
 	@Override
 	public void stop(Object key){
 		clock.stop();
-		data.get((TileEntity)key).addValue((double)clock.timeDelta);
+		try{
+			data.get((TileEntity)key).addValue((double)clock.timeDelta);
+		} catch (Exception e) {
+			modOpis.log.warning(String.format("Error while profiling entity %s\n", key));
+		}
 	}	
 }
