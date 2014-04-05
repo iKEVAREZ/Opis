@@ -141,15 +141,7 @@ public class modOpis {
 			GameRegistry.registerTileEntity(TileLag.class, "opis.laggen");
 		}
 
-		ProfilerSection.DIMENSION_TICK     .setProfiler(new ProfilerDimTick());
-		ProfilerSection.DIMENSION_BLOCKTICK.setProfiler(new ProfilerDimBlockTick());
-		ProfilerSection.ENTITY_UPDATETIME  .setProfiler(new ProfilerEntityUpdate());
-		ProfilerSection.TICK               .setProfiler(new ProfilerTick());
-		ProfilerSection.TILEENT_UPDATETIME .setProfiler(new ProfilerTileEntityUpdate());
-		ProfilerSection.HANDLER_TICKSTART  .setProfiler(new ProfilerHandlerServer());
-		ProfilerSection.HANDLER_TICKSTOP   .setProfiler(new ProfilerHandlerServer());
-		ProfilerSection.PACKET_INBOUND     .setProfiler(new ProfilerPacket());
-		ProfilerSection.PACKET_OUTBOUND    .setProfiler(new ProfilerPacket());	
+
 		ProfilerSection.RENDER_TILEENTITY  .setProfiler(new ProfilerRenderTileEntity());
 		ProfilerSection.RENDER_ENTITY      .setProfiler(new ProfilerRenderEntity());
 		
@@ -163,6 +155,16 @@ public class modOpis {
 	
 	@EventHandler
 	public void serverStarting(FMLServerStartingEvent event){
+		ProfilerSection.DIMENSION_TICK     .setProfiler(new ProfilerDimTick());
+		ProfilerSection.DIMENSION_BLOCKTICK.setProfiler(new ProfilerDimBlockTick());
+		ProfilerSection.ENTITY_UPDATETIME  .setProfiler(new ProfilerEntityUpdate());
+		ProfilerSection.TICK               .setProfiler(new ProfilerTick());
+		ProfilerSection.TILEENT_UPDATETIME .setProfiler(new ProfilerTileEntityUpdate());
+		ProfilerSection.HANDLER_TICKSTART  .setProfiler(new ProfilerHandlerServer());
+		ProfilerSection.HANDLER_TICKSTOP   .setProfiler(new ProfilerHandlerServer());
+		ProfilerSection.PACKET_INBOUND     .setProfiler(new ProfilerPacket());
+		ProfilerSection.PACKET_OUTBOUND    .setProfiler(new ProfilerPacket());			
+		
 		event.registerServerCommand(new CommandChunkList());
 		event.registerServerCommand(new CommandFrequency());
 		event.registerServerCommand(new CommandStart());
