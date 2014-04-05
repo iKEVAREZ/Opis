@@ -50,14 +50,20 @@ public class TickHandlerManager {
 				} catch (Exception e) {
 					name = "<Unnamed SingleIntervalHandler>";
 				}
+			} else {
+				name = handler.getClass().getName();
 			}
+		}
+		/*
 		}else{
 			name = handler.getClass().getName();
 		}
-		
+		*/
+		/*
 		if (name == null || name.equals("")){
 			name = "<Unnamed SingleIntervalHandler>";
 		}
+		*/
 		
 		return name;
 	}
