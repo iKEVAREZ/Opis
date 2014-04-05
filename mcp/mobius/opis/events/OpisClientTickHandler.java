@@ -61,11 +61,17 @@ public class OpisClientTickHandler implements ITickHandler {
 				ArrayList<DataTileEntityRender> tileEntData = new ArrayList<DataTileEntityRender>();
 				double tileEntTotal = 0.0D;
 				for (TileEntity te : ((ProfilerRenderTileEntity)ProfilerSection.RENDER_TILEENTITY.getProfiler()).data.keySet()){
-					DataTileEntityRender dataTe = new DataTileEntityRender().fill(te);
-					tileEntData.add(dataTe);
-					tileEntTotal += dataTe.update.timing;
+					try{
+						DataTileEntityRender dataTe = new DataTileEntityRender().fill(te);
+						tileEntData.add(dataTe);
+						tileEntTotal += dataTe.update.timing;
+					} catch (Exception e) {
+						modOpis.log.warning(String.format("Error while adding entity %s to the list", te));
+					}
 				}
 
+				System.out.printf("Rendered %d TileEntities\n", tileEntData.size());
+				
 				Collections.sort(tileEntData);
 				((PanelRenderTileEnts)(TabPanelRegistrar.INSTANCE.getTab("opis.client.terender"))).setTable(tileEntData);
 				((PanelRenderTileEnts)(TabPanelRegistrar.INSTANCE.getTab("opis.client.terender"))).getLblTotal().setText(String.format("Total : %.3f µs", tileEntTotal / 1000.0));
@@ -73,10 +79,16 @@ public class OpisClientTickHandler implements ITickHandler {
 				ArrayList<DataEntityRender> entData = new ArrayList<DataEntityRender>();
 				double entTotal = 0.0D;
 				for (Entity ent : ((ProfilerRenderEntity)ProfilerSection.RENDER_ENTITY.getProfiler()).data.keySet()){
-					DataEntityRender dataEnt = new DataEntityRender().fill(ent);
-					entData.add(dataEnt);
-					entTotal += dataEnt.update.timing;
+					try{
+						DataEntityRender dataEnt = new DataEntityRender().fill(ent);
+						entData.add(dataEnt);
+						entTotal += dataEnt.update.timing;
+					} catch (Exception e) {
+						modOpis.log.warning(String.format("Error while adding entity %s to the list", ent));
+					}					
 				}
+
+				System.out.printf("Rendered %d Entities\n", entData.size());
 				
 				Collections.sort(entData);
 				((PanelRenderEntities)(TabPanelRegistrar.INSTANCE.getTab("opis.client.entrender"))).setTable(entData);

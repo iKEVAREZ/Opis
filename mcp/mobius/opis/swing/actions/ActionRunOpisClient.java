@@ -11,6 +11,7 @@ public class ActionRunOpisClient implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		modOpis.profilerRunClient = true;
+		ProfilerSection.resetAll();
 		ProfilerSection.activateAll();
 	}
 }
