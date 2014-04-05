@@ -6,6 +6,7 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.ToolTipManager;
 import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 
@@ -76,6 +77,8 @@ public class SwingUI extends JFrame implements WindowListener, IMessageHandler{
 		contentPane.add(tabbedPane, BorderLayout.CENTER);
 
 		this.addWindowListener(this);
+		ToolTipManager.sharedInstance().setInitialDelay(500);
+		ToolTipManager.sharedInstance().setDismissDelay(60 * 1000);
 
 	}
 

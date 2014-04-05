@@ -64,7 +64,8 @@ public class PanelDimensions extends JPanelMsgHandler implements IMessageHandler
 				return columnEditables[column];
 			}
 		});
-		table.setBackground(UIManager.getColor("windowBorder"));
+		//table.setBackground(UIManager.getColor("windowBorder"));
+		table.setBackground(this.getBackground());
 		table.setAutoCreateRowSorter(true);	
 		table.setShowGrid(false);
 		scrollPane.setViewportView(table);
