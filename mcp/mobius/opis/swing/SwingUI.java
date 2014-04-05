@@ -79,7 +79,7 @@ public class SwingUI extends JFrame implements WindowListener, IMessageHandler{
 		this.addWindowListener(this);
 		ToolTipManager.sharedInstance().setInitialDelay(500);
 		ToolTipManager.sharedInstance().setDismissDelay(60 * 1000);
-
+	
 	}
 
 	@Override

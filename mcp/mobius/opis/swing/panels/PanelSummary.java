@@ -310,14 +310,14 @@ public class PanelSummary extends JPanelMsgHandler implements ITabPanel{
 			this.getLblTimingWorldTick().setText(this.timingWorldTickTotal.toString());
 			this.getLblTimingTotal().setText(String.format("%s", this.getProfiledTickTotalTime().toString() ));	
 			
-			String tooltip = "<html>";
+			String tooltip = "<html><font face=\"monospace\"><pre>";
 			
 			for (Integer indim : ((DataBlockTick)rawdata.value).perdim.keySet()){
 				//System.out.printf("WorldTick [ %4d ] %s\n", indim, ((DataBlockTick)rawdata.value).perdim.get(indim).asMillisecond().toString());
 				tooltip += String.format("[ %4d ] %s<br>", indim, ((DataBlockTick)rawdata.value).perdim.get(indim).asMillisecond().toString());
 			}
 			
-			tooltip += "</html>";
+			tooltip += "</pre></html>";
 			
 			this.getLblTimingWorldTick().setToolTipText(tooltip);
 			
