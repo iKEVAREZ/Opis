@@ -2,6 +2,7 @@ package mcp.mobius.opis.commands.server;
 
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
+import cpw.mods.fml.relauncher.Side;
 import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.commands.IOpisCommand;
 import mcp.mobius.opis.data.holders.basetypes.SerialInt;
@@ -51,7 +52,7 @@ public class CommandStart extends CommandBase implements IOpisCommand {
 		
 		MetaManager.reset();	
 		modOpis.profilerRun = true;
-		ProfilerSection.activateAll();
+		ProfilerSection.activateAll(Side.SERVER);
 
 		OpisPacketHandler.sendPacketToAllSwing(NetDataValue.create(Message.STATUS_START, new SerialInt(modOpis.profilerMaxTicks)));		
 		icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText(String.format("\u00A7oOpis started with a tick delay %s.", modOpis.profilerDelay)));

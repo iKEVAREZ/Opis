@@ -8,6 +8,7 @@ import net.minecraft.entity.Entity;
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 
 import mcp.mobius.mobiuscore.profiler.IProfilerBase;
+import mcp.mobius.opis.modOpis;
 
 public class ProfilerEntityUpdate extends ProfilerAbstract implements IProfilerBase {
 
@@ -35,6 +36,10 @@ public class ProfilerEntityUpdate extends ProfilerAbstract implements IProfilerB
 		if (entity.worldObj.isRemote) return;
 		
 		clock.stop();
-		data.get(entity).addValue((double)clock.timeDelta);
+		try{
+			data.get(entity).addValue((double)clock.timeDelta);
+		} catch (Exception e){
+			modOpis.log.warning(String.format("Error while profiling entity %s\n", key));
+		}
 	}
 }

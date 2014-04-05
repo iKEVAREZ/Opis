@@ -37,6 +37,7 @@ import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.TickType;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
+import cpw.mods.fml.relauncher.Side;
 import mcp.mobius.mobiuscore.profiler.ProfilerSection;
 
 public class OpisServerTickHandler implements ITickHandler {
@@ -119,7 +120,7 @@ public class OpisServerTickHandler implements ITickHandler {
 			}else if (profilerRunningTicks >= modOpis.profilerMaxTicks && modOpis.profilerRun){
 				profilerRunningTicks = 0;
 				modOpis.profilerRun = false;
-				ProfilerSection.desactivateAll();
+				ProfilerSection.desactivateAll(Side.SERVER);
 				
 				OpisPacketHandler.sendPacketToAllSwing(NetDataValue.create(Message.STATUS_STOP, new SerialInt(modOpis.profilerMaxTicks)));
 				

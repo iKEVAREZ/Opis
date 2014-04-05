@@ -140,7 +140,7 @@ public class modOpis {
 			GameRegistry.registerBlock(blockDemo, "opis.laggen");
 			GameRegistry.registerTileEntity(TileLag.class, "opis.laggen");
 		}
-		
+
 		ProfilerSection.DIMENSION_TICK     .setProfiler(new ProfilerDimTick());
 		ProfilerSection.DIMENSION_BLOCKTICK.setProfiler(new ProfilerDimBlockTick());
 		ProfilerSection.ENTITY_UPDATETIME  .setProfiler(new ProfilerEntityUpdate());

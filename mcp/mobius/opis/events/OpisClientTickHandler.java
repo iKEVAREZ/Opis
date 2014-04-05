@@ -19,6 +19,7 @@ import mcp.mobius.opis.swing.panels.PanelRenderTileEnts;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.TickType;
 import cpw.mods.fml.common.network.PacketDispatcher;
+import cpw.mods.fml.relauncher.Side;
 
 public class OpisClientTickHandler implements ITickHandler {
 
@@ -54,7 +55,7 @@ public class OpisClientTickHandler implements ITickHandler {
 			}else if (profilerRunningTicks >= modOpis.profilerMaxTicks && modOpis.profilerRunClient){
 				profilerRunningTicks = 0;
 				modOpis.profilerRunClient = false;
-				ProfilerSection.desactivateAll();
+				ProfilerSection.desactivateAll(Side.CLIENT);
 				
 				System.out.printf("Profiling done\n");
 

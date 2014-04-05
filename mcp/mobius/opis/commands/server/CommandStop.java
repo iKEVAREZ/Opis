@@ -2,6 +2,7 @@ package mcp.mobius.opis.commands.server;
 
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
+import cpw.mods.fml.relauncher.Side;
 import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.commands.IOpisCommand;
 import mcp.mobius.opis.events.OpisServerTickHandler;
@@ -37,7 +38,7 @@ public class CommandStop extends CommandBase implements IOpisCommand {
 	@Override
 	public void processCommand(ICommandSender icommandsender, String[] astring) {
 		modOpis.profilerRun = false;
-		ProfilerSection.desactivateAll();
+		ProfilerSection.desactivateAll(Side.SERVER);
 		icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText(String.format("\u00A7oOpis stopped.")));
 	}
 

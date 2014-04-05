@@ -149,7 +149,7 @@ public class ProxyClient extends ProxyServer implements IMessageHandler{
 			modOpis.log.log(Level.INFO, "Started profiling");
 			MetaManager.reset();		
 			modOpis.profilerRun = true;
-			ProfilerSection.activateAll();
+			ProfilerSection.activateAll(Side.CLIENT);
 			break;
 		}
 		case CLIENT_SHOW_RENDER_TICK:{
