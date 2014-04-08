@@ -36,6 +36,7 @@ import mcp.mobius.opis.data.profilers.ProfilerDimTick;
 import mcp.mobius.opis.data.profilers.ProfilerEntityUpdate;
 import mcp.mobius.opis.data.profilers.ProfilerHandlerServer;
 import mcp.mobius.opis.data.profilers.ProfilerPacket;
+import mcp.mobius.opis.data.profilers.ProfilerRenderBlock;
 import mcp.mobius.opis.data.profilers.ProfilerRenderEntity;
 import mcp.mobius.opis.data.profilers.ProfilerRenderTileEntity;
 import mcp.mobius.opis.data.profilers.ProfilerTick;
@@ -70,7 +71,7 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
 
-@Mod(modid="Opis", name="Opis", version="1.2.1_dev1_alpha")
+@Mod(modid="Opis", name="Opis", version="1.2.1")
 @NetworkMod(channels={"Opis", "Opis_Chunk"},clientSideRequired=false, serverSideRequired=false, connectionHandler=OpisConnectionHandler.class, packetHandler=OpisPacketHandler.class)
 
 public class modOpis {
@@ -141,9 +142,9 @@ public class modOpis {
 			GameRegistry.registerTileEntity(TileLag.class, "opis.laggen");
 		}
 
-
 		ProfilerSection.RENDER_TILEENTITY  .setProfiler(new ProfilerRenderTileEntity());
 		ProfilerSection.RENDER_ENTITY      .setProfiler(new ProfilerRenderEntity());
+		ProfilerSection.RENDER_BLOCK       .setProfiler(new ProfilerRenderBlock());
 		
 	}
 	

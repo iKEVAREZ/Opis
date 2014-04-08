@@ -6,12 +6,16 @@ import java.util.EnumSet;
 import java.util.logging.Level;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import mcp.mobius.mobiuscore.profiler.ProfilerSection;
 import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.api.TabPanelRegistrar;
+import mcp.mobius.opis.data.holders.basetypes.CoordinatesBlock;
+import mcp.mobius.opis.data.holders.newtypes.DataBlockRender;
 import mcp.mobius.opis.data.holders.newtypes.DataEntityRender;
 import mcp.mobius.opis.data.holders.newtypes.DataTileEntityRender;
+import mcp.mobius.opis.data.profilers.ProfilerRenderBlock;
 import mcp.mobius.opis.data.profilers.ProfilerRenderEntity;
 import mcp.mobius.opis.data.profilers.ProfilerRenderTileEntity;
 import mcp.mobius.opis.swing.panels.PanelRenderEntities;
@@ -59,6 +63,8 @@ public class OpisClientTickHandler implements ITickHandler {
 				
 				System.out.printf("Profiling done\n");
 
+				//====================================================================================				
+				
 				ArrayList<DataTileEntityRender> tileEntData = new ArrayList<DataTileEntityRender>();
 				double tileEntTotal = 0.0D;
 				for (TileEntity te : ((ProfilerRenderTileEntity)ProfilerSection.RENDER_TILEENTITY.getProfiler()).data.keySet()){
@@ -77,6 +83,8 @@ public class OpisClientTickHandler implements ITickHandler {
 				((PanelRenderTileEnts)(TabPanelRegistrar.INSTANCE.getTab("opis.client.terender"))).setTable(tileEntData);
 				((PanelRenderTileEnts)(TabPanelRegistrar.INSTANCE.getTab("opis.client.terender"))).getLblTotal().setText(String.format("Total : %.3f µs", tileEntTotal / 1000.0));
 				
+				//====================================================================================
+				
 				ArrayList<DataEntityRender> entData = new ArrayList<DataEntityRender>();
 				double entTotal = 0.0D;
 				for (Entity ent : ((ProfilerRenderEntity)ProfilerSection.RENDER_ENTITY.getProfiler()).data.keySet()){
@@ -93,7 +101,30 @@ public class OpisClientTickHandler implements ITickHandler {
 				
 				Collections.sort(entData);
 				((PanelRenderEntities)(TabPanelRegistrar.INSTANCE.getTab("opis.client.entrender"))).setTable(entData);
-				((PanelRenderEntities)(TabPanelRegistrar.INSTANCE.getTab("opis.client.entrender"))).getLblTotal().setText(String.format("Total : %.3f µs", entTotal / 1000.0));				
+				((PanelRenderEntities)(TabPanelRegistrar.INSTANCE.getTab("opis.client.entrender"))).getLblTotal().setText(String.format("Total : %.3f µs", entTotal / 1000.0));
+				
+				//====================================================================================				
+				
+				ArrayList<DataBlockRender> blockData = new ArrayList<DataBlockRender>();
+				for (CoordinatesBlock coord : ((ProfilerRenderBlock)ProfilerSection.RENDER_BLOCK.getProfiler()).data.keySet()){
+					try{
+						DataBlockRender dataBlock = new DataBlockRender().fill(coord);
+						blockData.add(dataBlock);
+					} catch (Exception e) {
+						modOpis.log.warning(String.format("Error while adding block %s to the list", coord));
+					}					
+				}
+
+				Collections.sort(blockData);
+				for (DataBlockRender data : blockData){
+					ItemStack stack = new ItemStack(data.id, 0, data.meta);
+					String    name  = stack.getDisplayName();
+					
+					//name = String.format("block.%s.%s", data.id, data.meta);
+					
+					System.out.printf("%s %s : %s\n", data.pos, name, data.update);
+				}
+				
 			}		
 		}
 	}
