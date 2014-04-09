@@ -122,7 +122,8 @@ public class ProxyClient extends ProxyServer implements IMessageHandler{
 		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.STATUS_RUN_UPDATE,      panelSummary);
 		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.STATUS_RUNNING,         panelSummary);
 		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.STATUS_TIME_LAST_RUN,   panelSummary);
-		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.VALUE_TIMING_ENTUPDATE, panelSummary);	
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.VALUE_TIMING_ENTUPDATE, panelSummary);
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.VALUE_TIMING_NETWORK,   panelSummary);
 		
 		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.LIST_DIMENSION_DATA,    panelDimensions);
 		

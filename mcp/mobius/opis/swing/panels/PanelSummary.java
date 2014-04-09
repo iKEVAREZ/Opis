@@ -16,6 +16,7 @@ import mcp.mobius.opis.data.holders.basetypes.SerialDouble;
 import mcp.mobius.opis.data.holders.basetypes.SerialInt;
 import mcp.mobius.opis.data.holders.basetypes.SerialLong;
 import mcp.mobius.opis.data.holders.newtypes.DataBlockTick;
+import mcp.mobius.opis.data.holders.newtypes.DataNetworkTick;
 import mcp.mobius.opis.data.holders.newtypes.DataTileEntity;
 import mcp.mobius.opis.data.holders.newtypes.DataTiming;
 import mcp.mobius.opis.data.holders.newtypes.DataTimingMillisecond;
@@ -64,7 +65,7 @@ public class PanelSummary extends JPanelMsgHandler implements ITabPanel{
 	 * Create the panel.
 	 */
 	public PanelSummary() {
-		setLayout(new MigLayout("", "[20px:20px:20px,grow][][20px:20px:20px][60px:60px:60px][][20px:20px:20px][50px:50px:50px][20px:20px:20px][][20px:20px:20px][50px:50px:50px][][20px:20px:20px][grow][]", "[20px:20px:20px][][][][][][][][20px:20px:20px][][grow]"));
+		setLayout(new MigLayout("", "[20px:20px:20px,grow][][20px:20px:20px][60px:60px:60px][][20px:20px:20px][50px:50px:50px][20px:20px:20px][][20px:20px:20px][50px:50px:50px][][20px:20px:20px][grow][]", "[20px:20px:20px][][][][][][][20px:20px:20px][][20px:20px:20px][][grow]"));
 		
 		JLabel lblNewLabel_5 = new JLabel("Update time");
 		add(lblNewLabel_5, "cell 3 1 2 1,alignx right");
@@ -142,6 +143,12 @@ public class PanelSummary extends JPanelMsgHandler implements ITabPanel{
 		lblAmountForced = new JLabel("0");
 		add(lblAmountForced, "cell 10 5 2 1,alignx right");
 		
+		JLabel lblNewLabel_32 = new JLabel("Network");
+		add(lblNewLabel_32, "cell 1 6");
+		
+		lblTimingNetwork = new JLabel("0");
+		add(lblTimingNetwork, "cell 3 6 2 1,alignx right");
+		
 		JLabel lblNewLabel_23 = new JLabel("Loaded chunks");
 		add(lblNewLabel_23, "cell 8 6");
 		
@@ -149,19 +156,19 @@ public class PanelSummary extends JPanelMsgHandler implements ITabPanel{
 		add(lblAmountLoaded, "cell 10 6 2 1,alignx right");
 		
 		JLabel lblNewLabel_4 = new JLabel("Total");
-		add(lblNewLabel_4, "cell 1 7");
+		add(lblNewLabel_4, "cell 1 8");
 		
 		lblTimingTotal = new JLabel("0");
-		add(lblTimingTotal, "cell 3 7 2 1,alignx right");
+		add(lblTimingTotal, "cell 3 8 2 1,alignx right");
 		
 		JLabel lblNewLabel_31 = new JLabel("Tick Time");
-		add(lblNewLabel_31, "cell 1 9");
+		add(lblNewLabel_31, "cell 1 10");
 		
 		lblTickTime = new JLabel("0");
-		add(lblTickTime, "cell 3 9 2 1,alignx right");
+		add(lblTickTime, "cell 3 10 2 1,alignx right");
 		
 		JPanel panel = this.createGraph();
-		add(panel, "cell 0 10 15 1,grow");
+		add(panel, "cell 0 11 15 1,grow");
 
 	}
 
@@ -197,6 +204,7 @@ public class PanelSummary extends JPanelMsgHandler implements ITabPanel{
 	private DataTimingMillisecond timingHandlersTotal  = new DataTimingMillisecond();
 	private DataTimingMillisecond timingTileEntsTotal  = new DataTimingMillisecond();
 	private DataTimingMillisecond timingEntitiesTotal  = new DataTimingMillisecond();
+	private DataTimingMillisecond timingNetworkTotal   = new DataTimingMillisecond();
 	
 	public void setTimingEntUpdateTotal(double value){
 	}	
@@ -205,6 +213,7 @@ public class PanelSummary extends JPanelMsgHandler implements ITabPanel{
 	XYSeries xydata = new XYSeries("Update time");
 	XYSeriesCollection dataset = new XYSeriesCollection();
 	XYPlot xyPlot;
+	private JLabel lblTimingNetwork;
 	
 	private JPanel createGraph(){
 		JFreeChart chart = ChartFactory.createXYAreaChart("", "Seconds", "Update Time [ms]", dataset, PlotOrientation.VERTICAL, false, false, false);
@@ -247,7 +256,7 @@ public class PanelSummary extends JPanelMsgHandler implements ITabPanel{
 	}
 
 	private DataTimingMillisecond getProfiledTickTotalTime(){
-		return new DataTimingMillisecond(timingWorldTickTotal.timing + timingTileEntsTotal.timing + timingEntitiesTotal.timing + timingHandlersTotal.timing);
+		return new DataTimingMillisecond(timingWorldTickTotal.timing + timingTileEntsTotal.timing + timingEntitiesTotal.timing + timingHandlersTotal.timing + timingNetworkTotal.timing);
 	}
 
 	@Override
@@ -287,6 +296,11 @@ public class PanelSummary extends JPanelMsgHandler implements ITabPanel{
 			this.getLblAmountLoaded().setText(String.valueOf(((SerialInt)rawdata.value).value));
 			break;
 		}
+		case VALUE_TIMING_NETWORK:{
+			this.timingNetworkTotal = ((DataNetworkTick)rawdata.value).update.asMillisecond();
+			this.getLblTimingNetwork().setText(this.timingNetworkTotal.toString());			
+			break;
+		}			
 		case VALUE_TIMING_TILEENTS:{
 			this.timingTileEntsTotal = ((DataTiming)rawdata.value).asMillisecond();
 			this.getLblTimingTileEnts().setText(this.timingTileEntsTotal.toString());
@@ -374,5 +388,8 @@ public class PanelSummary extends JPanelMsgHandler implements ITabPanel{
 	@Override
 	public String getTabRefName() {
 		return "opis.summary";
+	}
+	public JLabel getLblTimingNetwork() {
+		return lblTimingNetwork;
 	}
 }
