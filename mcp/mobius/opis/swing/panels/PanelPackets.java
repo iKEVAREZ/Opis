@@ -4,6 +4,7 @@ import javax.swing.JPanel;
 
 import mcp.mobius.opis.api.ITabPanel;
 import mcp.mobius.opis.data.holders.newtypes.DataPacket;
+import mcp.mobius.opis.data.holders.newtypes.DataPacket250;
 import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.packets.server.NetDataRaw;
 import mcp.mobius.opis.swing.widgets.JPanelMsgHandler;
@@ -20,7 +21,8 @@ import javax.swing.JTabbedPane;
 public class PanelPackets extends JPanelMsgHandler implements ITabPanel {
 	private JTableStats tableOutbound;
 	private JTableStats tableInbound;
-	private JTableStats tablePacket250;
+	private JTableStats tablePacket250Outbound;
+	private JTableStats tablePacket250Inbound;
 
 	public PanelPackets() {
 		setLayout(new MigLayout("", "[grow]", "[grow]"));
@@ -73,10 +75,48 @@ public class PanelPackets extends JPanelMsgHandler implements ITabPanel {
 		scrollPane_1.setViewportView(tableInbound);
 		
 		JScrollPane scrollPane_2 = new JScrollPane();
-		tabbedPane.addTab("Packet250", null, scrollPane_2, null);
+		tabbedPane.addTab("Outbound 250", null, scrollPane_2, null);
 		
-		tablePacket250 = new JTableStats();
-		scrollPane_2.setViewportView(tablePacket250);
+		tablePacket250Outbound = new JTableStats();
+		tablePacket250Outbound.setModel(new DefaultTableModel(
+			new Object[][] {
+				{null, null, null},
+			},
+			new String[] {
+				"Channel", "Amount", "Total Size"
+			}
+		) {
+			Class[] columnTypes = new Class[] {
+				String.class, Integer.class, Integer.class
+			};
+			public Class getColumnClass(int columnIndex) {
+				return columnTypes[columnIndex];
+			}
+		});
+		tablePacket250Outbound.setAutoCreateRowSorter(true);	
+		scrollPane_2.setViewportView(tablePacket250Outbound);
+		
+		JScrollPane scrollPane_3 = new JScrollPane();
+		tabbedPane.addTab("Inbound 250", null, scrollPane_3, null);
+		
+		tablePacket250Inbound = new JTableStats();
+		tablePacket250Inbound.setModel(new DefaultTableModel(
+				new Object[][] {
+					{null, null, null},
+				},
+				new String[] {
+					"Channel", "Amount", "Total Size"
+				}
+			) {
+				Class[] columnTypes = new Class[] {
+					String.class, Integer.class, Integer.class
+				};
+				public Class getColumnClass(int columnIndex) {
+					return columnTypes[columnIndex];
+				}
+			});
+		tablePacket250Inbound.setAutoCreateRowSorter(true);		
+		scrollPane_3.setViewportView(tablePacket250Inbound);
 		
 	}
 
@@ -134,19 +174,64 @@ public class PanelPackets extends JPanelMsgHandler implements ITabPanel {
 			break;
 		}		
 		
+		case LIST_PACKETS_OUTBOUND_250:{
+			
+			((JTableStats)this.getTablePacket250Outbound()).setTableData(rawdata.array);
+			
+			DefaultTableModel model = (DefaultTableModel)this.getTablePacket250Outbound().getModel();
+			int               row   = this.updateData(tablePacket250Outbound, model, DataPacket.class);
+
+			for (Object o : rawdata.array){
+				DataPacket250 packet = (DataPacket250)o;
+				model.addRow(new Object[]  {
+					packet.channel,
+					packet.amount,
+					packet.size  
+					 });
+			}
+			
+			this.dataUpdated(tablePacket250Outbound, model, row);			
+			
+			break;
+		}		
+		
+		case LIST_PACKETS_INBOUND_250:{
+			
+			((JTableStats)this.getTablePacket250Inbound()).setTableData(rawdata.array);
+			
+			DefaultTableModel model = (DefaultTableModel)this.getTablePacket250Inbound().getModel();
+			int               row   = this.updateData(tablePacket250Inbound, model, DataPacket.class);
+
+			for (Object o : rawdata.array){
+				DataPacket250 packet = (DataPacket250)o;
+				model.addRow(new Object[]  {
+					packet.channel,
+					packet.amount,
+					packet.size  
+					 });
+			}
+			
+			this.dataUpdated(tablePacket250Inbound, model, row);			
+			
+			break;
+		}			
+		
 		default:
 			return false;
 			
 		}
 		return true;
 	}
-	public JTableStats getTablePacket250() {
-		return tablePacket250;
+	public JTableStats getTablePacket250Outbound() {
+		return tablePacket250Outbound;
 	}
 	public JTableStats getTableInbound() {
 		return tableInbound;
 	}
 	public JTableStats getTableOutbound() {
 		return tableOutbound;
+	}
+	public JTable getTablePacket250Inbound() {
+		return tablePacket250Inbound;
 	}
 }

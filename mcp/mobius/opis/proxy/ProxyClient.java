@@ -134,6 +134,8 @@ public class ProxyClient extends ProxyServer implements IMessageHandler{
 		
 		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.LIST_PACKETS_OUTBOUND,  panelPackets);
 		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.LIST_PACKETS_INBOUND,   panelPackets);
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.LIST_PACKETS_OUTBOUND_250, panelPackets);
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.LIST_PACKETS_INBOUND_250,  panelPackets);
 		
 		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.CLIENT_CLEAR_SELECTION,  modOpis.proxy);
 		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.CLIENT_START_PROFILING,  modOpis.proxy);

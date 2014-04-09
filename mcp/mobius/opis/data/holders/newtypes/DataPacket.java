@@ -19,7 +19,7 @@ public class DataPacket implements ISerializable{
 	public DataPacket(int id){
 		this.id   = id;
 		try {
-			this.type = ((Class)(Packet.packetIdToClassMap.lookup(this.id))).getName();
+			this.type = ((Class)(Packet.packetIdToClassMap.lookup(this.id))).getSimpleName();
 		} catch (Exception e) {
 			this.type = "<UNUSED>";
 		}
@@ -44,7 +44,7 @@ public class DataPacket implements ISerializable{
 		retVal.size       = stream.readLong();
 		retVal.amount     = stream.readLong();
 		try {
-			retVal.type = ((Class)(Packet.packetIdToClassMap.lookup(retVal.id))).getName();
+			retVal.type = ((Class)(Packet.packetIdToClassMap.lookup(retVal.id))).getSimpleName();
 		} catch (Exception e) {
 			retVal.type = "<UNUSED>";
 		}
