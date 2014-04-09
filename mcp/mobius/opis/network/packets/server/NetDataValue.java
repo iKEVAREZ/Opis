@@ -35,8 +35,8 @@ public class NetDataValue extends NetDataRaw{
 	public static NetDataValue create(Message dataReq, ISerializable data){
 		//Packet250Metadata packet      = new Packet250Metadata();
 		Packet250CustomPayload packet = new Packet250CustomPayload();
-		ByteArrayOutputStream bos     = new ByteArrayOutputStream(1);
-		DataOutputStream      ostream = new DataOutputStream(bos);
+		ByteArrayOutputStream  bos     = new ByteArrayOutputStream(1);
+		DataOutputStream       ostream = new DataOutputStream(bos);
 
 		try{
 			ostream.writeByte(Packets.NETDATAVALUE);

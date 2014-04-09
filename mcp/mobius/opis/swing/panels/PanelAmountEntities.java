@@ -128,4 +128,9 @@ public class PanelAmountEntities extends JPanelMsgHandler implements ITabPanel{
 	public String getTabRefName() {
 		return "opis.amountents";
 	}
+
+	@Override
+	public Message getFocusMessage() {
+		return Message.SWING_TAB_AMOUNTENTS;
+	}
 }

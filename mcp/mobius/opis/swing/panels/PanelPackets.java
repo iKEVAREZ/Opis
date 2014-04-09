@@ -234,4 +234,9 @@ public class PanelPackets extends JPanelMsgHandler implements ITabPanel {
 	public JTable getTablePacket250Inbound() {
 		return tablePacket250Inbound;
 	}
+	
+	@Override
+	public Message getFocusMessage() {
+		return Message.SWING_TAB_PACKETS;
+	}		
 }

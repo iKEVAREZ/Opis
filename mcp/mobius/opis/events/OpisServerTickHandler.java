@@ -81,8 +81,6 @@ public enum OpisServerTickHandler implements ITickHandler {
 				OpisPacketHandler.sendPacketToAllSwing(NetDataValue.create(Message.VALUE_AMOUNT_TILEENTS, new SerialInt(TileEntityManager.INSTANCE.getAmountTileEntities())));
 				OpisPacketHandler.sendPacketToAllSwing(NetDataValue.create(Message.VALUE_AMOUNT_ENTITIES, new SerialInt(EntityManager.INSTANCE.getAmountEntities())));
 				
-				OpisPacketHandler.sendPacketToAllSwing(NetDataList.create(Message.LIST_PLAYERS,           EntityManager.INSTANCE.getAllPlayers()));
-				
 				for (Player player : PlayerTracker.instance().playersSwing){
 					OpisPacketHandler.validateAndSend(NetDataValue.create(Message.STATUS_ACCESS_LEVEL, new SerialInt(PlayerTracker.instance().getPlayerAccessLevel(player).ordinal())), player);
 				}
@@ -108,6 +106,8 @@ public enum OpisServerTickHandler implements ITickHandler {
 			if (System.nanoTime() - timer5000 > 5000000000L){
 				timer5000 = System.nanoTime();
 				updatePlayers();
+				
+				OpisPacketHandler.sendPacketToAllSwing(NetDataList.create(Message.LIST_PLAYERS, EntityManager.INSTANCE.getAllPlayers()));
 				
 				OpisPacketHandler.sendPacketToAllSwing(NetDataList.create(Message.LIST_PACKETS_OUTBOUND, ((ProfilerPacket)ProfilerSection.PACKET_OUTBOUND.getProfiler()).data));
 				OpisPacketHandler.sendPacketToAllSwing(NetDataList.create(Message.LIST_PACKETS_INBOUND,  ((ProfilerPacket)ProfilerSection.PACKET_INBOUND.getProfiler()).data));

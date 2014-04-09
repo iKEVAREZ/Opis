@@ -418,4 +418,9 @@ public class PanelSummary extends JPanelMsgHandler implements ITabPanel{
 	public JLabel getLblTimingPing() {
 		return lblTimingPing;
 	}
+	
+	@Override
+	public Message getFocusMessage() {
+		return Message.SWING_TAB_SUMMARY;
+	}						
 }

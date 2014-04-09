@@ -176,4 +176,9 @@ public class PanelTimingTileEnts extends JPanelMsgHandler implements ITabPanel{
 	public String getTabRefName() {
 		return "opis.timingtileents";
 	}
+	
+	@Override
+	public Message getFocusMessage() {
+		return Message.SWING_TAB_TIMINGTILEENTS;
+	}		
 }

@@ -9,6 +9,8 @@ import javax.swing.JTabbedPane;
 import javax.swing.ToolTipManager;
 import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
@@ -37,7 +39,7 @@ import mcp.mobius.opis.swing.panels.PanelTimingHandlers;
 import mcp.mobius.opis.swing.panels.PanelTimingTileEnts;
 import mcp.mobius.opis.swing.widgets.JButtonAccess;
 
-public class SwingUI extends JFrame implements WindowListener, IMessageHandler{
+public class SwingUI extends JFrame implements WindowListener, ChangeListener, IMessageHandler{
 
 	public static HashSet<JButtonAccess> registeredButtons = new HashSet<JButtonAccess>();
 	
@@ -75,6 +77,7 @@ public class SwingUI extends JFrame implements WindowListener, IMessageHandler{
 		setContentPane(contentPane);
 		
 		tabbedPane = new JTabbedPane(SwingConstants.TOP);
+		tabbedPane.addChangeListener(this);
 		contentPane.add(tabbedPane, BorderLayout.CENTER);
 
 		this.addWindowListener(this);
@@ -136,5 +139,11 @@ public class SwingUI extends JFrame implements WindowListener, IMessageHandler{
 			
 		}
 		return true;		
+	}
+
+	@Override
+	public void stateChanged(ChangeEvent e) {
+		ITabPanel panel = ((ITabPanel)((JTabbedPane)e.getSource()).getSelectedComponent());
+		PacketDispatcher.sendPacketToServer(Packet_ReqData.create(panel.getFocusMessage()));
 	}
 }

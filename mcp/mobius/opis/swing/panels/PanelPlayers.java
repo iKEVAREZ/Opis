@@ -133,4 +133,9 @@ public class PanelPlayers extends JPanelMsgHandler implements ITabPanel{
 	public String getTabRefName() {
 		return "opis.players";
 	}
+	
+	@Override
+	public Message getFocusMessage() {
+		return Message.SWING_TAB_PLAYERS;
+	}			
 }

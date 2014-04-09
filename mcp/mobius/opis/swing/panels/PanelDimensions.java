@@ -123,4 +123,9 @@ public class PanelDimensions extends JPanelMsgHandler implements IMessageHandler
 	public JButton getBtnPurgeAll() {
 		return btnPurgeAll;
 	}
+	
+	@Override
+	public Message getFocusMessage() {
+		return Message.SWING_TAB_DIMENSIONS;
+	}	
 }

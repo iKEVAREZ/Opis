@@ -139,4 +139,9 @@ public class PanelTimingChunks extends JPanelMsgHandler implements ITabPanel{
 	public String getTabRefName() {
 		return "opis.timingchunks";
 	}
+	
+	@Override
+	public Message getFocusMessage() {
+		return Message.SWING_TAB_TIMINGCHUNKS;
+	}	
 }

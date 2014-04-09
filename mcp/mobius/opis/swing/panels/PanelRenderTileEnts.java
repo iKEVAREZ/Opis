@@ -4,9 +4,12 @@ import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
+import mcp.mobius.opis.api.IMessageHandler;
 import mcp.mobius.opis.api.ITabPanel;
 import mcp.mobius.opis.data.holders.newtypes.DataTileEntityRender;
 import mcp.mobius.opis.data.holders.newtypes.DataTiming;
+import mcp.mobius.opis.network.enums.Message;
+import mcp.mobius.opis.network.packets.server.NetDataRaw;
 import mcp.mobius.opis.swing.actions.ActionRunOpisClient;
 import mcp.mobius.opis.swing.widgets.JTableStats;
 import net.miginfocom.swing.MigLayout;
@@ -20,7 +23,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JLabel;
 
-public class PanelRenderTileEnts extends JPanel implements ITabPanel{
+public class PanelRenderTileEnts extends JPanel implements ITabPanel, IMessageHandler{
 	private JTableStats table;
 	private JButton btnRunRender;
 	private JLabel lblTotal;
@@ -133,4 +136,15 @@ public class PanelRenderTileEnts extends JPanel implements ITabPanel{
 	public JLabel getLblTotal() {
 		return lblTotal;
 	}
+
+	@Override
+	public boolean handleMessage(Message msg, NetDataRaw rawdata) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
+	@Override
+	public Message getFocusMessage() {
+		return Message.SWING_TAB_RENDERTILEENTS;
+	}					
 }
