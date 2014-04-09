@@ -25,17 +25,12 @@ import cpw.mods.fml.common.TickType;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 
-public class OpisClientTickHandler implements ITickHandler {
-
+public enum OpisClientTickHandler implements ITickHandler {
+	INSTANCE;
+	
 	public long profilerUpdateTickCounter = 0;	
 	public long profilerRunningTicks = 0;
 	public long timer1000 = System.nanoTime();
-	
-	public static OpisClientTickHandler instance;
-	
-	public OpisClientTickHandler(){
-		instance = this;
-	}	
 	
 	@Override
 	public void tickStart(EnumSet<TickType> type, Object... tickData) {}
@@ -48,6 +43,8 @@ public class OpisClientTickHandler implements ITickHandler {
 			if (System.nanoTime() - timer1000 > 1000000000L){
 				timer1000 = System.nanoTime();
 			}
+			
+			
 			
 			if (modOpis.profilerRunClient){
 				((PanelRenderTileEnts)(TabPanelRegistrar.INSTANCE.getTab("opis.client.terender"))).getBtnRunRender().setText("Running...");

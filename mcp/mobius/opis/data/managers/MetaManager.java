@@ -10,7 +10,7 @@ public class MetaManager {
 	public static void reset(){
 		modOpis.profilerRun   = false;
 		modOpis.selectedBlock = null;
-		OpisServerTickHandler.instance.profilerRunningTicks = 0;
+		OpisServerTickHandler.INSTANCE.profilerRunningTicks = 0;
 		
 		ProfilerSection.resetAll(Side.SERVER);
 		ProfilerSection.desactivateAll(Side.SERVER);

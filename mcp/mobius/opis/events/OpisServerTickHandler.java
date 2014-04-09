@@ -40,19 +40,14 @@ import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.relauncher.Side;
 import mcp.mobius.mobiuscore.profiler.ProfilerSection;
 
-public class OpisServerTickHandler implements ITickHandler {
-
+public enum OpisServerTickHandler implements ITickHandler {
+	INSTANCE;
+	
 	public long profilerUpdateTickCounter = 0;	
 	public int  profilerRunningTicks;
 	public long timer500  = System.nanoTime();	
 	public long timer1000 = System.nanoTime();
 	public long timer5000 = System.nanoTime();
-	
-	public static OpisServerTickHandler instance;
-	
-	public OpisServerTickHandler(){
-		instance = this;
-	}
 	
 	@Override
 	public void tickStart(EnumSet<TickType> type, Object... tickData) {

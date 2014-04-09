@@ -134,8 +134,8 @@ public class modOpis {
 	
 	@EventHandler
 	public void load(FMLInitializationEvent event) {
-		TickRegistry.registerTickHandler(new OpisServerTickHandler(), Side.SERVER);
-		TickRegistry.registerTickHandler(new OpisClientTickHandler(), Side.CLIENT);
+		TickRegistry.registerTickHandler(OpisServerTickHandler.INSTANCE, Side.SERVER);
+		TickRegistry.registerTickHandler(OpisClientTickHandler.INSTANCE, Side.CLIENT);
 		
 		if (lagGenID != -1){
 			Block blockDemo = new BlockLag(lagGenID, Material.wood);
