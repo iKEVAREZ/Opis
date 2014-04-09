@@ -14,9 +14,16 @@ public class ProfilerPacket extends ProfilerAbstract {
 	public ArrayList<DataPacket>          data    = new ArrayList<DataPacket>();
 	public HashMap<String, DataPacket250> data250 = new HashMap<String, DataPacket250>();
 	
+	public ArrayList<DataPacket>	jabbaSpec     = new ArrayList<DataPacket>();
+	
 	public ProfilerPacket(){
 		for (int i = 0; i < 254; i++)
 			data.add(new DataPacket(i));
+		
+		/*
+		for (int i = 0; i < 15; i++)
+			jabbaSpec.add(new DataPacket(i));
+		*/		
 	}
 	
 	@Override
@@ -37,6 +44,13 @@ public class ProfilerPacket extends ProfilerAbstract {
 					data250.put(channel, new DataPacket250(channel));
 				
 				data250.get(channel).fill(packet);
+				
+				/*
+				if (channel.equals("JABBA")){
+					byte ID = ((Packet250CustomPayload)packet).data[0];
+					jabbaSpec.get(ID).fill(packet);
+				}
+				*/
 			}
 		}
 	}

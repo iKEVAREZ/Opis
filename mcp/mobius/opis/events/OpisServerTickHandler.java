@@ -19,6 +19,7 @@ import mcp.mobius.opis.data.holders.basetypes.SerialDouble;
 import mcp.mobius.opis.data.holders.basetypes.SerialInt;
 import mcp.mobius.opis.data.holders.basetypes.SerialLong;
 import mcp.mobius.opis.data.holders.newtypes.DataDimension;
+import mcp.mobius.opis.data.holders.newtypes.DataPacket;
 import mcp.mobius.opis.data.holders.newtypes.DataPacket250;
 import mcp.mobius.opis.data.holders.newtypes.DataTiming;
 import mcp.mobius.opis.data.holders.stats.StatsChunk;
@@ -112,7 +113,13 @@ public enum OpisServerTickHandler implements ITickHandler {
 				OpisPacketHandler.sendPacketToAllSwing(NetDataList.create(Message.LIST_PACKETS_INBOUND,  ((ProfilerPacket)ProfilerSection.PACKET_INBOUND.getProfiler()).data));
 				
 				OpisPacketHandler.sendPacketToAllSwing(NetDataList.create(Message.LIST_PACKETS_OUTBOUND_250, new ArrayList<DataPacket250>( ((ProfilerPacket)ProfilerSection.PACKET_OUTBOUND.getProfiler()).data250.values())));
-				OpisPacketHandler.sendPacketToAllSwing(NetDataList.create(Message.LIST_PACKETS_INBOUND_250,  new ArrayList<DataPacket250>( ((ProfilerPacket)ProfilerSection.PACKET_INBOUND.getProfiler()).data250.values())));				
+				OpisPacketHandler.sendPacketToAllSwing(NetDataList.create(Message.LIST_PACKETS_INBOUND_250,  new ArrayList<DataPacket250>( ((ProfilerPacket)ProfilerSection.PACKET_INBOUND.getProfiler()).data250.values())));
+				
+				/*
+				for (DataPacket data : ((ProfilerPacket)ProfilerSection.PACKET_OUTBOUND.getProfiler()).jabbaSpec){
+					System.out.printf("[ %d ] %d %d\n", data.id, data.amount, data.size);
+				}
+				*/
 			}
 			
 			profilerUpdateTickCounter++;
