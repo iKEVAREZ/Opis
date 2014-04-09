@@ -12,6 +12,7 @@ import mcp.mobius.opis.gui.overlay.entperchunk.OverlayEntityPerChunk;
 import mcp.mobius.opis.network.enums.AccessLevel;
 import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.packets.server.NetDataRaw;
+import mcp.mobius.opis.swing.SelectedTab;
 import mcp.mobius.opis.swing.actions.ActionRunOpis;
 import mcp.mobius.opis.swing.actions.ActionTimingEntities;
 import mcp.mobius.opis.swing.widgets.JButtonAccess;
@@ -158,7 +159,7 @@ public class PanelTimingEntities extends JPanelMsgHandler implements ITabPanel{
 	}
 	
 	@Override
-	public Message getFocusMessage() {
-		return Message.SWING_TAB_TIMINGENTITES;
+	public SelectedTab getSelectedTab() {
+		return SelectedTab.TIMINGENTITES;
 	}		
 }

@@ -144,6 +144,6 @@ public class SwingUI extends JFrame implements WindowListener, ChangeListener, I
 	@Override
 	public void stateChanged(ChangeEvent e) {
 		ITabPanel panel = ((ITabPanel)((JTabbedPane)e.getSource()).getSelectedComponent());
-		PacketDispatcher.sendPacketToServer(Packet_ReqData.create(panel.getFocusMessage()));
+		PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.SWING_TAB_CHANGED, new SerialInt(panel.getSelectedTab().ordinal())));
 	}
 }

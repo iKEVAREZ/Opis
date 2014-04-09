@@ -15,6 +15,7 @@ import mcp.mobius.opis.helpers.ModIdentification;
 import mcp.mobius.opis.network.enums.AccessLevel;
 import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.packets.server.NetDataRaw;
+import mcp.mobius.opis.swing.SelectedTab;
 import mcp.mobius.opis.swing.actions.ActionRunOpis;
 import mcp.mobius.opis.swing.actions.ActionTimingTileEnts;
 import mcp.mobius.opis.swing.widgets.JButtonAccess;
@@ -178,7 +179,7 @@ public class PanelTimingTileEnts extends JPanelMsgHandler implements ITabPanel{
 	}
 	
 	@Override
-	public Message getFocusMessage() {
-		return Message.SWING_TAB_TIMINGTILEENTS;
+	public SelectedTab getSelectedTab() {
+		return SelectedTab.TIMINGTILEENTS;
 	}		
 }

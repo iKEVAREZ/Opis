@@ -1,8 +1,12 @@
 package mcp.mobius.opis.network.enums;
 
 import static mcp.mobius.opis.network.enums.AccessLevel.*;
+
+import java.util.EnumSet;
+
 import cpw.mods.fml.common.network.Player;
 import mcp.mobius.opis.events.PlayerTracker;
+import mcp.mobius.opis.swing.SelectedTab;
 
 public enum Message {
 	
@@ -79,27 +83,30 @@ public enum Message {
 	CLIENT_CLEAR_SELECTION,	
 	CLIENT_HIGHLIGHT_BLOCK,
 	
-	SWING_TAB_AMOUNTENTS,
-	SWING_TAB_DIMENSIONS,
-	SWING_TAB_PACKETS,
-	SWING_TAB_PLAYERS,
-	SWING_TAB_RENDERENTITIES,
-	SWING_TAB_RENDERTILEENTS,
-	SWING_TAB_SUMMARY,
-	SWING_TAB_TIMINGCHUNKS,
-	SWING_TAB_TIMINGENTITES,
-	SWING_TAB_TIMINGHANDLERS,
-	SWING_TAB_TIMINGTILEENTS;
+	SWING_TAB_CHANGED;
 	
 	private AccessLevel accessLevel = AccessLevel.NONE;
+	private EnumSet<SelectedTab>  tabEnum;
 	
 	private Message(){
 		accessLevel = AccessLevel.NONE;
+		tabEnum     = EnumSet.of(SelectedTab.ANY);
 	}
 
 	private Message(AccessLevel level){
 		accessLevel = level;
+		tabEnum     = EnumSet.of(SelectedTab.ANY);		
 	}	
+
+	private Message(EnumSet<SelectedTab> _tabEnum){
+		accessLevel = AccessLevel.NONE;
+		tabEnum     = _tabEnum;
+	}
+
+	private Message(AccessLevel level, EnumSet<SelectedTab> _tabEnum){
+		accessLevel = level;
+		tabEnum     = _tabEnum;		
+	}		
 	
 	public AccessLevel getAccessLevel(){
 		return this.accessLevel;
@@ -115,6 +122,13 @@ public enum Message {
 	
 	public boolean canPlayerUseCommand(String name){
 		return PlayerTracker.instance().getPlayerAccessLevel(name).ordinal() >= this.accessLevel.ordinal();
+	}
+	
+	public boolean isDisplayActive(SelectedTab tab){
+		if (this.tabEnum.contains(SelectedTab.ANY))  return true;
+		if (this.tabEnum.contains(SelectedTab.NONE)) return false;
+		if (this.tabEnum.contains(tab)) return true;
+		return false;
 	}
 	
 	public static void setTablesMinimumLevel(AccessLevel level){

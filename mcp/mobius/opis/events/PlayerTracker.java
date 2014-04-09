@@ -6,6 +6,7 @@ import java.util.HashSet;
 import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.gui.overlay.OverlayStatus;
 import mcp.mobius.opis.network.enums.AccessLevel;
+import mcp.mobius.opis.swing.SelectedTab;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
@@ -23,7 +24,12 @@ public class PlayerTracker implements IPlayerTracker{
 	public HashMap<String, Boolean> filteredAmount = new HashMap<String, Boolean>(); //Should the entity amount be filtered or not
 	public HashMap<Player, OverlayStatus> playerOverlayStatus = new HashMap<Player, OverlayStatus>();
 	public HashMap<Player, Integer>       playerDimension     = new HashMap<Player, Integer>();
+	public HashMap<Player, SelectedTab>   playerTab           = new HashMap<Player, SelectedTab>();
 	private HashSet<String> playerPrivileged = new HashSet<String>();
+	
+	public SelectedTab getPlayerSelectedTab(Player player){
+		return this.playerTab.get(player);
+	}
 	
 	public AccessLevel getPlayerAccessLevel(Player player){
 		return this.getPlayerAccessLevel(((EntityPlayerMP)player).username);

@@ -174,6 +174,8 @@ public class OpisPacketHandler implements IPacketHandler {
 	}        
 	
 	public static void validateAndSend(NetDataRaw capsule, Player player){
+		if (!capsule.msg.isDisplayActive(PlayerTracker.instance().getPlayerSelectedTab(player))) return;
+		
 		if (capsule.msg.canPlayerUseCommand(player) && capsule.packet.getPacketSize() < 32000)
 			PacketDispatcher.sendPacketToPlayer(capsule.packet, player);
 		else if (capsule.packet.getPacketSize() > 32000)

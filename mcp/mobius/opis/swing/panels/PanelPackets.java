@@ -7,6 +7,7 @@ import mcp.mobius.opis.data.holders.newtypes.DataPacket;
 import mcp.mobius.opis.data.holders.newtypes.DataPacket250;
 import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.packets.server.NetDataRaw;
+import mcp.mobius.opis.swing.SelectedTab;
 import mcp.mobius.opis.swing.widgets.JPanelMsgHandler;
 import mcp.mobius.opis.swing.widgets.JTableStats;
 import net.miginfocom.swing.MigLayout;
@@ -236,7 +237,7 @@ public class PanelPackets extends JPanelMsgHandler implements ITabPanel {
 	}
 	
 	@Override
-	public Message getFocusMessage() {
-		return Message.SWING_TAB_PACKETS;
+	public SelectedTab getSelectedTab() {
+		return SelectedTab.PACKETS;
 	}		
 }

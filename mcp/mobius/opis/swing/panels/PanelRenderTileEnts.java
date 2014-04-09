@@ -10,6 +10,7 @@ import mcp.mobius.opis.data.holders.newtypes.DataTileEntityRender;
 import mcp.mobius.opis.data.holders.newtypes.DataTiming;
 import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.packets.server.NetDataRaw;
+import mcp.mobius.opis.swing.SelectedTab;
 import mcp.mobius.opis.swing.actions.ActionRunOpisClient;
 import mcp.mobius.opis.swing.widgets.JTableStats;
 import net.miginfocom.swing.MigLayout;
@@ -144,7 +145,7 @@ public class PanelRenderTileEnts extends JPanel implements ITabPanel, IMessageHa
 	}
 	
 	@Override
-	public Message getFocusMessage() {
-		return Message.SWING_TAB_RENDERTILEENTS;
+	public SelectedTab getSelectedTab() {
+		return SelectedTab.RENDERTILEENTS;
 	}					
 }

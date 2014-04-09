@@ -10,6 +10,7 @@ import mcp.mobius.opis.gui.overlay.OverlayMeanTime;
 import mcp.mobius.opis.network.enums.AccessLevel;
 import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.packets.server.NetDataRaw;
+import mcp.mobius.opis.swing.SelectedTab;
 import mcp.mobius.opis.swing.actions.ActionRunOpis;
 import mcp.mobius.opis.swing.actions.ActionTimingChunks;
 import mcp.mobius.opis.swing.widgets.JButtonAccess;
@@ -141,7 +142,7 @@ public class PanelTimingChunks extends JPanelMsgHandler implements ITabPanel{
 	}
 	
 	@Override
-	public Message getFocusMessage() {
-		return Message.SWING_TAB_TIMINGCHUNKS;
+	public SelectedTab getSelectedTab() {
+		return SelectedTab.TIMINGCHUNKS;
 	}	
 }

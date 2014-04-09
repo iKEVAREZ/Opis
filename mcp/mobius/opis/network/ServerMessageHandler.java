@@ -43,6 +43,7 @@ import mcp.mobius.opis.network.packets.server.NetDataList;
 import mcp.mobius.opis.network.packets.server.Packet_DataOverlayChunkEntities;
 import mcp.mobius.opis.network.packets.server.NetDataValue;
 import mcp.mobius.opis.network.packets.server.Packet_Tickets;
+import mcp.mobius.opis.swing.SelectedTab;
 
 public class ServerMessageHandler {
 
@@ -215,6 +216,11 @@ public class ServerMessageHandler {
 		else if(maintype == Message.STATUS_PING){
 			OpisPacketHandler.validateAndSend(NetDataValue.create(Message.STATUS_PING, param1), (Player)player);
 		}
+		
+		else if(maintype == Message.SWING_TAB_CHANGED){
+			SelectedTab tab = SelectedTab.values()[((SerialInt)param1).value];
+			PlayerTracker.instance().playerTab.put((Player)player, tab);
+		}		
 		
 		else{
 			modOpis.log.log(Level.WARNING, String.format("Unknown data request : %s ", maintype));

@@ -23,6 +23,7 @@ import mcp.mobius.opis.data.holders.newtypes.DataTimingMillisecond;
 import mcp.mobius.opis.network.enums.AccessLevel;
 import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.packets.server.NetDataRaw;
+import mcp.mobius.opis.swing.SelectedTab;
 import mcp.mobius.opis.swing.actions.ActionRunOpis;
 import mcp.mobius.opis.swing.widgets.JButtonAccess;
 import mcp.mobius.opis.swing.widgets.JPanelMsgHandler;
@@ -420,7 +421,7 @@ public class PanelSummary extends JPanelMsgHandler implements ITabPanel{
 	}
 	
 	@Override
-	public Message getFocusMessage() {
-		return Message.SWING_TAB_SUMMARY;
+	public SelectedTab getSelectedTab() {
+		return SelectedTab.SUMMARY;
 	}						
 }
