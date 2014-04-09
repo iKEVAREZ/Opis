@@ -21,7 +21,7 @@ public class PlayerTracker implements IPlayerTracker{
 	
 	public HashSet<Player> playersSwing = new HashSet<Player>();		 //This is the list of players who have opened the UI
 	//public HashSet<Player> playersOpis  = new HashSet<Player>();		 //This is the list of players who have opened the UI or used the command line
-	public HashMap<String, Boolean> filteredAmount = new HashMap<String, Boolean>(); //Should the entity amount be filtered or not
+	public HashMap<String, Boolean>       filteredAmount      = new HashMap<String, Boolean>(); //Should the entity amount be filtered or not
 	public HashMap<Player, OverlayStatus> playerOverlayStatus = new HashMap<Player, OverlayStatus>();
 	public HashMap<Player, Integer>       playerDimension     = new HashMap<Player, Integer>();
 	public HashMap<Player, SelectedTab>   playerTab           = new HashMap<Player, SelectedTab>();

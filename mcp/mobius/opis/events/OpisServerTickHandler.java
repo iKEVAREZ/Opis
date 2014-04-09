@@ -31,6 +31,7 @@ import mcp.mobius.opis.data.profilers.ProfilerPacket;
 import mcp.mobius.opis.data.profilers.ProfilerTick;
 import mcp.mobius.opis.gui.overlay.OverlayStatus;
 import mcp.mobius.opis.network.OpisPacketHandler;
+import mcp.mobius.opis.network.enums.AccessLevel;
 import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.packets.server.NetDataCommand;
 import mcp.mobius.opis.network.packets.server.NetDataList;
@@ -50,6 +51,8 @@ public enum OpisServerTickHandler implements ITickHandler {
 	public long timer500  = System.nanoTime();	
 	public long timer1000 = System.nanoTime();
 	public long timer5000 = System.nanoTime();
+	
+	public HashMap<Player, AccessLevel> cachedAccess = new HashMap<Player, AccessLevel>(); 
 	
 	@Override
 	public void tickStart(EnumSet<TickType> type, Object... tickData) {
@@ -82,7 +85,10 @@ public enum OpisServerTickHandler implements ITickHandler {
 				OpisPacketHandler.sendPacketToAllSwing(NetDataValue.create(Message.VALUE_AMOUNT_ENTITIES, new SerialInt(EntityManager.INSTANCE.getAmountEntities())));
 				
 				for (Player player : PlayerTracker.instance().playersSwing){
-					OpisPacketHandler.validateAndSend(NetDataValue.create(Message.STATUS_ACCESS_LEVEL, new SerialInt(PlayerTracker.instance().getPlayerAccessLevel(player).ordinal())), player);
+					if (!cachedAccess.containsKey(player) || cachedAccess.get(player) != PlayerTracker.instance().getPlayerAccessLevel(player)){
+						OpisPacketHandler.validateAndSend(NetDataValue.create(Message.STATUS_ACCESS_LEVEL, new SerialInt(PlayerTracker.instance().getPlayerAccessLevel(player).ordinal())), player);
+						cachedAccess.put(player, PlayerTracker.instance().getPlayerAccessLevel(player));
+					}
 				}
 
 				// Dimension data update.
