@@ -132,6 +132,7 @@ public class SwingUI extends JFrame implements WindowListener, ChangeListener, I
 			modOpis.swingOpen = true;
 			this.showUI();
 			Minecraft.getMinecraft().displayGuiScreen(new GuiChat());
+			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.SWING_TAB_CHANGED, new SerialInt(SelectedTab.SUMMARY.ordinal())));
 			break;
 		}
 		default:

@@ -21,6 +21,7 @@ public enum MessageHandlerRegistrar {
 	}
 	
 	public void routeMessage(Message msg, NetDataRaw rawdata){
+		
 		if (msgHandlers.containsKey(msg)){
 			for (IMessageHandler handler : msgHandlers.get(msg)){
 				if (!handler.handleMessage(msg, rawdata)){
