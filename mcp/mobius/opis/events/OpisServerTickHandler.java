@@ -71,8 +71,8 @@ public enum OpisServerTickHandler implements ITickHandler {
 			if (System.nanoTime() - timer1000 > 1000000000L){
 				timer1000 = System.nanoTime();
 
-				OpisPacketHandler.sendPacketToAllSwing(NetDataValue.create(Message.VALUE_AMOUNT_UPLOAD,   new SerialLong(((ProfilerPacket)ProfilerSection.PACKET_OUTBOUND.getProfiler()).data)));
-				OpisPacketHandler.sendPacketToAllSwing(NetDataValue.create(Message.VALUE_AMOUNT_DOWNLOAD, new SerialLong(((ProfilerPacket)ProfilerSection.PACKET_INBOUND.getProfiler()).data)));
+				OpisPacketHandler.sendPacketToAllSwing(NetDataValue.create(Message.VALUE_AMOUNT_UPLOAD,   new SerialLong(((ProfilerPacket)ProfilerSection.PACKET_OUTBOUND.getProfiler()).dataAmount)));
+				OpisPacketHandler.sendPacketToAllSwing(NetDataValue.create(Message.VALUE_AMOUNT_DOWNLOAD, new SerialLong(((ProfilerPacket)ProfilerSection.PACKET_INBOUND.getProfiler()).dataAmount)));
 				OpisPacketHandler.sendPacketToAllSwing(NetDataValue.create(Message.VALUE_CHUNK_FORCED,    new SerialInt(ChunkManager.INSTANCE.getForcedChunkAmount())));
 				OpisPacketHandler.sendPacketToAllSwing(NetDataValue.create(Message.VALUE_CHUNK_LOADED,    new SerialInt(ChunkManager.INSTANCE.getLoadedChunkAmount())));
 				OpisPacketHandler.sendPacketToAllSwing(NetDataValue.create(Message.VALUE_TIMING_TICK,     new DataTiming(((ProfilerTick)ProfilerSection.TICK.getProfiler()).data.getGeometricMean())));
@@ -98,14 +98,17 @@ public enum OpisServerTickHandler implements ITickHandler {
 					OpisPacketHandler.sendPacketToAllSwing(NetDataValue.create(Message.STATUS_RUN_UPDATE, new SerialInt(profilerRunningTicks)));
 				}
 				
-				((ProfilerPacket)ProfilerSection.PACKET_INBOUND.getProfiler()).data = 0L;
-				((ProfilerPacket)ProfilerSection.PACKET_OUTBOUND.getProfiler()).data = 0L;
+				((ProfilerPacket)ProfilerSection.PACKET_INBOUND.getProfiler()).dataAmount = 0L;
+				((ProfilerPacket)ProfilerSection.PACKET_OUTBOUND.getProfiler()).dataAmount = 0L;
 			}
 			
 			// Five second timer
 			if (System.nanoTime() - timer5000 > 5000000000L){
 				timer5000 = System.nanoTime();
 				updatePlayers();
+				
+				OpisPacketHandler.sendPacketToAllSwing(NetDataList.create(Message.LIST_PACKETS_OUTBOUND, ((ProfilerPacket)ProfilerSection.PACKET_OUTBOUND.getProfiler()).data));
+				OpisPacketHandler.sendPacketToAllSwing(NetDataList.create(Message.LIST_PACKETS_INBOUND,  ((ProfilerPacket)ProfilerSection.PACKET_INBOUND.getProfiler()).data));
 			}
 			
 			profilerUpdateTickCounter++;

@@ -33,6 +33,7 @@ import mcp.mobius.opis.network.packets.server.NetDataRaw;
 import mcp.mobius.opis.swing.SwingUI;
 import mcp.mobius.opis.swing.panels.PanelAmountEntities;
 import mcp.mobius.opis.swing.panels.PanelDimensions;
+import mcp.mobius.opis.swing.panels.PanelPackets;
 import mcp.mobius.opis.swing.panels.PanelPlayers;
 import mcp.mobius.opis.swing.panels.PanelRenderEntities;
 import mcp.mobius.opis.swing.panels.PanelRenderTileEnts;
@@ -71,6 +72,7 @@ public class ProxyClient extends ProxyServer implements IMessageHandler{
 		IMessageHandler panelTimingHandlers = (IMessageHandler)TabPanelRegistrar.INSTANCE.registerTab(new PanelTimingHandlers());
 		IMessageHandler panelTimingChunks   = (IMessageHandler)TabPanelRegistrar.INSTANCE.registerTab(new PanelTimingChunks());
 		IMessageHandler panelDimensions     = (IMessageHandler)TabPanelRegistrar.INSTANCE.registerTab(new PanelDimensions());
+		IMessageHandler panelPackets        = (IMessageHandler)TabPanelRegistrar.INSTANCE.registerTab(new PanelPackets());
 		
 		TabPanelRegistrar.INSTANCE.registerTab(new PanelRenderTileEnts());
 		TabPanelRegistrar.INSTANCE.registerTab(new PanelRenderEntities());
@@ -129,6 +131,9 @@ public class ProxyClient extends ProxyServer implements IMessageHandler{
 		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.STATUS_PING,            panelSummary);
 		
 		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.LIST_DIMENSION_DATA,    panelDimensions);
+		
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.LIST_PACKETS_OUTBOUND,  panelPackets);
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.LIST_PACKETS_INBOUND,   panelPackets);
 		
 		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.CLIENT_CLEAR_SELECTION,  modOpis.proxy);
 		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.CLIENT_START_PROFILING,  modOpis.proxy);
