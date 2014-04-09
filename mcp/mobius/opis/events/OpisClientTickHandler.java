@@ -29,7 +29,8 @@ public class OpisClientTickHandler implements ITickHandler {
 
 	public long profilerUpdateTickCounter = 0;	
 	public long profilerRunningTicks = 0;
-
+	public long timer1000 = System.nanoTime();
+	
 	public static OpisClientTickHandler instance;
 	
 	public OpisClientTickHandler(){
@@ -42,6 +43,11 @@ public class OpisClientTickHandler implements ITickHandler {
 	@Override
 	public void tickEnd(EnumSet<TickType> type, Object... tickData) {
 		if(type.contains(TickType.CLIENT)){
+			
+			// One second timer
+			if (System.nanoTime() - timer1000 > 1000000000L){
+				timer1000 = System.nanoTime();
+			}
 			
 			if (modOpis.profilerRunClient){
 				((PanelRenderTileEnts)(TabPanelRegistrar.INSTANCE.getTab("opis.client.terender"))).getBtnRunRender().setText("Running...");
@@ -63,67 +69,7 @@ public class OpisClientTickHandler implements ITickHandler {
 				
 				System.out.printf("Profiling done\n");
 
-				//====================================================================================				
-				
-				ArrayList<DataTileEntityRender> tileEntData = new ArrayList<DataTileEntityRender>();
-				double tileEntTotal = 0.0D;
-				for (TileEntity te : ((ProfilerRenderTileEntity)ProfilerSection.RENDER_TILEENTITY.getProfiler()).data.keySet()){
-					try{
-						DataTileEntityRender dataTe = new DataTileEntityRender().fill(te);
-						tileEntData.add(dataTe);
-						tileEntTotal += dataTe.update.timing;
-					} catch (Exception e) {
-						modOpis.log.warning(String.format("Error while adding entity %s to the list", te));
-					}
-				}
-
-				System.out.printf("Rendered %d TileEntities\n", tileEntData.size());
-				
-				Collections.sort(tileEntData);
-				((PanelRenderTileEnts)(TabPanelRegistrar.INSTANCE.getTab("opis.client.terender"))).setTable(tileEntData);
-				((PanelRenderTileEnts)(TabPanelRegistrar.INSTANCE.getTab("opis.client.terender"))).getLblTotal().setText(String.format("Total : %.3f µs", tileEntTotal / 1000.0));
-				
-				//====================================================================================
-				
-				ArrayList<DataEntityRender> entData = new ArrayList<DataEntityRender>();
-				double entTotal = 0.0D;
-				for (Entity ent : ((ProfilerRenderEntity)ProfilerSection.RENDER_ENTITY.getProfiler()).data.keySet()){
-					try{
-						DataEntityRender dataEnt = new DataEntityRender().fill(ent);
-						entData.add(dataEnt);
-						entTotal += dataEnt.update.timing;
-					} catch (Exception e) {
-						modOpis.log.warning(String.format("Error while adding entity %s to the list", ent));
-					}					
-				}
-
-				System.out.printf("Rendered %d Entities\n", entData.size());
-				
-				Collections.sort(entData);
-				((PanelRenderEntities)(TabPanelRegistrar.INSTANCE.getTab("opis.client.entrender"))).setTable(entData);
-				((PanelRenderEntities)(TabPanelRegistrar.INSTANCE.getTab("opis.client.entrender"))).getLblTotal().setText(String.format("Total : %.3f µs", entTotal / 1000.0));
-				
-				//====================================================================================				
-				
-				ArrayList<DataBlockRender> blockData = new ArrayList<DataBlockRender>();
-				for (CoordinatesBlock coord : ((ProfilerRenderBlock)ProfilerSection.RENDER_BLOCK.getProfiler()).data.keySet()){
-					try{
-						DataBlockRender dataBlock = new DataBlockRender().fill(coord);
-						blockData.add(dataBlock);
-					} catch (Exception e) {
-						modOpis.log.warning(String.format("Error while adding block %s to the list", coord));
-					}					
-				}
-
-				Collections.sort(blockData);
-				for (DataBlockRender data : blockData){
-					ItemStack stack = new ItemStack(data.id, 0, data.meta);
-					String    name  = stack.getDisplayName();
-					
-					//name = String.format("block.%s.%s", data.id, data.meta);
-					
-					System.out.printf("%s %s : %s\n", data.pos, name, data.update);
-				}
+				this.updateTabs();
 				
 			}		
 		}
@@ -139,4 +85,66 @@ public class OpisClientTickHandler implements ITickHandler {
 		return "opis.client.tickhandler";
 	}
 
+	private void updateTabs(){
+		//====================================================================================				
+		
+		ArrayList<DataTileEntityRender> tileEntData = new ArrayList<DataTileEntityRender>();
+		double tileEntTotal = 0.0D;
+		for (TileEntity te : ((ProfilerRenderTileEntity)ProfilerSection.RENDER_TILEENTITY.getProfiler()).data.keySet()){
+			try{
+				DataTileEntityRender dataTe = new DataTileEntityRender().fill(te);
+				tileEntData.add(dataTe);
+				tileEntTotal += dataTe.update.timing;
+			} catch (Exception e) {
+				modOpis.log.warning(String.format("Error while adding entity %s to the list", te));
+			}
+		}
+
+		System.out.printf("Rendered %d TileEntities\n", tileEntData.size());
+		
+		Collections.sort(tileEntData);
+		((PanelRenderTileEnts)(TabPanelRegistrar.INSTANCE.getTab("opis.client.terender"))).setTable(tileEntData);
+		((PanelRenderTileEnts)(TabPanelRegistrar.INSTANCE.getTab("opis.client.terender"))).getLblTotal().setText(String.format("Total : %.3f µs", tileEntTotal / 1000.0));
+		
+		//====================================================================================
+		
+		ArrayList<DataEntityRender> entData = new ArrayList<DataEntityRender>();
+		double entTotal = 0.0D;
+		for (Entity ent : ((ProfilerRenderEntity)ProfilerSection.RENDER_ENTITY.getProfiler()).data.keySet()){
+			try{
+				DataEntityRender dataEnt = new DataEntityRender().fill(ent);
+				entData.add(dataEnt);
+				entTotal += dataEnt.update.timing;
+			} catch (Exception e) {
+				modOpis.log.warning(String.format("Error while adding entity %s to the list", ent));
+			}					
+		}
+
+		System.out.printf("Rendered %d Entities\n", entData.size());
+		
+		Collections.sort(entData);
+		((PanelRenderEntities)(TabPanelRegistrar.INSTANCE.getTab("opis.client.entrender"))).setTable(entData);
+		((PanelRenderEntities)(TabPanelRegistrar.INSTANCE.getTab("opis.client.entrender"))).getLblTotal().setText(String.format("Total : %.3f µs", entTotal / 1000.0));
+		
+		//====================================================================================				
+		
+		ArrayList<DataBlockRender> blockData = new ArrayList<DataBlockRender>();
+		for (CoordinatesBlock coord : ((ProfilerRenderBlock)ProfilerSection.RENDER_BLOCK.getProfiler()).data.keySet()){
+			try{
+				DataBlockRender dataBlock = new DataBlockRender().fill(coord);
+				blockData.add(dataBlock);
+			} catch (Exception e) {
+				modOpis.log.warning(String.format("Error while adding block %s to the list", coord));
+			}					
+		}
+
+		Collections.sort(blockData);
+		for (DataBlockRender data : blockData){
+			ItemStack stack = new ItemStack(data.id, 0, data.meta);
+			String    name  = stack.getDisplayName();
+			
+			System.out.printf("%s %s : %s\n", data.pos, name, data.update);
+		}		
+	}
+	
 }
