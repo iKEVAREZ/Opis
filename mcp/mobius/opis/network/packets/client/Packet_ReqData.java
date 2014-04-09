@@ -9,10 +9,12 @@ import java.lang.reflect.Method;
 
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
+import mcp.mobius.opis.data.holders.DataType;
 import mcp.mobius.opis.data.holders.ISerializable;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesBlock;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesChunk;
 import mcp.mobius.opis.data.holders.basetypes.TargetEntity;
+import mcp.mobius.opis.data.holders.newtypes.DataError;
 import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.enums.Packets;
 
@@ -31,12 +33,13 @@ public class Packet_ReqData {
 			this.dataReq   = Message.values()[istream.readInt()];
 			
 			if (istream.readBoolean()){
-				String datatype = Packet.readString(istream, 255);
+				//String datatype = Packet.readString(istream, 255);
+				Class datatype = DataType.getForOrdinal(istream.readInt());
 				this.param1    = dataRead(datatype, istream);
 			}
 			
 			if (istream.readBoolean()){
-				String datatype = Packet.readString(istream, 255);
+				Class datatype = DataType.getForOrdinal(istream.readInt());
 				this.param2    = dataRead(datatype, istream);
 			}
 			
@@ -62,7 +65,8 @@ public class Packet_ReqData {
 			
 			if (param1 != null){
 				outputStream.writeBoolean(true);
-				Packet.writeString(param1.getClass().getCanonicalName(), outputStream);
+				//Packet.writeString(param1.getClass().getCanonicalName(), outputStream);
+				outputStream.writeInt(DataType.getForClass(param1.getClass()).ordinal());
 				param1.writeToStream(outputStream);
 			} else {
 				outputStream.writeBoolean(false);
@@ -70,7 +74,7 @@ public class Packet_ReqData {
 			
 			if (param2 != null){
 				outputStream.writeBoolean(true);
-				Packet.writeString(param2.getClass().getCanonicalName(), outputStream);				
+				outputStream.writeInt(DataType.getForClass(param2.getClass()).ordinal());				
 				param2.writeToStream(outputStream);
 			} else {
 				outputStream.writeBoolean(false);
@@ -85,9 +89,10 @@ public class Packet_ReqData {
 		return packet;
 	}
 	
-	private ISerializable dataRead(String datatypeStr, DataInputStream istream){
+	private ISerializable dataRead(Class datatype, DataInputStream istream){
+		if (datatype == null) return new DataError();
+		
 		try{
-			Class  datatype = Class.forName(datatypeStr);
 			Method readFromStream = datatype.getMethod("readFromStream", DataInputStream.class);
 			
 			return (ISerializable)readFromStream.invoke(null, istream);

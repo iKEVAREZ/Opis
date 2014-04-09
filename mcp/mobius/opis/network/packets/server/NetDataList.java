@@ -9,6 +9,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+import mcp.mobius.opis.data.holders.DataType;
 import mcp.mobius.opis.data.holders.ISerializable;
 import mcp.mobius.opis.data.holders.basetypes.AmountHolder;
 import mcp.mobius.opis.network.enums.Message;
@@ -31,14 +32,15 @@ public class NetDataList extends NetDataRaw{
 			int ndata     = istream.readInt();
 			this.clazzStr = "";
 			if (ndata > 0){
-				this.clazzStr = Packet.readString(istream, 255);
-				this.clazz    = this.getClass(this.clazzStr);
+				//this.clazzStr = Packet.readString(istream, 255);
+				//this.clazz    = this.getClass(this.clazzStr);
+				this.clazz = DataType.getForOrdinal(istream.readInt());
 			}
 			
 			this.array = new ArrayList<ISerializable>();
 			
 			for (int i = 0; i < ndata; i++)
-				this.array.add(dataRead(this.clazzStr, istream));
+				this.array.add(dataRead(this.clazz, istream));
 		} catch (IOException e){}				
 	}
 
@@ -68,7 +70,8 @@ public class NetDataList extends NetDataRaw{
 			ostream.writeInt(data.size());
 			
 			if (data.size() > 0)
-				Packet.writeString(data.get(0).getClass().getCanonicalName(), ostream);
+				//Packet.writeString(data.get(0).getClass().getCanonicalName(), ostream);
+				ostream.writeInt(DataType.getForClass(data.get(0).getClass()).ordinal());
 				
 			for (ISerializable odata : data)
 				odata.writeToStream(ostream);

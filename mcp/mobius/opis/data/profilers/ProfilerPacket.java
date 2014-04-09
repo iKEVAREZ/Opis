@@ -20,12 +20,8 @@ public class ProfilerPacket extends ProfilerAbstract {
 		for (int i = 0; i < 254; i++)
 			data.add(new DataPacket(i));
 		
-		/*
-		for (int i = 0; i < 15; i++)
-			jabbaSpec.add(new DataPacket(i));
-		*/		
 	}
-	
+
 	@Override
 	public void reset() {
 		dataAmount = 0;
@@ -40,17 +36,13 @@ public class ProfilerPacket extends ProfilerAbstract {
 			
 			if (packet.getPacketId() == 250){
 				String channel = ((Packet250CustomPayload)packet).channel;
-				if (!data250.containsKey(channel))
+
+				try{
+					data250.get(channel).fill(packet);
+				} catch (Exception e){
 					data250.put(channel, new DataPacket250(channel));
-				
-				data250.get(channel).fill(packet);
-				
-				/*
-				if (channel.equals("JABBA")){
-					byte ID = ((Packet250CustomPayload)packet).data[0];
-					jabbaSpec.get(ID).fill(packet);
+					data250.get(channel).fill(packet);
 				}
-				*/
 			}
 		}
 	}

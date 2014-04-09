@@ -6,7 +6,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Method;
-
+import mcp.mobius.opis.data.holders.DataType;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import mcp.mobius.opis.data.holders.ISerializable;
@@ -23,9 +23,10 @@ public class NetDataValue extends NetDataRaw{
 		try{
 			this.header   = istream.readByte();
 			this.msg      = Message.values()[istream.readInt()];
-			this.clazzStr = Packet.readString(istream, 255);
-			this.clazz    = this.getClass(this.clazzStr);
-			this.value    = dataRead(this.clazzStr, istream);
+			//this.clazzStr = Packet.readString(istream, 255);
+			//this.clazz    = this.getClass(this.clazzStr);
+			this.clazz = DataType.getForOrdinal(istream.readInt());
+			this.value = dataRead(this.clazz, istream);
 			
 		} catch (IOException e){}				
 	}
@@ -40,7 +41,8 @@ public class NetDataValue extends NetDataRaw{
 		try{
 			ostream.writeByte(Packets.NETDATAVALUE);
 			ostream.writeInt(dataReq.ordinal());
-			Packet.writeString(data.getClass().getCanonicalName(), ostream);
+			ostream.writeInt(DataType.getForClass(data.getClass()).ordinal());
+			//Packet.writeString(data.getClass().getCanonicalName(), ostream);
 			data.writeToStream(ostream);
 			
 		}catch(IOException e){}
