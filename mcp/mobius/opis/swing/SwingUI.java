@@ -19,6 +19,7 @@ import javax.swing.SwingConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiChat;
 import cpw.mods.fml.common.network.PacketDispatcher;
+import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.api.IMessageHandler;
 import mcp.mobius.opis.api.ITabPanel;
 import mcp.mobius.opis.api.TabPanelRegistrar;
@@ -87,6 +88,7 @@ public class SwingUI extends JFrame implements WindowListener, IMessageHandler{
 
 	@Override
 	public void windowClosed(WindowEvent arg0) {
+		modOpis.swingOpen = false;
 		PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.COMMAND_UNREGISTER_SWING));
 	}
 
@@ -124,6 +126,7 @@ public class SwingUI extends JFrame implements WindowListener, IMessageHandler{
 			break;
 		}
 		case CLIENT_SHOW_SWING:{
+			modOpis.swingOpen = true;
 			this.showUI();
 			Minecraft.getMinecraft().displayGuiScreen(new GuiChat());
 			break;

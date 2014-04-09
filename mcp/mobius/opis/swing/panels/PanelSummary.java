@@ -33,6 +33,7 @@ import javax.swing.JLabel;
 import javax.swing.JButton;
 import javax.swing.JProgressBar;
 
+import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -61,11 +62,14 @@ public class PanelSummary extends JPanelMsgHandler implements ITabPanel{
 	private JProgressBar progressBarRun;
 	private JLabel lblTimeStamp;
 
+	private DescriptiveStatistics pingData = new DescriptiveStatistics(5);
+	private long nPings = 0;
+	
 	/**
 	 * Create the panel.
 	 */
 	public PanelSummary() {
-		setLayout(new MigLayout("", "[20px:20px:20px,grow][][20px:20px:20px][60px:60px:60px][][20px:20px:20px][50px:50px:50px][20px:20px:20px][][20px:20px:20px][50px:50px:50px][][20px:20px:20px][grow][]", "[20px:20px:20px][][][][][][][20px:20px:20px][][20px:20px:20px][][grow]"));
+		setLayout(new MigLayout("", "[20px:20px:20px,grow][][20px:20px:20px][60px:60px:60px][][20px:20px:20px][50px:50px:50px][20px:20px:20px][][20px:20px:20px][50px:50px:50px][][20px:20px:20px][grow][]", "[20px:20px:20px][][][][][][][][][20px:20px:20px][][grow]"));
 		
 		JLabel lblNewLabel_5 = new JLabel("Update time");
 		add(lblNewLabel_5, "cell 3 1 2 1,alignx right");
@@ -128,6 +132,12 @@ public class PanelSummary extends JPanelMsgHandler implements ITabPanel{
 		lblAmountEntities = new JLabel("0");
 		add(lblAmountEntities, "cell 6 4,alignx right");
 		
+		JLabel lblNewLabel_6 = new JLabel("Ping");
+		add(lblNewLabel_6, "cell 8 4");
+		
+		lblTimingPing = new JLabel("0");
+		add(lblTimingPing, "cell 10 4 2 1,alignx right");
+		
 		JLabel lblNewLabel_3 = new JLabel("Handlers");
 		add(lblNewLabel_3, "cell 1 5");
 		
@@ -138,10 +148,10 @@ public class PanelSummary extends JPanelMsgHandler implements ITabPanel{
 		add(lblAmountHandlers, "cell 6 5,alignx right");
 		
 		JLabel lblNewLabel_22 = new JLabel("Forced chunks");
-		add(lblNewLabel_22, "cell 8 5");
+		add(lblNewLabel_22, "cell 8 6");
 		
 		lblAmountForced = new JLabel("0");
-		add(lblAmountForced, "cell 10 5 2 1,alignx right");
+		add(lblAmountForced, "cell 10 6 2 1,alignx right");
 		
 		JLabel lblNewLabel_32 = new JLabel("Network");
 		add(lblNewLabel_32, "cell 1 6");
@@ -150,10 +160,10 @@ public class PanelSummary extends JPanelMsgHandler implements ITabPanel{
 		add(lblTimingNetwork, "cell 3 6 2 1,alignx right");
 		
 		JLabel lblNewLabel_23 = new JLabel("Loaded chunks");
-		add(lblNewLabel_23, "cell 8 6");
+		add(lblNewLabel_23, "cell 8 7");
 		
 		lblAmountLoaded = new JLabel("0");
-		add(lblAmountLoaded, "cell 10 6 2 1,alignx right");
+		add(lblAmountLoaded, "cell 10 7 2 1,alignx right");
 		
 		JLabel lblNewLabel_4 = new JLabel("Total");
 		add(lblNewLabel_4, "cell 1 8");
@@ -214,6 +224,7 @@ public class PanelSummary extends JPanelMsgHandler implements ITabPanel{
 	XYSeriesCollection dataset = new XYSeriesCollection();
 	XYPlot xyPlot;
 	private JLabel lblTimingNetwork;
+	private JLabel lblTimingPing;
 	
 	private JPanel createGraph(){
 		JFreeChart chart = ChartFactory.createXYAreaChart("", "Seconds", "Update Time [ms]", dataset, PlotOrientation.VERTICAL, false, false, false);
@@ -369,7 +380,19 @@ public class PanelSummary extends JPanelMsgHandler implements ITabPanel{
 			}
 			break;
 		}
+	
 		case VALUE_TIMING_ENTUPDATE:{
+			break;
+		}
+		
+		case STATUS_PING:{
+			this.pingData.addValue((double)(System.nanoTime() - ((SerialLong)rawdata.value).value));
+			this.nPings += 1;
+			
+			if (this.nPings % 5 == 0){
+				DataTiming timing = new DataTiming(this.pingData.getGeometricMean());
+				this.getLblTimingPing().setText(timing.asMillisecond().toString());
+			}
 			break;
 		}
 		
@@ -391,5 +414,8 @@ public class PanelSummary extends JPanelMsgHandler implements ITabPanel{
 	}
 	public JLabel getLblTimingNetwork() {
 		return lblTimingNetwork;
+	}
+	public JLabel getLblTimingPing() {
+		return lblTimingPing;
 	}
 }

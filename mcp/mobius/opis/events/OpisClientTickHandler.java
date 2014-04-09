@@ -12,12 +12,15 @@ import mcp.mobius.mobiuscore.profiler.ProfilerSection;
 import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.api.TabPanelRegistrar;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesBlock;
+import mcp.mobius.opis.data.holders.basetypes.SerialLong;
 import mcp.mobius.opis.data.holders.newtypes.DataBlockRender;
 import mcp.mobius.opis.data.holders.newtypes.DataEntityRender;
 import mcp.mobius.opis.data.holders.newtypes.DataTileEntityRender;
 import mcp.mobius.opis.data.profilers.ProfilerRenderBlock;
 import mcp.mobius.opis.data.profilers.ProfilerRenderEntity;
 import mcp.mobius.opis.data.profilers.ProfilerRenderTileEntity;
+import mcp.mobius.opis.network.enums.Message;
+import mcp.mobius.opis.network.packets.client.Packet_ReqData;
 import mcp.mobius.opis.swing.panels.PanelRenderEntities;
 import mcp.mobius.opis.swing.panels.PanelRenderTileEnts;
 import cpw.mods.fml.common.ITickHandler;
@@ -42,6 +45,9 @@ public enum OpisClientTickHandler implements ITickHandler {
 			// One second timer
 			if (System.nanoTime() - timer1000 > 1000000000L){
 				timer1000 = System.nanoTime();
+				
+				if(modOpis.swingOpen)
+					PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.STATUS_PING, new SerialLong(System.nanoTime())));
 			}
 			
 			

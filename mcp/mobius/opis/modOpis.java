@@ -92,6 +92,7 @@ public class modOpis {
 	public static boolean microseconds = true;
 	private static int lagGenID        = -1;
 	public static CoordinatesBlock selectedBlock = null;
+	public static boolean swingOpen = false;
 	
 	public  Configuration config = null;	
 	

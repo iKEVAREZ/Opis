@@ -212,6 +212,10 @@ public class ServerMessageHandler {
 			ChunkManager.INSTANCE.purgeChunks(((SerialInt)param1).value);			
 		}		
 		
+		else if(maintype == Message.STATUS_PING){
+			OpisPacketHandler.validateAndSend(NetDataValue.create(Message.STATUS_PING, param1), (Player)player);
+		}
+		
 		else{
 			modOpis.log.log(Level.WARNING, String.format("Unknown data request : %s ", maintype));
 		}
