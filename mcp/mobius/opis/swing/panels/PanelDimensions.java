@@ -82,9 +82,6 @@ public class PanelDimensions extends JPanelMsgHandler implements IMessageHandler
 	}
 
 	@Override
-	public String getTabRefName() {	return "opis.dimensions"; }
-	
-	@Override
 	public boolean handleMessage(Message msg, NetDataRaw rawdata) {	
 		switch(msg){
 		case LIST_DIMENSION_DATA:{

@@ -10,6 +10,7 @@ import mapwriter.api.MwAPI;
 import mapwriter.gui.MwGui;
 import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.packets.client.Packet_ReqData;
+import mcp.mobius.opis.swing.SelectedTab;
 import mcp.mobius.opis.swing.SwingUI;
 import mcp.mobius.opis.swing.panels.PanelTimingEntities;
 import mcp.mobius.opis.swing.widgets.JTableStats;
@@ -31,7 +32,7 @@ public class ActionTimingEntities implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		PanelTimingEntities panel = (PanelTimingEntities)TabPanelRegistrar.INSTANCE.getTab("opis.timingents");
+		PanelTimingEntities panel = (PanelTimingEntities)TabPanelRegistrar.INSTANCE.getTab(SelectedTab.TIMINGENTITES);
 		
 		JTableStats table       = panel.getTable();
 		if (table == null || table.getSelectedRow() == -1) return;

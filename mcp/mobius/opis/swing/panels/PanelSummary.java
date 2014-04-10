@@ -404,10 +404,6 @@ public class PanelSummary extends JPanelMsgHandler implements ITabPanel{
 		return true;
 	}
 
-	@Override
-	public String getTabRefName() {
-		return "opis.summary";
-	}
 	public JLabel getLblTimingNetwork() {
 		return lblTimingNetwork;
 	}

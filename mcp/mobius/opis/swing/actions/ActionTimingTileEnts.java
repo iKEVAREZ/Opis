@@ -11,6 +11,7 @@ import mapwriter.gui.MwGui;
 import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.packets.client.Packet_ReqData;
+import mcp.mobius.opis.swing.SelectedTab;
 import mcp.mobius.opis.swing.SwingUI;
 import mcp.mobius.opis.swing.panels.PanelTimingTileEnts;
 import mcp.mobius.opis.swing.widgets.JTableStats;
@@ -30,7 +31,7 @@ public class ActionTimingTileEnts implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		PanelTimingTileEnts panel = (PanelTimingTileEnts)TabPanelRegistrar.INSTANCE.getTab("opis.timingtileents");
+		PanelTimingTileEnts panel = (PanelTimingTileEnts)TabPanelRegistrar.INSTANCE.getTab(SelectedTab.TIMINGTILEENTS);
 		
 		JTableStats table       = panel.getTable();
 		if (table == null || table.getSelectedRow() == -1) return;

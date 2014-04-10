@@ -73,11 +73,6 @@ public class PanelRenderTileEnts extends JPanel implements ITabPanel, IMessageHa
 		
 	}
 
-	@Override
-	public String getTabRefName() {
-		return "opis.client.terender";
-	}	
-	
 	public void setTable(ArrayList<DataTileEntityRender> data){
 		
 		DefaultTableModel model = (DefaultTableModel)table.getModel();

@@ -122,9 +122,6 @@ public class PanelPackets extends JPanelMsgHandler implements ITabPanel {
 	}
 
 	@Override
-	public String getTabRefName() {	return "opis.packets";	}
-
-	@Override
 	public boolean handleMessage(Message msg, NetDataRaw rawdata) {
 		switch(msg){
 		case LIST_PACKETS_OUTBOUND:{

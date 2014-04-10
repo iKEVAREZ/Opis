@@ -7,6 +7,7 @@ import java.awt.event.ItemListener;
 
 import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.packets.client.Packet_ReqData;
+import mcp.mobius.opis.swing.SelectedTab;
 import mcp.mobius.opis.swing.SwingUI;
 import mcp.mobius.opis.swing.panels.PanelAmountEntities;
 import mcp.mobius.opis.swing.widgets.JTableStats;
@@ -26,7 +27,7 @@ public class ActionAmountEntities implements ActionListener, ItemListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		PanelAmountEntities panel = (PanelAmountEntities)TabPanelRegistrar.INSTANCE.getTab("opis.amountents");
+		PanelAmountEntities panel = (PanelAmountEntities)TabPanelRegistrar.INSTANCE.getTab(SelectedTab.AMOUNTENTS);
 		
 		
 		JTableStats table       = panel.getTable();

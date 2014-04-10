@@ -11,6 +11,7 @@ import mcp.mobius.opis.data.holders.basetypes.SerialInt;
 import mcp.mobius.opis.data.holders.newtypes.DataDimension;
 import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.packets.client.Packet_ReqData;
+import mcp.mobius.opis.swing.SelectedTab;
 import mcp.mobius.opis.swing.panels.PanelDimensions;
 import mcp.mobius.opis.swing.widgets.JTableStats;
 
@@ -18,7 +19,7 @@ public class ActionDimensions implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		PanelDimensions panel = (PanelDimensions)TabPanelRegistrar.INSTANCE.getTab("opis.dimensions");
+		PanelDimensions panel = (PanelDimensions)TabPanelRegistrar.INSTANCE.getTab(SelectedTab.DIMENSIONS);
 		
 		if (e.getSource() == panel.getBtnPurgeAll()){
 			if (JOptionPane.showConfirmDialog (null, "Do you want to kill all hostiles in game ?","Warning", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION)

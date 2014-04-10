@@ -13,14 +13,16 @@ import cpw.mods.fml.common.network.PacketDispatcher;
 import mcp.mobius.opis.data.holders.basetypes.SerialInt;
 import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.packets.client.Packet_ReqData;
+import mcp.mobius.opis.swing.SelectedTab;
 import mcp.mobius.opis.swing.SwingUI;
 
 public enum TabPanelRegistrar implements ChangeListener{
 	INSTANCE;
 	
 	//private ArrayList<ITabPanel>       panels     = new ArrayList<ITabPanel>();
-	private HashMap<String, ITabPanel> lookup     = new HashMap<String, ITabPanel>(); 
-	private HashMap<String, JTabbedPane> sections = new HashMap<String, JTabbedPane>();
+	//private HashMap<String, ITabPanel> lookup     = new HashMap<String, ITabPanel>(); 
+	private HashMap<String,    JTabbedPane> sections = new HashMap<String, JTabbedPane>();
+	private HashMap<SelectedTab, ITabPanel> lookup   = new HashMap<SelectedTab, ITabPanel>();
 	
 	public JTabbedPane registerSection(String name){
 		JTabbedPane pane = new JTabbedPane();
@@ -31,22 +33,22 @@ public enum TabPanelRegistrar implements ChangeListener{
 	}
 	
 	public ITabPanel registerTab(ITabPanel panel, String name){
-		this.lookup.put(panel.getTabRefName(), panel);
+		this.lookup.put(panel.getSelectedTab(), panel);
 		SwingUI.instance().getTabbedPane().addTab(name, (JPanel)panel);
 		return panel;
 	}
 	
 	public ITabPanel registerTab(ITabPanel panel, String name, String section){
-		this.lookup.put(panel.getTabRefName(), panel);
+		this.lookup.put(panel.getSelectedTab(), panel);
 		this.sections.get(section).addTab(name, (JPanel)panel);
 		return panel;
 	}	
 	
-	public ITabPanel getTab(String refname){
+	public ITabPanel getTab(SelectedTab refname){
 		return lookup.get(refname);
 	}
 
-	public JPanel getTabAsPanel(String refname){
+	public JPanel getTabAsPanel(SelectedTab refname){
 		return (JPanel)lookup.get(refname);
 	}
 

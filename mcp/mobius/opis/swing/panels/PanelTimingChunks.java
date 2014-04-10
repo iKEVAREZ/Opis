@@ -132,11 +132,6 @@ public class PanelTimingChunks extends JPanelMsgHandler implements ITabPanel{
 	}
 
 	@Override
-	public String getTabRefName() {
-		return "opis.timingchunks";
-	}
-	
-	@Override
 	public SelectedTab getSelectedTab() {
 		return SelectedTab.TIMINGCHUNKS;
 	}	

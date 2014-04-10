@@ -92,11 +92,6 @@ public class PanelTimingEvents extends JPanelMsgHandler implements ITabPanel {
 	}
 
 	@Override
-	public String getTabRefName() {
-		return "opis.events";
-	}
-
-	@Override
 	public SelectedTab getSelectedTab() {
 		return SelectedTab.TIMINGEVENTS;
 	}

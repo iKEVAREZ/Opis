@@ -21,6 +21,7 @@ import mcp.mobius.opis.data.profilers.ProfilerRenderEntity;
 import mcp.mobius.opis.data.profilers.ProfilerRenderTileEntity;
 import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.packets.client.Packet_ReqData;
+import mcp.mobius.opis.swing.SelectedTab;
 import mcp.mobius.opis.swing.panels.PanelRenderEntities;
 import mcp.mobius.opis.swing.panels.PanelRenderTileEnts;
 import cpw.mods.fml.common.ITickHandler;
@@ -53,12 +54,12 @@ public enum OpisClientTickHandler implements ITickHandler {
 			
 			
 			if (modOpis.profilerRunClient){
-				((PanelRenderTileEnts)(TabPanelRegistrar.INSTANCE.getTab("opis.client.terender"))).getBtnRunRender().setText("Running...");
-				((PanelRenderEntities)(TabPanelRegistrar.INSTANCE.getTab("opis.client.entrender"))).getBtnRunRender().setText("Running...");
+				((PanelRenderTileEnts)(TabPanelRegistrar.INSTANCE.getTab(SelectedTab.RENDERENTITIES))).getBtnRunRender().setText("Running...");
+				((PanelRenderEntities)(TabPanelRegistrar.INSTANCE.getTab(SelectedTab.RENDERTILEENTS))).getBtnRunRender().setText("Running...");
 			}
 			else{
-				((PanelRenderTileEnts)(TabPanelRegistrar.INSTANCE.getTab("opis.client.terender"))).getBtnRunRender().setText("Run Render");
-				((PanelRenderEntities)(TabPanelRegistrar.INSTANCE.getTab("opis.client.entrender"))).getBtnRunRender().setText("Run Render");
+				((PanelRenderTileEnts)(TabPanelRegistrar.INSTANCE.getTab(SelectedTab.RENDERENTITIES))).getBtnRunRender().setText("Run Render");
+				((PanelRenderEntities)(TabPanelRegistrar.INSTANCE.getTab(SelectedTab.RENDERTILEENTS))).getBtnRunRender().setText("Run Render");
 			}
 			
 			profilerUpdateTickCounter++;
@@ -106,8 +107,8 @@ public enum OpisClientTickHandler implements ITickHandler {
 		System.out.printf("Rendered %d TileEntities\n", tileEntData.size());
 		
 		Collections.sort(tileEntData);
-		((PanelRenderTileEnts)(TabPanelRegistrar.INSTANCE.getTab("opis.client.terender"))).setTable(tileEntData);
-		((PanelRenderTileEnts)(TabPanelRegistrar.INSTANCE.getTab("opis.client.terender"))).getLblTotal().setText(String.format("Total : %.3f µs", tileEntTotal / 1000.0));
+		((PanelRenderTileEnts)(TabPanelRegistrar.INSTANCE.getTab(SelectedTab.RENDERTILEENTS))).setTable(tileEntData);
+		((PanelRenderTileEnts)(TabPanelRegistrar.INSTANCE.getTab(SelectedTab.RENDERTILEENTS))).getLblTotal().setText(String.format("Total : %.3f µs", tileEntTotal / 1000.0));
 		
 		//====================================================================================
 		
@@ -126,8 +127,8 @@ public enum OpisClientTickHandler implements ITickHandler {
 		System.out.printf("Rendered %d Entities\n", entData.size());
 		
 		Collections.sort(entData);
-		((PanelRenderEntities)(TabPanelRegistrar.INSTANCE.getTab("opis.client.entrender"))).setTable(entData);
-		((PanelRenderEntities)(TabPanelRegistrar.INSTANCE.getTab("opis.client.entrender"))).getLblTotal().setText(String.format("Total : %.3f µs", entTotal / 1000.0));
+		((PanelRenderEntities)(TabPanelRegistrar.INSTANCE.getTab(SelectedTab.RENDERENTITIES))).setTable(entData);
+		((PanelRenderEntities)(TabPanelRegistrar.INSTANCE.getTab(SelectedTab.RENDERENTITIES))).getLblTotal().setText(String.format("Total : %.3f µs", entTotal / 1000.0));
 		
 		//====================================================================================				
 		

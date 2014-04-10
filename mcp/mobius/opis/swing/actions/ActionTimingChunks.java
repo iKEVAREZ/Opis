@@ -10,6 +10,7 @@ import mapwriter.api.MwAPI;
 import mapwriter.gui.MwGui;
 import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.packets.client.Packet_ReqData;
+import mcp.mobius.opis.swing.SelectedTab;
 import mcp.mobius.opis.swing.SwingUI;
 import mcp.mobius.opis.swing.panels.PanelTimingChunks;
 import mcp.mobius.opis.swing.widgets.JTableStats;
@@ -30,7 +31,7 @@ public class ActionTimingChunks implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		PanelTimingChunks panel = (PanelTimingChunks)TabPanelRegistrar.INSTANCE.getTab("opis.timingchunks");
+		PanelTimingChunks panel = (PanelTimingChunks)TabPanelRegistrar.INSTANCE.getTab(SelectedTab.TIMINGCHUNKS);
 		
 		JTableStats table       = panel.getTable();
 		if (table == null || table.getSelectedRow() == -1) return;
