@@ -8,6 +8,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.ToolTipManager;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
@@ -69,6 +71,7 @@ public class SwingUI extends JFrame implements WindowListener, ChangeListener, I
 	 * Create the frame.
 	 */
 	private SwingUI() {
+		
 		setTitle("Opis Control Panel");
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 893, 455);
@@ -130,6 +133,12 @@ public class SwingUI extends JFrame implements WindowListener, ChangeListener, I
 			break;
 		}
 		case CLIENT_SHOW_SWING:{
+			/*
+			try {
+				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			} catch (Exception e) {}
+			*/			
+			
 			modOpis.swingOpen = true;
 			this.showUI();
 			Minecraft.getMinecraft().displayGuiScreen(new GuiChat());

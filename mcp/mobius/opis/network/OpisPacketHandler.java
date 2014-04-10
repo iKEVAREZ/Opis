@@ -8,6 +8,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.logging.Level;
 
+import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
+
+import com.google.common.collect.HashBasedTable;
+import com.google.common.collect.Table.Cell;
+
 import mapwriter.Mw;
 import mcp.mobius.mobiuscore.profiler.ProfilerSection;
 import mcp.mobius.opis.modOpis;
@@ -23,6 +28,7 @@ import mcp.mobius.opis.data.holders.basetypes.SerialLong;
 import mcp.mobius.opis.data.holders.basetypes.TicketData;
 import mcp.mobius.opis.data.holders.newtypes.DataBlockTick;
 import mcp.mobius.opis.data.holders.newtypes.DataEntity;
+import mcp.mobius.opis.data.holders.newtypes.DataEvent;
 import mcp.mobius.opis.data.holders.newtypes.DataHandler;
 import mcp.mobius.opis.data.holders.newtypes.DataNetworkTick;
 import mcp.mobius.opis.data.holders.newtypes.DataTileEntity;
@@ -32,6 +38,7 @@ import mcp.mobius.opis.data.managers.ChunkManager;
 import mcp.mobius.opis.data.managers.EntityManager;
 import mcp.mobius.opis.data.managers.TickHandlerManager;
 import mcp.mobius.opis.data.managers.TileEntityManager;
+import mcp.mobius.opis.data.profilers.ProfilerEvent;
 import mcp.mobius.opis.events.PlayerTracker;
 import mcp.mobius.opis.gui.overlay.OverlayLoadedChunks;
 import mcp.mobius.opis.gui.overlay.OverlayMeanTime;
@@ -212,11 +219,17 @@ public class OpisPacketHandler implements IPacketHandler {
 		DataNetworkTick  totalNetwork  = new DataNetworkTick().fill(); 
 		DataBlockTick totalWorldTick   = new DataBlockTick().fill();
 
+		ArrayList<DataEvent> timingEvents = new ArrayList<DataEvent>();
+		HashBasedTable<Class, Class, DescriptiveStatistics> eventData = ((ProfilerEvent)ProfilerSection.EVENT_INVOKE.getProfiler()).data;
+		for (Cell<Class, Class, DescriptiveStatistics> cell : eventData.cellSet()){
+			timingEvents.add(new DataEvent().fill(cell));
+		}		
 
 		OpisPacketHandler.validateAndSend(NetDataList.create(Message.LIST_TIMING_HANDLERS,    timingHandlers),   player);
 		OpisPacketHandler.validateAndSend(NetDataList.create(Message.LIST_TIMING_ENTITIES,    timingEntities),   player);
 		OpisPacketHandler.validateAndSend(NetDataList.create(Message.LIST_TIMING_TILEENTS,    timingTileEnts),   player);
 		OpisPacketHandler.validateAndSend(NetDataList.create(Message.LIST_TIMING_CHUNK,       timingChunks),     player);
+		OpisPacketHandler.validateAndSend(NetDataList.create(Message.LIST_TIMING_EVENTS,      timingEvents),     player);
 		OpisPacketHandler.validateAndSend(NetDataValue.create(Message.VALUE_TIMING_TILEENTS,  totalTimeTE),      player);
 		OpisPacketHandler.validateAndSend(NetDataValue.create(Message.VALUE_TIMING_ENTITIES,  totalTimeEnt),     player);
 		OpisPacketHandler.validateAndSend(NetDataValue.create(Message.VALUE_TIMING_HANDLERS,  totalTimeHandler), player);

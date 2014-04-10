@@ -40,6 +40,7 @@ import mcp.mobius.opis.swing.panels.PanelRenderTileEnts;
 import mcp.mobius.opis.swing.panels.PanelSummary;
 import mcp.mobius.opis.swing.panels.PanelTimingChunks;
 import mcp.mobius.opis.swing.panels.PanelTimingEntities;
+import mcp.mobius.opis.swing.panels.PanelTimingEvents;
 import mcp.mobius.opis.swing.panels.PanelTimingHandlers;
 import mcp.mobius.opis.swing.panels.PanelTimingTileEnts;
 
@@ -76,6 +77,7 @@ public class ProxyClient extends ProxyServer implements IMessageHandler{
 		IMessageHandler panelTimingEntities = (IMessageHandler)TabPanelRegistrar.INSTANCE.registerTab(new PanelTimingEntities(),"Entities",      "Server timing");
 		IMessageHandler panelTimingHandlers = (IMessageHandler)TabPanelRegistrar.INSTANCE.registerTab(new PanelTimingHandlers(),"Handlers",      "Server timing");
 		IMessageHandler panelTimingChunks   = (IMessageHandler)TabPanelRegistrar.INSTANCE.registerTab(new PanelTimingChunks(),  "Chunks",        "Server timing");
+		IMessageHandler panelTimingEvents   = (IMessageHandler)TabPanelRegistrar.INSTANCE.registerTab(new PanelTimingEvents(),  "Events",        "Server timing");
 		IMessageHandler panelDimensions     = (IMessageHandler)TabPanelRegistrar.INSTANCE.registerTab(new PanelDimensions(),    "Dimensions",    "Tracking");
 		IMessageHandler panelPackets        = (IMessageHandler)TabPanelRegistrar.INSTANCE.registerTab(new PanelPackets(),       "Network");
 		
@@ -108,6 +110,11 @@ public class ProxyClient extends ProxyServer implements IMessageHandler{
 		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.STATUS_START,          panelTimingChunks);
 		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.STATUS_STOP,           panelTimingChunks);
 		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.STATUS_RUNNING,        panelTimingChunks);
+
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.LIST_TIMING_EVENTS,    panelTimingEvents);
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.STATUS_START,          panelTimingEvents);
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.STATUS_STOP,           panelTimingEvents);
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.STATUS_RUNNING,        panelTimingEvents);		
 		
 		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.STATUS_ACCESS_LEVEL,   DataCache.instance());
 		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.STATUS_CURRENT_TIME,   DataCache.instance());
