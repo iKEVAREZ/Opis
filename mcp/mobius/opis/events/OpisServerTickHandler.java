@@ -50,6 +50,7 @@ public enum OpisServerTickHandler implements ITickHandler {
 	public int  profilerRunningTicks;
 	public long timer500  = System.nanoTime();	
 	public long timer1000 = System.nanoTime();
+	public long timer2000 = System.nanoTime();
 	public long timer5000 = System.nanoTime();
 	
 	public HashMap<Player, AccessLevel> cachedAccess = new HashMap<Player, AccessLevel>(); 
@@ -108,12 +109,16 @@ public enum OpisServerTickHandler implements ITickHandler {
 				((ProfilerPacket)ProfilerSection.PACKET_OUTBOUND.getProfiler()).dataAmount = 0L;
 			}
 			
+			// Two second timer
+			if (System.nanoTime() - timer2000 > 2000000000L){
+				timer2000 = System.nanoTime();
+				OpisPacketHandler.sendPacketToAllSwing(NetDataList.create(Message.LIST_PLAYERS, EntityManager.INSTANCE.getAllPlayers()));				
+			}
+			
 			// Five second timer
 			if (System.nanoTime() - timer5000 > 5000000000L){
 				timer5000 = System.nanoTime();
 				updatePlayers();
-				
-				OpisPacketHandler.sendPacketToAllSwing(NetDataList.create(Message.LIST_PLAYERS, EntityManager.INSTANCE.getAllPlayers()));
 				
 				OpisPacketHandler.sendPacketToAllSwing(NetDataList.create(Message.LIST_PACKETS_OUTBOUND, ((ProfilerPacket)ProfilerSection.PACKET_OUTBOUND.getProfiler()).data));
 				OpisPacketHandler.sendPacketToAllSwing(NetDataList.create(Message.LIST_PACKETS_INBOUND,  ((ProfilerPacket)ProfilerSection.PACKET_INBOUND.getProfiler()).data));
