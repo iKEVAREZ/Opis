@@ -2,8 +2,6 @@ package mcp.mobius.opis.data.holders;
 
 import java.util.EnumSet;
 
-import javax.activation.DataHandler;
-
 import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.data.holders.basetypes.AmountHolder;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesBlock;
@@ -22,6 +20,7 @@ import mcp.mobius.opis.data.holders.newtypes.DataChunk;
 import mcp.mobius.opis.data.holders.newtypes.DataDimension;
 import mcp.mobius.opis.data.holders.newtypes.DataEntity;
 import mcp.mobius.opis.data.holders.newtypes.DataEntityRender;
+import mcp.mobius.opis.data.holders.newtypes.DataHandler;
 import mcp.mobius.opis.data.holders.newtypes.DataNetworkTick;
 import mcp.mobius.opis.data.holders.newtypes.DataPacket;
 import mcp.mobius.opis.data.holders.newtypes.DataPacket250;
@@ -37,7 +36,7 @@ import com.google.common.collect.HashBiMap;
 public enum DataType {
 	AMOUNTHOLDER    (AmountHolder.class),
 	COORDINATESBLOCK(CoordinatesBlock.class),
-	COORDINATESCHUNK(CoordinatesChunk.class),
+	COORDINATESCHUNK(CoordinatesChunk.class), 
 	SERIALDOUBLE    (SerialDouble.class),
 	SERIALFLOAT     (SerialFloat.class),
 	SERIALINT       (SerialInt.class),
@@ -79,7 +78,7 @@ public enum DataType {
 	public static DataType getForClass(Class clazz){
 		DataType type = bimap.inverse().get(clazz);
 		if (type == null){
-			throw new RuntimeException(String.format("Class %s was not registered with the DataType enum", clazz));
+			modOpis.log.warning(String.format("Class %s was not registered with the DataType enum", clazz));			
 		}
 		return type;
 	}

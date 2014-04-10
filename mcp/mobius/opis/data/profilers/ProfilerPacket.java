@@ -17,7 +17,7 @@ public class ProfilerPacket extends ProfilerAbstract {
 	public ArrayList<DataPacket>	jabbaSpec     = new ArrayList<DataPacket>();
 	
 	public ProfilerPacket(){
-		for (int i = 0; i < 254; i++)
+		for (int i = 0; i < 256; i++)
 			data.add(new DataPacket(i));
 		
 	}
