@@ -149,11 +149,6 @@ public class PanelTimingEntities extends JPanelMsgHandler implements ITabPanel{
 	}
 
 	@Override
-	public String getTabTitle() {
-		return "Entities timing";
-	}
-
-	@Override
 	public String getTabRefName() {
 		return "opis.timingents";
 	}

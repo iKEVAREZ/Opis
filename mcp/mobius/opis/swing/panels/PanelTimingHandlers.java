@@ -128,11 +128,6 @@ public class PanelTimingHandlers extends JPanelMsgHandler implements ITabPanel{
 	}
 
 	@Override
-	public String getTabTitle() {
-		return "Handlers timing";
-	}
-
-	@Override
 	public String getTabRefName() {
 		return "opis.timinghandlers";
 	}

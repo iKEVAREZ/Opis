@@ -122,8 +122,6 @@ public class PanelPackets extends JPanelMsgHandler implements ITabPanel {
 	}
 
 	@Override
-	public String getTabTitle() { return "Packets";	}
-	@Override
 	public String getTabRefName() {	return "opis.packets";	}
 
 	@Override

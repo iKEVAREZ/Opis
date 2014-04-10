@@ -74,11 +74,6 @@ public class PanelRenderTileEnts extends JPanel implements ITabPanel, IMessageHa
 	}
 
 	@Override
-	public String getTabTitle() {
-		return "TileEntity Render";
-	}
-
-	@Override
 	public String getTabRefName() {
 		return "opis.client.terender";
 	}	

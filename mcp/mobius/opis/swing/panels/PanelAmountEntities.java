@@ -121,11 +121,6 @@ public class PanelAmountEntities extends JPanelMsgHandler implements ITabPanel{
 	}
 
 	@Override
-	public String getTabTitle() {
-		return "Entities amount";
-	}
-
-	@Override
 	public String getTabRefName() {
 		return "opis.amountents";
 	}

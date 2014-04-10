@@ -81,10 +81,6 @@ public class PanelDimensions extends JPanelMsgHandler implements IMessageHandler
 		//JTableButton buttonColumn = new JTableButton(table, new ActionDimensions(), 8, AccessLevel.PRIVILEGED);
 	}
 
-	
-
-	@Override
-	public String getTabTitle() { return "Dimensions"; }
 	@Override
 	public String getTabRefName() {	return "opis.dimensions"; }
 	

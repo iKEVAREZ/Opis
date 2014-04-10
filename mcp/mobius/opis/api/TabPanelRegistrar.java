@@ -1,24 +1,46 @@
 package mcp.mobius.opis.api;
 
+import java.awt.Component;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
+import cpw.mods.fml.common.network.PacketDispatcher;
+import mcp.mobius.opis.data.holders.basetypes.SerialInt;
+import mcp.mobius.opis.network.enums.Message;
+import mcp.mobius.opis.network.packets.client.Packet_ReqData;
 import mcp.mobius.opis.swing.SwingUI;
 
-public enum TabPanelRegistrar {
+public enum TabPanelRegistrar implements ChangeListener{
 	INSTANCE;
 	
-	private ArrayList<ITabPanel>       panels = new ArrayList<ITabPanel>();
-	private HashMap<String, ITabPanel> lookup = new HashMap<String, ITabPanel>(); 
+	//private ArrayList<ITabPanel>       panels     = new ArrayList<ITabPanel>();
+	private HashMap<String, ITabPanel> lookup     = new HashMap<String, ITabPanel>(); 
+	private HashMap<String, JTabbedPane> sections = new HashMap<String, JTabbedPane>();
 	
-	public ITabPanel registerTab(ITabPanel panel){
-		this.panels.add(panel);
+	public JTabbedPane registerSection(String name){
+		JTabbedPane pane = new JTabbedPane();
+		pane.addChangeListener(this);
+		this.sections.put(name, pane);
+		SwingUI.instance().getTabbedPane().addTab(name, pane);
+		return pane;
+	}
+	
+	public ITabPanel registerTab(ITabPanel panel, String name){
 		this.lookup.put(panel.getTabRefName(), panel);
-		SwingUI.instance().getTabbedPane().addTab(panel.getTabTitle(), (JPanel)panel);
+		SwingUI.instance().getTabbedPane().addTab(name, (JPanel)panel);
 		return panel;
 	}
+	
+	public ITabPanel registerTab(ITabPanel panel, String name, String section){
+		this.lookup.put(panel.getTabRefName(), panel);
+		this.sections.get(section).addTab(name, (JPanel)panel);
+		return panel;
+	}	
 	
 	public ITabPanel getTab(String refname){
 		return lookup.get(refname);
@@ -26,9 +48,22 @@ public enum TabPanelRegistrar {
 
 	public JPanel getTabAsPanel(String refname){
 		return (JPanel)lookup.get(refname);
+	}
+
+	@Override
+	public void stateChanged(ChangeEvent e) {
+		Component source = ((JTabbedPane)e.getSource()).getSelectedComponent();
+		
+		if (source instanceof ITabPanel){
+			ITabPanel panel = (ITabPanel)source;
+			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.SWING_TAB_CHANGED, new SerialInt(panel.getSelectedTab().ordinal())));
+		}
+		
 	}	
 	
+	/*
 	public ArrayList<ITabPanel> getTabs(){
 		return this.panels;
 	}
+	*/
 }

@@ -1,6 +1,7 @@
 package mcp.mobius.opis.swing;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -144,7 +145,17 @@ public class SwingUI extends JFrame implements WindowListener, ChangeListener, I
 
 	@Override
 	public void stateChanged(ChangeEvent e) {
-		ITabPanel panel = ((ITabPanel)((JTabbedPane)e.getSource()).getSelectedComponent());
-		PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.SWING_TAB_CHANGED, new SerialInt(panel.getSelectedTab().ordinal())));
+		Component source = ((JTabbedPane)e.getSource()).getSelectedComponent();
+		
+		if (source instanceof ITabPanel){
+			ITabPanel panel = (ITabPanel)source;
+			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.SWING_TAB_CHANGED, new SerialInt(panel.getSelectedTab().ordinal())));
+		}
+		
+		if (source instanceof JTabbedPane){
+			JTabbedPane pane = (JTabbedPane)source;
+			ITabPanel panel = (ITabPanel)pane.getSelectedComponent();
+			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.SWING_TAB_CHANGED, new SerialInt(panel.getSelectedTab().ordinal())));
+		}
 	}
 }

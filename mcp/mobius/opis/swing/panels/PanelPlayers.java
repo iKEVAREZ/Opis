@@ -126,11 +126,6 @@ public class PanelPlayers extends JPanelMsgHandler implements ITabPanel{
 	}
 
 	@Override
-	public String getTabTitle() {
-		return "Players";
-	}
-
-	@Override
 	public String getTabRefName() {
 		return "opis.players";
 	}

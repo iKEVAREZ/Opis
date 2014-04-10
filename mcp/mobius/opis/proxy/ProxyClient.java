@@ -64,18 +64,23 @@ public class ProxyClient extends ProxyServer implements IMessageHandler{
 		//fontMC8 = Fonts.loadSystemFont("Monospace", 12, true, Font.TRUETYPE_FONT | Font.BOLD);
 		fontMC8 = Fonts.createFont(new ResourceLocation("opis", "fonts/LiberationMono-Bold.ttf"), 14, true);
 
-		IMessageHandler panelSummary        = (IMessageHandler)TabPanelRegistrar.INSTANCE.registerTab(new PanelSummary());		
-		IMessageHandler panelPlayers        = (IMessageHandler)TabPanelRegistrar.INSTANCE.registerTab(new PanelPlayers());
-		IMessageHandler panelAmountEntities = (IMessageHandler)TabPanelRegistrar.INSTANCE.registerTab(new PanelAmountEntities());
-		IMessageHandler panelTimingTileEnts = (IMessageHandler)TabPanelRegistrar.INSTANCE.registerTab(new PanelTimingTileEnts());
-		IMessageHandler panelTimingEntities = (IMessageHandler)TabPanelRegistrar.INSTANCE.registerTab(new PanelTimingEntities());
-		IMessageHandler panelTimingHandlers = (IMessageHandler)TabPanelRegistrar.INSTANCE.registerTab(new PanelTimingHandlers());
-		IMessageHandler panelTimingChunks   = (IMessageHandler)TabPanelRegistrar.INSTANCE.registerTab(new PanelTimingChunks());
-		IMessageHandler panelDimensions     = (IMessageHandler)TabPanelRegistrar.INSTANCE.registerTab(new PanelDimensions());
-		IMessageHandler panelPackets        = (IMessageHandler)TabPanelRegistrar.INSTANCE.registerTab(new PanelPackets());
+		IMessageHandler panelSummary        = (IMessageHandler)TabPanelRegistrar.INSTANCE.registerTab(new PanelSummary(), "Summary");				
 		
-		TabPanelRegistrar.INSTANCE.registerTab(new PanelRenderTileEnts());
-		TabPanelRegistrar.INSTANCE.registerTab(new PanelRenderEntities());
+		TabPanelRegistrar.INSTANCE.registerSection("Tracking");
+		TabPanelRegistrar.INSTANCE.registerSection("Server timing");
+		TabPanelRegistrar.INSTANCE.registerSection("Client timing");
+
+		IMessageHandler panelPlayers        = (IMessageHandler)TabPanelRegistrar.INSTANCE.registerTab(new PanelPlayers(),       "Players",       "Tracking");
+		IMessageHandler panelAmountEntities = (IMessageHandler)TabPanelRegistrar.INSTANCE.registerTab(new PanelAmountEntities(),"Entity amount", "Tracking");
+		IMessageHandler panelTimingTileEnts = (IMessageHandler)TabPanelRegistrar.INSTANCE.registerTab(new PanelTimingTileEnts(),"Tile Entities", "Server timing");
+		IMessageHandler panelTimingEntities = (IMessageHandler)TabPanelRegistrar.INSTANCE.registerTab(new PanelTimingEntities(),"Entities",      "Server timing");
+		IMessageHandler panelTimingHandlers = (IMessageHandler)TabPanelRegistrar.INSTANCE.registerTab(new PanelTimingHandlers(),"Handlers",      "Server timing");
+		IMessageHandler panelTimingChunks   = (IMessageHandler)TabPanelRegistrar.INSTANCE.registerTab(new PanelTimingChunks(),  "Chunks",        "Server timing");
+		IMessageHandler panelDimensions     = (IMessageHandler)TabPanelRegistrar.INSTANCE.registerTab(new PanelDimensions(),    "Dimensions",    "Tracking");
+		IMessageHandler panelPackets        = (IMessageHandler)TabPanelRegistrar.INSTANCE.registerTab(new PanelPackets(),       "Network");
+		
+		TabPanelRegistrar.INSTANCE.registerTab(new PanelRenderTileEnts(),"[Render] TileEnts", "Client timing");
+		TabPanelRegistrar.INSTANCE.registerTab(new PanelRenderEntities(),"[Render] Entities", "Client timing");
 		
 		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.LIST_PLAYERS,          panelPlayers);
 		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.LIST_AMOUNT_ENTITIES,  panelAmountEntities);

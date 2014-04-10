@@ -405,11 +405,6 @@ public class PanelSummary extends JPanelMsgHandler implements ITabPanel{
 	}
 
 	@Override
-	public String getTabTitle() {
-		return "Summary";
-	}
-
-	@Override
 	public String getTabRefName() {
 		return "opis.summary";
 	}
