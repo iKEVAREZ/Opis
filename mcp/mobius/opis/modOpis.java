@@ -34,6 +34,7 @@ import mcp.mobius.opis.data.profilers.DeadManSwitch;
 import mcp.mobius.opis.data.profilers.ProfilerDimBlockTick;
 import mcp.mobius.opis.data.profilers.ProfilerDimTick;
 import mcp.mobius.opis.data.profilers.ProfilerEntityUpdate;
+import mcp.mobius.opis.data.profilers.ProfilerEvent;
 import mcp.mobius.opis.data.profilers.ProfilerHandlerServer;
 import mcp.mobius.opis.data.profilers.ProfilerNetworkTick;
 import mcp.mobius.opis.data.profilers.ProfilerPacket;
@@ -168,6 +169,7 @@ public class modOpis {
 		ProfilerSection.PACKET_INBOUND     .setProfiler(new ProfilerPacket());
 		ProfilerSection.PACKET_OUTBOUND    .setProfiler(new ProfilerPacket());			
 		ProfilerSection.NETWORK_TICK       .setProfiler(new ProfilerNetworkTick());
+		ProfilerSection.EVENT_INVOKE       .setProfiler(new ProfilerEvent());
 		
 		event.registerServerCommand(new CommandChunkList());
 		event.registerServerCommand(new CommandFrequency());

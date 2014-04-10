@@ -5,7 +5,11 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
+
+import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
+import com.google.common.collect.Table.Cell;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -27,6 +31,7 @@ import mcp.mobius.opis.data.managers.ChunkManager;
 import mcp.mobius.opis.data.managers.EntityManager;
 import mcp.mobius.opis.data.managers.TickHandlerManager;
 import mcp.mobius.opis.data.managers.TileEntityManager;
+import mcp.mobius.opis.data.profilers.ProfilerEvent;
 import mcp.mobius.opis.data.profilers.ProfilerPacket;
 import mcp.mobius.opis.data.profilers.ProfilerTick;
 import mcp.mobius.opis.gui.overlay.OverlayStatus;
@@ -146,6 +151,13 @@ public enum OpisServerTickHandler implements ITickHandler {
 				
 				for (Player player : PlayerTracker.instance().playersSwing){
 					OpisPacketHandler.sendFullUpdate(player);
+				}
+				
+				System.out.printf("================================================\n");
+				
+				HashBasedTable<Class, Class, DescriptiveStatistics> eventData = ((ProfilerEvent)ProfilerSection.EVENT_INVOKE.getProfiler()).data;
+				for (Cell<Class, Class, DescriptiveStatistics> cell : eventData.cellSet()){
+					System.out.printf("%-40s %-90s %.3f µs\n",cell.getRowKey().getName().replace("net.minecraftforge.event.", ""), cell.getColumnKey().getSimpleName(), cell.getValue().getGeometricMean()/1000.);
 				}
 				
 			}			
