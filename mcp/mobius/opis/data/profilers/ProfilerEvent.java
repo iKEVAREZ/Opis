@@ -16,13 +16,14 @@ public class ProfilerEvent extends ProfilerAbstract {
 	}
 	
 	@Override
-	public void start(Object key1, Object key2) {
+	public void start() {
 		clock.start();
 	}
 
 	@Override
 	public void stop(Object key1, Object key2) {
 		clock.stop();
+		
 		try{
 			data.get(key1.getClass(), key2.getClass()).addValue((double)clock.timeDelta);
 		} catch (Exception e) {

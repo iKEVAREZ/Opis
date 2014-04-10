@@ -157,7 +157,12 @@ public enum OpisServerTickHandler implements ITickHandler {
 				
 				HashBasedTable<Class, Class, DescriptiveStatistics> eventData = ((ProfilerEvent)ProfilerSection.EVENT_INVOKE.getProfiler()).data;
 				for (Cell<Class, Class, DescriptiveStatistics> cell : eventData.cellSet()){
-					System.out.printf("%-40s %-90s %.3f µs\n",cell.getRowKey().getName().replace("net.minecraftforge.event.", ""), cell.getColumnKey().getSimpleName(), cell.getValue().getGeometricMean()/1000.);
+					String handlerName = cell.getColumnKey().getSimpleName();
+					try {
+						String[] splitHandler = handlerName.split("_");
+						handlerName  = splitHandler[2] + "." + splitHandler[3];
+					} catch (Exception e){}
+					System.out.printf("%-50s %-50s %.3f µs\n",cell.getRowKey().getName().replace("net.minecraftforge.event.", ""), handlerName, cell.getValue().getGeometricMean()/1000.);
 				}
 				
 			}			
