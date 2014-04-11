@@ -47,15 +47,22 @@ public enum StringCache implements IMessageHandler {
 	}
 	
 	public void syncCache(Player player){
-		// NEED TO AUTO SPLIT THE PACKET !
-		PacketDispatcher.sendPacketToPlayer(NetDataList.create(Message.STATUS_STRINGUPD_FULL, this.toSend).packet, player);
+		
+		int i = 0;
+		while (i < this.toSend.size()){
+			PacketDispatcher.sendPacketToPlayer(NetDataList.create(Message.STATUS_STRINGUPD_FULL, this.toSend.subList(i, Math.min(i + 50, this.toSend.size()))).packet, player);			
+			
+			i += 50;
+		}		
+		
+		
 	}
 	
 	@Override
 	public boolean handleMessage(Message msg, NetDataRaw rawdata) {
 		switch(msg){
 		case STATUS_STRINGUPD:{
-			modOpis.log.info("Received String Cache update");
+			//modOpis.log.info("Received String Cache update");
 			DataStringUpdate data = (DataStringUpdate)rawdata.value;
 			this.cache.put(data.index, data.str);
 			break;

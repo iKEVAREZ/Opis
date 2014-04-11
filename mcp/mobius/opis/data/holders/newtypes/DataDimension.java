@@ -25,7 +25,7 @@ import net.minecraftforge.common.DimensionManager;
 public class DataDimension implements ISerializable {
 
 	public int    dim;
-	public String name;
+	public CachedString name;
 	public int    players;
 	public int    forced;
 	public int    loaded;
@@ -39,7 +39,7 @@ public class DataDimension implements ISerializable {
 		WorldServer  world = DimensionManager.getWorld(dim);
 		
 		this.dim      = dim;
-		this.name     = world.provider.getDimensionName();
+		this.name     = new CachedString(world.provider.getDimensionName());
 		this.players  = world.playerEntities.size();
 		this.forced   = world.getPersistentChunks().size();
 		this.loaded   = world.getChunkProvider().getLoadedChunkCount();
@@ -75,7 +75,7 @@ public class DataDimension implements ISerializable {
 		stream.writeInt(itemstacks);
 		//stream.writeDouble(update);
 		this.update.writeToStream(stream);
-		Packet.writeString(name, stream);
+		this.name.writeToStream(stream);
 	}
 
 	public static DataDimension readFromStream(DataInputStream stream) throws IOException {
@@ -90,7 +90,7 @@ public class DataDimension implements ISerializable {
 		retVal.itemstacks = stream.readInt();
 		//retVal.update  = stream.readDouble();
 		retVal.update  = DataTiming.readFromStream(stream);
-		retVal.name    = Packet.readString(stream, 255);
+		retVal.name    = CachedString.readFromStream(stream);
 		return retVal;
 	}
 }

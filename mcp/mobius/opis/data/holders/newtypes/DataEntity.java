@@ -20,14 +20,14 @@ public class DataEntity implements ISerializable, Comparable {
 
 	public int              eid;
 	public long             npoints;
-	public String           name;
+	public CachedString     name;
 	public CoordinatesBlock pos;
 	public DataTiming       update;
 	
 	public DataEntity fill(Entity entity){
 		
 		this.eid    = entity.entityId;
-		this.name   = EntityManager.INSTANCE.getEntityName(entity, false);
+		this.name   = new CachedString(EntityManager.INSTANCE.getEntityName(entity, false));
 		this.pos    = new CoordinatesBlock(entity);
 		
 		WeakHashMap<Entity, DescriptiveStatistics> data = ((ProfilerEntityUpdate)(ProfilerSection.ENTITY_UPDATETIME.getProfiler())).data;
@@ -40,7 +40,7 @@ public class DataEntity implements ISerializable, Comparable {
 	@Override
 	public void writeToStream(DataOutputStream stream) throws IOException {
 		stream.writeInt(this.eid);
-		Packet.writeString(this.name, stream);
+		this.name.writeToStream(stream);
 		this.pos.writeToStream(stream);
 		this.update.writeToStream(stream);
 		stream.writeLong(this.npoints);
@@ -49,7 +49,7 @@ public class DataEntity implements ISerializable, Comparable {
 	public static DataEntity readFromStream(DataInputStream stream) throws IOException {
 		DataEntity retVal = new DataEntity();
 		retVal.eid    = stream.readInt();
-		retVal.name   = Packet.readString(stream, 255);
+		retVal.name   = CachedString.readFromStream(stream);
 		retVal.pos    = CoordinatesBlock.readFromStream(stream);
 		retVal.update = DataTiming.readFromStream(stream);
 		retVal.npoints= stream.readLong();

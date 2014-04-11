@@ -12,8 +12,8 @@ import net.minecraft.network.packet.Packet;
 import mcp.mobius.opis.data.holders.ISerializable;
 
 public class DataEvent implements ISerializable, Comparable {
-	public String     event;
-	public String     handler;
+	public CachedString     event;
+	public CachedString     handler;
 	public DataTiming update;
 	
 	public DataEvent fill(Cell<Class, Class, DescriptiveStatistics> cell){
@@ -23,8 +23,8 @@ public class DataEvent implements ISerializable, Comparable {
 			handlerName  = splitHandler[2] + "." + splitHandler[3];
 		} catch (Exception e){}		
 		
-		this.handler = handlerName;
-		this.event   = cell.getRowKey().getName().replace("net.minecraftforge.event.", "");
+		this.handler = new CachedString(handlerName);
+		this.event   = new CachedString(cell.getRowKey().getName().replace("net.minecraftforge.event.", ""));
 		
 		this.update = new DataTiming(cell.getValue().getGeometricMean());
 		return this;
@@ -32,15 +32,15 @@ public class DataEvent implements ISerializable, Comparable {
 	
 	@Override
 	public void writeToStream(DataOutputStream stream) throws IOException {
-		Packet.writeString(this.event,   stream);
-		Packet.writeString(this.handler, stream);
+		this.event.writeToStream(stream);
+		this.handler.writeToStream(stream);
 		this.update.writeToStream(stream);
 	}
 
 	public static DataEvent readFromStream(DataInputStream stream) throws IOException {
 		DataEvent retVal = new DataEvent();
-		retVal.event   = Packet.readString(stream, 255);
-		retVal.handler = Packet.readString(stream, 255);
+		retVal.event   = CachedString.readFromStream(stream);
+		retVal.handler = CachedString.readFromStream(stream);
 		retVal.update  = DataTiming.readFromStream(stream);
 		return retVal;
 	}

@@ -243,7 +243,7 @@ public class OverlayEntityPerChunk implements IMwDataProvider, IMessageHandler {
 			//String[] namelst = data.getName().split("\\.");
 			//String name = namelst[namelst.length - 1];
 			
-			String name = data.name;
+			String name = data.name.toString();
 			
 			table.addRow(data, name, String.format("[ %d %d %d ]", data.pos.x, data.pos.y, data.pos.z));
 			nrows++;

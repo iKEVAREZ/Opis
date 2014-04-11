@@ -15,7 +15,7 @@ public class DataEntityRender extends DataEntity {
 	public DataEntityRender fill(Entity entity){
 		
 		this.eid    = entity.entityId;
-		this.name   = EntityManager.INSTANCE.getEntityName(entity, false);
+		this.name   = new CachedString(EntityManager.INSTANCE.getEntityName(entity, false));
 		this.pos    = new CoordinatesBlock(entity);
 		
 		WeakHashMap<Entity, DescriptiveStatistics> data = ((ProfilerRenderEntity)(ProfilerSection.RENDER_ENTITY.getProfiler())).data;
