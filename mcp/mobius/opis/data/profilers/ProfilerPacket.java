@@ -22,6 +22,14 @@ public class ProfilerPacket extends ProfilerAbstract {
 		
 	}
 
+	public void startInterval(){
+		for (DataPacket packet : data)
+			packet.startInterval();
+		
+		for (DataPacket250 packet : data250.values())
+			packet.startInterval();
+	}
+	
 	@Override
 	public void reset() {
 		dataAmount = 0;

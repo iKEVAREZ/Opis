@@ -3,6 +3,9 @@ package mcp.mobius.opis.swing.panels;
 import javax.swing.JPanel;
 
 import mcp.mobius.opis.api.ITabPanel;
+import mcp.mobius.opis.data.holders.newtypes.DataAmountRate;
+import mcp.mobius.opis.data.holders.newtypes.DataByteRate;
+import mcp.mobius.opis.data.holders.newtypes.DataByteSize;
 import mcp.mobius.opis.data.holders.newtypes.DataPacket;
 import mcp.mobius.opis.data.holders.newtypes.DataPacket250;
 import mcp.mobius.opis.network.enums.Message;
@@ -37,14 +40,14 @@ public class PanelPackets extends JPanelMsgHandler implements ITabPanel {
 		tableOutbound = new JTableStats();
 		tableOutbound.setModel(new DefaultTableModel(
 			new Object[][] {
-				{null, null, null, null},
+				{null, null, null, null, null},
 			},
 			new String[] {
-				"Type", "ID", "Amount", "Total Size"
+				"Type", "ID", "Amount", "Rate", "Total Size"
 			}
 		) {
 			Class[] columnTypes = new Class[] {
-				String.class, Integer.class, Long.class, Long.class
+				String.class, Integer.class, DataAmountRate.class, DataByteRate.class, DataByteSize.class
 			};
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
@@ -58,20 +61,20 @@ public class PanelPackets extends JPanelMsgHandler implements ITabPanel {
 		
 		tableInbound = new JTableStats();
 		tableInbound.setModel(new DefaultTableModel(
-				new Object[][] {
-					{null, null, null, null},
-				},
-				new String[] {
-					"Type", "ID", "Amount", "Total Size"
-				}
-			) {
-				Class[] columnTypes = new Class[] {
-					String.class, Integer.class, Long.class, Long.class
-				};
-				public Class getColumnClass(int columnIndex) {
-					return columnTypes[columnIndex];
-				}
-			});
+			new Object[][] {
+				{null, null, null, null, null},
+			},
+			new String[] {
+				"Type", "ID", "Amount", "Rate", "Total Size"
+			}
+		) {
+			Class[] columnTypes = new Class[] {
+				String.class, Integer.class, DataAmountRate.class, DataByteRate.class, DataByteSize.class
+			};
+			public Class getColumnClass(int columnIndex) {
+				return columnTypes[columnIndex];
+			}
+		});
 		tableInbound.setAutoCreateRowSorter(true);			
 		scrollPane_1.setViewportView(tableInbound);
 		
@@ -81,14 +84,14 @@ public class PanelPackets extends JPanelMsgHandler implements ITabPanel {
 		tablePacket250Outbound = new JTableStats();
 		tablePacket250Outbound.setModel(new DefaultTableModel(
 			new Object[][] {
-				{null, null, null},
+				{null, null, null, null},
 			},
 			new String[] {
-				"Channel", "Amount", "Total Size"
+				"Channel", "Amount", "Rate", "Total Size"
 			}
 		) {
 			Class[] columnTypes = new Class[] {
-				String.class, Integer.class, Integer.class
+				String.class, DataAmountRate.class, DataByteRate.class, DataByteSize.class
 			};
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
@@ -102,22 +105,43 @@ public class PanelPackets extends JPanelMsgHandler implements ITabPanel {
 		
 		tablePacket250Inbound = new JTableStats();
 		tablePacket250Inbound.setModel(new DefaultTableModel(
-				new Object[][] {
-					{null, null, null},
-				},
-				new String[] {
-					"Channel", "Amount", "Total Size"
-				}
-			) {
-				Class[] columnTypes = new Class[] {
-					String.class, Integer.class, Integer.class
-				};
-				public Class getColumnClass(int columnIndex) {
-					return columnTypes[columnIndex];
-				}
-			});
+			new Object[][] {
+				{null, null, null, null},
+			},
+			new String[] {
+				"Channel", "Amount", "Rate", "Total Size"
+			}
+		) {
+			Class[] columnTypes = new Class[] {
+				String.class, DataAmountRate.class, DataByteRate.class, DataByteSize.class
+			};
+			public Class getColumnClass(int columnIndex) {
+				return columnTypes[columnIndex];
+			}
+		});
 		tablePacket250Inbound.setAutoCreateRowSorter(true);		
 		scrollPane_3.setViewportView(tablePacket250Inbound);
+		
+		
+		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		centerRenderer.setHorizontalAlignment( SwingConstants.CENTER );			
+		DefaultTableCellRenderer leftRenderer = new DefaultTableCellRenderer();
+		leftRenderer.setHorizontalAlignment( SwingConstants.LEFT );
+		DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
+		rightRenderer.setHorizontalAlignment( SwingConstants.RIGHT );		
+		
+		
+		for (int i = 1; i < tableOutbound.getColumnCount(); i++)
+			tableOutbound.getColumnModel().getColumn(i).setCellRenderer(rightRenderer);
+		
+		for (int i = 1; i < tableInbound.getColumnCount(); i++)
+			tableInbound.getColumnModel().getColumn(i).setCellRenderer(rightRenderer);	
+		
+		for (int i = 1; i < tablePacket250Outbound.getColumnCount(); i++)
+			tablePacket250Outbound.getColumnModel().getColumn(i).setCellRenderer(rightRenderer);	
+		
+		for (int i = 1; i < tablePacket250Inbound.getColumnCount(); i++)
+			tablePacket250Inbound.getColumnModel().getColumn(i).setCellRenderer(rightRenderer);			
 		
 	}
 
@@ -138,7 +162,8 @@ public class PanelPackets extends JPanelMsgHandler implements ITabPanel {
 					packet.type,
 					packet.id,
 					packet.amount,
-					packet.size  
+					packet.rate,
+					packet.size    
 					 });
 			}
 			
@@ -161,7 +186,8 @@ public class PanelPackets extends JPanelMsgHandler implements ITabPanel {
 					packet.type,
 					packet.id,
 					packet.amount,
-					packet.size  
+					packet.rate,
+					packet.size    
 					 });
 			}
 			
@@ -182,6 +208,7 @@ public class PanelPackets extends JPanelMsgHandler implements ITabPanel {
 				model.addRow(new Object[]  {
 					packet.channel,
 					packet.amount,
+					packet.rate,
 					packet.size  
 					 });
 			}
@@ -203,6 +230,7 @@ public class PanelPackets extends JPanelMsgHandler implements ITabPanel {
 				model.addRow(new Object[]  {
 					packet.channel,
 					packet.amount,
+					packet.rate,
 					packet.size  
 					 });
 			}

@@ -53,10 +53,11 @@ public enum OpisServerTickHandler implements ITickHandler {
 	
 	public long profilerUpdateTickCounter = 0;	
 	public int  profilerRunningTicks;
-	public long timer500  = System.nanoTime();	
-	public long timer1000 = System.nanoTime();
-	public long timer2000 = System.nanoTime();
-	public long timer5000 = System.nanoTime();
+	public long timer500   = System.nanoTime();	
+	public long timer1000  = System.nanoTime();
+	public long timer2000  = System.nanoTime();
+	public long timer5000  = System.nanoTime();
+	public long timer10000 = System.nanoTime();
 	
 	public HashMap<Player, AccessLevel> cachedAccess = new HashMap<Player, AccessLevel>(); 
 	
@@ -130,12 +131,21 @@ public enum OpisServerTickHandler implements ITickHandler {
 				
 				OpisPacketHandler.sendPacketToAllSwing(NetDataList.create(Message.LIST_PACKETS_OUTBOUND_250, new ArrayList<DataPacket250>( ((ProfilerPacket)ProfilerSection.PACKET_OUTBOUND.getProfiler()).data250.values())));
 				OpisPacketHandler.sendPacketToAllSwing(NetDataList.create(Message.LIST_PACKETS_INBOUND_250,  new ArrayList<DataPacket250>( ((ProfilerPacket)ProfilerSection.PACKET_INBOUND.getProfiler()).data250.values())));
+
+				((ProfilerPacket)ProfilerSection.PACKET_OUTBOUND.getProfiler()).startInterval();
+				((ProfilerPacket)ProfilerSection.PACKET_INBOUND.getProfiler()).startInterval();				
 				
 				/*
 				for (DataPacket data : ((ProfilerPacket)ProfilerSection.PACKET_OUTBOUND.getProfiler()).jabbaSpec){
 					System.out.printf("[ %d ] %d %d\n", data.id, data.amount, data.size);
 				}
 				*/
+			}
+			
+			// Ten second timer
+			if (System.nanoTime() - timer10000 > 10000000000L){
+				timer10000 = System.nanoTime();
+
 			}
 			
 			profilerUpdateTickCounter++;

@@ -14,6 +14,9 @@ import mcp.mobius.opis.data.holders.basetypes.SerialNumeral;
 import mcp.mobius.opis.data.holders.basetypes.SerialString;
 import mcp.mobius.opis.data.holders.basetypes.TargetEntity;
 import mcp.mobius.opis.data.holders.basetypes.TicketData;
+import mcp.mobius.opis.data.holders.newtypes.DataAmountRate;
+import mcp.mobius.opis.data.holders.newtypes.DataByteRate;
+import mcp.mobius.opis.data.holders.newtypes.DataByteSize;
 import mcp.mobius.opis.data.holders.newtypes.DataBlockRender;
 import mcp.mobius.opis.data.holders.newtypes.DataBlockTick;
 import mcp.mobius.opis.data.holders.newtypes.DataChunk;
@@ -46,6 +49,9 @@ public enum DataType {
 	TARGETENTITY    (TargetEntity.class),
 	TICKETDATA      (TicketData.class),
 	
+	DATAAMOUNTRATE  (DataAmountRate.class),
+	DATABITRATE     (DataByteRate.class),
+	DATABITSIZE     (DataByteSize.class),
 	DATABLOCKRENDER (DataBlockRender.class),
 	DATABLOCKTICK   (DataBlockTick.class),
 	DATACHUNK       (DataChunk.class),

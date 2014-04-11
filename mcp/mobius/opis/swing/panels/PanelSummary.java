@@ -287,12 +287,12 @@ public class PanelSummary extends JPanelMsgHandler implements ITabPanel{
 			break;
 		}
 		case VALUE_AMOUNT_UPLOAD:{
-			double uploadKB = (((SerialLong)rawdata.value).value / 8.0) / 1024.0;
+			double uploadKB = (((SerialLong)rawdata.value).value) / 1024.0;
 			this.getLblAmountUpload().setText(String.format("%.3f", uploadKB));	
 			break;
 		}
 		case VALUE_AMOUNT_DOWNLOAD:{
-			double downloadKB = (((SerialLong)rawdata.value).value / 8.0) / 1024.0;
+			double downloadKB = (((SerialLong)rawdata.value).value) / 1024.0;
 			this.getLblAmountDownload().setText(String.format("%.3f", downloadKB));	
 			break;
 		}
@@ -390,7 +390,7 @@ public class PanelSummary extends JPanelMsgHandler implements ITabPanel{
 			this.pingData.addValue((double)(System.nanoTime() - ((SerialLong)rawdata.value).value));
 			this.nPings += 1;
 			
-			if (this.nPings % 5 == 0){
+			if (this.nPings % 2 == 0){
 				DataTiming timing = new DataTiming(this.pingData.getGeometricMean());
 				this.getLblTimingPing().setText(timing.asMillisecond().toString());
 			}

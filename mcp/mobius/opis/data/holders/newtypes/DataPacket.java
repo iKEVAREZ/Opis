@@ -9,8 +9,9 @@ import net.minecraft.network.packet.Packet;
 
 public class DataPacket implements ISerializable{
 	public int  id;
-	public long size;
-	public long amount;
+	public DataByteSize size;
+	public DataByteRate rate;
+	public DataAmountRate amount;
 	public String type;
 	
 	public DataPacket(){
@@ -18,6 +19,9 @@ public class DataPacket implements ISerializable{
 	
 	public DataPacket(int id){
 		this.id   = id;
+		this.size = new DataByteSize(0);
+		this.rate = new DataByteRate(0, 5);
+		this.amount = new DataAmountRate(0, 5);
 		try {
 			this.type = ((Class)(Packet.packetIdToClassMap.lookup(this.id))).getSimpleName();
 		} catch (Exception e) {
@@ -26,23 +30,31 @@ public class DataPacket implements ISerializable{
 	}
 	
 	public DataPacket fill(Packet packet){
-		this.size   += packet.getPacketSize() + 1;
-		this.amount += 1;
+		this.size.size += packet.getPacketSize() + 1;
+		this.rate.size += packet.getPacketSize() + 1;
+		this.amount.size += 1;
 		return this;
+	}
+	
+	public void startInterval(){
+		this.rate.reset();
+		this.amount.reset();
 	}
 	
 	@Override
 	public void writeToStream(DataOutputStream stream) throws IOException {
 		stream.writeInt(this.id);
-		stream.writeLong(this.size);
-		stream.writeLong(this.amount);
+		this.size.writeToStream(stream);
+		this.rate.writeToStream(stream);
+		this.amount.writeToStream(stream);
 	}
 
 	public static DataPacket readFromStream(DataInputStream stream) throws IOException {
 		DataPacket retVal = new DataPacket();
 		retVal.id         = stream.readInt();
-		retVal.size       = stream.readLong();
-		retVal.amount     = stream.readLong();
+		retVal.size       = DataByteSize.readFromStream(stream);
+		retVal.rate       = DataByteRate.readFromStream(stream);
+		retVal.amount     = DataAmountRate.readFromStream(stream);
 		try {
 			retVal.type = ((Class)(Packet.packetIdToClassMap.lookup(retVal.id))).getSimpleName();
 		} catch (Exception e) {

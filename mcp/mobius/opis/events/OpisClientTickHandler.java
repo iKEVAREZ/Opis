@@ -54,12 +54,12 @@ public enum OpisClientTickHandler implements ITickHandler {
 			
 			
 			if (modOpis.profilerRunClient){
-				((PanelRenderTileEnts)(TabPanelRegistrar.INSTANCE.getTab(SelectedTab.RENDERENTITIES))).getBtnRunRender().setText("Running...");
-				((PanelRenderEntities)(TabPanelRegistrar.INSTANCE.getTab(SelectedTab.RENDERTILEENTS))).getBtnRunRender().setText("Running...");
+				((PanelRenderTileEnts)(TabPanelRegistrar.INSTANCE.getTab(SelectedTab.RENDERTILEENTS))).getBtnRunRender().setText("Running...");
+				((PanelRenderEntities)(TabPanelRegistrar.INSTANCE.getTab(SelectedTab.RENDERENTITIES))).getBtnRunRender().setText("Running...");
 			}
 			else{
-				((PanelRenderTileEnts)(TabPanelRegistrar.INSTANCE.getTab(SelectedTab.RENDERENTITIES))).getBtnRunRender().setText("Run Render");
-				((PanelRenderEntities)(TabPanelRegistrar.INSTANCE.getTab(SelectedTab.RENDERTILEENTS))).getBtnRunRender().setText("Run Render");
+				((PanelRenderTileEnts)(TabPanelRegistrar.INSTANCE.getTab(SelectedTab.RENDERTILEENTS))).getBtnRunRender().setText("Run Render");
+				((PanelRenderEntities)(TabPanelRegistrar.INSTANCE.getTab(SelectedTab.RENDERENTITIES))).getBtnRunRender().setText("Run Render");
 			}
 			
 			profilerUpdateTickCounter++;
