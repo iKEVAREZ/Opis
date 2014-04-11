@@ -14,6 +14,7 @@ import mcp.mobius.opis.data.holders.basetypes.SerialNumeral;
 import mcp.mobius.opis.data.holders.basetypes.SerialString;
 import mcp.mobius.opis.data.holders.basetypes.TargetEntity;
 import mcp.mobius.opis.data.holders.basetypes.TicketData;
+import mcp.mobius.opis.data.holders.newtypes.CachedString;
 import mcp.mobius.opis.data.holders.newtypes.DataAmountRate;
 import mcp.mobius.opis.data.holders.newtypes.DataByteRate;
 import mcp.mobius.opis.data.holders.newtypes.DataByteSize;
@@ -28,6 +29,7 @@ import mcp.mobius.opis.data.holders.newtypes.DataHandler;
 import mcp.mobius.opis.data.holders.newtypes.DataNetworkTick;
 import mcp.mobius.opis.data.holders.newtypes.DataPacket;
 import mcp.mobius.opis.data.holders.newtypes.DataPacket250;
+import mcp.mobius.opis.data.holders.newtypes.DataStringUpdate;
 import mcp.mobius.opis.data.holders.newtypes.DataTileEntity;
 import mcp.mobius.opis.data.holders.newtypes.DataTileEntityRender;
 import mcp.mobius.opis.data.holders.newtypes.DataTiming;
@@ -49,6 +51,7 @@ public enum DataType {
 	TARGETENTITY    (TargetEntity.class),
 	TICKETDATA      (TicketData.class),
 	
+	CACHEDSTRING    (CachedString.class),
 	DATAAMOUNTRATE  (DataAmountRate.class),
 	DATABITRATE     (DataByteRate.class),
 	DATABITSIZE     (DataByteSize.class),
@@ -63,6 +66,7 @@ public enum DataType {
 	DATANETWORKTICK (DataNetworkTick.class),
 	DATAPACKET      (DataPacket.class),
 	DATAPACKET250   (DataPacket250.class),
+	DATASTRINGUPD   (DataStringUpdate.class),
 	DATATILEENTITY  (DataTileEntity.class),
 	DATATILEENTITYRENDER(DataTileEntityRender.class),
 	DATATIMING      (DataTiming.class),

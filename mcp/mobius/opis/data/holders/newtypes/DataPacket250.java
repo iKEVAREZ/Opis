@@ -9,7 +9,7 @@ import mcp.mobius.opis.data.holders.ISerializable;
 import net.minecraft.network.packet.Packet250CustomPayload;
 
 public class DataPacket250 implements ISerializable{
-	public String        channel;
+	public CachedString   channel;
 	public DataByteSize   size;
 	public DataByteRate   rate;
 	public DataAmountRate amount;
@@ -17,10 +17,10 @@ public class DataPacket250 implements ISerializable{
 	public DataPacket250(){	}	
 	
 	public DataPacket250(String channel){
-		this.channel = channel;
-		this.size = new DataByteSize(0);
-		this.rate = new DataByteRate(0, 5);
-		this.amount = new DataAmountRate(0, 5);
+		this.channel = new CachedString(channel);
+		this.size    = new DataByteSize(0);
+		this.rate    = new DataByteRate(0, 5);
+		this.amount  = new DataAmountRate(0, 5);
 	}
 	
 	public DataPacket250 fill(Packet packet){
@@ -37,7 +37,7 @@ public class DataPacket250 implements ISerializable{
 	
 	@Override
 	public void writeToStream(DataOutputStream stream) throws IOException {
-		Packet.writeString(this.channel, stream);
+		this.channel.writeToStream(stream);
 		this.size.writeToStream(stream);
 		this.rate.writeToStream(stream);
 		this.amount.writeToStream(stream);
@@ -45,7 +45,7 @@ public class DataPacket250 implements ISerializable{
 
 	public static DataPacket250 readFromStream(DataInputStream stream) throws IOException {
 		DataPacket250 retVal = new DataPacket250();
-		retVal.channel    = Packet.readString(stream, 255);
+		retVal.channel    = CachedString.readFromStream(stream);
 		retVal.size       = DataByteSize.readFromStream(stream);
 		retVal.rate       = DataByteRate.readFromStream(stream);
 		retVal.amount     = DataAmountRate.readFromStream(stream);

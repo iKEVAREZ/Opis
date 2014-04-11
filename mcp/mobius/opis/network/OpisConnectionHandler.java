@@ -1,6 +1,7 @@
 package mcp.mobius.opis.network;
 
 import mcp.mobius.opis.data.holders.basetypes.SerialLong;
+import mcp.mobius.opis.data.managers.StringCache;
 import mcp.mobius.opis.events.PlayerTracker;
 import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.packets.server.NetDataValue;
@@ -24,6 +25,8 @@ public class OpisConnectionHandler implements IConnectionHandler {
 			System.out.printf("Adding SSP player to list of privileged users\n");
 			PlayerTracker.instance().addPrivilegedPlayer(((EntityPlayer)player).username, false);
 		}
+		
+		StringCache.INSTANCE.syncCache(player);
 	}
 
 	@Override
