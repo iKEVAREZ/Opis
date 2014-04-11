@@ -32,8 +32,11 @@ import mcp.mobius.opis.gui.screens.ScreenBase;
 import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.packets.server.NetDataRaw;
 import mcp.mobius.opis.swing.SwingUI;
-import mcp.mobius.opis.swing.panels.PanelPackets;
 import mcp.mobius.opis.swing.panels.PanelSummary;
+import mcp.mobius.opis.swing.panels.network.PanelInbound;
+import mcp.mobius.opis.swing.panels.network.PanelInbound250;
+import mcp.mobius.opis.swing.panels.network.PanelOutbound;
+import mcp.mobius.opis.swing.panels.network.PanelOutbound250;
 import mcp.mobius.opis.swing.panels.timingclient.PanelRenderEntities;
 import mcp.mobius.opis.swing.panels.timingclient.PanelRenderTileEnts;
 import mcp.mobius.opis.swing.panels.timingserver.PanelTimingChunks;
@@ -84,11 +87,11 @@ public class ProxyClient extends ProxyServer implements IMessageHandler{
 		TabPanelRegistrar.INSTANCE.registerTab(new PanelRenderTileEnts(),"[Render] TileEnts", "Client timing");
 		TabPanelRegistrar.INSTANCE.registerTab(new PanelRenderEntities(),"[Render] Entities", "Client timing");
 		
-		TabPanelRegistrar.INSTANCE.registerSection("Network_");
-
-		IMessageHandler panelPackets        = (IMessageHandler)TabPanelRegistrar.INSTANCE.registerTab(new PanelPackets(),       "Network");
-		
-
+		TabPanelRegistrar.INSTANCE.registerSection("Network");
+		IMessageHandler panelPacketsOut    = (IMessageHandler)TabPanelRegistrar.INSTANCE.registerTab(new PanelOutbound(),   "Outbound",     "Network");
+		IMessageHandler panelPacketsIn     = (IMessageHandler)TabPanelRegistrar.INSTANCE.registerTab(new PanelInbound(),    "Inbound", 	    "Network");
+		IMessageHandler panelPacketsOut250 = (IMessageHandler)TabPanelRegistrar.INSTANCE.registerTab(new PanelOutbound250(),"Outbound 250", "Network");
+		IMessageHandler panelPacketsIn250  = (IMessageHandler)TabPanelRegistrar.INSTANCE.registerTab(new PanelInbound250(), "Inbound 250",  "Network");
 		
 		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.LIST_PLAYERS,          panelPlayers);
 		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.LIST_AMOUNT_ENTITIES,  panelAmountEntities);
@@ -150,10 +153,10 @@ public class ProxyClient extends ProxyServer implements IMessageHandler{
 		
 		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.LIST_DIMENSION_DATA,    panelDimensions);
 		
-		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.LIST_PACKETS_OUTBOUND,  panelPackets);
-		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.LIST_PACKETS_INBOUND,   panelPackets);
-		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.LIST_PACKETS_OUTBOUND_250, panelPackets);
-		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.LIST_PACKETS_INBOUND_250,  panelPackets);
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.LIST_PACKETS_OUTBOUND,     panelPacketsOut);
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.LIST_PACKETS_INBOUND,      panelPacketsIn);
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.LIST_PACKETS_OUTBOUND_250, panelPacketsOut250);
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.LIST_PACKETS_INBOUND_250,  panelPacketsIn250);
 		
 		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.CLIENT_CLEAR_SELECTION,  modOpis.proxy);
 		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.CLIENT_START_PROFILING,  modOpis.proxy);
