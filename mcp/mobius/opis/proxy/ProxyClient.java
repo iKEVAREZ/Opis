@@ -32,18 +32,18 @@ import mcp.mobius.opis.gui.screens.ScreenBase;
 import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.packets.server.NetDataRaw;
 import mcp.mobius.opis.swing.SwingUI;
-import mcp.mobius.opis.swing.panels.PanelAmountEntities;
-import mcp.mobius.opis.swing.panels.PanelDimensions;
 import mcp.mobius.opis.swing.panels.PanelPackets;
-import mcp.mobius.opis.swing.panels.PanelPlayers;
-import mcp.mobius.opis.swing.panels.PanelRenderEntities;
-import mcp.mobius.opis.swing.panels.PanelRenderTileEnts;
 import mcp.mobius.opis.swing.panels.PanelSummary;
-import mcp.mobius.opis.swing.panels.PanelTimingChunks;
-import mcp.mobius.opis.swing.panels.PanelTimingEntities;
-import mcp.mobius.opis.swing.panels.PanelTimingEvents;
-import mcp.mobius.opis.swing.panels.PanelTimingHandlers;
-import mcp.mobius.opis.swing.panels.PanelTimingTileEnts;
+import mcp.mobius.opis.swing.panels.timingclient.PanelRenderEntities;
+import mcp.mobius.opis.swing.panels.timingclient.PanelRenderTileEnts;
+import mcp.mobius.opis.swing.panels.timingserver.PanelTimingChunks;
+import mcp.mobius.opis.swing.panels.timingserver.PanelTimingEntities;
+import mcp.mobius.opis.swing.panels.timingserver.PanelTimingEvents;
+import mcp.mobius.opis.swing.panels.timingserver.PanelTimingHandlers;
+import mcp.mobius.opis.swing.panels.timingserver.PanelTimingTileEnts;
+import mcp.mobius.opis.swing.panels.tracking.PanelAmountEntities;
+import mcp.mobius.opis.swing.panels.tracking.PanelDimensions;
+import mcp.mobius.opis.swing.panels.tracking.PanelPlayers;
 
 public class ProxyClient extends ProxyServer implements IMessageHandler{
 	
@@ -69,21 +69,26 @@ public class ProxyClient extends ProxyServer implements IMessageHandler{
 		IMessageHandler panelSummary        = (IMessageHandler)TabPanelRegistrar.INSTANCE.registerTab(new PanelSummary(), "Summary");				
 		
 		TabPanelRegistrar.INSTANCE.registerSection("Tracking");
-		TabPanelRegistrar.INSTANCE.registerSection("Server timing");
-		TabPanelRegistrar.INSTANCE.registerSection("Client timing");
-
 		IMessageHandler panelPlayers        = (IMessageHandler)TabPanelRegistrar.INSTANCE.registerTab(new PanelPlayers(),       "Players",       "Tracking");
 		IMessageHandler panelAmountEntities = (IMessageHandler)TabPanelRegistrar.INSTANCE.registerTab(new PanelAmountEntities(),"Entity amount", "Tracking");
+		IMessageHandler panelDimensions     = (IMessageHandler)TabPanelRegistrar.INSTANCE.registerTab(new PanelDimensions(),    "Dimensions",    "Tracking");
+		
+		TabPanelRegistrar.INSTANCE.registerSection("Server timing");
 		IMessageHandler panelTimingTileEnts = (IMessageHandler)TabPanelRegistrar.INSTANCE.registerTab(new PanelTimingTileEnts(),"Tile Entities", "Server timing");
 		IMessageHandler panelTimingEntities = (IMessageHandler)TabPanelRegistrar.INSTANCE.registerTab(new PanelTimingEntities(),"Entities",      "Server timing");
 		IMessageHandler panelTimingHandlers = (IMessageHandler)TabPanelRegistrar.INSTANCE.registerTab(new PanelTimingHandlers(),"Handlers",      "Server timing");
 		IMessageHandler panelTimingChunks   = (IMessageHandler)TabPanelRegistrar.INSTANCE.registerTab(new PanelTimingChunks(),  "Chunks",        "Server timing");
-		IMessageHandler panelTimingEvents   = (IMessageHandler)TabPanelRegistrar.INSTANCE.registerTab(new PanelTimingEvents(),  "Events",        "Server timing");
-		IMessageHandler panelDimensions     = (IMessageHandler)TabPanelRegistrar.INSTANCE.registerTab(new PanelDimensions(),    "Dimensions",    "Tracking");
-		IMessageHandler panelPackets        = (IMessageHandler)TabPanelRegistrar.INSTANCE.registerTab(new PanelPackets(),       "Network");
+		IMessageHandler panelTimingEvents   = (IMessageHandler)TabPanelRegistrar.INSTANCE.registerTab(new PanelTimingEvents(),  "Events",        "Server timing");		
 		
+		TabPanelRegistrar.INSTANCE.registerSection("Client timing");
 		TabPanelRegistrar.INSTANCE.registerTab(new PanelRenderTileEnts(),"[Render] TileEnts", "Client timing");
 		TabPanelRegistrar.INSTANCE.registerTab(new PanelRenderEntities(),"[Render] Entities", "Client timing");
+		
+		TabPanelRegistrar.INSTANCE.registerSection("Network_");
+
+		IMessageHandler panelPackets        = (IMessageHandler)TabPanelRegistrar.INSTANCE.registerTab(new PanelPackets(),       "Network");
+		
+
 		
 		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.LIST_PLAYERS,          panelPlayers);
 		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.LIST_AMOUNT_ENTITIES,  panelAmountEntities);

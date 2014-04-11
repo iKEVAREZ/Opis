@@ -1,4 +1,4 @@
-package mcp.mobius.opis.swing.panels;
+package mcp.mobius.opis.swing.panels.timingclient;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,4 @@
-package mcp.mobius.opis.swing.panels;
+package mcp.mobius.opis.swing.panels.tracking;
 
 import javax.swing.JPanel;
 

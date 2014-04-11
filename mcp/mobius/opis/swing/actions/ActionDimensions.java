@@ -12,7 +12,7 @@ import mcp.mobius.opis.data.holders.newtypes.DataDimension;
 import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.packets.client.Packet_ReqData;
 import mcp.mobius.opis.swing.SelectedTab;
-import mcp.mobius.opis.swing.panels.PanelDimensions;
+import mcp.mobius.opis.swing.panels.tracking.PanelDimensions;
 import mcp.mobius.opis.swing.widgets.JTableStats;
 
 public class ActionDimensions implements ActionListener { 

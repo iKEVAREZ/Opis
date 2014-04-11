@@ -1,4 +1,4 @@
-package mcp.mobius.opis.swing.panels;
+package mcp.mobius.opis.swing.panels.timingserver;
 
 import javax.swing.JPanel;
 

@@ -1,4 +1,4 @@
-package mcp.mobius.opis.swing.panels;
+package mcp.mobius.opis.swing.panels.tracking;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
