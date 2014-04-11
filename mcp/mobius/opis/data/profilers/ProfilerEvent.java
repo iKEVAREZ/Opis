@@ -8,7 +8,7 @@ import com.google.common.collect.HashMultimap;
 public class ProfilerEvent extends ProfilerAbstract {
 
 	private Clock clock = new Clock();
-	public  HashBasedTable<Class, Class, DescriptiveStatistics> data = HashBasedTable.create(); 
+	public  HashBasedTable<Class, String, DescriptiveStatistics> data = HashBasedTable.create(); 
 	
 	@Override
 	public void reset() {
@@ -21,14 +21,16 @@ public class ProfilerEvent extends ProfilerAbstract {
 	}
 
 	@Override
-	public void stop(Object key1, Object key2) {
+	public void stop(Object key1, Object key2, Object key3) {
 		clock.stop();
 		
 		try{
-			data.get(key1.getClass(), key2.getClass()).addValue((double)clock.timeDelta);
+			String name = (String)key2 + "|" + key3.getClass().getSimpleName();
+			data.get(key1.getClass(), name).addValue((double)clock.timeDelta);
 		} catch (Exception e) {
-			data.put(key1.getClass(), key2.getClass(), new DescriptiveStatistics(250));
-			data.get(key1.getClass(), key2.getClass()).addValue((double)clock.timeDelta);
+			String name = (String)key2 + "|" + key3.getClass().getSimpleName();
+			data.put(key1.getClass(), name, new DescriptiveStatistics(250));
+			data.get(key1.getClass(), name).addValue((double)clock.timeDelta);
 		}
 	}
 

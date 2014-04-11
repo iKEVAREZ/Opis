@@ -220,8 +220,8 @@ public class OpisPacketHandler implements IPacketHandler {
 		DataBlockTick totalWorldTick   = new DataBlockTick().fill();
 
 		ArrayList<DataEvent> timingEvents = new ArrayList<DataEvent>();
-		HashBasedTable<Class, Class, DescriptiveStatistics> eventData = ((ProfilerEvent)ProfilerSection.EVENT_INVOKE.getProfiler()).data;
-		for (Cell<Class, Class, DescriptiveStatistics> cell : eventData.cellSet()){
+		HashBasedTable<Class, String, DescriptiveStatistics> eventData = ((ProfilerEvent)ProfilerSection.EVENT_INVOKE.getProfiler()).data;
+		for (Cell<Class, String, DescriptiveStatistics> cell : eventData.cellSet()){
 			timingEvents.add(new DataEvent().fill(cell));
 		}		
 

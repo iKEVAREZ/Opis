@@ -34,14 +34,13 @@ public class PanelTimingEvents extends JPanelMsgHandler implements ITabPanel {
 		table = new JTableStats();
 		table.setModel(new DefaultTableModel(
 			new Object[][] {
-				{null, null, null},
 			},
 			new String[] {
-				"Event", "Handler", "Timing"
+				"Event", "Class", "Handler", "Timing"
 			}
 		) {
 			Class[] columnTypes = new Class[] {
-				String.class, String.class, DataTiming.class
+				String.class, String.class, String.class, DataTiming.class
 			};
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
@@ -64,7 +63,7 @@ public class PanelTimingEvents extends JPanelMsgHandler implements ITabPanel {
 			
 			for (Object o : rawdata.array){
 				DataEvent data = (DataEvent)o;
-				model.addRow(new Object[] {data.event, data.handler, data.update});
+				model.addRow(new Object[] {data.event, data.package_, data.handler, data.update});
 			}
 
 			this.dataUpdated(table, model, row);			
