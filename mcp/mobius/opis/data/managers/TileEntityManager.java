@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 import mcp.mobius.mobiuscore.profiler.ProfilerSection;
+import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesBlock;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesChunk;
 import mcp.mobius.opis.data.holders.newtypes.DataBlockTileEntity;
@@ -117,16 +118,39 @@ public enum TileEntityManager {
 	
 	public ArrayList<DataTileEntity> getOrphans(){
 		ArrayList<DataTileEntity> orphans = new ArrayList<DataTileEntity>();
+		HashMap<CoordinatesBlock, String> locsStr   = new HashMap<CoordinatesBlock, String>();
+		HashMap<CoordinatesBlock, Integer> locsInt  = new HashMap<CoordinatesBlock, Integer>();
+		HashMap<CoordinatesBlock, Boolean> locsBool = new HashMap<CoordinatesBlock, Boolean>();
+		HashSet<CoordinatesBlock> coordFound = new HashSet<CoordinatesBlock>(); 
 		
 		for (WorldServer world : DimensionManager.getWorlds()){
 			for (Object o : world.loadedTileEntityList){
 				TileEntity tileEntity = (TileEntity)o;
+				CoordinatesBlock coord = new CoordinatesBlock(world.provider.dimensionId, tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord);
+				
 				int id = world.getBlockId(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord);
-				if (id == 0 || Block.blocksList[id] == null || world.getBlockTileEntity(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord).getClass() != tileEntity.getClass()){
+				if (id == 0 || Block.blocksList[id] == null
+							|| !Block.blocksList[id].hasTileEntity()
+						    || world.getBlockTileEntity(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord) == null
+						    || world.getBlockTileEntity(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord).getClass() != tileEntity.getClass()){
 					orphans.add(new DataTileEntity().fill(tileEntity));
+				} 
+				
+				if (locsStr.containsKey(coord)){
+					orphans.add(new DataTileEntity().fill(tileEntity));
+					if (!coordFound.contains(coord)){
+						orphans.add(new DataTileEntity().fill(coord, locsStr.get(coord), locsInt.get(coord), locsBool.get(coord)));
+						coordFound.add(coord);
+					}
+				} else {
+					locsStr.put(coord, tileEntity.getClass().getCanonicalName());
+					locsInt.put(coord, System.identityHashCode(tileEntity));
+					locsBool.put(coord, tileEntity.isInvalid());
 				}
 			}
 		}
+		
+		modOpis.log.warning(String.format("Found %d potential orphans !", orphans.size()));
 		
 		return orphans;
 	}

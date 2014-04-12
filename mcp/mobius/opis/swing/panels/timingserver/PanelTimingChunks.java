@@ -96,7 +96,7 @@ public class PanelTimingChunks extends JPanelMsgHandler implements ITabPanel{
 			((JTableStats)this.getTable()).setTableData(rawdata.array);
 			
 			DefaultTableModel model = (DefaultTableModel)table.getModel();
-			int               row   = this.updateData(table, model, StatsChunk.class);		
+			int               row   = this.clearTable(table, model, StatsChunk.class);		
 			
 			for (Object o : rawdata.array){
 				StatsChunk stat = (StatsChunk)o;

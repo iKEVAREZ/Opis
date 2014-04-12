@@ -18,7 +18,15 @@ public class JTableStats extends JTable {
 	public void setTableData(ArrayList<ISerializable> statistics){
 		this.statistics = statistics;
 	}
+	
+	public void clearTableData(){
+		this.statistics = new ArrayList<ISerializable>();
+	}
 
+	public void addTableData(ArrayList<ISerializable> statistics){
+		this.statistics.addAll(statistics);
+	}
+	
 	/*
 	public void setStatistics(ArrayList<ISerializable> statistics){
 		this.statistics = new ArrayList<ISerializable>();

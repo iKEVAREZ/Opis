@@ -100,7 +100,7 @@ public class PanelAmountEntities extends JPanelMsgHandler implements ITabPanel{
 			((JTableStats)this.getTable()).setTableData(rawdata.array);
 			
 			DefaultTableModel model = (DefaultTableModel)this.getTable().getModel();
-			int               row   = this.updateData(table, model, AmountHolder.class);	
+			int               row   = this.clearTable(table, model, AmountHolder.class);	
 			int totalEntities = 0;
 
 			for (Object o : rawdata.array){

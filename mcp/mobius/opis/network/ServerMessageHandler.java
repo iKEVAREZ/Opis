@@ -223,7 +223,8 @@ public class ServerMessageHandler {
 		}		
 		
 		else if(maintype == Message.LIST_ORPHAN_TILEENTS){
-			OpisPacketHandler.validateAndSend(NetDataList.create (Message.LIST_ORPHAN_TILEENTS, TileEntityManager.INSTANCE.getOrphans()), (Player)player);
+			OpisPacketHandler.validateAndSend(NetDataCommand.create(Message.LIST_ORPHAN_TILEENTS_CLEAR), (Player)player);
+			OpisPacketHandler.splitAndSend(Message.LIST_ORPHAN_TILEENTS, TileEntityManager.INSTANCE.getOrphans(), (Player)player);
 		}
 		
 		else{

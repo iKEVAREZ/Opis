@@ -114,7 +114,7 @@ public class PanelTimingTileEnts extends JPanelMsgHandler implements ITabPanel{
 			((JTableStats)this.getTable()).setTableData(rawdata.array);
 			
 			DefaultTableModel model = (DefaultTableModel)table.getModel();
-			int               row   = this.updateData(table, model, DataBlockTileEntity.class);
+			int               row   = this.clearTable(table, model, DataBlockTileEntity.class);
 
 			for (Object o : rawdata.array){
 				DataBlockTileEntity data = (DataBlockTileEntity)o;

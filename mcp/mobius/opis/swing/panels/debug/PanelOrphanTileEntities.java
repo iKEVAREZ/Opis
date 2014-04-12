@@ -31,36 +31,39 @@ public class PanelOrphanTileEntities extends JPanelMsgHandler implements ITabPan
 		table = new JTableStats();
 		table.setModel(new DefaultTableModel(
 			new Object[][] {
-				{null, null, null},
 			},
 			new String[] {
-				"Class", "Dimension", "Coordinates"
+				"Class", "Hash", "Is valid?", "Dimension", "Coordinates"
 			}
 		) {
 			Class[] columnTypes = new Class[] {
-				String.class, Integer.class, String.class
+				String.class, String.class, Boolean.class, Integer.class, String.class
 			};
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
 			}
 		});
+		table.setAutoCreateRowSorter(true);			
 		scrollPane.setViewportView(table);
 	}
 
+	int row;
+	
 	@Override
 	public boolean handleMessage(Message msg, NetDataRaw rawdata) {
 		switch(msg){
 		case LIST_ORPHAN_TILEENTS:{
 			
-			((JTableStats)this.getTable()).setTableData(rawdata.array);
-			
+			((JTableStats)this.getTable()).addTableData(rawdata.array);
 			DefaultTableModel model = (DefaultTableModel)this.getTable().getModel();
-			int               row   = this.updateData(table, model, DataTileEntity.class);
+			//int               row   = this.updateData(table, model, DataTileEntity.class);
 
 			for (Object o : rawdata.array){
 				DataTileEntity data = (DataTileEntity)o;
 				model.addRow(new Object[]  {
 					data.clazz,
+					String.format("0x%x", data.hashCode),
+					data.isValid,
 					data.pos.dim,
 				     String.format("[ %4d %4d %4d ]", data.pos.x, data.pos.y, data.pos.z),  
 					 });
@@ -70,6 +73,12 @@ public class PanelOrphanTileEntities extends JPanelMsgHandler implements ITabPan
 			
 			break;
 		}		
+		
+		case LIST_ORPHAN_TILEENTS_CLEAR:{
+			((JTableStats)this.getTable()).clearTableData();
+			DefaultTableModel model = (DefaultTableModel)this.getTable().getModel();
+			row = this.clearTable(table, model, DataTileEntity.class);			
+		}
 		
 		default:
 			return false;

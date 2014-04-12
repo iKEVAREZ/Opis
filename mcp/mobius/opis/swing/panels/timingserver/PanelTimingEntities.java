@@ -109,7 +109,7 @@ public class PanelTimingEntities extends JPanelMsgHandler implements ITabPanel{
 			((JTableStats)this.getTable()).setTableData(rawdata.array);
 			
 			DefaultTableModel model = (DefaultTableModel)table.getModel();
-			int               row   = this.updateData(table, model, DataEntity.class);	
+			int               row   = this.clearTable(table, model, DataEntity.class);	
 			
 			for (Object o : rawdata.array){
 				DataEntity data = (DataEntity)o;
