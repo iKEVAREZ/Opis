@@ -27,7 +27,7 @@ import mcp.mobius.opis.data.holders.basetypes.TargetEntity;
 import mcp.mobius.opis.data.holders.newtypes.DataBlockTick;
 import mcp.mobius.opis.data.holders.newtypes.DataEntity;
 import mcp.mobius.opis.data.holders.newtypes.DataHandler;
-import mcp.mobius.opis.data.holders.newtypes.DataTileEntity;
+import mcp.mobius.opis.data.holders.newtypes.DataBlockTileEntity;
 import mcp.mobius.opis.data.holders.newtypes.DataTiming;
 import mcp.mobius.opis.data.holders.stats.StatsChunk;
 import mcp.mobius.opis.data.managers.ChunkManager;
@@ -88,7 +88,7 @@ public class ServerMessageHandler {
 		}		
 		
 		else if (maintype == Message.LIST_TIMING_TILEENTS){
-			ArrayList<DataTileEntity>  timingTileEnts = TileEntityManager.INSTANCE.getWorses(100);
+			ArrayList<DataBlockTileEntity>  timingTileEnts = TileEntityManager.INSTANCE.getWorses(100);
 			DataTiming totalTime = TileEntityManager.INSTANCE.getTotalUpdateTime();
 			OpisPacketHandler.validateAndSend(NetDataList.create (Message.LIST_TIMING_TILEENTS, timingTileEnts), (Player)player);
 			OpisPacketHandler.validateAndSend(NetDataValue.create(Message.VALUE_TIMING_TILEENTS, totalTime),     (Player)player);
@@ -221,6 +221,10 @@ public class ServerMessageHandler {
 			SelectedTab tab = SelectedTab.values()[((SerialInt)param1).value];
 			PlayerTracker.instance().playerTab.put((Player)player, tab);
 		}		
+		
+		else if(maintype == Message.LIST_ORPHAN_TILEENTS){
+			OpisPacketHandler.validateAndSend(NetDataList.create (Message.LIST_ORPHAN_TILEENTS, TileEntityManager.INSTANCE.getOrphans()), (Player)player);
+		}
 		
 		else{
 			modOpis.log.log(Level.WARNING, String.format("Unknown data request : %s ", maintype));

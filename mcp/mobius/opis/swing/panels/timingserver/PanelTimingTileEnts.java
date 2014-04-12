@@ -7,7 +7,7 @@ import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.api.ITabPanel;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesBlock;
 import mcp.mobius.opis.data.holders.basetypes.SerialDouble;
-import mcp.mobius.opis.data.holders.newtypes.DataTileEntity;
+import mcp.mobius.opis.data.holders.newtypes.DataBlockTileEntity;
 import mcp.mobius.opis.data.holders.newtypes.DataTiming;
 import mcp.mobius.opis.data.holders.stats.StatAbstract;
 import mcp.mobius.opis.gui.overlay.OverlayMeanTime;
@@ -114,10 +114,10 @@ public class PanelTimingTileEnts extends JPanelMsgHandler implements ITabPanel{
 			((JTableStats)this.getTable()).setTableData(rawdata.array);
 			
 			DefaultTableModel model = (DefaultTableModel)table.getModel();
-			int               row   = this.updateData(table, model, DataTileEntity.class);
+			int               row   = this.updateData(table, model, DataBlockTileEntity.class);
 
 			for (Object o : rawdata.array){
-				DataTileEntity data = (DataTileEntity)o;
+				DataBlockTileEntity data = (DataBlockTileEntity)o;
 				ItemStack is;
 				String name  = String.format("te.%d.%d", data.id, data.meta);
 				String modID = "<UNKNOWN>";

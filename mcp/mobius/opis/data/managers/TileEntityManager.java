@@ -9,6 +9,7 @@ import java.util.HashSet;
 import mcp.mobius.mobiuscore.profiler.ProfilerSection;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesBlock;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesChunk;
+import mcp.mobius.opis.data.holders.newtypes.DataBlockTileEntity;
 import mcp.mobius.opis.data.holders.newtypes.DataTileEntity;
 import mcp.mobius.opis.data.holders.newtypes.DataTiming;
 import mcp.mobius.opis.data.holders.stats.StatsChunk;
@@ -66,14 +67,14 @@ public enum TileEntityManager {
 		
 	}
 	
-	public ArrayList<DataTileEntity> getTileEntitiesInChunk(CoordinatesChunk coord){
+	public ArrayList<DataBlockTileEntity> getTileEntitiesInChunk(CoordinatesChunk coord){
 		cleanUpStats();
 		
-		ArrayList<DataTileEntity> returnList = new ArrayList<DataTileEntity>();
+		ArrayList<DataBlockTileEntity> returnList = new ArrayList<DataBlockTileEntity>();
 		
 		for (CoordinatesBlock tecoord : ((ProfilerTileEntityUpdate)ProfilerSection.TILEENT_UPDATETIME.getProfiler()).data.keySet()){
 			if (coord.equals(tecoord.asCoordinatesChunk())){
-				DataTileEntity testats = new DataTileEntity().fill(tecoord);
+				DataBlockTileEntity testats = new DataBlockTileEntity().fill(tecoord);
 				
 				returnList.add(testats);
 			}
@@ -82,12 +83,12 @@ public enum TileEntityManager {
 		return returnList;
 	}
 	
-	public ArrayList<DataTileEntity> getWorses(int amount){	
-		ArrayList<DataTileEntity> sorted      = new ArrayList<DataTileEntity>();
-		ArrayList<DataTileEntity> topEntities = new ArrayList<DataTileEntity>();
+	public ArrayList<DataBlockTileEntity> getWorses(int amount){	
+		ArrayList<DataBlockTileEntity> sorted      = new ArrayList<DataBlockTileEntity>();
+		ArrayList<DataBlockTileEntity> topEntities = new ArrayList<DataBlockTileEntity>();
 		
 		for (CoordinatesBlock coord : ((ProfilerTileEntityUpdate)ProfilerSection.TILEENT_UPDATETIME.getProfiler()).data.keySet())
-			sorted.add(new DataTileEntity().fill(coord));
+			sorted.add(new DataBlockTileEntity().fill(coord));
 		
 		Collections.sort(sorted);
 		
@@ -112,5 +113,21 @@ public enum TileEntityManager {
 			amountTileEntities += world.loadedTileEntityList.size();
 		}
 		return amountTileEntities;		
+	}
+	
+	public ArrayList<DataTileEntity> getOrphans(){
+		ArrayList<DataTileEntity> orphans = new ArrayList<DataTileEntity>();
+		
+		for (WorldServer world : DimensionManager.getWorlds()){
+			for (Object o : world.loadedTileEntityList){
+				TileEntity tileEntity = (TileEntity)o;
+				int id = world.getBlockId(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord);
+				if (id == 0 || Block.blocksList[id] == null || world.getBlockTileEntity(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord).getClass() != tileEntity.getClass()){
+					orphans.add(new DataTileEntity().fill(tileEntity));
+				}
+			}
+		}
+		
+		return orphans;
 	}
 }

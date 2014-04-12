@@ -13,7 +13,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 
-public class DataTileEntityRender extends DataTileEntity {
+public class DataTileEntityRender extends DataBlockTileEntity {
 
 	public DataTileEntityRender fill(TileEntity ent){
 		this.pos    = new CoordinatesBlock(ent.worldObj.provider.dimensionId, ent.xCoord, ent.yCoord, ent.zCoord);

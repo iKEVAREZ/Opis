@@ -10,7 +10,7 @@ import mcp.mobius.mobiuscore.profiler.ProfilerSection;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesBlock;
 import mcp.mobius.opis.data.profilers.ProfilerRenderBlock;
 
-public class DataBlockRender extends DataTileEntity {
+public class DataBlockRender extends DataBlockTileEntity {
 
 	public DataBlockRender fill(CoordinatesBlock coord){
 		this.pos    = coord;

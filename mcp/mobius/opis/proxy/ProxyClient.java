@@ -33,6 +33,7 @@ import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.packets.server.NetDataRaw;
 import mcp.mobius.opis.swing.SwingUI;
 import mcp.mobius.opis.swing.panels.PanelSummary;
+import mcp.mobius.opis.swing.panels.debug.PanelOrphanTileEntities;
 import mcp.mobius.opis.swing.panels.network.PanelInbound;
 import mcp.mobius.opis.swing.panels.network.PanelInbound250;
 import mcp.mobius.opis.swing.panels.network.PanelOutbound;
@@ -92,6 +93,9 @@ public class ProxyClient extends ProxyServer implements IMessageHandler{
 		IMessageHandler panelPacketsIn     = (IMessageHandler)TabPanelRegistrar.INSTANCE.registerTab(new PanelInbound(),    "Inbound", 	    "Network");
 		IMessageHandler panelPacketsOut250 = (IMessageHandler)TabPanelRegistrar.INSTANCE.registerTab(new PanelOutbound250(),"Outbound 250", "Network");
 		IMessageHandler panelPacketsIn250  = (IMessageHandler)TabPanelRegistrar.INSTANCE.registerTab(new PanelInbound250(), "Inbound 250",  "Network");
+
+		TabPanelRegistrar.INSTANCE.registerSection("Debug");		
+		IMessageHandler panelOrphanTileEnts  = (IMessageHandler)TabPanelRegistrar.INSTANCE.registerTab(new PanelOrphanTileEntities(), "Orphan TileEnts",  "Debug");
 		
 		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.LIST_PLAYERS,          panelPlayers);
 		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.LIST_AMOUNT_ENTITIES,  panelAmountEntities);
@@ -157,6 +161,8 @@ public class ProxyClient extends ProxyServer implements IMessageHandler{
 		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.LIST_PACKETS_INBOUND,      panelPacketsIn);
 		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.LIST_PACKETS_OUTBOUND_250, panelPacketsOut250);
 		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.LIST_PACKETS_INBOUND_250,  panelPacketsIn250);
+		
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.LIST_ORPHAN_TILEENTS,      panelOrphanTileEnts);
 		
 		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.CLIENT_CLEAR_SELECTION,  modOpis.proxy);
 		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.CLIENT_START_PROFILING,  modOpis.proxy);

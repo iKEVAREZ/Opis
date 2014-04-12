@@ -24,7 +24,7 @@ import mcp.mobius.opis.data.holders.ISerializable;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesBlock;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesChunk;
 import mcp.mobius.opis.data.holders.basetypes.SerialInt;
-import mcp.mobius.opis.data.holders.newtypes.DataTileEntity;
+import mcp.mobius.opis.data.holders.newtypes.DataBlockTileEntity;
 import mcp.mobius.opis.data.managers.ChunkManager;
 import mcp.mobius.opis.gui.events.MouseEvent;
 import mcp.mobius.opis.gui.interfaces.CType;
@@ -61,7 +61,7 @@ public class OverlayMeanTime implements IMwDataProvider, IMessageHandler{
 		public void onMouseClick(MouseEvent event){
 			TableRow row = this.getRow(event.x, event.y);
 			if (row != null){
-				CoordinatesBlock coord = ((DataTileEntity)row.getObject()).pos;
+				CoordinatesBlock coord = ((DataBlockTileEntity)row.getObject()).pos;
 				
 				if (this.mapView.getX() != coord.x || this.mapView.getZ() != coord.z){
 					this.mapView.setViewCentre(coord.x, coord.z);
@@ -280,7 +280,7 @@ public class OverlayMeanTime implements IMwDataProvider, IMessageHandler{
 	    
 		for (ISerializable uncasted : entities){
 			
-			DataTileEntity data = (DataTileEntity)uncasted;
+			DataBlockTileEntity data = (DataBlockTileEntity)uncasted;
 			
 			ItemStack is;
 			String name  = String.format("te.%d.%d", data.id, data.meta);

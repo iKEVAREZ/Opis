@@ -16,7 +16,7 @@ import mcp.mobius.opis.data.holders.basetypes.CoordinatesBlock;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesChunk;
 import mcp.mobius.opis.data.holders.basetypes.TicketData;
 import mcp.mobius.opis.data.holders.newtypes.DataEntity;
-import mcp.mobius.opis.data.holders.newtypes.DataTileEntity;
+import mcp.mobius.opis.data.holders.newtypes.DataBlockTileEntity;
 import mcp.mobius.opis.data.holders.stats.StatsChunk;
 import mcp.mobius.opis.data.profilers.ProfilerEntityUpdate;
 import mcp.mobius.opis.data.profilers.ProfilerTileEntityUpdate;
@@ -92,7 +92,7 @@ public enum ChunkManager implements IMessageHandler{
 		HashMap<CoordinatesChunk, StatsChunk> chunks = new HashMap<CoordinatesChunk, StatsChunk>();
 		
 		for (CoordinatesBlock coords : ((ProfilerTileEntityUpdate)ProfilerSection.TILEENT_UPDATETIME.getProfiler()).data.keySet()){
-			DataTileEntity   data  = new DataTileEntity().fill(coords);
+			DataBlockTileEntity   data  = new DataBlockTileEntity().fill(coords);
 			CoordinatesChunk chunk = data.pos.asCoordinatesChunk();
 			
 			if (!chunks.containsKey(chunk))

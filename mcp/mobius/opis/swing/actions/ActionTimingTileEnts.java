@@ -21,7 +21,7 @@ import javax.swing.JButton;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import mcp.mobius.opis.api.TabPanelRegistrar;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesBlock;
-import mcp.mobius.opis.data.holders.newtypes.DataTileEntity;
+import mcp.mobius.opis.data.holders.newtypes.DataBlockTileEntity;
 import mcp.mobius.opis.gui.overlay.OverlayMeanTime;
 import mcp.mobius.opis.swing.widgets.JPanelMsgHandler;
 import mcp.mobius.opis.swing.widgets.JTableStats;
@@ -36,7 +36,7 @@ public class ActionTimingTileEnts implements ActionListener {
 		JTableStats table       = panel.getTable();
 		if (table == null || table.getSelectedRow() == -1) return;
 		int indexData           = table.convertRowIndexToModel(table.getSelectedRow());
-		DataTileEntity data    = (DataTileEntity)table.getTableData().get(indexData);
+		DataBlockTileEntity data    = (DataBlockTileEntity)table.getTableData().get(indexData);
 		
 		if (e.getSource() == panel.getBtnCenter()){
             CoordinatesBlock coord = data.pos;

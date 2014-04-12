@@ -31,7 +31,7 @@ import mcp.mobius.opis.data.holders.newtypes.DataEntity;
 import mcp.mobius.opis.data.holders.newtypes.DataEvent;
 import mcp.mobius.opis.data.holders.newtypes.DataHandler;
 import mcp.mobius.opis.data.holders.newtypes.DataNetworkTick;
-import mcp.mobius.opis.data.holders.newtypes.DataTileEntity;
+import mcp.mobius.opis.data.holders.newtypes.DataBlockTileEntity;
 import mcp.mobius.opis.data.holders.newtypes.DataTiming;
 import mcp.mobius.opis.data.holders.stats.StatsChunk;
 import mcp.mobius.opis.data.managers.ChunkManager;
@@ -209,7 +209,7 @@ public class OpisPacketHandler implements IPacketHandler {
 	
 	public static void sendFullUpdate(Player player){
 		ArrayList<DataEntity>       timingEntities = EntityManager.INSTANCE.getWorses(100);
-		ArrayList<DataTileEntity>   timingTileEnts = TileEntityManager.INSTANCE.getWorses(100);
+		ArrayList<DataBlockTileEntity>   timingTileEnts = TileEntityManager.INSTANCE.getWorses(100);
 		ArrayList<DataHandler>      timingHandlers = TickHandlerManager.getCumulatedStats();
 		ArrayList<StatsChunk>         timingChunks = ChunkManager.INSTANCE.getTopChunks(100);
 		

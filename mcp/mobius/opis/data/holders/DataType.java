@@ -30,6 +30,7 @@ import mcp.mobius.opis.data.holders.newtypes.DataNetworkTick;
 import mcp.mobius.opis.data.holders.newtypes.DataPacket;
 import mcp.mobius.opis.data.holders.newtypes.DataPacket250;
 import mcp.mobius.opis.data.holders.newtypes.DataStringUpdate;
+import mcp.mobius.opis.data.holders.newtypes.DataBlockTileEntity;
 import mcp.mobius.opis.data.holders.newtypes.DataTileEntity;
 import mcp.mobius.opis.data.holders.newtypes.DataTileEntityRender;
 import mcp.mobius.opis.data.holders.newtypes.DataTiming;
@@ -57,6 +58,7 @@ public enum DataType {
 	DATABITSIZE     (DataByteSize.class),
 	DATABLOCKRENDER (DataBlockRender.class),
 	DATABLOCKTICK   (DataBlockTick.class),
+	DATABLOCKTILEENTITY  (DataBlockTileEntity.class),	
 	DATACHUNK       (DataChunk.class),
 	DATADIMENSION   (DataDimension.class),
 	DATAENTITY      (DataEntity.class),

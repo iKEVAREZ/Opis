@@ -18,13 +18,13 @@ public class DataChunk implements ISerializable, Comparable {
 	
 	public DataChunk fill(CoordinatesChunk chunk){
 		this.chunk     = chunk;
-		ArrayList<DataTileEntity> tileEnts = TileEntityManager.INSTANCE.getTileEntitiesInChunk(this.chunk);
+		ArrayList<DataBlockTileEntity> tileEnts = TileEntityManager.INSTANCE.getTileEntitiesInChunk(this.chunk);
 		ArrayList<DataEntity>     entities = EntityManager.INSTANCE.getEntitiesInChunk(this.chunk);
 		
 		this.nentities = entities.size();
 		this.ntileents = tileEnts.size();
 		double totalUpdate  = 0.0D;
-		for (DataTileEntity tileent : tileEnts)
+		for (DataBlockTileEntity tileent : tileEnts)
 			totalUpdate += tileent.update.timing;
 
 		for (DataEntity ent : entities)
