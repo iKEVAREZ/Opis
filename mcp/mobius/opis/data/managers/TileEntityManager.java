@@ -118,34 +118,37 @@ public enum TileEntityManager {
 	
 	public ArrayList<DataTileEntity> getOrphans(){
 		ArrayList<DataTileEntity> orphans = new ArrayList<DataTileEntity>();
-		HashMap<CoordinatesBlock, String> locsStr   = new HashMap<CoordinatesBlock, String>();
-		HashMap<CoordinatesBlock, Integer> locsInt  = new HashMap<CoordinatesBlock, Integer>();
-		HashMap<CoordinatesBlock, Boolean> locsBool = new HashMap<CoordinatesBlock, Boolean>();
-		HashSet<CoordinatesBlock> coordFound = new HashSet<CoordinatesBlock>(); 
+		HashMap<CoordinatesBlock, DataTileEntity> coordHashset = new HashMap<CoordinatesBlock, DataTileEntity>();
+		HashSet<Integer> registeredEntities                    = new HashSet<Integer>(); 
 		
 		for (WorldServer world : DimensionManager.getWorlds()){
 			for (Object o : world.loadedTileEntityList){
 				TileEntity tileEntity = (TileEntity)o;
 				CoordinatesBlock coord = new CoordinatesBlock(world.provider.dimensionId, tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord);
+				int hash = System.identityHashCode(tileEntity);
+				
+				if (registeredEntities.contains(hash)) continue;	//This entitie has already been seen;
 				
 				int id = world.getBlockId(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord);
 				if (id == 0 || Block.blocksList[id] == null
 							|| !Block.blocksList[id].hasTileEntity()
 						    || world.getBlockTileEntity(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord) == null
 						    || world.getBlockTileEntity(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord).getClass() != tileEntity.getClass()){
-					orphans.add(new DataTileEntity().fill(tileEntity));
+
+					orphans.add(new DataTileEntity().fill(tileEntity, "Orphan"));
+					registeredEntities.add(hash);
 				} 
-				
-				if (locsStr.containsKey(coord)){
-					orphans.add(new DataTileEntity().fill(tileEntity));
-					if (!coordFound.contains(coord)){
-						orphans.add(new DataTileEntity().fill(coord, locsStr.get(coord), locsInt.get(coord), locsBool.get(coord)));
-						coordFound.add(coord);
-					}
-				} else {
-					locsStr.put(coord, tileEntity.getClass().getCanonicalName());
-					locsInt.put(coord, System.identityHashCode(tileEntity));
-					locsBool.put(coord, tileEntity.isInvalid());
+
+				if (coordHashset.containsKey(coord)){
+					if (!registeredEntities.contains(hash))
+						orphans.add(new DataTileEntity().fill(tileEntity, "Duplicate"));
+
+					if (!registeredEntities.contains(coordHashset.get(coord).hashCode))
+						orphans.add(coordHashset.get(coord));
+				}
+
+				if (!coordHashset.containsKey(coord)){
+					coordHashset.put(coord, new DataTileEntity().fill(tileEntity, "Duplicate"));
 				}
 			}
 		}

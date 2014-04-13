@@ -55,7 +55,9 @@ import mcp.mobius.opis.network.enums.AccessLevel;
 import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.packets.custom.Packet251Extended;
 import mcp.mobius.opis.proxy.ProxyServer;
+import mcp.mobius.opis.tools.BlockDebug;
 import mcp.mobius.opis.tools.BlockLag;
+import mcp.mobius.opis.tools.TileDebug;
 import mcp.mobius.opis.tools.TileLag;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
@@ -143,6 +145,10 @@ public class modOpis {
 			Block blockDemo = new BlockLag(lagGenID, Material.wood);
 			GameRegistry.registerBlock(blockDemo, "opis.laggen");
 			GameRegistry.registerTileEntity(TileLag.class, "opis.laggen");
+			
+			Block blockDebug = new BlockDebug(lagGenID+1, Material.wood);
+			GameRegistry.registerBlock(blockDebug, "opis.debug");
+			GameRegistry.registerTileEntity(TileDebug.class, "opis.debug");			
 		}
 
 		ProfilerSection.RENDER_TILEENTITY  .setProfiler(new ProfilerRenderTileEntity());

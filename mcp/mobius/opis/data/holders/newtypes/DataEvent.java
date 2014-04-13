@@ -15,6 +15,7 @@ public class DataEvent implements ISerializable, Comparable {
 	public CachedString     event;
 	public CachedString     handler;
 	public CachedString     package_;
+	public long       nCalls;
 	public DataTiming update;
 	
 	public DataEvent fill(Cell<Class, String, DescriptiveStatistics> cell){
@@ -36,6 +37,7 @@ public class DataEvent implements ISerializable, Comparable {
 		this.package_= new CachedString(nameRaw[0]);
 		this.handler = new CachedString(handlerName);
 		this.event   = new CachedString(cell.getRowKey().getName().replace("net.minecraftforge.event.", ""));
+		this.nCalls  = cell.getValue().getN();
 		
 		this.update = new DataTiming(cell.getValue().getGeometricMean());
 		return this;
@@ -47,6 +49,7 @@ public class DataEvent implements ISerializable, Comparable {
 		this.package_.writeToStream(stream);
 		this.handler.writeToStream(stream);
 		this.update.writeToStream(stream);
+		stream.writeLong(this.nCalls);
 	}
 
 	public static DataEvent readFromStream(DataInputStream stream) throws IOException {
@@ -55,6 +58,7 @@ public class DataEvent implements ISerializable, Comparable {
 		retVal.package_= CachedString.readFromStream(stream);
 		retVal.handler = CachedString.readFromStream(stream);
 		retVal.update  = DataTiming.readFromStream(stream);
+		retVal.nCalls  = stream.readLong();
 		return retVal;
 	}
 

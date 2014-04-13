@@ -1,6 +1,7 @@
 package mcp.mobius.opis.swing.panels.debug;
 
 import mcp.mobius.opis.api.ITabPanel;
+import mcp.mobius.opis.data.holders.newtypes.CachedString;
 import mcp.mobius.opis.data.holders.newtypes.DataTileEntity;
 import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.packets.server.NetDataRaw;
@@ -33,11 +34,11 @@ public class PanelOrphanTileEntities extends JPanelMsgHandler implements ITabPan
 			new Object[][] {
 			},
 			new String[] {
-				"Class", "Hash", "Is valid?", "Dimension", "Coordinates"
+				"Class", "Hash", "Is valid?", "Type", "Dimension", "Coordinates"
 			}
 		) {
 			Class[] columnTypes = new Class[] {
-				String.class, String.class, Boolean.class, Integer.class, String.class
+				String.class, String.class, Boolean.class, CachedString.class, Integer.class, String.class
 			};
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
@@ -64,6 +65,7 @@ public class PanelOrphanTileEntities extends JPanelMsgHandler implements ITabPan
 					data.clazz,
 					String.format("0x%x", data.hashCode),
 					data.isValid,
+					data.cause,
 					data.pos.dim,
 				     String.format("[ %4d %4d %4d ]", data.pos.x, data.pos.y, data.pos.z),  
 					 });
