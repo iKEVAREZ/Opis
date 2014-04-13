@@ -210,7 +210,7 @@ public class OpisPacketHandler implements IPacketHandler {
 	public static void sendFullUpdate(Player player){
 		ArrayList<DataEntity>       timingEntities = EntityManager.INSTANCE.getWorses(100);
 		ArrayList<DataBlockTileEntity>   timingTileEnts = TileEntityManager.INSTANCE.getWorses(100);
-		ArrayList<DataHandler>      timingHandlers = TickHandlerManager.getCumulatedStats();
+		ArrayList<DataHandler>      timingHandlers = TickHandlerManager.getCumulatedStatsServer();
 		ArrayList<StatsChunk>         timingChunks = ChunkManager.INSTANCE.getTopChunks(100);
 		
 		DataTiming    totalTimeTE      = TileEntityManager.INSTANCE.getTotalUpdateTime();

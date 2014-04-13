@@ -102,7 +102,7 @@ public class ServerMessageHandler {
 		}
 		
 		else if (maintype == Message.LIST_TIMING_HANDLERS){
-			ArrayList<DataHandler> timingHandlers = TickHandlerManager.getCumulatedStats();
+			ArrayList<DataHandler> timingHandlers = TickHandlerManager.getCumulatedStatsServer();
 			DataTiming totalTime = TickHandlerManager.getTotalUpdateTime();
 			OpisPacketHandler.validateAndSend(NetDataList.create(Message.LIST_TIMING_HANDLERS,  timingHandlers), (Player)player);
 			OpisPacketHandler.validateAndSend(NetDataValue.create(Message.VALUE_TIMING_HANDLERS, totalTime),     (Player)player);			

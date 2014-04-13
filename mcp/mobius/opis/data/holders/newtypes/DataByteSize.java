@@ -24,7 +24,7 @@ public class DataByteSize implements Comparable, ISerializable {
 		}
 
 		if (size >= (1024*1024)){
-			return String.format("%.3f GiB", this.size / 1024.0 / 1024.0);
+			return String.format("%.3f MiB", this.size / 1024.0 / 1024.0);
 		}		
 
 		return String.format("%4d   B", this.size);		

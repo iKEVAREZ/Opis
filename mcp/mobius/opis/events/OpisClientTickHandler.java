@@ -15,7 +15,9 @@ import mcp.mobius.opis.data.holders.basetypes.CoordinatesBlock;
 import mcp.mobius.opis.data.holders.basetypes.SerialLong;
 import mcp.mobius.opis.data.holders.newtypes.DataBlockRender;
 import mcp.mobius.opis.data.holders.newtypes.DataEntityRender;
+import mcp.mobius.opis.data.holders.newtypes.DataHandler;
 import mcp.mobius.opis.data.holders.newtypes.DataTileEntityRender;
+import mcp.mobius.opis.data.managers.TickHandlerManager;
 import mcp.mobius.opis.data.profilers.ProfilerRenderBlock;
 import mcp.mobius.opis.data.profilers.ProfilerRenderEntity;
 import mcp.mobius.opis.data.profilers.ProfilerRenderTileEntity;
@@ -23,6 +25,7 @@ import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.packets.client.Packet_ReqData;
 import mcp.mobius.opis.swing.SelectedTab;
 import mcp.mobius.opis.swing.panels.timingclient.PanelRenderEntities;
+import mcp.mobius.opis.swing.panels.timingclient.PanelRenderHandlers;
 import mcp.mobius.opis.swing.panels.timingclient.PanelRenderTileEnts;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.TickType;
@@ -56,10 +59,12 @@ public enum OpisClientTickHandler implements ITickHandler {
 			if (modOpis.profilerRunClient){
 				((PanelRenderTileEnts)(TabPanelRegistrar.INSTANCE.getTab(SelectedTab.RENDERTILEENTS))).getBtnRunRender().setText("Running...");
 				((PanelRenderEntities)(TabPanelRegistrar.INSTANCE.getTab(SelectedTab.RENDERENTITIES))).getBtnRunRender().setText("Running...");
+				((PanelRenderHandlers)(TabPanelRegistrar.INSTANCE.getTab(SelectedTab.RENDERHANDLERS))).getBtnRunRender().setText("Running...");
 			}
 			else{
 				((PanelRenderTileEnts)(TabPanelRegistrar.INSTANCE.getTab(SelectedTab.RENDERTILEENTS))).getBtnRunRender().setText("Run Render");
 				((PanelRenderEntities)(TabPanelRegistrar.INSTANCE.getTab(SelectedTab.RENDERENTITIES))).getBtnRunRender().setText("Run Render");
+				((PanelRenderHandlers)(TabPanelRegistrar.INSTANCE.getTab(SelectedTab.RENDERHANDLERS))).getBtnRunRender().setText("Run Render");
 			}
 			
 			profilerUpdateTickCounter++;
@@ -129,8 +134,11 @@ public enum OpisClientTickHandler implements ITickHandler {
 		Collections.sort(entData);
 		((PanelRenderEntities)(TabPanelRegistrar.INSTANCE.getTab(SelectedTab.RENDERENTITIES))).setTable(entData);
 		((PanelRenderEntities)(TabPanelRegistrar.INSTANCE.getTab(SelectedTab.RENDERENTITIES))).getLblTotal().setText(String.format("Total : %.3f µs", entTotal / 1000.0));
+
 		
-		//====================================================================================				
+		((PanelRenderHandlers)(TabPanelRegistrar.INSTANCE.getTab(SelectedTab.RENDERHANDLERS))).setTable(TickHandlerManager.getCumulatedStatsRender());
+		
+		//====================================================================================			
 		
 		ArrayList<DataBlockRender> blockData = new ArrayList<DataBlockRender>();
 		for (CoordinatesBlock coord : ((ProfilerRenderBlock)ProfilerSection.RENDER_BLOCK.getProfiler()).data.keySet()){

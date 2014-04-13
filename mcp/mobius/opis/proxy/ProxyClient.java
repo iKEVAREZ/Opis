@@ -39,6 +39,7 @@ import mcp.mobius.opis.swing.panels.network.PanelInbound250;
 import mcp.mobius.opis.swing.panels.network.PanelOutbound;
 import mcp.mobius.opis.swing.panels.network.PanelOutbound250;
 import mcp.mobius.opis.swing.panels.timingclient.PanelRenderEntities;
+import mcp.mobius.opis.swing.panels.timingclient.PanelRenderHandlers;
 import mcp.mobius.opis.swing.panels.timingclient.PanelRenderTileEnts;
 import mcp.mobius.opis.swing.panels.timingserver.PanelTimingChunks;
 import mcp.mobius.opis.swing.panels.timingserver.PanelTimingEntities;
@@ -87,6 +88,7 @@ public class ProxyClient extends ProxyServer implements IMessageHandler{
 		TabPanelRegistrar.INSTANCE.registerSection("Client timing");
 		TabPanelRegistrar.INSTANCE.registerTab(new PanelRenderTileEnts(),"[Render] TileEnts", "Client timing");
 		TabPanelRegistrar.INSTANCE.registerTab(new PanelRenderEntities(),"[Render] Entities", "Client timing");
+		TabPanelRegistrar.INSTANCE.registerTab(new PanelRenderHandlers(),"[Render] Handlers", "Client timing");
 		
 		TabPanelRegistrar.INSTANCE.registerSection("Network");
 		IMessageHandler panelPacketsOut    = (IMessageHandler)TabPanelRegistrar.INSTANCE.registerTab(new PanelOutbound(),   "Outbound",     "Network");
@@ -197,7 +199,7 @@ public class ProxyClient extends ProxyServer implements IMessageHandler{
 		}
 		case CLIENT_SHOW_RENDER_TICK:{
 			modOpis.log.log(Level.INFO, "=== RENDER TICK ===");
-			ArrayList<DataHandler> stats = TickHandlerManager.getCumulatedStats();
+			ArrayList<DataHandler> stats = TickHandlerManager.getCumulatedStatsServer();
 			for (DataHandler stat : stats){
 				System.out.printf("%s \n", stat);
 			}			

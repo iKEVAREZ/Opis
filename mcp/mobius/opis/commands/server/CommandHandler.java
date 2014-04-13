@@ -44,7 +44,7 @@ public class CommandHandler extends CommandBase  implements IOpisCommand {
 			return;
 		}				
 		
-		ArrayList<DataHandler> stats = TickHandlerManager.getCumulatedStats();
+		ArrayList<DataHandler> stats = TickHandlerManager.getCumulatedStatsServer();
 		
 		for (DataHandler s : stats)
 			icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText(String.format("%s : %.2f", s.name, s.update.toString())));

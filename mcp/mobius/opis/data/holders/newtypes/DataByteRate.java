@@ -29,7 +29,7 @@ public class DataByteRate implements Comparable, ISerializable {
 		}
 
 		if (size >= (1024*1024)){
-			return String.format("%.3f GiB/s", this.size / 1024.0 / 1024.0 / this.interval);
+			return String.format("%.3f MiB/s", this.size / 1024.0 / 1024.0 / this.interval);
 		}		
 
 		return String.format("%4d   B/s", this.size / this.interval);		
