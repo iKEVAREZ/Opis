@@ -39,46 +39,17 @@ public class PanelDimensions extends JPanelMsgHandler implements IMessageHandler
 		JScrollPane scrollPane = new JScrollPane();
 		add(scrollPane, "cell 0 1,grow");
 		
-		table = new JTableStats();
-		table.setModel(new DefaultTableModel(
-			new Object[][] {
-				{null, null, null, null, null, null, null, null, null, null},
-				//	{null, null, null, null, null, null, null, null, null},
-			},
-			new String[] {
-				"Dim", "Name", "Players", "Forced chunks", "Loaded chunks", "Monsters", "Animals", "Stacks", "Update time", "Purge"
-				//	"Dim", "Name", "Players", "Forced chunks", "Loaded chunks", "Monsters", "Animals", "Entities", "Purge"
-			}
-		) {
-			Class[] columnTypes = new Class[] {
-				Integer.class, String.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, DataTimingMillisecond.class, JTableButton.class
-				//Integer.class, String.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, JTableButton.class
-			};
-			public Class getColumnClass(int columnIndex) {
-				return columnTypes[columnIndex];
-			}
-			boolean[] columnEditables = new boolean[] {
-				false, false, false, false, false,false,false,false, false, true
-				//false, false, false, false, false,false,false,false, true
-			};
-			public boolean isCellEditable(int row, int column) {
-				return columnEditables[column];
-			}
-		});
-		//table.setBackground(UIManager.getColor("windowBorder"));
+		table = new JTableStats(
+				new String[] {"Dim", "Name", "Players", "Forced chunks", "Loaded chunks", "Monsters", "Animals", "Stacks", "Update time", "Purge"},
+				new Class[]  {Integer.class, String.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, DataTimingMillisecond.class, JTableButton.class},
+				new boolean[]{false, false, false, false, false,false,false,false, false, true}
+				);
 		table.setBackground(this.getBackground());
 		table.setAutoCreateRowSorter(true);	
 		table.setShowGrid(false);
 		scrollPane.setViewportView(table);
 		
-		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-		centerRenderer.setHorizontalAlignment( SwingConstants.CENTER );		
-		
-		for (int i = 0; i < table.getColumnCount(); i++)
-			table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
-		
 		JTableButton buttonColumn = new JTableButton(table, new ActionDimensions(), 9, AccessLevel.PRIVILEGED);
-		//JTableButton buttonColumn = new JTableButton(table, new ActionDimensions(), 8, AccessLevel.PRIVILEGED);
 	}
 
 	@Override

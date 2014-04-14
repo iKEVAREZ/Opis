@@ -28,31 +28,12 @@ public class PanelOutbound extends JPanelMsgHandler implements ITabPanel {
 		JScrollPane scrollPane = new JScrollPane();
 		add(scrollPane, "cell 0 0,grow");
 		
-		table = new JTableStats();
-		table.setModel(new DefaultTableModel(
-			new Object[][] {
-				{null, null, null, null, null},
-			},
-			new String[] {
-				"Type", "ID", "Amount", "Rate", "Total Size"
-			}
-		) {
-			Class[] columnTypes = new Class[] {
-				String.class, Integer.class, DataAmountRate.class, DataByteRate.class, DataByteSize.class
-			};
-			public Class getColumnClass(int columnIndex) {
-				return columnTypes[columnIndex];
-			}
-		});
-		table.setAutoCreateRowSorter(true);	
-		scrollPane.setViewportView(table);
-		
-		DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
-		rightRenderer.setHorizontalAlignment( SwingConstants.RIGHT );		
-		
-		
-		for (int i = 1; i < table.getColumnCount(); i++)
-			table.getColumnModel().getColumn(i).setCellRenderer(rightRenderer);		
+		table = new JTableStats(
+				new String[] {"Type", "ID", "Amount", "Rate", "Total Size"},
+				new Class[]  {String.class, Integer.class, DataAmountRate.class, DataByteRate.class, DataByteSize.class},
+				new int[]    {SwingConstants.LEFT, SwingConstants.CENTER, SwingConstants.RIGHT, SwingConstants.RIGHT, SwingConstants.RIGHT}
+				);			
+		scrollPane.setViewportView(table);	
 		
 	}
 

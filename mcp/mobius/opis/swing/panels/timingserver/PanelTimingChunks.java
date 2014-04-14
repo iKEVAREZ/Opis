@@ -53,35 +53,11 @@ public class PanelTimingChunks extends JPanelMsgHandler implements ITabPanel{
 		JScrollPane scrollPane = new JScrollPane();
 		add(scrollPane, "cell 0 1 4 1,grow");
 		
-		table = new JTableStats();
-		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);		
-		table.setModel(new DefaultTableModel(
-				new Object[][] {
-				},
-				new String[] {
-					"Dimension", "Position", "TileEntities", "Entities", "Update Time"
-				}
-			) {
-				Class[] columnTypes = new Class[] {
-					Integer.class, String.class, Integer.class, Integer.class, StatAbstract.class
-				};
-				boolean[] columnEditables = new boolean[] {
-						false, false, false, false, false
-				};			
-				@Override
-				public Class getColumnClass(int columnIndex) {
-					return columnTypes[columnIndex];
-				}
-			});
-		table.setAutoCreateRowSorter(true);			
-		scrollPane.setViewportView(table);
-
-		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-		centerRenderer.setHorizontalAlignment( SwingConstants.CENTER );		
-		
-		for (int i = 0; i < table.getColumnCount(); i++)
-			table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);		
-		
+		table = new JTableStats(
+				new String[] {"Dimension", "Position", "TileEntities", "Entities", "Update Time"},
+				new Class[]  {Integer.class, String.class, Integer.class, Integer.class, StatAbstract.class}
+				);
+		scrollPane.setViewportView(table);		
 	}
 
 	public JButton getBtnRun() {return btnRun;}

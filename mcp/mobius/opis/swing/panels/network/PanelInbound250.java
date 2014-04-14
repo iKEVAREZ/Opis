@@ -6,6 +6,7 @@ import javax.swing.SwingConstants;
 
 import net.miginfocom.swing.MigLayout;
 import mcp.mobius.opis.api.ITabPanel;
+import mcp.mobius.opis.data.holders.newtypes.CachedString;
 import mcp.mobius.opis.data.holders.newtypes.DataAmountRate;
 import mcp.mobius.opis.data.holders.newtypes.DataByteRate;
 import mcp.mobius.opis.data.holders.newtypes.DataByteSize;
@@ -29,32 +30,12 @@ public class PanelInbound250 extends JPanelMsgHandler implements ITabPanel {
 		JScrollPane scrollPane = new JScrollPane();
 		add(scrollPane, "cell 0 0,grow");
 		
-		table = new JTableStats();
-		table.setModel(new DefaultTableModel(
-			new Object[][] {
-				{null, null, null, null},
-			},
-			new String[] {
-				"Channel", "Amount", "Rate", "Total Size"
-			}
-		) {
-			Class[] columnTypes = new Class[] {
-				String.class, DataAmountRate.class, DataByteRate.class, DataByteSize.class
-			};
-			public Class getColumnClass(int columnIndex) {
-				return columnTypes[columnIndex];
-			}
-		});
-		table.setAutoCreateRowSorter(true);	
+		table = new JTableStats(
+				new String[] {"Channel", "Amount", "Rate", "Total Size"},
+				new Class[]  {CachedString.class, DataAmountRate.class, DataByteRate.class, DataByteSize.class},
+				new int[]    {SwingConstants.LEFT, SwingConstants.RIGHT, SwingConstants.RIGHT, SwingConstants.RIGHT}
+				);		
 		scrollPane.setViewportView(table);
-		
-		DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
-		rightRenderer.setHorizontalAlignment( SwingConstants.RIGHT );		
-		
-		
-		for (int i = 1; i < table.getColumnCount(); i++)
-			table.getColumnModel().getColumn(i).setCellRenderer(rightRenderer);		
-		
 	}
 
 	@Override

@@ -48,38 +48,14 @@ public class PanelTimingHandlers extends JPanelMsgHandler implements ITabPanel{
 		
 		add(scrollPane, "cell 0 1 2 1,grow");
 		
-		table = new JTableStats();
-		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		table.setModel(new DefaultTableModel(
-			new Object[][] {
-			},
-			new String[] {
-				"Name", "Update Time"
-			}
-		) {
-			Class[] columnTypes = new Class[] {
-				String.class, DataTiming.class
-			};
-			boolean[] columnEditables = new boolean[] {
-					false, false
-			};			
-			@Override
-			public Class getColumnClass(int columnIndex) {
-				return columnTypes[columnIndex];
-			}
-		});
-		table.setAutoCreateRowSorter(true);		
-		scrollPane.setViewportView(table);
+		table = new JTableStats(
+				new String[] {"Name", "Update Time"},
+				new Class[]  {String.class, DataTiming.class}
+				);
+		scrollPane.setViewportView(table);			
 		
 		lblSummary = new JLabel("TmpText");
 		add(lblSummary, "cell 0 2 2 1,alignx center");
-		
-		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-		centerRenderer.setHorizontalAlignment( SwingConstants.CENTER );		
-		
-		for (int i = 0; i < table.getColumnCount(); i++)
-			table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);			
-
 	}
 
 	public JButton getBtnRun()    {return btnRun;}

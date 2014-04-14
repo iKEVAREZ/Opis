@@ -61,38 +61,14 @@ public class PanelTimingEntities extends JPanelMsgHandler implements ITabPanel{
 		JScrollPane scrollPane = new JScrollPane();
 		add(scrollPane, "cell 0 1 5 1,grow");
 		
-		table = new JTableStats();
-		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		table.setModel(new DefaultTableModel(
-			new Object[][] {
-			},
-			new String[] {
-				"Type", "ID", "Dim", "Pos", "Update Time", "Data"
-			}
-		) {
-			Class[] columnTypes = new Class[] {
-				String.class, Integer.class, Integer.class, Object.class, DataTiming.class, Integer.class
-			};
-			boolean[] columnEditables = new boolean[] {
-					false, false, false, false, false, false
-			};			
-			@Override
-			public Class getColumnClass(int columnIndex) {
-				return columnTypes[columnIndex];
-			}
-		});
-		table.setAutoCreateRowSorter(true);		
-		scrollPane.setViewportView(table);
-		
+		table = new JTableStats(
+				new String[] {"Type", "ID", "Dim", "Pos", "Update Time", "Data"},
+				new Class[]  {String.class, Integer.class, Integer.class, Object.class, DataTiming.class, Integer.class}
+				);
+		scrollPane.setViewportView(table);			
+	
 		lblSummary = new JLabel("New label");
 		add(lblSummary, "cell 0 2 5 1,alignx center");
-		
-		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-		centerRenderer.setHorizontalAlignment( SwingConstants.CENTER );		
-		
-		for (int i = 0; i < table.getColumnCount(); i++)
-			table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);			
-
 	}
 
 	public JButton getBtnRun()      {return btnRun;}

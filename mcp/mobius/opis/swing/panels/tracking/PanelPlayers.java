@@ -58,35 +58,11 @@ public class PanelPlayers extends JPanelMsgHandler implements ITabPanel{
 		JScrollPane scrollPane = new JScrollPane();
 		add(scrollPane, "cell 0 1 6 1,grow");
 		
-		table = new JTableStats();
-		table.setModel(new DefaultTableModel(
-			new Object[][] {
-			},
-			new String[] {
-				"Name", "Dimension", "Coordinates"
-			}
-		) {
-			Class[] columnTypes = new Class[] {
-				String.class, Integer.class, Object.class
-			};
-			
-			boolean[] columnEditables = new boolean[] {
-					false, false, false
-			};			
-			
-			@Override
-			public Class getColumnClass(int columnIndex) {
-				return columnTypes[columnIndex];
-			}
-		});
-		table.setAutoCreateRowSorter(true);		
-		scrollPane.setViewportView(table);
-
-		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-		centerRenderer.setHorizontalAlignment( SwingConstants.CENTER );		
-		
-		for (int i = 0; i < table.getColumnCount(); i++)
-			table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);			
+		table = new JTableStats(
+				new String[] {"Name", "Dimension", "Coordinates"},
+				new Class[]  {String.class, Integer.class, Object.class}
+				);
+		scrollPane.setViewportView(table);		
 	}
 
 	public JButton getBtnCenter()   {return btnCenter;}

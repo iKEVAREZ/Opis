@@ -64,7 +64,12 @@ public enum StringCache implements IMessageHandler {
 		case STATUS_STRINGUPD:{
 			//modOpis.log.info("Received String Cache update");
 			DataStringUpdate data = (DataStringUpdate)rawdata.value;
-			this.cache.put(data.index, data.str);
+			try{
+				this.cache.put(data.index, data.str);
+			} catch (IllegalArgumentException e){
+				this.cache.remove(data.index);
+				this.cache.put(data.index, data.str);
+			}
 			break;
 		}
 		case STATUS_STRINGUPD_FULL:{

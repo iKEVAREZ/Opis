@@ -45,21 +45,11 @@ public class PanelEventClient extends JPanel implements ITabPanel, IMessageHandl
 		JScrollPane scrollPane = new JScrollPane();
 		add(scrollPane, "cell 0 1 3 1,grow");
 		
-		table = new JTableStats();
-		table.setModel(new DefaultTableModel(
-				new Object[][] {
-				},
-				new String[] {
-					"Event", "Class", "Handler", "Calls", "Timing"
-				}
-			) {
-				Class[] columnTypes = new Class[] {
-					CachedString.class, CachedString.class, CachedString.class, Long.class, DataTiming.class
-				};
-				public Class getColumnClass(int columnIndex) {
-					return columnTypes[columnIndex];
-				}
-			});
+		table = new JTableStats(
+				new String[] {"Event", "Class", "Handler", "Calls", "Timing"},
+				new Class[]  {CachedString.class, CachedString.class, CachedString.class, Long.class, DataTiming.class}
+				);
+	
 		scrollPane.setViewportView(table);
 	}
 

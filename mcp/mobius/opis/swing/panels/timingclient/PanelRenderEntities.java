@@ -41,35 +41,14 @@ public class PanelRenderEntities extends JPanel implements ITabPanel, IMessageHa
 		JScrollPane scrollPane = new JScrollPane();
 		add(scrollPane, "cell 0 1 3 1,grow");
 		
-		table = new JTableStats();
-		table.setModel(new DefaultTableModel(
-			new Object[][] {
-				{null, null, null},
-			},
-			new String[] {
-				"Name", "Coordinates", "Timing"
-			}
-		) {
-			Class[] columnTypes = new Class[] {
-				String.class, Object.class, DataTiming.class
-			};
-			public Class getColumnClass(int columnIndex) {
-				return columnTypes[columnIndex];
-			}
-		});
-		table.setAutoCreateRowSorter(true);			
-		scrollPane.setViewportView(table);
+		table = new JTableStats(
+				new String[] {"Name", "Coordinates", "Timing"},
+				new Class[]  {String.class, Object.class, DataTiming.class}
+				);			
+		scrollPane.setViewportView(table);		
 		
 		lblTotal = new JLabel("Total : 0 µs");
 		add(lblTotal, "cell 0 2 3 1,alignx center");
-
-		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-		centerRenderer.setHorizontalAlignment( SwingConstants.CENTER );		
-		
-		for (int i = 0; i < table.getColumnCount(); i++)
-			table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);		
-				
-		
 	}
 
 	public void setTable(ArrayList<DataEntityRender> data){

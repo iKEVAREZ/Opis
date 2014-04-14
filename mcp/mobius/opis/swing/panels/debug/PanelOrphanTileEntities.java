@@ -14,6 +14,7 @@ import net.miginfocom.swing.MigLayout;
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
 public class PanelOrphanTileEntities extends JPanelMsgHandler implements ITabPanel {
@@ -29,22 +30,10 @@ public class PanelOrphanTileEntities extends JPanelMsgHandler implements ITabPan
 		JScrollPane scrollPane = new JScrollPane();
 		add(scrollPane, "cell 0 1 2 1,grow");
 		
-		table = new JTableStats();
-		table.setModel(new DefaultTableModel(
-			new Object[][] {
-			},
-			new String[] {
-				"Class", "Hash", "Is valid?", "Type", "Dimension", "Coordinates"
-			}
-		) {
-			Class[] columnTypes = new Class[] {
-				String.class, String.class, Boolean.class, CachedString.class, Integer.class, String.class
-			};
-			public Class getColumnClass(int columnIndex) {
-				return columnTypes[columnIndex];
-			}
-		});
-		table.setAutoCreateRowSorter(true);			
+		table = new JTableStats(
+				new String[] {"Class", "Hash", "Is valid?", "Type", "Dimension", "Coordinates"},
+				new Class[]  {CachedString.class, String.class, Boolean.class, CachedString.class, Integer.class, String.class}
+				);		
 		scrollPane.setViewportView(table);
 	}
 

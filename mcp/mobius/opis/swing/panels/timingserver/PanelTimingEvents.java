@@ -31,23 +31,11 @@ public class PanelTimingEvents extends JPanelMsgHandler implements ITabPanel {
 		JScrollPane scrollPane = new JScrollPane();
 		add(scrollPane, "cell 0 1 2 1,grow");
 		
-		table = new JTableStats();
-		table.setModel(new DefaultTableModel(
-			new Object[][] {
-			},
-			new String[] {
-				"Event", "Class", "Handler", "Calls", "Timing"
-			}
-		) {
-			Class[] columnTypes = new Class[] {
-				String.class, String.class, String.class, Long.class, DataTiming.class
-			};
-			public Class getColumnClass(int columnIndex) {
-				return columnTypes[columnIndex];
-			}
-		});
-		table.setAutoCreateRowSorter(true);			
-		scrollPane.setViewportView(table);
+		table = new JTableStats(
+				new String[] {"Event", "Class", "Handler", "Calls", "Timing"},
+				new Class[]  {String.class, String.class, String.class, Long.class, DataTiming.class}
+				);
+		scrollPane.setViewportView(table);			
 	}
 
 	@Override
