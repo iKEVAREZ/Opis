@@ -59,7 +59,7 @@ public class PanelDimensions extends JPanelMsgHandler implements IMessageHandler
 			((JTableStats)this.getTable()).setTableData(rawdata.array);
 			
 			DefaultTableModel model = (DefaultTableModel)this.getTable().getModel();
-			int               row   = this.clearTable(table, model, DataDimension.class);	
+			int               row   = this.getTable().clearTable(DataDimension.class);	
 
 			for (Object o : rawdata.array){
 				DataDimension data = (DataDimension)o;
@@ -76,7 +76,7 @@ public class PanelDimensions extends JPanelMsgHandler implements IMessageHandler
 						"Purge"
 				});
 			}			
-			this.dataUpdated(table, model, row);
+			this.getTable().dataUpdated(row);
 			break;
 		}
 		default:

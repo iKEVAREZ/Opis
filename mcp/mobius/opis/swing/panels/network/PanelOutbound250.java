@@ -46,7 +46,7 @@ public class PanelOutbound250 extends JPanelMsgHandler implements ITabPanel {
 			((JTableStats)this.getTable()).setTableData(rawdata.array);
 			
 			DefaultTableModel model = (DefaultTableModel)this.getTable().getModel();
-			int               row   = this.clearTable(table, model, DataPacket250.class);
+			int               row   = this.getTable().clearTable(DataPacket250.class);
 
 			for (Object o : rawdata.array){
 				DataPacket250 packet = (DataPacket250)o;
@@ -58,7 +58,7 @@ public class PanelOutbound250 extends JPanelMsgHandler implements ITabPanel {
 					 });
 			}
 			
-			this.dataUpdated(table, model, row);			
+			this.getTable().dataUpdated(row);			
 			
 			break;
 		}			

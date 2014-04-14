@@ -90,7 +90,7 @@ public class PanelTimingTileEnts extends JPanelMsgHandler implements ITabPanel{
 			((JTableStats)this.getTable()).setTableData(rawdata.array);
 			
 			DefaultTableModel model = (DefaultTableModel)table.getModel();
-			int               row   = this.clearTable(table, model, DataBlockTileEntity.class);
+			int               row   = this.getTable().clearTable(DataBlockTileEntity.class);
 
 			for (Object o : rawdata.array){
 				DataBlockTileEntity data = (DataBlockTileEntity)o;
@@ -112,7 +112,7 @@ public class PanelTimingTileEnts extends JPanelMsgHandler implements ITabPanel{
 					     data.update});
 			}
 			
-			this.dataUpdated(table, model, row);			
+			this.getTable().dataUpdated(row);			
 			
 			break;
 		}

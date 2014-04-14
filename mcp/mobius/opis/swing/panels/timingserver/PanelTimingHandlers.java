@@ -69,14 +69,14 @@ public class PanelTimingHandlers extends JPanelMsgHandler implements ITabPanel{
 			((JTableStats)this.getTable()).setTableData(rawdata.array);
 			
 			DefaultTableModel model = (DefaultTableModel)table.getModel();
-			int               row   = this.clearTable(table, model, DataHandler.class);	
+			int               row   = this.getTable().clearTable(DataHandler.class);	
 			
 			for (Object o : rawdata.array){
 				DataHandler data = (DataHandler)o;
 				model.addRow(new Object[] {data.name, data.update});
 			}
 
-			this.dataUpdated(table, model, row);			
+			this.getTable().dataUpdated(row);			
 			
 			break;
 		}

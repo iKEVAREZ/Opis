@@ -77,7 +77,7 @@ public class PanelPlayers extends JPanelMsgHandler implements ITabPanel{
 			((JTableStats)this.getTable()).setTableData(rawdata.array);
 			
 			DefaultTableModel model = (DefaultTableModel)this.getTable().getModel();
-			int               row   = this.clearTable(table, model, DataEntity.class);
+			int               row   = this.getTable().clearTable(DataEntity.class);
 
 			for (Object o : rawdata.array){
 				DataEntity player = (DataEntity)o;
@@ -88,7 +88,7 @@ public class PanelPlayers extends JPanelMsgHandler implements ITabPanel{
 					 });
 			}
 			
-			this.dataUpdated(table, model, row);			
+			this.getTable().dataUpdated(row);			
 			
 			break;
 		}

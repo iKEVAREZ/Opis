@@ -102,6 +102,30 @@ public class JTableStats extends JTable {
 		this.statistics.addAll(statistics);
 	}
 	
+	public DefaultTableModel getModel(){
+		return (DefaultTableModel)super.getModel();
+	}
+	
+	public <U> int clearTable(Class<U> datatype){
+		int row = this.getSelectedRow();
+		
+		if (this.getModel().getRowCount() > 0)
+			for (int i = this.getModel().getRowCount() - 1; i >= 0; i--)
+				this.getModel().removeRow(i);		
+		
+		return row;
+	}
+	
+	public void dataUpdated(int row){
+		this.getModel().fireTableDataChanged();
+		
+		try{
+			this.setRowSelectionInterval(row, row);
+		} catch (IllegalArgumentException e ){
+			
+		}		
+	}	
+	
 	/*
 	public void setStatistics(ArrayList<ISerializable> statistics){
 		this.statistics = new ArrayList<ISerializable>();

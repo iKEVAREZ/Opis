@@ -12,26 +12,6 @@ public abstract class JPanelMsgHandler extends JPanel implements IMessageHandler
 	
 	public JTableStats table;
 	
-	public <U> int clearTable(JTable table, DefaultTableModel model, Class<U> datatype){
-		int row = table.getSelectedRow();
-		
-		if (model.getRowCount() > 0)
-			for (int i = model.getRowCount() - 1; i >= 0; i--)
-				model.removeRow(i);		
-		
-		return row;
-	}
-	
-	public void dataUpdated(JTable table, DefaultTableModel model, int row){
-		model.fireTableDataChanged();
-		
-		try{
-			table.setRowSelectionInterval(row, row);
-		} catch (IllegalArgumentException e ){
-			
-		}		
-	}
-	
 	public JTableStats getTable(){
 		return this.table;
 	}

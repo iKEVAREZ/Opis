@@ -60,7 +60,7 @@ public class PanelOrphanTileEntities extends JPanelMsgHandler implements ITabPan
 					 });
 			}
 			
-			this.dataUpdated(table, model, row);			
+			this.getTable().dataUpdated(row);			
 			
 			break;
 		}		
@@ -68,7 +68,7 @@ public class PanelOrphanTileEntities extends JPanelMsgHandler implements ITabPan
 		case LIST_ORPHAN_TILEENTS_CLEAR:{
 			((JTableStats)this.getTable()).clearTableData();
 			DefaultTableModel model = (DefaultTableModel)this.getTable().getModel();
-			row = this.clearTable(table, model, DataTileEntity.class);			
+			row = this.getTable().clearTable(DataTileEntity.class);			
 		}
 		
 		default:

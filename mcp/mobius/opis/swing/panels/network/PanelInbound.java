@@ -44,7 +44,7 @@ public class PanelInbound extends JPanelMsgHandler implements ITabPanel {
 			((JTableStats)this.getTable()).setTableData(rawdata.array);
 			
 			DefaultTableModel model = (DefaultTableModel)this.getTable().getModel();
-			int               row   = this.clearTable(table, model, DataPacket.class);
+			int               row   = this.getTable().clearTable(DataPacket.class);
 
 			for (Object o : rawdata.array){
 				DataPacket packet = (DataPacket)o;
@@ -58,7 +58,7 @@ public class PanelInbound extends JPanelMsgHandler implements ITabPanel {
 					 });
 			}
 			
-			this.dataUpdated(table, model, row);			
+			this.getTable().dataUpdated(row);			
 			
 			break;
 		}		
