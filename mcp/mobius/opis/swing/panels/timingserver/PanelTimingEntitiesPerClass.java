@@ -31,9 +31,9 @@ public class PanelTimingEntitiesPerClass extends JPanelMsgHandler implements ITa
 		add(scrollPane, "cell 0 1 2 1,grow");
 		
 		table = new JTableStats(
-				new String[] {"Name", "Amount", "Timing"},
-				new Class[]  {CachedString.class, Integer.class, DataTiming.class},
-				new int[]    {SwingConstants.LEFT, SwingConstants.CENTER, SwingConstants.CENTER}
+				new String[] {"Name", "Amount", "Timing", "Mean value"},
+				new Class[]  {CachedString.class, Integer.class, DataTiming.class, DataTiming.class},
+				new int[]    {SwingConstants.LEFT, SwingConstants.CENTER, SwingConstants.CENTER, SwingConstants.CENTER}
 				);
 		scrollPane.setViewportView(table);			
 	}
@@ -51,7 +51,7 @@ public class PanelTimingEntitiesPerClass extends JPanelMsgHandler implements ITa
 			
 			for (Object o : rawdata.array){
 				DataEntityPerClass data = (DataEntityPerClass)o;
-				model.addRow(new Object[] {data.name, data.nents, data.update});
+				model.addRow(new Object[] {data.name, data.nents, data.update, new DataTiming(data.update.timing / data.nents)});
 			}
 
 			this.getTable().dataUpdated(row);			
