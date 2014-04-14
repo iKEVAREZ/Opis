@@ -3,6 +3,9 @@ package mcp.mobius.opis.swing.widgets;
 import java.util.ArrayList;
 
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
 
 import mcp.mobius.opis.data.holders.ISerializable;
 import mcp.mobius.opis.data.holders.stats.StatAbstract;
@@ -10,6 +13,18 @@ import mcp.mobius.opis.data.holders.stats.StatAbstract;
 public class JTableStats extends JTable {
 
 	protected ArrayList<ISerializable> statistics;
+	
+	public JTableStats(){
+		super();
+		this.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		this.setAutoCreateRowSorter(true);	
+		
+		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		centerRenderer.setHorizontalAlignment( SwingConstants.CENTER );		
+		
+		for (int i = 0; i < this.getColumnCount(); i++)
+			this.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);		
+	}
 	
 	public ArrayList<ISerializable> getTableData(){
 		return this.statistics;

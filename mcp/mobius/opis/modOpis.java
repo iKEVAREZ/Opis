@@ -155,7 +155,8 @@ public class modOpis {
 		ProfilerSection.RENDER_ENTITY      .setProfiler(new ProfilerRenderEntity());
 		ProfilerSection.RENDER_BLOCK       .setProfiler(new ProfilerRenderBlock());
 		ProfilerSection.HANDLER_TICKSTART  .setProfiler(new ProfilerHandler());
-		ProfilerSection.HANDLER_TICKSTOP   .setProfiler(new ProfilerHandler());		
+		ProfilerSection.HANDLER_TICKSTOP   .setProfiler(new ProfilerHandler());
+		ProfilerSection.EVENT_INVOKE       .setProfiler(new ProfilerEvent());		
 	}
 	
 	@EventHandler
@@ -174,7 +175,6 @@ public class modOpis {
 		ProfilerSection.PACKET_INBOUND     .setProfiler(new ProfilerPacket());
 		ProfilerSection.PACKET_OUTBOUND    .setProfiler(new ProfilerPacket());			
 		ProfilerSection.NETWORK_TICK       .setProfiler(new ProfilerNetworkTick());
-		ProfilerSection.EVENT_INVOKE       .setProfiler(new ProfilerEvent());
 		
 		event.registerServerCommand(new CommandChunkList());
 		event.registerServerCommand(new CommandFrequency());
