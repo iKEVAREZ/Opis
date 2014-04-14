@@ -16,6 +16,7 @@ import net.miginfocom.swing.MigLayout;
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
 public class PanelTimingEvents extends JPanelMsgHandler implements ITabPanel {
@@ -33,7 +34,8 @@ public class PanelTimingEvents extends JPanelMsgHandler implements ITabPanel {
 		
 		table = new JTableStats(
 				new String[] {"Event", "Class", "Handler", "Calls", "Timing"},
-				new Class[]  {String.class, String.class, String.class, Long.class, DataTiming.class}
+				new Class[]  {String.class, String.class, String.class, Long.class, DataTiming.class},
+				new int[]    {SwingConstants.LEFT, SwingConstants.LEFT, SwingConstants.LEFT, SwingConstants.CENTER, SwingConstants.CENTER}
 				);
 		scrollPane.setViewportView(table);			
 	}

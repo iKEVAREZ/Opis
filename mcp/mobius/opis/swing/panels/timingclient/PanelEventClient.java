@@ -47,7 +47,8 @@ public class PanelEventClient extends JPanel implements ITabPanel, IMessageHandl
 		
 		table = new JTableStats(
 				new String[] {"Event", "Class", "Handler", "Calls", "Timing"},
-				new Class[]  {CachedString.class, CachedString.class, CachedString.class, Long.class, DataTiming.class}
+				new Class[]  {CachedString.class, CachedString.class, CachedString.class, Long.class, DataTiming.class},
+				new int[]    {SwingConstants.LEFT, SwingConstants.LEFT, SwingConstants.LEFT, SwingConstants.CENTER, SwingConstants.CENTER}
 				);
 	
 		scrollPane.setViewportView(table);

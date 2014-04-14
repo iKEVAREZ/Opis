@@ -31,8 +31,9 @@ public class PanelOrphanTileEntities extends JPanelMsgHandler implements ITabPan
 		add(scrollPane, "cell 0 1 2 1,grow");
 		
 		table = new JTableStats(
-				new String[] {"Class", "Hash", "Is valid?", "Type", "Dimension", "Coordinates"},
-				new Class[]  {CachedString.class, String.class, Boolean.class, CachedString.class, Integer.class, String.class}
+				new String[] {"Class", "Hash", "Type", "Dimension", "Coordinates"},
+				new Class[]  {CachedString.class, String.class,  CachedString.class, Integer.class, String.class},
+				new int[]    {SwingConstants.LEFT, SwingConstants.LEFT, SwingConstants.CENTER, SwingConstants.CENTER, SwingConstants.CENTER}
 				);		
 		scrollPane.setViewportView(table);
 	}
@@ -53,7 +54,6 @@ public class PanelOrphanTileEntities extends JPanelMsgHandler implements ITabPan
 				model.addRow(new Object[]  {
 					data.clazz,
 					String.format("0x%x", data.hashCode),
-					data.isValid,
 					data.cause,
 					data.pos.dim,
 				     String.format("[ %4d %4d %4d ]", data.pos.x, data.pos.y, data.pos.z),  
