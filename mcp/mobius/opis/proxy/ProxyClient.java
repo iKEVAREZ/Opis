@@ -44,6 +44,7 @@ import mcp.mobius.opis.swing.panels.timingclient.PanelRenderHandlers;
 import mcp.mobius.opis.swing.panels.timingclient.PanelRenderTileEnts;
 import mcp.mobius.opis.swing.panels.timingserver.PanelTimingChunks;
 import mcp.mobius.opis.swing.panels.timingserver.PanelTimingEntities;
+import mcp.mobius.opis.swing.panels.timingserver.PanelTimingEntitiesPerClass;
 import mcp.mobius.opis.swing.panels.timingserver.PanelTimingEvents;
 import mcp.mobius.opis.swing.panels.timingserver.PanelTimingHandlers;
 import mcp.mobius.opis.swing.panels.timingserver.PanelTimingTileEnts;
@@ -82,6 +83,7 @@ public class ProxyClient extends ProxyServer implements IMessageHandler{
 		TabPanelRegistrar.INSTANCE.registerSection("Server timing");
 		IMessageHandler panelTimingTileEnts = (IMessageHandler)TabPanelRegistrar.INSTANCE.registerTab(new PanelTimingTileEnts(),"Tile Entities", "Server timing");
 		IMessageHandler panelTimingEntities = (IMessageHandler)TabPanelRegistrar.INSTANCE.registerTab(new PanelTimingEntities(),"Entities",      "Server timing");
+		IMessageHandler panelTimingEntPerClass = (IMessageHandler)TabPanelRegistrar.INSTANCE.registerTab(new PanelTimingEntitiesPerClass(),"Entities [Type]",      "Server timing");
 		IMessageHandler panelTimingHandlers = (IMessageHandler)TabPanelRegistrar.INSTANCE.registerTab(new PanelTimingHandlers(),"Handlers",      "Server timing");
 		IMessageHandler panelTimingChunks   = (IMessageHandler)TabPanelRegistrar.INSTANCE.registerTab(new PanelTimingChunks(),  "Chunks",        "Server timing");
 		IMessageHandler panelTimingEvents   = (IMessageHandler)TabPanelRegistrar.INSTANCE.registerTab(new PanelTimingEvents(),  "Events",        "Server timing");		
@@ -116,6 +118,11 @@ public class ProxyClient extends ProxyServer implements IMessageHandler{
 		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.STATUS_START,          panelTimingEntities);
 		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.STATUS_STOP,           panelTimingEntities);
 		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.STATUS_RUNNING,        panelTimingEntities);
+
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.LIST_TIMING_ENTITIES_PER_CLASS,  panelTimingEntPerClass);
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.STATUS_START,          panelTimingEntPerClass);
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.STATUS_STOP,           panelTimingEntPerClass);
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.STATUS_RUNNING,        panelTimingEntPerClass);		
 		
 		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.LIST_TIMING_HANDLERS,  panelTimingHandlers);
 		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.VALUE_TIMING_HANDLERS, panelTimingHandlers);

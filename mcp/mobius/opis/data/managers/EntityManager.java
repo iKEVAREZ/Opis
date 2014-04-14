@@ -3,6 +3,7 @@ package mcp.mobius.opis.data.managers;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
@@ -35,6 +36,7 @@ import mcp.mobius.opis.data.holders.basetypes.AmountHolder;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesBlock;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesChunk;
 import mcp.mobius.opis.data.holders.newtypes.DataEntity;
+import mcp.mobius.opis.data.holders.newtypes.DataEntityPerClass;
 import mcp.mobius.opis.data.holders.newtypes.DataTiming;
 import mcp.mobius.opis.data.profilers.ProfilerEntityUpdate;
 import mcp.mobius.opis.helpers.Teleport;
@@ -327,4 +329,17 @@ public enum EntityManager {
 		}
 		return killedEnts;
 	}
+	
+	public ArrayList<DataEntityPerClass> getTotalPerClass(){
+		HashMap<String, DataEntityPerClass> data = new HashMap<String, DataEntityPerClass>();
+		
+		for (Entity entity : ((ProfilerEntityUpdate)ProfilerSection.ENTITY_UPDATETIME.getProfiler()).data.keySet()){
+			String name = this.getEntityName(entity, true);
+			if (!data.containsKey(name))
+				data.put(name, new DataEntityPerClass(name));
+			
+			data.get(name).add(((ProfilerEntityUpdate)ProfilerSection.ENTITY_UPDATETIME.getProfiler()).data.get(entity).getGeometricMean());
+		}
+		return new ArrayList<DataEntityPerClass>(data.values());
+	}	
 }

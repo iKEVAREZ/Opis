@@ -28,6 +28,7 @@ import mcp.mobius.opis.data.holders.basetypes.SerialLong;
 import mcp.mobius.opis.data.holders.basetypes.TicketData;
 import mcp.mobius.opis.data.holders.newtypes.DataBlockTick;
 import mcp.mobius.opis.data.holders.newtypes.DataEntity;
+import mcp.mobius.opis.data.holders.newtypes.DataEntityPerClass;
 import mcp.mobius.opis.data.holders.newtypes.DataEvent;
 import mcp.mobius.opis.data.holders.newtypes.DataHandler;
 import mcp.mobius.opis.data.holders.newtypes.DataNetworkTick;
@@ -212,6 +213,7 @@ public class OpisPacketHandler implements IPacketHandler {
 		ArrayList<DataBlockTileEntity>   timingTileEnts = TileEntityManager.INSTANCE.getWorses(100);
 		ArrayList<DataHandler>      timingHandlers = TickHandlerManager.getCumulatedStatsServer();
 		ArrayList<StatsChunk>         timingChunks = ChunkManager.INSTANCE.getTopChunks(100);
+		ArrayList<DataEntityPerClass> timingEntsClass = EntityManager.INSTANCE.getTotalPerClass();
 		
 		DataTiming    totalTimeTE      = TileEntityManager.INSTANCE.getTotalUpdateTime();
 		DataTiming    totalTimeEnt     = EntityManager.INSTANCE.getTotalUpdateTime();
@@ -230,6 +232,7 @@ public class OpisPacketHandler implements IPacketHandler {
 		OpisPacketHandler.validateAndSend(NetDataList.create(Message.LIST_TIMING_TILEENTS,    timingTileEnts),   player);
 		OpisPacketHandler.validateAndSend(NetDataList.create(Message.LIST_TIMING_CHUNK,       timingChunks),     player);
 		OpisPacketHandler.validateAndSend(NetDataList.create(Message.LIST_TIMING_EVENTS,      timingEvents),     player);
+		OpisPacketHandler.validateAndSend(NetDataList.create(Message.LIST_TIMING_ENTITIES_PER_CLASS,      timingEntsClass),     player);
 		OpisPacketHandler.validateAndSend(NetDataValue.create(Message.VALUE_TIMING_TILEENTS,  totalTimeTE),      player);
 		OpisPacketHandler.validateAndSend(NetDataValue.create(Message.VALUE_TIMING_ENTITIES,  totalTimeEnt),     player);
 		OpisPacketHandler.validateAndSend(NetDataValue.create(Message.VALUE_TIMING_HANDLERS,  totalTimeHandler), player);
