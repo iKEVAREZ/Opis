@@ -154,11 +154,11 @@ public class PanelSummary extends JPanelMsgHandler implements ITabPanel{
 		lblAmountForced = new JLabel("0");
 		add(lblAmountForced, "cell 10 6 2 1,alignx right");
 		
-		JLabel lblNewLabel_32 = new JLabel("Network");
-		add(lblNewLabel_32, "cell 1 6");
+		//JLabel lblNewLabel_32 = new JLabel("Network");
+		//add(lblNewLabel_32, "cell 1 6");
 		
-		lblTimingNetwork = new JLabel("0");
-		add(lblTimingNetwork, "cell 3 6 2 1,alignx right");
+		//lblTimingNetwork = new JLabel("0");
+		//add(lblTimingNetwork, "cell 3 6 2 1,alignx right");
 		
 		JLabel lblNewLabel_23 = new JLabel("Loaded chunks");
 		add(lblNewLabel_23, "cell 8 7");
@@ -166,11 +166,17 @@ public class PanelSummary extends JPanelMsgHandler implements ITabPanel{
 		lblAmountLoaded = new JLabel("0");
 		add(lblAmountLoaded, "cell 10 7 2 1,alignx right");
 		
+		//JLabel lblNewLabel_4 = new JLabel("Total");
+		//add(lblNewLabel_4, "cell 1 8");
+		
+		//lblTimingTotal = new JLabel("0");
+		//add(lblTimingTotal, "cell 3 8 2 1,alignx right");
+
 		JLabel lblNewLabel_4 = new JLabel("Total");
-		add(lblNewLabel_4, "cell 1 8");
+		add(lblNewLabel_4, "cell 1 7");
 		
 		lblTimingTotal = new JLabel("0");
-		add(lblTimingTotal, "cell 3 8 2 1,alignx right");
+		add(lblTimingTotal, "cell 3 7 2 1,alignx right");		
 		
 		JLabel lblNewLabel_31 = new JLabel("Tick Time");
 		add(lblNewLabel_31, "cell 1 10");
@@ -268,7 +274,8 @@ public class PanelSummary extends JPanelMsgHandler implements ITabPanel{
 	}
 
 	private DataTimingMillisecond getProfiledTickTotalTime(){
-		return new DataTimingMillisecond(timingWorldTickTotal.timing + timingTileEntsTotal.timing + timingEntitiesTotal.timing + timingHandlersTotal.timing + timingNetworkTotal.timing);
+		//return new DataTimingMillisecond(timingWorldTickTotal.timing + timingTileEntsTotal.timing + timingEntitiesTotal.timing + timingHandlersTotal.timing + timingNetworkTotal.timing);
+		return new DataTimingMillisecond(timingWorldTickTotal.timing + timingTileEntsTotal.timing + timingEntitiesTotal.timing + timingHandlersTotal.timing);
 	}
 
 	@Override
@@ -309,8 +316,8 @@ public class PanelSummary extends JPanelMsgHandler implements ITabPanel{
 			break;
 		}
 		case VALUE_TIMING_NETWORK:{
-			this.timingNetworkTotal = ((DataNetworkTick)rawdata.value).update.asMillisecond();
-			this.getLblTimingNetwork().setText(this.timingNetworkTotal.toString());			
+			//this.timingNetworkTotal = ((DataNetworkTick)rawdata.value).update.asMillisecond();
+			//this.getLblTimingNetwork().setText(this.timingNetworkTotal.toString());			
 			break;
 		}			
 		case VALUE_TIMING_TILEENTS:{
