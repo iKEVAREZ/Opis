@@ -33,6 +33,7 @@ import net.minecraft.util.MathHelper;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import javax.swing.JProgressBar;
+import javax.swing.JTabbedPane;
 
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.jfree.chart.ChartFactory;
@@ -62,7 +63,8 @@ public class PanelSummary extends JPanelMsgHandler implements ITabPanel{
 	private JButtonAccess btnRun;
 	private JProgressBar progressBarRun;
 	private JLabel lblTimeStamp;
-
+	private JTabbedPane tabGraphs;
+	
 	private DescriptiveStatistics pingData = new DescriptiveStatistics(5);
 	private long nPings = 0;
 	
@@ -154,23 +156,11 @@ public class PanelSummary extends JPanelMsgHandler implements ITabPanel{
 		lblAmountForced = new JLabel("0");
 		add(lblAmountForced, "cell 10 6 2 1,alignx right");
 		
-		//JLabel lblNewLabel_32 = new JLabel("Network");
-		//add(lblNewLabel_32, "cell 1 6");
-		
-		//lblTimingNetwork = new JLabel("0");
-		//add(lblTimingNetwork, "cell 3 6 2 1,alignx right");
-		
 		JLabel lblNewLabel_23 = new JLabel("Loaded chunks");
 		add(lblNewLabel_23, "cell 8 7");
 		
 		lblAmountLoaded = new JLabel("0");
 		add(lblAmountLoaded, "cell 10 7 2 1,alignx right");
-		
-		//JLabel lblNewLabel_4 = new JLabel("Total");
-		//add(lblNewLabel_4, "cell 1 8");
-		
-		//lblTimingTotal = new JLabel("0");
-		//add(lblTimingTotal, "cell 3 8 2 1,alignx right");
 
 		JLabel lblNewLabel_4 = new JLabel("Total");
 		add(lblNewLabel_4, "cell 1 7");
@@ -184,11 +174,29 @@ public class PanelSummary extends JPanelMsgHandler implements ITabPanel{
 		lblTickTime = new JLabel("0");
 		add(lblTickTime, "cell 3 10 2 1,alignx right");
 		
-		JPanel panel = this.createGraph();
-		add(panel, "cell 0 11 15 1,grow");
+		
+		tabGraphs = new JTabbedPane();
+		add(tabGraphs, "cell 0 11 15 1,grow");
+		
+		JPanel panelTick = this.createTickGraph();
+		tabGraphs.addTab("Tick time", panelTick);
+		
+		JPanel panelPing = this.createPingGraph();
+		tabGraphs.addTab("Ping", panelPing);		
 
 	}
-
+	//JLabel lblNewLabel_32 = new JLabel("Network");
+	//add(lblNewLabel_32, "cell 1 6");
+	
+	//lblTimingNetwork = new JLabel("0");
+	//add(lblTimingNetwork, "cell 3 6 2 1,alignx right");	
+	
+	//JLabel lblNewLabel_4 = new JLabel("Total");
+	//add(lblNewLabel_4, "cell 1 8");
+	
+	//lblTimingTotal = new JLabel("0");
+	//add(lblTimingTotal, "cell 3 8 2 1,alignx right");
+	
 	public JLabel getLblTimingWorldTick() {return lblTimingWorldTick;}
 	public JLabel getLblTimingTileEnts()  {return lblTimingTileEnts;}
 	public JLabel getLblTimingEntities()  {return lblTimingEntities;}
@@ -226,23 +234,27 @@ public class PanelSummary extends JPanelMsgHandler implements ITabPanel{
 	public void setTimingEntUpdateTotal(double value){
 	}	
 	
-	ArrayList<Double> datapoints = new ArrayList<Double>();
-	XYSeries xydata = new XYSeries("Update time");
-	XYSeriesCollection dataset = new XYSeriesCollection();
-	XYPlot xyPlot;
+	ArrayList<Double> datapointsTick = new ArrayList<Double>();
+	ArrayList<Double> datapointsPing = new ArrayList<Double>();
+	XYSeries xydataTick = new XYSeries("Update time");
+	XYSeries xydataPing = new XYSeries("Ping");
+	XYSeriesCollection datasetTick = new XYSeriesCollection();
+	XYSeriesCollection datasetPing = new XYSeriesCollection();
+	XYPlot xyPlotTick;
+	XYPlot xyPlotPing;
 	private JLabel lblTimingNetwork;
 	private JLabel lblTimingPing;
 	
-	private JPanel createGraph(){
-		JFreeChart chart = ChartFactory.createXYAreaChart("", "Seconds", "Update Time [ms]", dataset, PlotOrientation.VERTICAL, false, false, false);
+	private JPanel createTickGraph(){
+		JFreeChart chart = ChartFactory.createXYAreaChart("", "Seconds", "Update Time [ms]", datasetTick, PlotOrientation.VERTICAL, false, false, false);
 		chart.setBackgroundPaint(new Color(255,255,255,0));
-		xyPlot = chart.getXYPlot();
-		xyPlot.getRendererForDataset(dataset).setSeriesPaint(0, Color.BLUE);
+		xyPlotTick = chart.getXYPlot();
+		xyPlotTick.getRendererForDataset(datasetTick).setSeriesPaint(0, Color.BLUE);
 		
 		for (double y = 25.0; y < 500.0; y += 25.0){
 			ValueMarker marker = new ValueMarker(y);
 			marker.setPaint(Color.black);
-			xyPlot.addRangeMarker(marker);
+			xyPlotTick.addRangeMarker(marker);
 		}		
 
 		//ValueMarker marker = new ValueMarker(50.0);
@@ -252,27 +264,67 @@ public class PanelSummary extends JPanelMsgHandler implements ITabPanel{
 		return new ChartPanel(chart);
 	}
 	
+	private JPanel createPingGraph(){
+		JFreeChart chart = ChartFactory.createXYAreaChart("", "Seconds", "Ping Time [ms]", datasetPing, PlotOrientation.VERTICAL, false, false, false);
+		chart.setBackgroundPaint(new Color(255,255,255,0));
+		xyPlotPing = chart.getXYPlot();
+		xyPlotPing.getRendererForDataset(datasetPing).setSeriesPaint(0, Color.BLUE);
+		
+		for (double y = 200.0; y < 10000.0; y += 200.0){
+			ValueMarker marker = new ValueMarker(y);
+			marker.setPaint(Color.black);
+			xyPlotPing.addRangeMarker(marker);
+		}		
+
+		//ValueMarker marker = new ValueMarker(50.0);
+		//marker.setPaint(Color.red);
+		//xyPlot.addRangeMarker(marker);
+		
+		return new ChartPanel(chart);
+	}	
+	
 	public void setTimingTick(ISerializable tickStat){
 		DataTimingMillisecond ticktime = ((DataTiming)tickStat).asMillisecond();
 		
 		this.getLblTickTime().setText(ticktime.toString());
 
-		datapoints.add(ticktime.timing/1000./1000.);
-		if (datapoints.size() > 101)
-			datapoints.remove(0);
+		datapointsTick.add(ticktime.timing/1000./1000.);
+		if (datapointsTick.size() > 101)
+			datapointsTick.remove(0);
 		
-		xydata.clear();
-		for (int i = 0; i < datapoints.size(); i++)
-			xydata.add(i, datapoints.get(i));
+		xydataTick.clear();
+		for (int i = 0; i < datapointsTick.size(); i++)
+			xydataTick.add(i, datapointsTick.get(i));
 
-		dataset.removeAllSeries();
-		dataset.addSeries(xydata);
+		datasetTick.removeAllSeries();
+		datasetTick.addSeries(xydataTick);
 		
-		Double verticalScale = 50.0 * (MathHelper.floor_double(xydata.getMaxY() / 50.0D) + 1);
-		((NumberAxis)xyPlot.getRangeAxis()).setRange(0.0, verticalScale);
-		((NumberAxis)xyPlot.getDomainAxis()).setRange(0.0, 100.0);
+		Double verticalScale = 50.0 * (MathHelper.floor_double(xydataTick.getMaxY() / 50.0D) + 1);
+		((NumberAxis)xyPlotTick.getRangeAxis()).setRange(0.0, verticalScale);
+		((NumberAxis)xyPlotTick.getDomainAxis()).setRange(0.0, 100.0);
 	}
 
+	public void setTimingPing(ISerializable pingStat){
+		DataTimingMillisecond pingtime = ((DataTiming)pingStat).asMillisecond();
+		
+		//this.getLblTickTime().setText(pingtime.toString());
+
+		datapointsPing.add(pingtime.timing/1000./1000.);
+		if (datapointsPing.size() > 101)
+			datapointsPing.remove(0);
+		
+		xydataPing.clear();
+		for (int i = 0; i < datapointsPing.size(); i++)
+			xydataPing.add(i, datapointsPing.get(i));
+
+		datasetPing.removeAllSeries();
+		datasetPing.addSeries(xydataPing);
+		
+		Double verticalScale = 500.0 * (MathHelper.floor_double(xydataPing.getMaxY() / 500.0D) + 1);
+		((NumberAxis)xyPlotPing.getRangeAxis()).setRange(0.0, verticalScale);
+		((NumberAxis)xyPlotPing.getDomainAxis()).setRange(0.0, 100.0);
+	}	
+	
 	private DataTimingMillisecond getProfiledTickTotalTime(){
 		//return new DataTimingMillisecond(timingWorldTickTotal.timing + timingTileEntsTotal.timing + timingEntitiesTotal.timing + timingHandlersTotal.timing + timingNetworkTotal.timing);
 		return new DataTimingMillisecond(timingWorldTickTotal.timing + timingTileEntsTotal.timing + timingEntitiesTotal.timing + timingHandlersTotal.timing);
@@ -397,10 +449,11 @@ public class PanelSummary extends JPanelMsgHandler implements ITabPanel{
 			this.pingData.addValue((double)(System.nanoTime() - ((SerialLong)rawdata.value).value));
 			this.nPings += 1;
 			
-			if (this.nPings % 2 == 0){
+			//if (this.nPings % 2 == 0){
 				DataTiming timing = new DataTiming(this.pingData.getGeometricMean());
+				this.setTimingPing(timing);
 				this.getLblTimingPing().setText(timing.asMillisecond().toString());
-			}
+			//}
 			break;
 		}
 		
