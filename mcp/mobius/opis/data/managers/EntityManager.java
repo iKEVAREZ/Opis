@@ -311,33 +311,20 @@ public enum EntityManager {
 		return amountEntities;		
 	}	
 	
-	public int killAllHostiles(int dim){
+	public int killAllPerClass(int dim, Class clazz){
 		WorldServer world = DimensionManager.getWorld(dim);
 		if (world == null) return -1;
 		
 		int killedEnts = 0;
 		
-		for (Entity entity : (ArrayList<Entity>)world.loadedEntityList){
-			if (entity instanceof EntityMob){
+		ArrayList copyList = new ArrayList(world.loadedEntityList);
+		
+		for (Entity entity : (ArrayList<Entity>)copyList){
+			if (clazz.isInstance(entity)){
 				entity.setDead();
 				killedEnts += 1;
 			}
 		}
 		return killedEnts;
 	}
-	
-	public int killAllStacks(int dim){
-		WorldServer world = DimensionManager.getWorld(dim);
-		if (world == null) return -1;
-		
-		int killedEnts = 0;
-		
-		for (Entity entity : (ArrayList<Entity>)world.loadedEntityList){
-			if (entity instanceof EntityItem){
-				entity.setDead();
-				killedEnts += 1;
-			}
-		}
-		return killedEnts;
-	}	
 }

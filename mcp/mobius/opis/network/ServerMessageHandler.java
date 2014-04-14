@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Level;
 
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.world.World;
@@ -188,20 +190,20 @@ public class ServerMessageHandler {
 		
 		else if(maintype == Message.COMMAND_KILL_HOSTILES_ALL){
 			for (int dim : DimensionManager.getIDs())
-				EntityManager.INSTANCE.killAllHostiles(dim);
+				EntityManager.INSTANCE.killAllPerClass(dim, EntityMob.class);
 		}
 		
 		else if(maintype == Message.COMMAND_KILL_HOSTILES_DIM){
-			EntityManager.INSTANCE.killAllHostiles(((SerialInt)param1).value);			
+			EntityManager.INSTANCE.killAllPerClass(((SerialInt)param1).value, EntityMob.class);			
 		}
 		
 		else if(maintype == Message.COMMAND_KILL_STACKS_ALL){
 			for (int dim : DimensionManager.getIDs())
-				EntityManager.INSTANCE.killAllStacks(dim);
+				EntityManager.INSTANCE.killAllPerClass(dim, EntityItem.class);
 		}
 		
 		else if(maintype == Message.COMMAND_KILL_STACKS_DIM){
-			EntityManager.INSTANCE.killAllStacks(((SerialInt)param1).value);			
+			EntityManager.INSTANCE.killAllPerClass(((SerialInt)param1).value, EntityItem.class);			
 		}		
 		
 		else if(maintype == Message.COMMAND_PURGE_CHUNKS_ALL){
