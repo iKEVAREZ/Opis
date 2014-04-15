@@ -94,16 +94,8 @@ public class PanelTimingTileEnts extends JPanelMsgHandler implements ITabPanel{
 
 			for (Object o : rawdata.array){
 				DataBlockTileEntity data = (DataBlockTileEntity)o;
-				ItemStack is;
-				String name  = String.format("te.%d.%d", data.id, data.meta);
-				String modID = "<UNKNOWN>";
-				
-				try{
-					is = new ItemStack(data.id, 1, data.meta);
-					name  = is.getDisplayName();
-					modID = ModIdentification.idFromStack(is);
-				}  catch (Exception e) {	}			
-				
+				String name  = ModIdentification.getStackName(data.id, data.meta);
+				String modID = ModIdentification.getModStackName(data.id, data.meta);
 				model.addRow(new Object[]  {
 						 name,
 						 modID,

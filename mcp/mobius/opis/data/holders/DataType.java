@@ -16,6 +16,7 @@ import mcp.mobius.opis.data.holders.basetypes.TargetEntity;
 import mcp.mobius.opis.data.holders.basetypes.TicketData;
 import mcp.mobius.opis.data.holders.newtypes.CachedString;
 import mcp.mobius.opis.data.holders.newtypes.DataAmountRate;
+import mcp.mobius.opis.data.holders.newtypes.DataBlockTileEntityPerClass;
 import mcp.mobius.opis.data.holders.newtypes.DataByteRate;
 import mcp.mobius.opis.data.holders.newtypes.DataByteSize;
 import mcp.mobius.opis.data.holders.newtypes.DataBlockRender;
@@ -53,30 +54,31 @@ public enum DataType {
 	TARGETENTITY    (TargetEntity.class),
 	TICKETDATA      (TicketData.class),
 	
-	CACHEDSTRING    (CachedString.class),
-	DATAAMOUNTRATE  (DataAmountRate.class),
-	DATABITRATE     (DataByteRate.class),
-	DATABITSIZE     (DataByteSize.class),
-	DATABLOCKRENDER (DataBlockRender.class),
-	DATABLOCKTICK   (DataBlockTick.class),
-	DATABLOCKTILEENTITY  (DataBlockTileEntity.class),	
-	DATACHUNK       (DataChunk.class),
-	DATADIMENSION   (DataDimension.class),
-	DATAENTITY      (DataEntity.class),
-	DATAENTITYPERCLASS(DataEntityPerClass.class),
-	DATAENTITYRENDER(DataEntityRender.class),
-	DATAEVENT       (DataEvent.class),
-	DATAHANDLER     (DataHandler.class),
-	DATANETWORKTICK (DataNetworkTick.class),
-	DATAPACKET      (DataPacket.class),
-	DATAPACKET250   (DataPacket250.class),
-	DATASTRINGUPD   (DataStringUpdate.class),
-	DATATILEENTITY  (DataTileEntity.class),
-	DATATILEENTITYRENDER(DataTileEntityRender.class),
-	DATATIMING      (DataTiming.class),
-	DATATIMINGMILLISECOND(DataTimingMillisecond.class),
-	STATABSTRACT    (StatAbstract.class),
-	STATSCHUNK      (StatsChunk.class);
+	CACHEDSTRING    			(CachedString.class),
+	DATAAMOUNTRATE  			(DataAmountRate.class),
+	DATABITRATE     			(DataByteRate.class),
+	DATABITSIZE     			(DataByteSize.class),
+	DATABLOCKRENDER 			(DataBlockRender.class),
+	DATABLOCKTICK   			(DataBlockTick.class),
+	DATABLOCKTILEENTITY        	(DataBlockTileEntity.class),
+	DATABLOCKTILEENTITYPERCLASS	(DataBlockTileEntityPerClass.class),
+	DATACHUNK       		   	(DataChunk.class),
+	DATADIMENSION   		   	(DataDimension.class),
+	DATAENTITY      		   	(DataEntity.class),
+	DATAENTITYPERCLASS		   	(DataEntityPerClass.class),
+	DATAENTITYRENDER		   	(DataEntityRender.class),
+	DATAEVENT       		   	(DataEvent.class),
+	DATAHANDLER     		   	(DataHandler.class),
+	DATANETWORKTICK 		   	(DataNetworkTick.class),
+	DATAPACKET      		   	(DataPacket.class),
+	DATAPACKET250   		   	(DataPacket250.class),
+	DATASTRINGUPD   		   	(DataStringUpdate.class),
+	DATATILEENTITY  		   	(DataTileEntity.class),
+	DATATILEENTITYRENDER	   	(DataTileEntityRender.class),
+	DATATIMING      			(DataTiming.class),
+	DATATIMINGMILLISECOND		(DataTimingMillisecond.class),
+	STATABSTRACT    			(StatAbstract.class),
+	STATSCHUNK      			(StatsChunk.class);
 
 	private Class clazz;
 	private static HashBiMap<DataType, Class> bimap = HashBiMap.create(50);

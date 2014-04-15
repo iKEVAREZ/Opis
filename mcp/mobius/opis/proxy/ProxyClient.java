@@ -48,7 +48,9 @@ import mcp.mobius.opis.swing.panels.timingserver.PanelTimingEntitiesPerClass;
 import mcp.mobius.opis.swing.panels.timingserver.PanelTimingEvents;
 import mcp.mobius.opis.swing.panels.timingserver.PanelTimingHandlers;
 import mcp.mobius.opis.swing.panels.timingserver.PanelTimingTileEnts;
+import mcp.mobius.opis.swing.panels.timingserver.PanelTimingTileEntsPerClass;
 import mcp.mobius.opis.swing.panels.tracking.PanelAmountEntities;
+import mcp.mobius.opis.swing.panels.tracking.PanelAmountTileEnts;
 import mcp.mobius.opis.swing.panels.tracking.PanelDimensions;
 import mcp.mobius.opis.swing.panels.tracking.PanelPlayers;
 
@@ -77,11 +79,13 @@ public class ProxyClient extends ProxyServer implements IMessageHandler{
 		
 		TabPanelRegistrar.INSTANCE.registerSection("Tracking");
 		IMessageHandler panelPlayers        = (IMessageHandler)TabPanelRegistrar.INSTANCE.registerTab(new PanelPlayers(),       "Players",       "Tracking");
-		IMessageHandler panelAmountEntities = (IMessageHandler)TabPanelRegistrar.INSTANCE.registerTab(new PanelAmountEntities(),"Entity amount", "Tracking");
+		IMessageHandler panelAmountEntities = (IMessageHandler)TabPanelRegistrar.INSTANCE.registerTab(new PanelAmountEntities(),"Entities", "Tracking");
+		IMessageHandler panelAmountTileEnts = (IMessageHandler)TabPanelRegistrar.INSTANCE.registerTab(new PanelAmountTileEnts(),"Tile Entities", "Tracking");
 		IMessageHandler panelDimensions     = (IMessageHandler)TabPanelRegistrar.INSTANCE.registerTab(new PanelDimensions(),    "Dimensions",    "Tracking");
 		
 		TabPanelRegistrar.INSTANCE.registerSection("Server timing");
 		IMessageHandler panelTimingTileEnts = (IMessageHandler)TabPanelRegistrar.INSTANCE.registerTab(new PanelTimingTileEnts(),"Tile Entities", "Server timing");
+		IMessageHandler panelTimingTileEntsPerClass = (IMessageHandler)TabPanelRegistrar.INSTANCE.registerTab(new PanelTimingTileEntsPerClass(),"Tile Entities [Type]", "Server timing");
 		IMessageHandler panelTimingEntities = (IMessageHandler)TabPanelRegistrar.INSTANCE.registerTab(new PanelTimingEntities(),"Entities",      "Server timing");
 		IMessageHandler panelTimingEntPerClass = (IMessageHandler)TabPanelRegistrar.INSTANCE.registerTab(new PanelTimingEntitiesPerClass(),"Entities [Type]",      "Server timing");
 		IMessageHandler panelTimingHandlers = (IMessageHandler)TabPanelRegistrar.INSTANCE.registerTab(new PanelTimingHandlers(),"Handlers",      "Server timing");
@@ -105,6 +109,7 @@ public class ProxyClient extends ProxyServer implements IMessageHandler{
 		
 		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.LIST_PLAYERS,          panelPlayers);
 		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.LIST_AMOUNT_ENTITIES,  panelAmountEntities);
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.LIST_AMOUNT_TILEENTS,  panelAmountTileEnts);
 		
 		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.LIST_TIMING_TILEENTS,  panelTimingTileEnts);
 		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.VALUE_TIMING_TILEENTS, panelTimingTileEnts);
@@ -123,6 +128,11 @@ public class ProxyClient extends ProxyServer implements IMessageHandler{
 		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.STATUS_START,          panelTimingEntPerClass);
 		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.STATUS_STOP,           panelTimingEntPerClass);
 		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.STATUS_RUNNING,        panelTimingEntPerClass);		
+
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.LIST_TIMING_TILEENTS_PER_CLASS,  panelTimingTileEntsPerClass);
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.STATUS_START,          panelTimingTileEntsPerClass);
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.STATUS_STOP,           panelTimingTileEntsPerClass);
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.STATUS_RUNNING,        panelTimingTileEntsPerClass);			
 		
 		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.LIST_TIMING_HANDLERS,  panelTimingHandlers);
 		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.VALUE_TIMING_HANDLERS, panelTimingHandlers);

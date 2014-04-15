@@ -27,6 +27,7 @@ import mcp.mobius.opis.data.holders.basetypes.SerialInt;
 import mcp.mobius.opis.data.holders.basetypes.SerialLong;
 import mcp.mobius.opis.data.holders.basetypes.TicketData;
 import mcp.mobius.opis.data.holders.newtypes.DataBlockTick;
+import mcp.mobius.opis.data.holders.newtypes.DataBlockTileEntityPerClass;
 import mcp.mobius.opis.data.holders.newtypes.DataEntity;
 import mcp.mobius.opis.data.holders.newtypes.DataEntityPerClass;
 import mcp.mobius.opis.data.holders.newtypes.DataEvent;
@@ -214,6 +215,7 @@ public class OpisPacketHandler implements IPacketHandler {
 		ArrayList<DataHandler>      timingHandlers = TickHandlerManager.getCumulatedStatsServer();
 		ArrayList<StatsChunk>         timingChunks = ChunkManager.INSTANCE.getTopChunks(100);
 		ArrayList<DataEntityPerClass> timingEntsClass = EntityManager.INSTANCE.getTotalPerClass();
+		ArrayList<DataBlockTileEntityPerClass> timingTEsClass = TileEntityManager.INSTANCE.getCumulativeTimingTileEntities();
 		
 		DataTiming    totalTimeTE      = TileEntityManager.INSTANCE.getTotalUpdateTime();
 		DataTiming    totalTimeEnt     = EntityManager.INSTANCE.getTotalUpdateTime();
@@ -230,6 +232,7 @@ public class OpisPacketHandler implements IPacketHandler {
 		OpisPacketHandler.validateAndSend(NetDataList.create(Message.LIST_TIMING_HANDLERS,    timingHandlers),   player);
 		OpisPacketHandler.validateAndSend(NetDataList.create(Message.LIST_TIMING_ENTITIES,    timingEntities),   player);
 		OpisPacketHandler.validateAndSend(NetDataList.create(Message.LIST_TIMING_TILEENTS,    timingTileEnts),   player);
+		OpisPacketHandler.validateAndSend(NetDataList.create(Message.LIST_TIMING_TILEENTS_PER_CLASS,    timingTEsClass),   player);
 		OpisPacketHandler.validateAndSend(NetDataList.create(Message.LIST_TIMING_CHUNK,       timingChunks),     player);
 		OpisPacketHandler.validateAndSend(NetDataList.create(Message.LIST_TIMING_EVENTS,      timingEvents),     player);
 		OpisPacketHandler.validateAndSend(NetDataList.create(Message.LIST_TIMING_ENTITIES_PER_CLASS,      timingEntsClass),     player);

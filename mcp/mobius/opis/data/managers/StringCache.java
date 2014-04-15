@@ -68,6 +68,7 @@ public enum StringCache implements IMessageHandler {
 				this.cache.put(data.index, data.str);
 			} catch (IllegalArgumentException e){
 				this.cache.remove(data.index);
+				this.cache.inverse().remove(data.str);
 				this.cache.put(data.index, data.str);
 			}
 			break;
@@ -81,6 +82,7 @@ public enum StringCache implements IMessageHandler {
 					this.cache.put(data.index, data.str);
 				} catch (IllegalArgumentException e){
 					this.cache.remove(data.index);
+					this.cache.inverse().remove(data.str);
 					this.cache.put(data.index, data.str);
 				}					
 			}

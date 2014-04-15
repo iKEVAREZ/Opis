@@ -6,11 +6,14 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import com.google.common.collect.HashBasedTable;
+
 import mcp.mobius.mobiuscore.profiler.ProfilerSection;
 import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesBlock;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesChunk;
 import mcp.mobius.opis.data.holders.newtypes.DataBlockTileEntity;
+import mcp.mobius.opis.data.holders.newtypes.DataBlockTileEntityPerClass;
 import mcp.mobius.opis.data.holders.newtypes.DataTileEntity;
 import mcp.mobius.opis.data.holders.newtypes.DataTiming;
 import mcp.mobius.opis.data.holders.stats.StatsChunk;
@@ -157,4 +160,41 @@ public enum TileEntityManager {
 		
 		return orphans;
 	}
+	
+	public ArrayList<DataBlockTileEntityPerClass> getCumulativeAmountTileEntities(){
+		HashBasedTable<Integer, Integer, DataBlockTileEntityPerClass> data = HashBasedTable.create();
+		
+		for (WorldServer world : DimensionManager.getWorlds()){
+			for (Object o : world.loadedTileEntityList){
+				TileEntity tileEntity = (TileEntity)o;
+				int id   = world.getBlockId(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord);
+				int meta = world.getBlockMetadata(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord);
+				
+				if (!data.contains(id, meta))
+					data.put(id, meta, new DataBlockTileEntityPerClass(id, meta));
+				
+				data.get(id, meta).add();
+			}
+		}
+		
+		return new ArrayList<DataBlockTileEntityPerClass>(data.values());
+	}
+	
+	public ArrayList<DataBlockTileEntityPerClass> getCumulativeTimingTileEntities(){
+		HashBasedTable<Integer, Integer, DataBlockTileEntityPerClass> data = HashBasedTable.create();
+		
+		for (CoordinatesBlock coord : ((ProfilerTileEntityUpdate)ProfilerSection.TILEENT_UPDATETIME.getProfiler()).data.keySet()){
+			World world = DimensionManager.getWorld(coord.dim);
+			int   id    = world.getBlockId(coord.x, coord.y, coord.z);
+			int   meta  = world.getBlockMetadata(coord.x, coord.y, coord.z);
+		
+			if (!data.contains(id, meta))
+				data.put(id, meta, new DataBlockTileEntityPerClass(id, meta));
+			
+			data.get(id, meta).add(((ProfilerTileEntityUpdate)ProfilerSection.TILEENT_UPDATETIME.getProfiler()).data.get(coord).getGeometricMean());			
+			
+		}
+		
+		return new ArrayList<DataBlockTileEntityPerClass>(data.values());
+	}	
 }

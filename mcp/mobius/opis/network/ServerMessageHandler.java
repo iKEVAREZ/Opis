@@ -131,6 +131,10 @@ public class ServerMessageHandler {
 			OpisPacketHandler.validateAndSend(NetDataList.create(Message.LIST_AMOUNT_ENTITIES,  ents), (Player)player);
 		}
 		
+		else if (maintype == Message.LIST_AMOUNT_TILEENTS){
+			OpisPacketHandler.validateAndSend(NetDataList.create(Message.LIST_AMOUNT_TILEENTS,  TileEntityManager.INSTANCE.getCumulativeAmountTileEntities()), (Player)player);
+		}		
+		
 		else if (maintype == Message.COMMAND_FILTERING_TRUE){
 			PlayerTracker.instance().filteredAmount.put(name, true);
 		}
