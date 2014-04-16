@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 
 import mcp.mobius.opis.api.ITabPanel;
 import mcp.mobius.opis.data.holders.basetypes.SerialDouble;
+import mcp.mobius.opis.data.holders.newtypes.CachedString;
 import mcp.mobius.opis.data.holders.newtypes.DataHandler;
 import mcp.mobius.opis.data.holders.newtypes.DataTiming;
 import mcp.mobius.opis.data.holders.stats.StatAbstract;
@@ -50,7 +51,7 @@ public class PanelTimingHandlers extends JPanelMsgHandler implements ITabPanel{
 		
 		table = new JTableStats(
 				new String[] {"Name", "Update Time"},
-				new Class[]  {String.class, DataTiming.class}
+				new Class[]  {CachedString.class, DataTiming.class}
 				);
 		scrollPane.setViewportView(table);			
 		

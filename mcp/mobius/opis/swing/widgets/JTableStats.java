@@ -108,11 +108,7 @@ public class JTableStats extends JTable {
 	
 	public <U> int clearTable(Class<U> datatype){
 		int row = this.getSelectedRow();
-		
-		if (this.getModel().getRowCount() > 0)
-			for (int i = this.getModel().getRowCount() - 1; i >= 0; i--)
-				this.getModel().removeRow(i);		
-		
+		this.getModel().setRowCount(0);
 		return row;
 	}
 	
