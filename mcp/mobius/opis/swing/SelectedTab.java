@@ -23,6 +23,7 @@ public enum SelectedTab {
 	ORPHANTES,
 	RENDERHANDLERS,
 	CLIENTEVENTS,
+	THREADS,
 	ANY,
 	NONE;
 }

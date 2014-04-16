@@ -34,6 +34,7 @@ import mcp.mobius.opis.network.packets.server.NetDataRaw;
 import mcp.mobius.opis.swing.SwingUI;
 import mcp.mobius.opis.swing.panels.PanelSummary;
 import mcp.mobius.opis.swing.panels.debug.PanelOrphanTileEntities;
+import mcp.mobius.opis.swing.panels.debug.PanelThreads;
 import mcp.mobius.opis.swing.panels.network.PanelInbound;
 import mcp.mobius.opis.swing.panels.network.PanelInbound250;
 import mcp.mobius.opis.swing.panels.network.PanelOutbound;
@@ -106,6 +107,7 @@ public class ProxyClient extends ProxyServer implements IMessageHandler{
 
 		TabPanelRegistrar.INSTANCE.registerSection("Debug");		
 		IMessageHandler panelOrphanTileEnts  = (IMessageHandler)TabPanelRegistrar.INSTANCE.registerTab(new PanelOrphanTileEntities(), "Orphan TileEnts",  "Debug");
+		IMessageHandler panelThreads         = (IMessageHandler)TabPanelRegistrar.INSTANCE.registerTab(new PanelThreads(),            "Threads",  "Debug");
 		
 		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.LIST_PLAYERS,          panelPlayers);
 		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.LIST_AMOUNT_ENTITIES,  panelAmountEntities);
@@ -185,6 +187,8 @@ public class ProxyClient extends ProxyServer implements IMessageHandler{
 
 		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.LIST_ORPHAN_TILEENTS_CLEAR, panelOrphanTileEnts);
 		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.LIST_ORPHAN_TILEENTS,       panelOrphanTileEnts);
+		
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.LIST_THREADS, panelThreads);
 		
 		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.CLIENT_CLEAR_SELECTION,  modOpis.proxy);
 		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.CLIENT_START_PROFILING,  modOpis.proxy);

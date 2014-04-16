@@ -22,6 +22,7 @@ import mcp.mobius.opis.data.holders.basetypes.CoordinatesChunk;
 import mcp.mobius.opis.data.holders.basetypes.SerialDouble;
 import mcp.mobius.opis.data.holders.basetypes.SerialInt;
 import mcp.mobius.opis.data.holders.basetypes.SerialLong;
+import mcp.mobius.opis.data.holders.newtypes.CachedString;
 import mcp.mobius.opis.data.holders.newtypes.DataDimension;
 import mcp.mobius.opis.data.holders.newtypes.DataPacket;
 import mcp.mobius.opis.data.holders.newtypes.DataPacket250;
@@ -97,7 +98,13 @@ public enum OpisServerTickHandler implements ITickHandler {
 						cachedAccess.put(player, PlayerTracker.instance().getPlayerAccessLevel(player));
 					}
 				}
-
+				
+				ArrayList<CachedString> threads = new ArrayList<CachedString>();
+				for (Thread t : Thread.getAllStackTraces().keySet()){
+					threads.add(new CachedString(t.getName()));
+				}
+				OpisPacketHandler.sendPacketToAllSwing(NetDataList.create(Message.LIST_THREADS, threads));
+				
 				// Dimension data update.
 				ArrayList<DataDimension> dimData = new ArrayList<DataDimension>();
 				for (int dim : DimensionManager.getIDs()){
