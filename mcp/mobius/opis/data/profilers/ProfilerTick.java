@@ -16,7 +16,7 @@ public class ProfilerTick extends ProfilerAbstract {
 	
 	@Override
 	public void start() {
-		DeadManSwitch.deadManSwitch.release();
+		//DeadManSwitch.instance.setTimer(System.nanoTime());
 		this.clock.start();			
 	}
 	

@@ -201,6 +201,6 @@ public class modOpis {
 		
 		GameRegistry.registerPlayerTracker(PlayerTracker.instance());
 		
-		DeadManSwitch.startDeadManSwitch(MinecraftServer.getServer());
+		//DeadManSwitch.startDeadManSwitch(MinecraftServer.getServer());
 	}	
 }

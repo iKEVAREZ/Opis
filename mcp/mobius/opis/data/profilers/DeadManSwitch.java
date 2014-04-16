@@ -1,24 +1,43 @@
 package mcp.mobius.opis.data.profilers;
 
 import java.util.Set;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.LockSupport;
 import java.util.concurrent.locks.ReentrantLock;
 
 import net.minecraft.server.MinecraftServer;
 
 public class DeadManSwitch implements Runnable{
 
+	public static DeadManSwitch instance;
 	private Thread serverThread    = null;
 	private MinecraftServer server = null;
-	private int nTickWithoutAccident   = 0;
-	public  static Semaphore deadManSwitch = new Semaphore(1);
+	private AtomicLong timer       = new AtomicLong();
+	private AtomicLong timerPrev   = new AtomicLong();
+	private Long       lastTested  = 0L;
+	private long       nderps      = 0L;
+	private BlockingQueue<Long> queue = new ArrayBlockingQueue<Long>(2);	
 	
 	public DeadManSwitch(MinecraftServer server, Thread serverThread){
-		this.server    = server;
-		this.serverThread = serverThread; 
+		this.server       = server;
+		this.serverThread = serverThread;
+		DeadManSwitch.instance = this;
 		
+	}
+	
+	public void setTimer(long time){
+		this.timerPrev.set(this.timer.get());
+		this.timer.set(time);
+	}
+
+	public long getTimerDelta(){
+		return this.timer.get() - this.timerPrev.get();
 	}
 	
 	@Override
@@ -26,32 +45,57 @@ public class DeadManSwitch implements Runnable{
 		
 		System.out.printf("Starting Dead Man Switch\n");
 		
-		while (server.isServerRunning()){
+		//while (server.isServerRunning()){
+		while (true){
+		
 			try{
-				int npermits = deadManSwitch.drainPermits();
+				if (this.lastTested != this.timer.get()){
 				
-				if (npermits == 0){
-					//System.out.printf("==== Main thread is staled ! %d ticks last seen ====\n", this.nTickWithoutAccident);
-					this.nTickWithoutAccident = 0;
-				} else {
-					nTickWithoutAccident += 1;
+					//if (this.getTimerDelta() / 1000. / 1000. > 1000.){
+					if (this.getTimerDelta() / 1000. / 1000. > 300.){
+						System.out.printf("==== Main thread is staled ! %.3f ms [ %d ]====\n", this.getTimerDelta() / 1000. / 1000., this.nderps);
+						
+						this.nderps += 1;
+						
+						if (this.nderps > 10){
+							/*
+							this.nderps = 0;
+							this.serverThread.interrupt();
+							System.out.printf("Restarting\n");
+							Thread.sleep(1000);
+							MinecraftServer.main(MinecraftServer.arguments);
+							System.out.printf("Restarted\n");
+							return;
+							*/
+							for (Thread thread : Thread.getAllStackTraces().keySet()){
+								if (thread != Thread.currentThread()){
+									try{
+										thread.interrupt();
+									} catch (Exception e){
+										System.out.printf("%s\n",e);
+									}
+								}
+							}
+							return;
+						}
+					}
 				}
-				
-				long time = System.currentTimeMillis();
-				
-				Thread.sleep(500L);
-				
-			} catch (InterruptedException e){
+				this.lastTested = this.timer.get();
+			}
+			catch (Exception e){
 				throw new RuntimeException(e);
 			}
+			LockSupport.parkNanos(1L * 1000L * 1000L);
 		}
-		
-		
 	}
 	
 	public static DeadManSwitch startDeadManSwitch(MinecraftServer server){
 		DeadManSwitch deadManSwitch = new DeadManSwitch(server, Thread.currentThread());
-		(new Thread(deadManSwitch)).start();
+		Thread deadManSwitchThrd = new Thread(deadManSwitch);
+		deadManSwitchThrd.setName("Dead Man Switch");
+		deadManSwitchThrd.setPriority(Thread.MAX_PRIORITY);
+		//deadManSwitchThrd.setDaemon(false);
+		deadManSwitchThrd.start();
 		return deadManSwitch;
 	}
 	
