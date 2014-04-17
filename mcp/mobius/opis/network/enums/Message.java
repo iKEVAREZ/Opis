@@ -148,9 +148,20 @@ public enum Message {
 		Message.LIST_TIMING_ENTITIES.setAccessLevel(level);
 		Message.LIST_TIMING_HANDLERS.setAccessLevel(level);
 		Message.LIST_TIMING_CHUNK.setAccessLevel(level);
+		Message.LIST_TIMING_TILEENTS_PER_CLASS.setAccessLevel(level);
+		Message.LIST_TIMING_ENTITIES_PER_CLASS.setAccessLevel(level);
+		Message.LIST_TIMING_HANDLERS.setAccessLevel(level);
+		Message.LIST_TIMING_EVENTS.setAccessLevel(level);
 		Message.LIST_AMOUNT_ENTITIES.setAccessLevel(level);
+		Message.LIST_AMOUNT_TILEENTS.setAccessLevel(level);
 		Message.LIST_PLAYERS.setAccessLevel(level);
 		Message.LIST_DIMENSION_DATA.setAccessLevel(level);
+		Message.LIST_PACKETS_OUTBOUND.setAccessLevel(level);
+		Message.LIST_PACKETS_INBOUND.setAccessLevel(level);
+		Message.LIST_PACKETS_OUTBOUND_250.setAccessLevel(level);
+		Message.LIST_PACKETS_INBOUND_250.setAccessLevel(level);
+		Message.LIST_ORPHAN_TILEENTS.setAccessLevel(level);
+		Message.LIST_THREADS.setAccessLevel(level);
 	}
 	
 	public static void setOverlaysMinimumLevel(AccessLevel level){
