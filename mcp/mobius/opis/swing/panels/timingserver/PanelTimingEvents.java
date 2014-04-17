@@ -5,10 +5,12 @@ import javax.swing.JPanel;
 import mcp.mobius.opis.api.ITabPanel;
 import mcp.mobius.opis.data.holders.newtypes.DataEvent;
 import mcp.mobius.opis.data.holders.newtypes.DataTiming;
+import mcp.mobius.opis.network.enums.AccessLevel;
 import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.packets.server.NetDataRaw;
 import mcp.mobius.opis.swing.SelectedTab;
 import mcp.mobius.opis.swing.actions.ActionRunOpis;
+import mcp.mobius.opis.swing.widgets.JButtonAccess;
 import mcp.mobius.opis.swing.widgets.JPanelMsgHandler;
 import mcp.mobius.opis.swing.widgets.JTableStats;
 import net.miginfocom.swing.MigLayout;
@@ -20,12 +22,12 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
 public class PanelTimingEvents extends JPanelMsgHandler implements ITabPanel {
-	private JButton btnRun;
+	private JButtonAccess btnRun;
 
 	public PanelTimingEvents() {
 		setLayout(new MigLayout("", "[grow][]", "[][grow]"));
 		
-		btnRun = new JButton("Run Opis");
+		btnRun = new JButtonAccess("Run Opis", AccessLevel.PRIVILEGED);
 		add(btnRun, "cell 1 0");
 		btnRun.addActionListener(new ActionRunOpis());
 		

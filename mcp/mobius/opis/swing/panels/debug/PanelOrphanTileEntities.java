@@ -3,10 +3,12 @@ package mcp.mobius.opis.swing.panels.debug;
 import mcp.mobius.opis.api.ITabPanel;
 import mcp.mobius.opis.data.holders.newtypes.CachedString;
 import mcp.mobius.opis.data.holders.newtypes.DataTileEntity;
+import mcp.mobius.opis.network.enums.AccessLevel;
 import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.packets.server.NetDataRaw;
 import mcp.mobius.opis.swing.SelectedTab;
 import mcp.mobius.opis.swing.actions.ActionOrphanTileEntities;
+import mcp.mobius.opis.swing.widgets.JButtonAccess;
 import mcp.mobius.opis.swing.widgets.JPanelMsgHandler;
 import mcp.mobius.opis.swing.widgets.JTableStats;
 import net.miginfocom.swing.MigLayout;
@@ -19,11 +21,11 @@ import javax.swing.table.DefaultTableModel;
 
 public class PanelOrphanTileEntities extends JPanelMsgHandler implements ITabPanel {
 
-	private JButton btnRefresh;
+	private JButtonAccess btnRefresh;
 	public PanelOrphanTileEntities() {
 		setLayout(new MigLayout("", "[grow][]", "[][grow]"));
 		
-		btnRefresh = new JButton("Refresh");
+		btnRefresh = new JButtonAccess("Refresh", AccessLevel.PRIVILEGED);
 		add(btnRefresh, "cell 1 0");
 		btnRefresh.addActionListener(new ActionOrphanTileEntities());
 		
