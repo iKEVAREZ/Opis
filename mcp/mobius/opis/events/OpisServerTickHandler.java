@@ -54,11 +54,11 @@ public enum OpisServerTickHandler implements ITickHandler {
 	
 	public long profilerUpdateTickCounter = 0;	
 	public int  profilerRunningTicks;
-	public long timer500   = System.nanoTime();	
-	public long timer1000  = System.nanoTime();
-	public long timer2000  = System.nanoTime();
-	public long timer5000  = System.nanoTime();
-	public long timer10000 = System.nanoTime();
+	public EventTimer timer500   = new EventTimer(500);	
+	public EventTimer timer1000  = new EventTimer(1000);
+	public EventTimer timer2000  = new EventTimer(2000);
+	public EventTimer timer5000  = new EventTimer(5000);
+	public EventTimer timer10000 = new EventTimer(10000);
 	
 	public HashMap<Player, AccessLevel> cachedAccess = new HashMap<Player, AccessLevel>(); 
 	
@@ -81,8 +81,7 @@ public enum OpisServerTickHandler implements ITickHandler {
 			*/
 				
 			// One second timer
-			if (System.nanoTime() - timer1000 > 1000000000L){
-				timer1000 = System.nanoTime();
+			if (timer1000.isDone()){
 
 				OpisPacketHandler.sendPacketToAllSwing(NetDataValue.create(Message.VALUE_AMOUNT_UPLOAD,   new SerialLong(((ProfilerPacket)ProfilerSection.PACKET_OUTBOUND.getProfiler()).dataAmount)));
 				OpisPacketHandler.sendPacketToAllSwing(NetDataValue.create(Message.VALUE_AMOUNT_DOWNLOAD, new SerialLong(((ProfilerPacket)ProfilerSection.PACKET_INBOUND.getProfiler()).dataAmount)));
@@ -123,14 +122,12 @@ public enum OpisServerTickHandler implements ITickHandler {
 			}
 			
 			// Two second timer
-			if (System.nanoTime() - timer2000 > 2000000000L){
-				timer2000 = System.nanoTime();
+			if (timer2000.isDone()){
 				OpisPacketHandler.sendPacketToAllSwing(NetDataList.create(Message.LIST_PLAYERS, EntityManager.INSTANCE.getAllPlayers()));				
 			}
 			
 			// Five second timer
-			if (System.nanoTime() - timer5000 > 5000000000L){
-				timer5000 = System.nanoTime();
+			if (timer5000.isDone()){
 				updatePlayers();
 				
 				OpisPacketHandler.sendPacketToAllSwing(NetDataList.create(Message.LIST_PACKETS_OUTBOUND, ((ProfilerPacket)ProfilerSection.PACKET_OUTBOUND.getProfiler()).data));
@@ -147,12 +144,6 @@ public enum OpisServerTickHandler implements ITickHandler {
 					System.out.printf("[ %d ] %d %d\n", data.id, data.amount, data.size);
 				}
 				*/
-			}
-			
-			// Ten second timer
-			if (System.nanoTime() - timer10000 > 10000000000L){
-				timer10000 = System.nanoTime();
-
 			}
 			
 			profilerUpdateTickCounter++;

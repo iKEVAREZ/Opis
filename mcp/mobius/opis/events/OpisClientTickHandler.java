@@ -45,7 +45,11 @@ public enum OpisClientTickHandler implements ITickHandler {
 	
 	public long profilerUpdateTickCounter = 0;	
 	public long profilerRunningTicks = 0;
-	public long timer1000 = System.nanoTime();
+	public EventTimer timer500   = new EventTimer(500);	
+	public EventTimer timer1000  = new EventTimer(1000);
+	public EventTimer timer2000  = new EventTimer(2000);
+	public EventTimer timer5000  = new EventTimer(5000);
+	public EventTimer timer10000 = new EventTimer(10000);
 	
 	@Override
 	public void tickStart(EnumSet<TickType> type, Object... tickData) {}
@@ -55,9 +59,7 @@ public enum OpisClientTickHandler implements ITickHandler {
 		if(type.contains(TickType.CLIENT)){
 			
 			// One second timer
-			if (System.nanoTime() - timer1000 > 1000000000L){
-				timer1000 = System.nanoTime();
-				
+			if (timer1000.isDone()){
 				if(modOpis.swingOpen)
 					PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.STATUS_PING, new SerialLong(System.nanoTime())));
 			}
