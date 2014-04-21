@@ -13,6 +13,7 @@ import javax.swing.table.DefaultTableModel;
 import net.miginfocom.swing.MigLayout;
 import mcp.mobius.opis.api.IMessageHandler;
 import mcp.mobius.opis.api.ITabPanel;
+import mcp.mobius.opis.data.holders.newtypes.CachedString;
 import mcp.mobius.opis.data.holders.newtypes.DataEntityRender;
 import mcp.mobius.opis.data.holders.newtypes.DataTiming;
 import mcp.mobius.opis.network.enums.Message;
@@ -43,7 +44,7 @@ public class PanelRenderEntities extends JPanel implements ITabPanel, IMessageHa
 		
 		table = new JTableStats(
 				new String[] {"Name", "Coordinates", "Timing"},
-				new Class[]  {String.class, Object.class, DataTiming.class}
+				new Class[]  {CachedString.class, Object.class, DataTiming.class}
 				);			
 		scrollPane.setViewportView(table);		
 		

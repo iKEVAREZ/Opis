@@ -4,8 +4,10 @@ import java.util.ArrayList;
 
 import com.google.common.collect.HashBiMap;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
+import cpw.mods.fml.relauncher.Side;
 import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.api.IMessageHandler;
 import mcp.mobius.opis.data.holders.ISerializable;
@@ -19,7 +21,7 @@ public enum StringCache implements IMessageHandler {
 	INSTANCE;
 
 	private int currentIndex = -1;
-	private HashBiMap<Integer, String> cache   = HashBiMap.create();
+	private HashBiMap<Integer, String>  cache  = HashBiMap.create();
 	private ArrayList<DataStringUpdate> toSend = new ArrayList<DataStringUpdate>();
 	
 	public String getString(int index){
@@ -49,9 +51,11 @@ public enum StringCache implements IMessageHandler {
 	public void syncCache(Player player){
 		
 		int i = 0;
-		while (i < this.toSend.size()){
-			PacketDispatcher.sendPacketToPlayer(NetDataList.create(Message.STATUS_STRINGUPD_FULL, this.toSend.subList(i, Math.min(i + 50, this.toSend.size()))).packet, player);			
-			
+		
+		ArrayList<DataStringUpdate> toSendCopy = new ArrayList(toSend);
+		
+		while (i < toSendCopy.size()){
+			PacketDispatcher.sendPacketToPlayer(NetDataList.create(Message.STATUS_STRINGUPD_FULL, toSendCopy.subList(i, Math.min(i + 50, toSendCopy.size()))).packet, player);			
 			i += 50;
 		}		
 		

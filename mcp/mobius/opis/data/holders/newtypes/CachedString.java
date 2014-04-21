@@ -4,6 +4,8 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.relauncher.Side;
 import mcp.mobius.opis.data.holders.ISerializable;
 import mcp.mobius.opis.data.managers.StringCache;
 
@@ -18,8 +20,13 @@ public class CachedString implements Comparable, ISerializable{
 	}
 	
 	public CachedString(String str){
-		this.index = StringCache.INSTANCE.getIndex(str);
-		this.str   = str;
+		if(FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER){
+			this.index = StringCache.INSTANCE.getIndex(str);
+			this.str   = str;
+		} else {
+			this.index = -1;
+			this.str   = str;			
+		}
 	}
 	
 	@Override
