@@ -3,6 +3,8 @@ package mcp.mobius.opis.data.profilers;
 import java.util.EnumSet;
 import java.util.WeakHashMap;
 
+import mcp.mobius.opis.data.profilers.Clock.IClock;
+
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 
 import cpw.mods.fml.common.IScheduledTickHandler;
@@ -10,8 +12,8 @@ import cpw.mods.fml.common.TickType;
 
 public class ProfilerHandler extends ProfilerAbstract {
 
-	private Clock clockServer = new Clock();
-	private Clock clockRender = new Clock();
+	private IClock clockServer = Clock.getNewClock();
+	private IClock clockRender = Clock.getNewClock();
 	public  WeakHashMap<IScheduledTickHandler, DescriptiveStatistics> dataServer = new WeakHashMap<IScheduledTickHandler, DescriptiveStatistics>();	
 	public  WeakHashMap<IScheduledTickHandler, DescriptiveStatistics> dataRender = new WeakHashMap<IScheduledTickHandler, DescriptiveStatistics>();
 	
@@ -46,12 +48,12 @@ public class ProfilerHandler extends ProfilerAbstract {
 		EnumSet<TickType> ticksToRun = (EnumSet<TickType>) key2;
 		if (ticksToRun.contains(TickType.SERVER) && ticksToRun.size() == 1){
 			clockServer.stop();
-			dataServer.get(ticker).addValue((double)clockServer.timeDelta);
+			dataServer.get(ticker).addValue((double)clockServer.getDelta());
 		}
 		
 		else if (ticksToRun.contains(TickType.RENDER) && ticksToRun.size() == 1){
 			clockRender.stop();
-			dataRender.get(ticker).addValue((double)clockRender.timeDelta);
+			dataRender.get(ticker).addValue((double)clockRender.getDelta());
 		}		
 	}	
 }

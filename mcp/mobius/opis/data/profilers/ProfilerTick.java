@@ -2,11 +2,13 @@ package mcp.mobius.opis.data.profilers;
 
 import java.util.ArrayList;
 
+import mcp.mobius.opis.data.profilers.Clock.IClock;
+
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 
 public class ProfilerTick extends ProfilerAbstract {
 
-	private Clock clock = new Clock();
+	private IClock clock = Clock.getNewClock();
 	public  DescriptiveStatistics data = new DescriptiveStatistics(20);
 	
 	@Override
@@ -23,7 +25,7 @@ public class ProfilerTick extends ProfilerAbstract {
 	@Override
 	public void stop() {
 		this.clock.stop();
-		this.data.addValue((double)clock.timeDelta);
+		this.data.addValue((double)clock.getDelta());
 	}
 	
 }

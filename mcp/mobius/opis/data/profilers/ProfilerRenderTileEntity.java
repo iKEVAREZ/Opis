@@ -5,12 +5,13 @@ import java.util.WeakHashMap;
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 
 import mcp.mobius.opis.modOpis;
+import mcp.mobius.opis.data.profilers.Clock.IClock;
 import net.minecraft.tileentity.TileEntity;
 
 public class ProfilerRenderTileEntity extends ProfilerAbstract {
 
 	public WeakHashMap<TileEntity, DescriptiveStatistics> data = new WeakHashMap<TileEntity, DescriptiveStatistics>();
-	private Clock clock = new Clock();
+	private IClock clock = Clock.getNewClock();
 	
 	@Override
 	public void reset() {
@@ -30,7 +31,7 @@ public class ProfilerRenderTileEntity extends ProfilerAbstract {
 	public void stop(Object key){
 		clock.stop();
 		try{
-			data.get((TileEntity)key).addValue((double)clock.timeDelta);
+			data.get((TileEntity)key).addValue((double)clock.getDelta());
 		} catch (Exception e) {
 			modOpis.log.warning(String.format("Error while profiling entity %s\n", key));
 		}

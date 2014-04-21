@@ -9,10 +9,11 @@ import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 
 import mcp.mobius.mobiuscore.profiler.IProfilerBase;
 import mcp.mobius.opis.modOpis;
+import mcp.mobius.opis.data.profilers.Clock.IClock;
 
 public class ProfilerEntityUpdate extends ProfilerAbstract implements IProfilerBase {
 
-	private Clock clock = new Clock();
+	private IClock clock = Clock.getNewClock();
 	public  WeakHashMap<Entity, DescriptiveStatistics> data = new WeakHashMap<Entity, DescriptiveStatistics>();
 	
 	@Override
@@ -37,7 +38,7 @@ public class ProfilerEntityUpdate extends ProfilerAbstract implements IProfilerB
 		
 		clock.stop();
 		try{
-			data.get(entity).addValue((double)clock.timeDelta);
+			data.get(entity).addValue((double)clock.getDelta());
 		} catch (Exception e){
 			modOpis.log.warning(String.format("Error while profiling entity %s\n", key));
 		}

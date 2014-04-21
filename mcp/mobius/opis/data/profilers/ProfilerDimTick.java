@@ -6,10 +6,11 @@ import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 
 import net.minecraft.world.World;
 import mcp.mobius.mobiuscore.profiler.IProfilerBase;
+import mcp.mobius.opis.data.profilers.Clock.IClock;
 
 public class ProfilerDimTick extends ProfilerAbstract implements IProfilerBase {
 
-	private Clock clock = new Clock();
+	private IClock clock = Clock.getNewClock();
 	public  HashMap<Integer, DescriptiveStatistics> data = new HashMap<Integer, DescriptiveStatistics>();
 	
 	@Override
@@ -33,6 +34,6 @@ public class ProfilerDimTick extends ProfilerAbstract implements IProfilerBase {
 		if (world.isRemote) return;
 		
 		clock.stop();
-		data.get(world.provider.dimensionId).addValue((double)clock.timeDelta);
+		data.get(world.provider.dimensionId).addValue((double)clock.getDelta());
 	}
 }

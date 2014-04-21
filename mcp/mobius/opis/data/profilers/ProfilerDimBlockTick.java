@@ -7,10 +7,11 @@ import net.minecraftforge.common.DimensionManager;
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 
 import mcp.mobius.mobiuscore.profiler.IProfilerBase;
+import mcp.mobius.opis.data.profilers.Clock.IClock;
 
 public class ProfilerDimBlockTick extends ProfilerAbstract implements IProfilerBase {
 
-	private Clock clock = new Clock();
+	private IClock clock = Clock.getNewClock();
 	public  HashMap<Integer, DescriptiveStatistics> data = new HashMap<Integer, DescriptiveStatistics>();
 	
 	
@@ -35,6 +36,6 @@ public class ProfilerDimBlockTick extends ProfilerAbstract implements IProfilerB
 		if (DimensionManager.getWorld(dim).isRemote) return;
 		
 		clock.stop();
-		data.get(dim).addValue((double)clock.timeDelta);
+		data.get(dim).addValue((double)clock.getDelta());
 	}
 }
