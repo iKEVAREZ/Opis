@@ -4,10 +4,17 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import net.minecraft.server.ServerListenThread;
+import net.minecraft.server.ThreadMinecraftServer;
+import net.minecraft.network.TcpReaderThread;
+import net.minecraft.network.TcpWriterThread;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.server.FMLServerHandler;
 import mcp.mobius.opis.data.holders.ISerializable;
 import mcp.mobius.opis.data.managers.StringCache;
+import mcp.mobius.opis.helpers.Helpers;
+
 
 public class CachedString implements Comparable, ISerializable{
 
@@ -20,22 +27,27 @@ public class CachedString implements Comparable, ISerializable{
 	}
 	
 	public CachedString(String str){
-		if(FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER){
+
+		//if(FMLCommonHandler.instance().getSide() == Side.SERVER){
+		if(Helpers.getEffectiveSide() == Side.SERVER){
 			this.index = StringCache.INSTANCE.getIndex(str);
 			this.str   = str;
 		} else {
 			this.index = -1;
-			this.str   = str;			
+			this.str   = str;
 		}
 	}
 	
+
+	
 	@Override
-	public int compareTo(Object o) {
+	public int compareTo(Object o) { 
 		return ((CachedString)o).str.compareTo(this.str);	// Reverse order ! Put higher values FIRST
 	}
 	
 	public String toString(){
-		return str;		
+		//return String.format("[%d] %s",this.index, this.str);
+		return str;
 	}
 	
 	public void  writeToStream(DataOutputStream stream) throws IOException{

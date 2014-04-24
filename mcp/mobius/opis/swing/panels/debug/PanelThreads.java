@@ -2,6 +2,7 @@ package mcp.mobius.opis.swing.panels.debug;
 
 import mcp.mobius.opis.api.ITabPanel;
 import mcp.mobius.opis.data.holders.newtypes.CachedString;
+import mcp.mobius.opis.data.holders.newtypes.DataThread;
 import mcp.mobius.opis.data.holders.newtypes.DataTileEntity;
 import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.packets.server.NetDataRaw;
@@ -26,9 +27,9 @@ public class PanelThreads extends JPanelMsgHandler implements ITabPanel {
 		add(scrollPane, "cell 0 0,grow");
 		
 		table = new JTableStats(
-				new String[] {"Name"},
-				new Class[]  {CachedString.class},
-				new int[]    {SwingConstants.LEFT}
+				new String[] {"Name", "Class"},
+				new Class[]  {CachedString.class, CachedString.class},
+				new int[]    {SwingConstants.LEFT, SwingConstants.LEFT}
 				);			
 		scrollPane.setViewportView(table);
 	}
@@ -41,11 +42,11 @@ public class PanelThreads extends JPanelMsgHandler implements ITabPanel {
 			((JTableStats)this.getTable()).setTableData(rawdata.array);
 			
 			DefaultTableModel model = (DefaultTableModel)this.getTable().getModel();
-			int               row   = this.getTable().clearTable(CachedString.class);
+			int               row   = this.getTable().clearTable(DataThread.class);
 
 			for (Object o : rawdata.array){
-				CachedString data = (CachedString)o;
-				model.addRow(new Object[]  { data });
+				DataThread data = (DataThread)o;
+				model.addRow(new Object[]  { data.name, data.clzz });
 			}
 			
 			this.getTable().dataUpdated(row);			

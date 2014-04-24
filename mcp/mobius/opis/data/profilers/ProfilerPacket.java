@@ -3,8 +3,10 @@ package mcp.mobius.opis.data.profilers;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import cpw.mods.fml.relauncher.Side;
 import mcp.mobius.opis.data.holders.newtypes.DataPacket;
 import mcp.mobius.opis.data.holders.newtypes.DataPacket250;
+import mcp.mobius.opis.helpers.Helpers;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
 
@@ -37,7 +39,9 @@ public class ProfilerPacket extends ProfilerAbstract {
 	
 	@Override
 	public void start(Object key) {
-		if (key != null){
+		if (key != null && Helpers.getEffectiveSide() == Side.SERVER){
+			//System.out.printf("%s | %s\n", Thread.currentThread().getClass(), Thread.currentThread().getName());
+			
 			Packet packet = (Packet)key;
 			dataAmount += packet.getPacketSize() + 1;
 			data.get(packet.getPacketId()).fill(packet);

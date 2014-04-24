@@ -33,6 +33,7 @@ import mcp.mobius.opis.data.holders.newtypes.DataPacket;
 import mcp.mobius.opis.data.holders.newtypes.DataPacket250;
 import mcp.mobius.opis.data.holders.newtypes.DataStringUpdate;
 import mcp.mobius.opis.data.holders.newtypes.DataBlockTileEntity;
+import mcp.mobius.opis.data.holders.newtypes.DataThread;
 import mcp.mobius.opis.data.holders.newtypes.DataTileEntity;
 import mcp.mobius.opis.data.holders.newtypes.DataTileEntityRender;
 import mcp.mobius.opis.data.holders.newtypes.DataTiming;
@@ -73,6 +74,7 @@ public enum DataType {
 	DATAPACKET      		   	(DataPacket.class),
 	DATAPACKET250   		   	(DataPacket250.class),
 	DATASTRINGUPD   		   	(DataStringUpdate.class),
+	DATATHREAD                  (DataThread.class),
 	DATATILEENTITY  		   	(DataTileEntity.class),
 	DATATILEENTITYRENDER	   	(DataTileEntityRender.class),
 	DATATIMING      			(DataTiming.class),

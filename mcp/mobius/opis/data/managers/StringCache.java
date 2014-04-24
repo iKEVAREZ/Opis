@@ -26,19 +26,27 @@ public enum StringCache implements IMessageHandler {
 	
 	public String getString(int index){
 		String retVal = this.cache.get(index);
-		if (retVal == null)
+		if (retVal == null){
+			modOpis.log.info(String.format("++++ Couldn't find string for index %d", index));			
 			return "<ERROR>";
-		else
+		}else
 			return retVal;
 	}
 	
 	public int getIndex(String str){
+		
 		if (cache.inverse().containsKey(str)){
+			//if (cache.inverse().get(str) == -1){
+			//	throw new RuntimeException(String.format("Found a misaligned key ! %s", str));
+			//}
+			
 			return cache.inverse().get(str);
 		}
 		else{
 			currentIndex += 1;
 			cache.put(currentIndex, str);
+
+			System.out.printf("++++ Adding string %s with index %d to cache\n", str, currentIndex);
 			
 			DataStringUpdate upd = new DataStringUpdate(str, currentIndex);
 			this.toSend.add(upd);
@@ -66,8 +74,8 @@ public enum StringCache implements IMessageHandler {
 	public boolean handleMessage(Message msg, NetDataRaw rawdata) {
 		switch(msg){
 		case STATUS_STRINGUPD:{
-			//modOpis.log.info("Received String Cache update");
 			DataStringUpdate data = (DataStringUpdate)rawdata.value;
+			modOpis.log.info(String.format("++++ Received String Cache update : [%d] %s", data.index, data.str));			
 			try{
 				this.cache.put(data.index, data.str);
 			} catch (IllegalArgumentException e){
@@ -78,10 +86,11 @@ public enum StringCache implements IMessageHandler {
 			break;
 		}
 		case STATUS_STRINGUPD_FULL:{
-			modOpis.log.info(String.format("Received full String Cache update containing %d entries", rawdata.array.size()));
+			modOpis.log.info(String.format("++++ Received full String Cache update containing %d entries", rawdata.array.size()));
 			
 			for (ISerializable idata : rawdata.array){
 				DataStringUpdate data = (DataStringUpdate)idata;
+				modOpis.log.info(String.format("++++ Received String Cache update : [%d] %s", data.index, data.str));					
 				try{
 					this.cache.put(data.index, data.str);
 				} catch (IllegalArgumentException e){

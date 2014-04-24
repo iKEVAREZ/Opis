@@ -26,6 +26,7 @@ import mcp.mobius.opis.data.holders.newtypes.CachedString;
 import mcp.mobius.opis.data.holders.newtypes.DataDimension;
 import mcp.mobius.opis.data.holders.newtypes.DataPacket;
 import mcp.mobius.opis.data.holders.newtypes.DataPacket250;
+import mcp.mobius.opis.data.holders.newtypes.DataThread;
 import mcp.mobius.opis.data.holders.newtypes.DataTiming;
 import mcp.mobius.opis.data.holders.stats.StatsChunk;
 import mcp.mobius.opis.data.managers.ChunkManager;
@@ -98,9 +99,9 @@ public enum OpisServerTickHandler implements ITickHandler {
 					}
 				}
 				
-				ArrayList<CachedString> threads = new ArrayList<CachedString>();
+				ArrayList<DataThread> threads = new ArrayList<DataThread>();
 				for (Thread t : Thread.getAllStackTraces().keySet()){
-					threads.add(new CachedString(t.getName()));
+					threads.add(new DataThread().fill(t));
 				}
 				OpisPacketHandler.sendPacketToAllSwing(NetDataList.create(Message.LIST_THREADS, threads));
 				
