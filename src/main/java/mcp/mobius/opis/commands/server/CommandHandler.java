@@ -9,7 +9,7 @@ import mcp.mobius.opis.commands.IOpisCommand;
 import mcp.mobius.opis.data.holders.newtypes.DataHandler;
 import mcp.mobius.opis.data.managers.TickHandlerManager;
 import mcp.mobius.opis.events.PlayerTracker;
-import mcp.mobius.opis.network.OpisPacketHandler;
+import mcp.mobius.opis.network.OpisPacketHandler_OLD;
 import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.packets.server.NetDataList;
 import net.minecraft.command.CommandBase;

@@ -10,29 +10,26 @@ import mcp.mobius.opis.swing.SelectedTab;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
-import net.minecraftforge.common.Configuration;
-import cpw.mods.fml.common.IPlayerTracker;
-import cpw.mods.fml.common.network.Player;
 
 public class PlayerTracker implements IPlayerTracker{
 	private static PlayerTracker _instance  = new PlayerTracker();
 	public  static PlayerTracker instance() {return _instance;} 
 	private PlayerTracker(){}
 	
-	public HashSet<Player> playersSwing = new HashSet<Player>();		 //This is the list of players who have opened the UI
+	public HashSet<EntityPlayerMP> playersSwing = new HashSet<EntityPlayerMP>();		 //This is the list of players who have opened the UI
 	//public HashSet<Player> playersOpis  = new HashSet<Player>();		 //This is the list of players who have opened the UI or used the command line
 	public HashMap<String, Boolean>       filteredAmount      = new HashMap<String, Boolean>(); //Should the entity amount be filtered or not
-	public HashMap<Player, OverlayStatus> playerOverlayStatus = new HashMap<Player, OverlayStatus>();
-	public HashMap<Player, Integer>       playerDimension     = new HashMap<Player, Integer>();
-	public HashMap<Player, SelectedTab>   playerTab           = new HashMap<Player, SelectedTab>();
+	public HashMap<EntityPlayerMP, OverlayStatus> playerOverlayStatus = new HashMap<EntityPlayerMP, OverlayStatus>();
+	public HashMap<EntityPlayerMP, Integer>       playerDimension     = new HashMap<EntityPlayerMP, Integer>();
+	public HashMap<EntityPlayerMP, SelectedTab>   playerTab           = new HashMap<EntityPlayerMP, SelectedTab>();
 	private HashSet<String> playerPrivileged = new HashSet<String>();
 	
-	public SelectedTab getPlayerSelectedTab(Player player){
+	public SelectedTab getPlayerSelectedTab(EntityPlayerMP player){
 		return this.playerTab.get(player);
 	}
 	
-	public AccessLevel getPlayerAccessLevel(Player player){
-		return this.getPlayerAccessLevel(((EntityPlayerMP)player).username);
+	public AccessLevel getPlayerAccessLevel(EntityPlayerMP player){
+		return this.getPlayerAccessLevel(player.getDisplayName());
 	}
 	
 	public AccessLevel getPlayerAccessLevel(String name){
@@ -68,7 +65,7 @@ public class PlayerTracker implements IPlayerTracker{
 			PlayerTracker.instance().addPrivilegedPlayer(s,false);		
 	}
 	
-	public boolean isAdmin(Player player){
+	public boolean isAdmin(EntityPlayerMP player){
 		return this.getPlayerAccessLevel(player).ordinal() >= AccessLevel.ADMIN.ordinal();
 	}
 	
@@ -76,7 +73,7 @@ public class PlayerTracker implements IPlayerTracker{
 		return this.getPlayerAccessLevel(name).ordinal() >= AccessLevel.ADMIN.ordinal();		
 	}		
 	
-	public boolean isPrivileged(Player player){
+	public boolean isPrivileged(EntityPlayerMP player){
 		return this.getPlayerAccessLevel(player).ordinal() >= AccessLevel.PRIVILEGED.ordinal();
 	}	
 	

@@ -1,8 +1,13 @@
 package mcp.mobius.opis.data.holders.basetypes;
 
+import io.netty.buffer.ByteBuf;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+
+import com.google.common.io.ByteArrayDataInput;
+import com.google.common.io.ByteArrayDataOutput;
 
 import mcp.mobius.opis.data.holders.ISerializable;
 import net.minecraft.tileentity.TileEntity;
@@ -118,14 +123,14 @@ public final class CoordinatesChunk implements ISerializable {
 	}
 	
 	@Override
-	public void writeToStream(DataOutputStream stream) throws IOException {
+	public void writeToStream(ByteArrayDataOutput stream){
 		stream.writeInt(this.dim);
 		stream.writeInt(this.chunkX);
 		stream.writeInt(this.chunkZ);
 		stream.writeByte(this.metadata);
 	}
 
-	public static CoordinatesChunk readFromStream(DataInputStream stream) throws IOException {
+	public static CoordinatesChunk readFromStream(ByteArrayDataInput stream){
 		return new CoordinatesChunk(stream.readInt(), stream.readInt(), stream.readInt(), stream.readByte());
 	}	
 }

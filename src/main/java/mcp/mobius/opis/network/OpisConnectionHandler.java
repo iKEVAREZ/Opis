@@ -19,7 +19,7 @@ public class OpisConnectionHandler implements IConnectionHandler {
 
 	@Override
 	public void playerLoggedIn(Player player, NetHandler netHandler, INetworkManager manager) {
-		OpisPacketHandler.validateAndSend(NetDataValue.create(Message.STATUS_CURRENT_TIME, new SerialLong(System.currentTimeMillis())), player);
+		OpisPacketHandler_OLD.validateAndSend(NetDataValue.create(Message.STATUS_CURRENT_TIME, new SerialLong(System.currentTimeMillis())), player);
 		
 		if (manager instanceof MemoryConnection){
 			System.out.printf("Adding SSP player to list of privileged users\n");

@@ -4,7 +4,7 @@ import static mcp.mobius.opis.network.enums.AccessLevel.*;
 
 import java.util.EnumSet;
 
-import cpw.mods.fml.common.network.Player;
+import net.minecraft.entity.player.EntityPlayerMP;
 import mcp.mobius.opis.events.PlayerTracker;
 import mcp.mobius.opis.swing.SelectedTab;
 
@@ -126,7 +126,7 @@ public enum Message {
 		this.accessLevel = level;
 	}	
 	
-	public boolean canPlayerUseCommand(Player player){
+	public boolean canPlayerUseCommand(EntityPlayerMP player){
 		return PlayerTracker.instance().getPlayerAccessLevel(player).ordinal() >= this.accessLevel.ordinal();
 	}
 	
