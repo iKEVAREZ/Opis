@@ -4,22 +4,15 @@ import mcp.mobius.opis.data.holders.basetypes.SerialLong;
 import mcp.mobius.opis.data.managers.StringCache;
 import mcp.mobius.opis.events.PlayerTracker;
 import mcp.mobius.opis.network.enums.Message;
-import mcp.mobius.opis.network.packets.server.NetDataValue;
+import mcp.mobius.opis.network.packets.server.NetDataValue_OLD;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.network.INetworkManager;
-import net.minecraft.network.MemoryConnection;
-import net.minecraft.network.NetLoginHandler;
-import net.minecraft.network.packet.NetHandler;
-import net.minecraft.network.packet.Packet1Login;
 import net.minecraft.server.MinecraftServer;
-import cpw.mods.fml.common.network.IConnectionHandler;
-import cpw.mods.fml.common.network.Player;
 
 public class OpisConnectionHandler implements IConnectionHandler {
 
 	@Override
 	public void playerLoggedIn(Player player, NetHandler netHandler, INetworkManager manager) {
-		OpisPacketHandler_OLD.validateAndSend(NetDataValue.create(Message.STATUS_CURRENT_TIME, new SerialLong(System.currentTimeMillis())), player);
+		OpisPacketHandler_OLD.validateAndSend(NetDataValue_OLD.create(Message.STATUS_CURRENT_TIME, new SerialLong(System.currentTimeMillis())), player);
 		
 		if (manager instanceof MemoryConnection){
 			System.out.printf("Adding SSP player to list of privileged users\n");

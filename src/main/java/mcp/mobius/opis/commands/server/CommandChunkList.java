@@ -9,7 +9,7 @@ import mcp.mobius.opis.data.managers.ChunkManager;
 import mcp.mobius.opis.events.PlayerTracker;
 import mcp.mobius.opis.network.OpisPacketHandler_OLD;
 import mcp.mobius.opis.network.enums.Message;
-import mcp.mobius.opis.network.packets.server.NetDataList;
+import mcp.mobius.opis.network.packets.server.NetDataList_OLD;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;

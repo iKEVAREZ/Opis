@@ -14,7 +14,7 @@ import mcp.mobius.opis.events.OpisServerTickHandler;
 import mcp.mobius.opis.events.PlayerTracker;
 import mcp.mobius.opis.network.OpisPacketHandler_OLD;
 import mcp.mobius.opis.network.enums.Message;
-import mcp.mobius.opis.network.packets.server.NetDataValue;
+import mcp.mobius.opis.network.packets.server.NetDataValue_OLD;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
@@ -54,7 +54,7 @@ public class CommandStart extends CommandBase implements IOpisCommand {
 		modOpis.profilerRun = true;
 		ProfilerSection.activateAll(Side.SERVER);
 
-		OpisPacketHandler_OLD.sendPacketToAllSwing(NetDataValue.create(Message.STATUS_START, new SerialInt(modOpis.profilerMaxTicks)));		
+		OpisPacketHandler_OLD.sendPacketToAllSwing(NetDataValue_OLD.create(Message.STATUS_START, new SerialInt(modOpis.profilerMaxTicks)));		
 		icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText(String.format("\u00A7oOpis started with a tick delay %s.", modOpis.profilerDelay)));
 
 		

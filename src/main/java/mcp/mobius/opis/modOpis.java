@@ -52,7 +52,6 @@ import mcp.mobius.opis.network.OpisConnectionHandler;
 import mcp.mobius.opis.network.OpisPacketHandler_OLD;
 import mcp.mobius.opis.network.enums.AccessLevel;
 import mcp.mobius.opis.network.enums.Message;
-import mcp.mobius.opis.network.packets.custom.Packet251Extended;
 import mcp.mobius.opis.proxy.ProxyServer;
 import mcp.mobius.opis.tools.BlockDebug;
 import mcp.mobius.opis.tools.BlockLag;

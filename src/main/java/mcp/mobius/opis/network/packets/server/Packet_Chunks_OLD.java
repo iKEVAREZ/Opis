@@ -21,7 +21,7 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.NibbleArray;
 import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
 
-public class Packet_Chunks {
+public class Packet_Chunks_OLD {
 
 	public static int MAXPACKETSIZE = 30000;	// This should be set to 32k but can be made lower for testing
 	
@@ -33,9 +33,9 @@ public class Packet_Chunks {
 	private static DataOutputStream streamPayload   = new DataOutputStream(bosPayload);
 	
 	@SideOnly(Side.CLIENT)
-	public static Packet_Chunks read(Packet250CustomPayload packet) {
+	public static Packet_Chunks_OLD read(Packet250CustomPayload packet) {
 		DataInputStream inputStream = new DataInputStream(new ByteArrayInputStream(packet.data));
-		Packet_Chunks   retPacket   = null;
+		Packet_Chunks_OLD   retPacket   = null;
 		
 		byte header;
 		int  dataSize;
@@ -45,7 +45,7 @@ public class Packet_Chunks {
 			dataSize = inputStream.readInt();
 			
 			if (dataSize == -1){
-				retPacket = new Packet_Chunks(bosPayload.toByteArray());
+				retPacket = new Packet_Chunks_OLD(bosPayload.toByteArray());
 				bosPayload.reset();
 			} else {
 				byte[] buffer = new byte[dataSize];
@@ -98,7 +98,7 @@ public class Packet_Chunks {
 	
 
 	@SideOnly(Side.CLIENT)
-	public Packet_Chunks(byte[] data) {
+	public Packet_Chunks_OLD(byte[] data) {
 		DataInputStream inputStream = new DataInputStream(new ByteArrayInputStream(data));
 		
 		try{

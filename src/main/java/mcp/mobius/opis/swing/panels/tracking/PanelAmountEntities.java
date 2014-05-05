@@ -9,7 +9,7 @@ import mcp.mobius.opis.api.ITabPanel;
 import mcp.mobius.opis.data.holders.basetypes.AmountHolder;
 import mcp.mobius.opis.network.enums.AccessLevel;
 import mcp.mobius.opis.network.enums.Message;
-import mcp.mobius.opis.network.packets.server.NetDataRaw;
+import mcp.mobius.opis.network.packets.server.NetDataRaw_OLD;
 import mcp.mobius.opis.swing.SelectedTab;
 import mcp.mobius.opis.swing.actions.ActionAmountEntities;
 import mcp.mobius.opis.swing.widgets.JButtonAccess;
@@ -70,7 +70,7 @@ public class PanelAmountEntities extends JPanelMsgHandler implements ITabPanel{
 	public JLabel    getLblSummary()   {return lblSummary;}	
 	
 	@Override
-	public boolean handleMessage(Message msg, NetDataRaw rawdata) {
+	public boolean handleMessage(Message msg, NetDataRaw_OLD rawdata) {
 		switch(msg){
 		case LIST_AMOUNT_ENTITIES:{
 			((JTableStats)this.getTable()).setTableData(rawdata.array);

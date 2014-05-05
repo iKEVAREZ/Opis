@@ -9,7 +9,7 @@ import mcp.mobius.opis.data.holders.ISerializable;
 import mcp.mobius.opis.data.holders.newtypes.DataError;
 import mcp.mobius.opis.network.enums.Message;
 
-public class NetDataRaw {
+public class NetDataRaw_OLD {
 
 	public byte     header;
 	public Message  msg;

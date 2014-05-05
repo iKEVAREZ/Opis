@@ -10,11 +10,11 @@ import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.enums.Packets;
 import net.minecraft.network.packet.Packet250CustomPayload;
 
-public class NetDataCommand extends NetDataRaw{
+public class NetDataCommand_OLD extends NetDataRaw_OLD{
 
-	public NetDataCommand(){};
+	public NetDataCommand_OLD(){};
 	
-	public NetDataCommand(Packet250CustomPayload packet) {
+	public NetDataCommand_OLD(Packet250CustomPayload packet) {
 		DataInputStream inputStream = new DataInputStream(new ByteArrayInputStream(packet.data));
 		try{
 			this.header  = inputStream.readByte();
@@ -23,7 +23,7 @@ public class NetDataCommand extends NetDataRaw{
 		
 	}
 
-	public static NetDataCommand create(Message msg){
+	public static NetDataCommand_OLD create(Message msg){
 		Packet250CustomPayload packet = new Packet250CustomPayload();
 		ByteArrayOutputStream bos     = new ByteArrayOutputStream(1);
 		DataOutputStream outputStream = new DataOutputStream(bos);
@@ -37,7 +37,7 @@ public class NetDataCommand extends NetDataRaw{
 		packet.data    = bos.toByteArray();
 		packet.length  = bos.size();		
 		
-		NetDataCommand capsule = new NetDataCommand();
+		NetDataCommand_OLD capsule = new NetDataCommand_OLD();
 		capsule.msg     = msg;
 		capsule.header  = Packets.NETDATACOMMAND;
 		capsule.packet  = packet;

@@ -13,11 +13,11 @@ import mcp.mobius.opis.data.holders.ISerializable;
 import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.enums.Packets;
 
-public class NetDataValue extends NetDataRaw{
+public class NetDataValue_OLD extends NetDataRaw_OLD{
 
-	public NetDataValue(){};
+	public NetDataValue_OLD(){};
 	
-	public NetDataValue(Packet250CustomPayload packet) {
+	public NetDataValue_OLD(Packet250CustomPayload packet) {
 		DataInputStream istream = new DataInputStream(new ByteArrayInputStream(packet.data));
 		
 		try{
@@ -32,7 +32,7 @@ public class NetDataValue extends NetDataRaw{
 	}
 
 	//public static Packet250Metadata create(DataReq dataReq, ISerializable data){
-	public static NetDataValue create(Message dataReq, ISerializable data){
+	public static NetDataValue_OLD create(Message dataReq, ISerializable data){
 		//Packet250Metadata packet      = new Packet250Metadata();
 		Packet250CustomPayload packet = new Packet250CustomPayload();
 		ByteArrayOutputStream  bos     = new ByteArrayOutputStream(1);
@@ -54,7 +54,7 @@ public class NetDataValue extends NetDataRaw{
 		packet.data    = bos.toByteArray();
 		packet.length  = bos.size();		
 		
-		NetDataValue capsule = new NetDataValue();
+		NetDataValue_OLD capsule = new NetDataValue_OLD();
 		capsule.msg = dataReq;
 		capsule.header  = Packets.NETDATAVALUE;
 		capsule.packet  = packet;

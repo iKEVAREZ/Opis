@@ -5,7 +5,7 @@ import mcp.mobius.opis.data.holders.newtypes.CachedString;
 import mcp.mobius.opis.data.holders.newtypes.DataTileEntity;
 import mcp.mobius.opis.network.enums.AccessLevel;
 import mcp.mobius.opis.network.enums.Message;
-import mcp.mobius.opis.network.packets.server.NetDataRaw;
+import mcp.mobius.opis.network.packets.server.NetDataRaw_OLD;
 import mcp.mobius.opis.swing.SelectedTab;
 import mcp.mobius.opis.swing.actions.ActionOrphanTileEntities;
 import mcp.mobius.opis.swing.widgets.JButtonAccess;
@@ -43,7 +43,7 @@ public class PanelOrphanTileEntities extends JPanelMsgHandler implements ITabPan
 	int row;
 	
 	@Override
-	public boolean handleMessage(Message msg, NetDataRaw rawdata) {
+	public boolean handleMessage(Message msg, NetDataRaw_OLD rawdata) {
 		switch(msg){
 		case LIST_ORPHAN_TILEENTS:{
 			

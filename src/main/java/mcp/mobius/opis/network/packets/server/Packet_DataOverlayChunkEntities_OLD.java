@@ -12,12 +12,12 @@ import mcp.mobius.opis.network.enums.Packets;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.world.ChunkCoordIntPair;
 
-public class Packet_DataOverlayChunkEntities {
+public class Packet_DataOverlayChunkEntities_OLD {
 
 	public byte header;
 	public HashMap<CoordinatesChunk, Integer> chunkStatus = new HashMap<CoordinatesChunk, Integer>();
 	
-	public Packet_DataOverlayChunkEntities(Packet250CustomPayload packet) {
+	public Packet_DataOverlayChunkEntities_OLD(Packet250CustomPayload packet) {
 		DataInputStream inputStream = new DataInputStream(new ByteArrayInputStream(packet.data));
 		this.chunkStatus.clear();
 		

@@ -11,12 +11,12 @@ import mcp.mobius.opis.data.holders.basetypes.TicketData;
 import mcp.mobius.opis.network.enums.Packets;
 import net.minecraft.network.packet.Packet250CustomPayload;
 
-public class Packet_Tickets {
+public class Packet_Tickets_OLD {
 
 	public byte header;
 	public HashSet<TicketData> tickets = new HashSet<TicketData>();
 	
-	public Packet_Tickets(Packet250CustomPayload packet) {
+	public Packet_Tickets_OLD(Packet250CustomPayload packet) {
 		DataInputStream inputStream = new DataInputStream(new ByteArrayInputStream(packet.data));
 		
 		try{

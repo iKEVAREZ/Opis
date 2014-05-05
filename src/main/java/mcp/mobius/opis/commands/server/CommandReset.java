@@ -12,7 +12,7 @@ import mcp.mobius.opis.events.OpisServerTickHandler;
 import mcp.mobius.opis.events.PlayerTracker;
 import mcp.mobius.opis.network.OpisPacketHandler_OLD;
 import mcp.mobius.opis.network.enums.Message;
-import mcp.mobius.opis.network.packets.server.NetDataCommand;
+import mcp.mobius.opis.network.packets.server.NetDataCommand_OLD;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
@@ -48,7 +48,7 @@ public class CommandReset extends CommandBase implements IOpisCommand {
 		
 		//PacketDispatcher.sendPacketToAllPlayers(NetDataCommand.create(Message.CLIENT_CLEAR_SELECTION));
 		if (icommandsender instanceof Player)
-			OpisPacketHandler_OLD.validateAndSend(NetDataCommand.create(Message.CLIENT_CLEAR_SELECTION), (Player)icommandsender);
+			OpisPacketHandler_OLD.validateAndSend(NetDataCommand_OLD.create(Message.CLIENT_CLEAR_SELECTION), (Player)icommandsender);
 	}
 
 	@Override

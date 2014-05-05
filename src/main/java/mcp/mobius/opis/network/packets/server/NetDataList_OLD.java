@@ -17,13 +17,13 @@ import mcp.mobius.opis.network.enums.Packets;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
 
-public class NetDataList extends NetDataRaw{
+public class NetDataList_OLD extends NetDataRaw_OLD{
 
 	//public ArrayList<ISerializable> data = new ArrayList<ISerializable>(); 
 	
-	public NetDataList() {}
+	public NetDataList_OLD() {}
 	
-	public NetDataList(Packet250CustomPayload packet) {
+	public NetDataList_OLD(Packet250CustomPayload packet) {
 		DataInputStream istream = new DataInputStream(new ByteArrayInputStream(packet.data));
 		
 		try{
@@ -58,7 +58,7 @@ public class NetDataList extends NetDataRaw{
 	*/
 	
 	//public static Packet250Metadata create(DataReq dataReq, ArrayList<? extends ISerializable> stats){
-	public static NetDataList create(Message msg, List<? extends ISerializable> data){
+	public static NetDataList_OLD create(Message msg, List<? extends ISerializable> data){
 		//Packet250Metadata packet      = new Packet250Metadata();
 		Packet250CustomPayload packet = new Packet250CustomPayload();
 		ByteArrayOutputStream bos     = new ByteArrayOutputStream(1);
@@ -84,7 +84,7 @@ public class NetDataList extends NetDataRaw{
 		packet.data    = bos.toByteArray();
 		packet.length  = bos.size();		
 		
-		NetDataList capsule = new NetDataList();
+		NetDataList_OLD capsule = new NetDataList_OLD();
 		capsule.msg = msg;
 		capsule.header  = Packets.NETDATAVALUE;
 		capsule.packet  = packet;

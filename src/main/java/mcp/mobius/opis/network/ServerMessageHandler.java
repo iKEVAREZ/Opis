@@ -38,11 +38,11 @@ import mcp.mobius.opis.data.managers.TileEntityManager;
 import mcp.mobius.opis.events.PlayerTracker;
 import mcp.mobius.opis.gui.overlay.OverlayStatus;
 import mcp.mobius.opis.network.enums.Message;
-import mcp.mobius.opis.network.packets.server.NetDataCommand;
-import mcp.mobius.opis.network.packets.server.NetDataList;
-import mcp.mobius.opis.network.packets.server.Packet_DataOverlayChunkEntities;
-import mcp.mobius.opis.network.packets.server.NetDataValue;
-import mcp.mobius.opis.network.packets.server.Packet_Tickets;
+import mcp.mobius.opis.network.packets.server.NetDataCommand_OLD;
+import mcp.mobius.opis.network.packets.server.NetDataList_OLD;
+import mcp.mobius.opis.network.packets.server.Packet_DataOverlayChunkEntities_OLD;
+import mcp.mobius.opis.network.packets.server.NetDataValue_OLD;
+import mcp.mobius.opis.network.packets.server.Packet_Tickets_OLD;
 import mcp.mobius.opis.swing.SelectedTab;
 
 public class ServerMessageHandler {
@@ -65,56 +65,56 @@ public class ServerMessageHandler {
 		
 		else if (maintype == Message.OVERLAY_CHUNK_TIMING){
 			ArrayList<StatsChunk> timingChunks = ChunkManager.INSTANCE.getTopChunks(100);
-			OpisPacketHandler_OLD.validateAndSend(NetDataList.create(Message.LIST_TIMING_CHUNK,  timingChunks), (Player)player);
+			OpisPacketHandler_OLD.validateAndSend(NetDataList_OLD.create(Message.LIST_TIMING_CHUNK,  timingChunks), player);
 		}		
 		
 		else if (maintype == Message.LIST_CHUNK_TILEENTS){
-			OpisPacketHandler_OLD.validateAndSend(NetDataList.create(Message.LIST_CHUNK_TILEENTS, TileEntityManager.INSTANCE.getTileEntitiesInChunk((CoordinatesChunk)param1)), player);
+			OpisPacketHandler_OLD.validateAndSend(NetDataList_OLD.create(Message.LIST_CHUNK_TILEENTS, TileEntityManager.INSTANCE.getTileEntitiesInChunk((CoordinatesChunk)param1)), player);
 		}		
 		
 		else if (maintype == Message.LIST_CHUNK_ENTITIES){
-			OpisPacketHandler_OLD.validateAndSend(NetDataList.create(Message.LIST_CHUNK_ENTITIES,  EntityManager.INSTANCE.getEntitiesInChunk((CoordinatesChunk)param1)), (Player)player);
+			OpisPacketHandler_OLD.validateAndSend(NetDataList_OLD.create(Message.LIST_CHUNK_ENTITIES,  EntityManager.INSTANCE.getEntitiesInChunk((CoordinatesChunk)param1)), player);
 		}
 
 		else if (maintype == Message.LIST_CHUNK_LOADED){
 			PlayerTracker.instance().playerOverlayStatus.put(player, OverlayStatus.CHUNKSTATUS);
 			PlayerTracker.instance().playerDimension.put(player, ((SerialInt)param1).value);
-			OpisPacketHandler_OLD.validateAndSend(NetDataCommand.create(Message.LIST_CHUNK_LOADED_CLEAR), player);
+			OpisPacketHandler_OLD.validateAndSend(NetDataCommand_OLD.create(Message.LIST_CHUNK_LOADED_CLEAR), player);
 			OpisPacketHandler_OLD.splitAndSend(Message.LIST_CHUNK_LOADED, ChunkManager.INSTANCE.getLoadedChunks(((SerialInt)param1).value), player);
 		}		
 
 		else if (maintype == Message.LIST_CHUNK_TICKETS){
-			PacketDispatcher.sendPacketToPlayer(Packet_Tickets.create(ChunkManager.INSTANCE.getTickets()), player);
+			PacketManager.sendPacketToPlayer(Packet_Tickets_OLD.create(ChunkManager.INSTANCE.getTickets()), player);
 		}		
 		
 		else if (maintype == Message.LIST_TIMING_TILEENTS){
 			ArrayList<DataBlockTileEntity>  timingTileEnts = TileEntityManager.INSTANCE.getWorses(100);
 			DataTiming totalTime = TileEntityManager.INSTANCE.getTotalUpdateTime();
-			OpisPacketHandler_OLD.validateAndSend(NetDataList.create (Message.LIST_TIMING_TILEENTS, timingTileEnts), (Player)player);
-			OpisPacketHandler_OLD.validateAndSend(NetDataValue.create(Message.VALUE_TIMING_TILEENTS, totalTime),     (Player)player);
+			OpisPacketHandler_OLD.validateAndSend(NetDataList_OLD.create (Message.LIST_TIMING_TILEENTS, timingTileEnts), player);
+			OpisPacketHandler_OLD.validateAndSend(NetDataValue_OLD.create(Message.VALUE_TIMING_TILEENTS, totalTime),     player);
 		}
 		
 		else if (maintype == Message.LIST_TIMING_ENTITIES){
 			ArrayList<DataEntity>      timingEntities = EntityManager.INSTANCE.getWorses(100);
 			DataTiming totalTime = EntityManager.INSTANCE.getTotalUpdateTime();			
-			OpisPacketHandler_OLD.validateAndSend(NetDataList.create(Message.LIST_TIMING_ENTITIES,  timingEntities), (Player)player);
-			OpisPacketHandler_OLD.validateAndSend(NetDataValue.create(Message.VALUE_TIMING_ENTITIES, totalTime),     (Player)player);			
+			OpisPacketHandler_OLD.validateAndSend(NetDataList_OLD.create(Message.LIST_TIMING_ENTITIES,  timingEntities), player);
+			OpisPacketHandler_OLD.validateAndSend(NetDataValue_OLD.create(Message.VALUE_TIMING_ENTITIES, totalTime),     player);			
 		}
 		
 		else if (maintype == Message.LIST_TIMING_HANDLERS){
 			ArrayList<DataHandler> timingHandlers = TickHandlerManager.getCumulatedStatsServer();
 			DataTiming totalTime = TickHandlerManager.getTotalUpdateTime();
-			OpisPacketHandler_OLD.validateAndSend(NetDataList.create(Message.LIST_TIMING_HANDLERS,  timingHandlers), (Player)player);
-			OpisPacketHandler_OLD.validateAndSend(NetDataValue.create(Message.VALUE_TIMING_HANDLERS, totalTime),     (Player)player);			
+			OpisPacketHandler_OLD.validateAndSend(NetDataList_OLD.create(Message.LIST_TIMING_HANDLERS,  timingHandlers), player);
+			OpisPacketHandler_OLD.validateAndSend(NetDataValue_OLD.create(Message.VALUE_TIMING_HANDLERS, totalTime),     player);			
 		}
 		
 		else if (maintype == Message.LIST_TIMING_CHUNK){
 			ArrayList<StatsChunk> timingChunks = ChunkManager.INSTANCE.getTopChunks(100);
-			OpisPacketHandler_OLD.validateAndSend(NetDataList.create(Message.LIST_TIMING_CHUNK,  timingChunks), (Player)player);
+			OpisPacketHandler_OLD.validateAndSend(NetDataList_OLD.create(Message.LIST_TIMING_CHUNK,  timingChunks), player);
 		}
 
 		else if (maintype == Message.VALUE_TIMING_WORLDTICK){
-			OpisPacketHandler_OLD.validateAndSend(NetDataValue.create(Message.VALUE_TIMING_WORLDTICK, new DataBlockTick().fill()), (Player)player);
+			OpisPacketHandler_OLD.validateAndSend(NetDataValue_OLD.create(Message.VALUE_TIMING_WORLDTICK, new DataBlockTick().fill()), player);
 		}		
 
 		else if (maintype == Message.VALUE_TIMING_ENTUPDATE){
@@ -126,11 +126,11 @@ public class ServerMessageHandler {
 				filtered = PlayerTracker.instance().filteredAmount.get(name);
 			
 			ArrayList<AmountHolder> ents = EntityManager.INSTANCE.getCumulativeEntities(filtered);
-			OpisPacketHandler_OLD.validateAndSend(NetDataList.create(Message.LIST_AMOUNT_ENTITIES,  ents), (Player)player);
+			OpisPacketHandler_OLD.validateAndSend(NetDataList_OLD.create(Message.LIST_AMOUNT_ENTITIES,  ents), player);
 		}
 		
 		else if (maintype == Message.LIST_AMOUNT_TILEENTS){
-			OpisPacketHandler_OLD.validateAndSend(NetDataList.create(Message.LIST_AMOUNT_TILEENTS,  TileEntityManager.INSTANCE.getCumulativeAmountTileEntities()), (Player)player);
+			OpisPacketHandler_OLD.validateAndSend(NetDataList_OLD.create(Message.LIST_AMOUNT_TILEENTS,  TileEntityManager.INSTANCE.getCumulativeAmountTileEntities()), player);
 		}		
 		
 		else if (maintype == Message.COMMAND_FILTERING_TRUE){
@@ -150,20 +150,20 @@ public class ServerMessageHandler {
 			MetaManager.reset();	
 			modOpis.profilerRun = true;
 			ProfilerSection.activateAll(Side.SERVER);
-			OpisPacketHandler_OLD.sendPacketToAllSwing(NetDataValue.create(Message.STATUS_START, new SerialInt(modOpis.profilerMaxTicks)));			
+			OpisPacketHandler_OLD.sendPacketToAllSwing(NetDataValue_OLD.create(Message.STATUS_START, new SerialInt(modOpis.profilerMaxTicks)));			
 		}		
 		
 		else if (maintype == Message.COMMAND_TELEPORT_BLOCK){
 			EntityManager.INSTANCE.teleportPlayer((CoordinatesBlock)param1, (EntityPlayerMP)player);
-			OpisPacketHandler_OLD.validateAndSend(NetDataValue.create(Message.CLIENT_HIGHLIGHT_BLOCK, param1), (Player)player);
+			OpisPacketHandler_OLD.validateAndSend(NetDataValue_OLD.create(Message.CLIENT_HIGHLIGHT_BLOCK, param1), player);
 		}	
 		
 		else if (maintype == Message.COMMAND_TELEPORT_TO_ENTITY){
-			EntityManager.INSTANCE.teleportEntity((EntityPlayerMP)player, EntityManager.INSTANCE.getEntity(((TargetEntity)param1).entityID, ((TargetEntity)param1).dim), player);
+			EntityManager.INSTANCE.teleportEntity(player, EntityManager.INSTANCE.getEntity(((TargetEntity)param1).entityID, ((TargetEntity)param1).dim), player);
 		}			
 		
 		else if (maintype == Message.COMMAND_TELEPORT_PULL_ENTITY){
-			EntityManager.INSTANCE.teleportEntity(EntityManager.INSTANCE.getEntity(((TargetEntity)param1).entityID, ((TargetEntity)param1).dim), (EntityPlayerMP)player, player);
+			EntityManager.INSTANCE.teleportEntity(EntityManager.INSTANCE.getEntity(((TargetEntity)param1).entityID, ((TargetEntity)param1).dim), player, player);
 		}		
 		
 		else if (maintype == Message.COMMAND_TELEPORT_CHUNK){
@@ -187,7 +187,7 @@ public class ServerMessageHandler {
 		}
 			
 		else if(maintype == Message.STATUS_TIME_LAST_RUN){	
-			OpisPacketHandler_OLD.validateAndSend(NetDataValue.create(Message.STATUS_TIME_LAST_RUN,  new SerialLong(ProfilerSection.timeStampLastRun)), (Player)player);
+			OpisPacketHandler_OLD.validateAndSend(NetDataValue_OLD.create(Message.STATUS_TIME_LAST_RUN,  new SerialLong(ProfilerSection.timeStampLastRun)), player);
 		}
 		
 		else if(maintype == Message.COMMAND_KILL_HOSTILES_ALL){
@@ -218,17 +218,17 @@ public class ServerMessageHandler {
 		}		
 		
 		else if(maintype == Message.STATUS_PING){
-			OpisPacketHandler_OLD.validateAndSend(NetDataValue.create(Message.STATUS_PING, param1), (Player)player);
+			OpisPacketHandler_OLD.validateAndSend(NetDataValue_OLD.create(Message.STATUS_PING, param1), player);
 		}
 		
 		else if(maintype == Message.SWING_TAB_CHANGED){
 			SelectedTab tab = SelectedTab.values()[((SerialInt)param1).value];
-			PlayerTracker.instance().playerTab.put((Player)player, tab);
+			PlayerTracker.instance().playerTab.put(player, tab);
 		}		
 		
 		else if(maintype == Message.LIST_ORPHAN_TILEENTS){
-			OpisPacketHandler_OLD.validateAndSend(NetDataCommand.create(Message.LIST_ORPHAN_TILEENTS_CLEAR), (Player)player);
-			OpisPacketHandler_OLD.splitAndSend(Message.LIST_ORPHAN_TILEENTS, TileEntityManager.INSTANCE.getOrphans(), (Player)player);
+			OpisPacketHandler_OLD.validateAndSend(NetDataCommand_OLD.create(Message.LIST_ORPHAN_TILEENTS_CLEAR), player);
+			OpisPacketHandler_OLD.splitAndSend(Message.LIST_ORPHAN_TILEENTS, TileEntityManager.INSTANCE.getOrphans(), player);
 		}
 		
 		else{
@@ -244,7 +244,7 @@ public class ServerMessageHandler {
 		for (CoordinatesChunk chunk : entities.keySet())
 			perChunk.put(chunk, entities.get(chunk).size());
 
-		PacketManager.sendPacketToPlayer(Packet_DataOverlayChunkEntities.create(perChunk), player);
+		PacketManager.sendPacketToPlayer(Packet_DataOverlayChunkEntities_OLD.create(perChunk), player);
 	}
 	
 }

@@ -15,7 +15,7 @@ import mcp.mobius.opis.data.holders.newtypes.DataTiming;
 import mcp.mobius.opis.helpers.ModIdentification;
 import mcp.mobius.opis.network.enums.AccessLevel;
 import mcp.mobius.opis.network.enums.Message;
-import mcp.mobius.opis.network.packets.server.NetDataRaw;
+import mcp.mobius.opis.network.packets.server.NetDataRaw_OLD;
 import mcp.mobius.opis.swing.SelectedTab;
 import mcp.mobius.opis.swing.actions.ActionRunOpis;
 import mcp.mobius.opis.swing.widgets.JButtonAccess;
@@ -44,7 +44,7 @@ public class PanelTimingTileEntsPerClass extends JPanelMsgHandler implements ITa
 	}
 
 	@Override
-	public boolean handleMessage(Message msg, NetDataRaw rawdata) {
+	public boolean handleMessage(Message msg, NetDataRaw_OLD rawdata) {
 		switch(msg){
 		
 		case LIST_TIMING_TILEENTS_PER_CLASS:{
