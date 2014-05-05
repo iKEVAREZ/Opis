@@ -27,7 +27,7 @@ public enum StringCache implements IMessageHandler {
 	public String getString(int index){
 		String retVal = this.cache.get(index);
 		if (retVal == null){
-			modOpis.log.info(String.format("++++ Couldn't find string for index %d", index));			
+			//modOpis.log.info(String.format("++++ Couldn't find string for index %d", index));			
 			return "<ERROR>";
 		}else
 			return retVal;
@@ -46,7 +46,7 @@ public enum StringCache implements IMessageHandler {
 			currentIndex += 1;
 			cache.put(currentIndex, str);
 
-			System.out.printf("++++ Adding string %s with index %d to cache\n", str, currentIndex);
+			//System.out.printf("++++ Adding string %s with index %d to cache\n", str, currentIndex);
 			
 			DataStringUpdate upd = new DataStringUpdate(str, currentIndex);
 			this.toSend.add(upd);
@@ -75,7 +75,7 @@ public enum StringCache implements IMessageHandler {
 		switch(msg){
 		case STATUS_STRINGUPD:{
 			DataStringUpdate data = (DataStringUpdate)rawdata.value;
-			modOpis.log.info(String.format("++++ Received String Cache update : [%d] %s", data.index, data.str));			
+			//modOpis.log.info(String.format("++++ Received String Cache update : [%d] %s", data.index, data.str));			
 			try{
 				this.cache.put(data.index, data.str);
 			} catch (IllegalArgumentException e){
@@ -86,11 +86,11 @@ public enum StringCache implements IMessageHandler {
 			break;
 		}
 		case STATUS_STRINGUPD_FULL:{
-			modOpis.log.info(String.format("++++ Received full String Cache update containing %d entries", rawdata.array.size()));
+			modOpis.log.info(String.format("Received full String Cache update containing %d entries", rawdata.array.size()));
 			
 			for (ISerializable idata : rawdata.array){
 				DataStringUpdate data = (DataStringUpdate)idata;
-				modOpis.log.info(String.format("++++ Received String Cache update : [%d] %s", data.index, data.str));					
+				//modOpis.log.info(String.format("++++ Received String Cache update : [%d] %s", data.index, data.str));					
 				try{
 					this.cache.put(data.index, data.str);
 				} catch (IllegalArgumentException e){
