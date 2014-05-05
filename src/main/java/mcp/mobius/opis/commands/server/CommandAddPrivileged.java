@@ -5,9 +5,8 @@ import mcp.mobius.opis.events.PlayerTracker;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.network.MemoryConnection;
 import net.minecraft.server.dedicated.DedicatedServer;
-import net.minecraft.util.ChatMessageComponent;
+
 
 public class CommandAddPrivileged  extends CommandBase  implements IOpisCommand{
 
