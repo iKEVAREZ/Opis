@@ -4,8 +4,8 @@ import mcp.mobius.opis.api.ITabPanel;
 import mcp.mobius.opis.data.holders.newtypes.CachedString;
 import mcp.mobius.opis.data.holders.newtypes.DataThread;
 import mcp.mobius.opis.data.holders.newtypes.DataTileEntity;
+import mcp.mobius.opis.network.PacketBase;
 import mcp.mobius.opis.network.enums.Message;
-import mcp.mobius.opis.network.packets.server.NetDataRaw_OLD;
 import mcp.mobius.opis.swing.SelectedTab;
 import mcp.mobius.opis.swing.actions.ActionOrphanTileEntities;
 import mcp.mobius.opis.swing.widgets.JPanelMsgHandler;
@@ -35,7 +35,7 @@ public class PanelThreads extends JPanelMsgHandler implements ITabPanel {
 	}
 
 	@Override
-	public boolean handleMessage(Message msg, NetDataRaw_OLD rawdata) {
+	public boolean handleMessage(Message msg, PacketBase rawdata) {
 		switch(msg){
 		case LIST_THREADS:{
 			

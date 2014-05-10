@@ -5,8 +5,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 import mcp.mobius.opis.modOpis;
+import mcp.mobius.opis.network.PacketBase;
 import mcp.mobius.opis.network.enums.Message;
-import mcp.mobius.opis.network.packets.server.NetDataRaw_OLD;
 
 public enum MessageHandlerRegistrar {
 	INSTANCE;
@@ -20,7 +20,7 @@ public enum MessageHandlerRegistrar {
 		msgHandlers.get(msg).add(handler);
 	}
 	
-	public void routeMessage(Message msg, NetDataRaw_OLD rawdata){
+	public void routeMessage(Message msg, PacketBase rawdata){
 		
 		if (msgHandlers.containsKey(msg)){
 			for (IMessageHandler handler : msgHandlers.get(msg)){

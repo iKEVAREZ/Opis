@@ -20,9 +20,9 @@ import mcp.mobius.opis.data.holders.newtypes.DataNetworkTick;
 import mcp.mobius.opis.data.holders.newtypes.DataBlockTileEntity;
 import mcp.mobius.opis.data.holders.newtypes.DataTiming;
 import mcp.mobius.opis.data.holders.newtypes.DataTimingMillisecond;
+import mcp.mobius.opis.network.PacketBase;
 import mcp.mobius.opis.network.enums.AccessLevel;
 import mcp.mobius.opis.network.enums.Message;
-import mcp.mobius.opis.network.packets.server.NetDataRaw_OLD;
 import mcp.mobius.opis.swing.SelectedTab;
 import mcp.mobius.opis.swing.actions.ActionRunOpis;
 import mcp.mobius.opis.swing.widgets.JButtonAccess;
@@ -331,7 +331,7 @@ public class PanelSummary extends JPanelMsgHandler implements ITabPanel{
 	}
 
 	@Override
-	public boolean handleMessage(Message msg, NetDataRaw_OLD rawdata) {
+	public boolean handleMessage(Message msg, PacketBase rawdata) {
 		switch(msg){
 		case VALUE_AMOUNT_TILEENTS:{
 			this.getLblAmountTileEnts().setText(String.valueOf(((SerialInt)rawdata.value).value));

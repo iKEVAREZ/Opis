@@ -186,12 +186,12 @@ public enum EntityManager {
 
 	public boolean teleportEntity(Entity src, Entity trg, EntityPlayerMP msgtrg){
 		if ((src == null) && (msgtrg != null)) {
-			PacketManager.sendToPlayer(new Packet3Chat(ChatMessageComponent.createFromText(String.format("\u00A7oCannot find source entity %s", src))), msgtrg);
+			PacketManager.sendChatMsg(String.format("\u00A7oCannot find source entity %s", src), msgtrg);
 			return false;
 		}		
 
 		if ((trg == null) && (msgtrg != null)) {
-			PacketManager.sendToPlayer(new Packet3Chat(ChatMessageComponent.createFromText(String.format("\u00A7oCannot find target entity %s", trg))), msgtrg);
+			PacketManager.sendChatMsg(String.format("\u00A7oCannot find target entity %s", src), msgtrg);			
 			return false;
 		}				
 		

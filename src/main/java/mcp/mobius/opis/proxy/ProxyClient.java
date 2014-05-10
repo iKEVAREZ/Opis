@@ -29,8 +29,8 @@ import mcp.mobius.opis.gui.overlay.OverlayLoadedChunks;
 import mcp.mobius.opis.gui.overlay.OverlayMeanTime;
 import mcp.mobius.opis.gui.overlay.entperchunk.OverlayEntityPerChunk;
 import mcp.mobius.opis.gui.screens.ScreenBase;
+import mcp.mobius.opis.network.PacketBase;
 import mcp.mobius.opis.network.enums.Message;
-import mcp.mobius.opis.network.packets.server.NetDataRaw_OLD;
 import mcp.mobius.opis.swing.SwingUI;
 import mcp.mobius.opis.swing.panels.PanelSummary;
 import mcp.mobius.opis.swing.panels.debug.PanelOrphanTileEntities;
@@ -207,7 +207,7 @@ public class ProxyClient extends ProxyServer implements IMessageHandler{
 	}
 
 	@Override
-	public boolean handleMessage(Message msg, NetDataRaw_OLD rawdata) {
+	public boolean handleMessage(Message msg, PacketBase rawdata) {
 		switch(msg){
 		case CLIENT_CLEAR_SELECTION:{
 			modOpis.selectedBlock = null;
@@ -222,10 +222,10 @@ public class ProxyClient extends ProxyServer implements IMessageHandler{
 		}
 		case CLIENT_SHOW_RENDER_TICK:{
 			modOpis.log.log(Level.INFO, "=== RENDER TICK ===");
-			ArrayList<DataHandler> stats = TickHandlerManager.getCumulatedStatsServer();
-			for (DataHandler stat : stats){
-				System.out.printf("%s \n", stat);
-			}			
+			//ArrayList<DataHandler> stats = TickHandlerManager.getCumulatedStatsServer();
+			//for (DataHandler stat : stats){
+			//	System.out.printf("%s \n", stat);
+			//}			
 			break;
 		}
 		default:

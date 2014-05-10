@@ -20,8 +20,8 @@ import mcp.mobius.opis.data.holders.newtypes.DataBlockTileEntity;
 import mcp.mobius.opis.data.holders.stats.StatsChunk;
 import mcp.mobius.opis.data.profilers.ProfilerEntityUpdate;
 import mcp.mobius.opis.data.profilers.ProfilerTileEntityUpdate;
+import mcp.mobius.opis.network.PacketBase;
 import mcp.mobius.opis.network.enums.Message;
-import mcp.mobius.opis.network.packets.server.NetDataRaw_OLD;
 import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
@@ -164,7 +164,7 @@ public enum ChunkManager implements IMessageHandler{
 	}
 
 	@Override
-	public boolean handleMessage(Message msg, NetDataRaw_OLD rawdata) {
+	public boolean handleMessage(Message msg, PacketBase rawdata) {
 		switch(msg){
 		case LIST_TIMING_CHUNK:{
 			this.setChunkMeanTime(rawdata.array);

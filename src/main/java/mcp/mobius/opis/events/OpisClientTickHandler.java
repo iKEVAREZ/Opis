@@ -136,7 +136,7 @@ public enum OpisClientTickHandler{
 
 		//====================================================================================	
 		
-		((PanelRenderHandlers)(TabPanelRegistrar.INSTANCE.getTab(SelectedTab.RENDERHANDLERS))).setTable(TickHandlerManager.getCumulatedStatsRender());
+		//((PanelRenderHandlers)(TabPanelRegistrar.INSTANCE.getTab(SelectedTab.RENDERHANDLERS))).setTable(TickHandlerManager.getCumulatedStatsRender());
 		
 		//====================================================================================			
 		

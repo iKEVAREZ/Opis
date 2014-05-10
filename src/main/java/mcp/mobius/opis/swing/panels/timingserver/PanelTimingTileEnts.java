@@ -12,9 +12,9 @@ import mcp.mobius.opis.data.holders.newtypes.DataTiming;
 import mcp.mobius.opis.data.holders.stats.StatAbstract;
 import mcp.mobius.opis.gui.overlay.OverlayMeanTime;
 import mcp.mobius.opis.helpers.ModIdentification;
+import mcp.mobius.opis.network.PacketBase;
 import mcp.mobius.opis.network.enums.AccessLevel;
 import mcp.mobius.opis.network.enums.Message;
-import mcp.mobius.opis.network.packets.server.NetDataRaw_OLD;
 import mcp.mobius.opis.swing.SelectedTab;
 import mcp.mobius.opis.swing.actions.ActionRunOpis;
 import mcp.mobius.opis.swing.actions.ActionTimingTileEnts;
@@ -83,7 +83,7 @@ public class PanelTimingTileEnts extends JPanelMsgHandler implements ITabPanel{
 	public JLabel  getLblSummary() {return lblSummary;}
 
 	@Override
-	public boolean handleMessage(Message msg, NetDataRaw_OLD rawdata) {
+	public boolean handleMessage(Message msg, PacketBase rawdata) {
 		switch(msg){
 		case LIST_TIMING_TILEENTS:{
 			

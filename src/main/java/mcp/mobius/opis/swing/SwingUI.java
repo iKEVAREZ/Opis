@@ -28,11 +28,11 @@ import mcp.mobius.opis.api.IMessageHandler;
 import mcp.mobius.opis.api.ITabPanel;
 import mcp.mobius.opis.api.TabPanelRegistrar;
 import mcp.mobius.opis.data.holders.basetypes.SerialInt;
+import mcp.mobius.opis.network.PacketBase;
 import mcp.mobius.opis.network.PacketManager;
 import mcp.mobius.opis.network.enums.AccessLevel;
 import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.packets.client.PacketReqData;
-import mcp.mobius.opis.network.packets.server.NetDataRaw_OLD;
 import mcp.mobius.opis.swing.panels.PanelSummary;
 import mcp.mobius.opis.swing.panels.timingserver.PanelTimingChunks;
 import mcp.mobius.opis.swing.panels.timingserver.PanelTimingEntities;
@@ -119,7 +119,7 @@ public class SwingUI extends JFrame implements WindowListener, ChangeListener, I
 	}
 	
 	@Override
-	public boolean handleMessage(Message msg, NetDataRaw_OLD rawdata) {
+	public boolean handleMessage(Message msg, PacketBase rawdata) {
 		switch(msg){
 		case STATUS_ACCESS_LEVEL:{
 			AccessLevel level =  AccessLevel.values()[((SerialInt)rawdata.value).value];

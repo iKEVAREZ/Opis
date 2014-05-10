@@ -36,9 +36,9 @@ import mcp.mobius.opis.data.holders.basetypes.SerialLong;
 import mcp.mobius.opis.data.holders.stats.StatAbstract;
 import mcp.mobius.opis.data.holders.stats.StatsChunk;
 import mcp.mobius.opis.helpers.ModIdentification;
+import mcp.mobius.opis.network.PacketBase;
 import mcp.mobius.opis.network.enums.AccessLevel;
 import mcp.mobius.opis.network.enums.Message;
-import mcp.mobius.opis.network.packets.server.NetDataRaw_OLD;
 import mcp.mobius.opis.swing.SwingUI;
 import mcp.mobius.opis.swing.widgets.JButtonAccess;
 
@@ -59,7 +59,7 @@ public class DataCache implements IMessageHandler{
 	}
 
 	@Override
-	public boolean handleMessage(Message msg, NetDataRaw_OLD rawdata) {
+	public boolean handleMessage(Message msg, PacketBase rawdata) {
 		switch(msg){
 		case STATUS_ACCESS_LEVEL:{
 			this.clientAccess = AccessLevel.values()[((SerialInt)rawdata.value).value];

@@ -11,8 +11,8 @@ import mcp.mobius.opis.data.holders.newtypes.DataAmountRate;
 import mcp.mobius.opis.data.holders.newtypes.DataByteRate;
 import mcp.mobius.opis.data.holders.newtypes.DataByteSize;
 import mcp.mobius.opis.data.holders.newtypes.DataPacket250;
+import mcp.mobius.opis.network.PacketBase;
 import mcp.mobius.opis.network.enums.Message;
-import mcp.mobius.opis.network.packets.server.NetDataRaw_OLD;
 import mcp.mobius.opis.swing.SelectedTab;
 import mcp.mobius.opis.swing.widgets.JPanelMsgHandler;
 import mcp.mobius.opis.swing.widgets.JTableStats;
@@ -39,7 +39,7 @@ public class PanelOutbound250 extends JPanelMsgHandler implements ITabPanel {
 	}
 
 	@Override
-	public boolean handleMessage(Message msg, NetDataRaw_OLD rawdata) {
+	public boolean handleMessage(Message msg, PacketBase rawdata) {
 		switch(msg){
 		case LIST_PACKETS_OUTBOUND_250:{
 			

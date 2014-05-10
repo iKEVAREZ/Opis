@@ -36,11 +36,12 @@ import mcp.mobius.opis.data.profilers.ProfilerPacket;
 import mcp.mobius.opis.data.profilers.ProfilerTick;
 import mcp.mobius.opis.gui.overlay.OverlayStatus;
 import mcp.mobius.opis.network.OpisPacketHandler_OLD;
+import mcp.mobius.opis.network.PacketManager;
 import mcp.mobius.opis.network.enums.AccessLevel;
 import mcp.mobius.opis.network.enums.Message;
-import mcp.mobius.opis.network.packets.server.NetDataCommand_OLD;
-import mcp.mobius.opis.network.packets.server.NetDataList_OLD;
-import mcp.mobius.opis.network.packets.server.NetDataValue_OLD;
+import mcp.mobius.opis.network.packets.server.NetDataCommand;
+import mcp.mobius.opis.network.packets.server.NetDataList;
+import mcp.mobius.opis.network.packets.server.NetDataValue;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
@@ -75,17 +76,17 @@ public enum OpisServerTickHandler{
 			// One second timer
 			if (timer1000.isDone()){
 
-				OpisPacketHandler_OLD.sendPacketToAllSwing(NetDataValue_OLD.create(Message.VALUE_AMOUNT_UPLOAD,   new SerialLong(((ProfilerPacket)ProfilerSection.PACKET_OUTBOUND.getProfiler()).dataAmount)));
-				OpisPacketHandler_OLD.sendPacketToAllSwing(NetDataValue_OLD.create(Message.VALUE_AMOUNT_DOWNLOAD, new SerialLong(((ProfilerPacket)ProfilerSection.PACKET_INBOUND.getProfiler()).dataAmount)));
-				OpisPacketHandler_OLD.sendPacketToAllSwing(NetDataValue_OLD.create(Message.VALUE_CHUNK_FORCED,    new SerialInt(ChunkManager.INSTANCE.getForcedChunkAmount())));
-				OpisPacketHandler_OLD.sendPacketToAllSwing(NetDataValue_OLD.create(Message.VALUE_CHUNK_LOADED,    new SerialInt(ChunkManager.INSTANCE.getLoadedChunkAmount())));
-				OpisPacketHandler_OLD.sendPacketToAllSwing(NetDataValue_OLD.create(Message.VALUE_TIMING_TICK,     new DataTiming(((ProfilerTick)ProfilerSection.TICK.getProfiler()).data.getGeometricMean())));
-				OpisPacketHandler_OLD.sendPacketToAllSwing(NetDataValue_OLD.create(Message.VALUE_AMOUNT_TILEENTS, new SerialInt(TileEntityManager.INSTANCE.getAmountTileEntities())));
-				OpisPacketHandler_OLD.sendPacketToAllSwing(NetDataValue_OLD.create(Message.VALUE_AMOUNT_ENTITIES, new SerialInt(EntityManager.INSTANCE.getAmountEntities())));
+				PacketManager.sendPacketToAllSwing(new NetDataValue(Message.VALUE_AMOUNT_UPLOAD,   new SerialLong(((ProfilerPacket)ProfilerSection.PACKET_OUTBOUND.getProfiler()).dataAmount)));
+				PacketManager.sendPacketToAllSwing(new NetDataValue(Message.VALUE_AMOUNT_DOWNLOAD, new SerialLong(((ProfilerPacket)ProfilerSection.PACKET_INBOUND.getProfiler()).dataAmount)));
+				PacketManager.sendPacketToAllSwing(new NetDataValue(Message.VALUE_CHUNK_FORCED,    new SerialInt(ChunkManager.INSTANCE.getForcedChunkAmount())));
+				PacketManager.sendPacketToAllSwing(new NetDataValue(Message.VALUE_CHUNK_LOADED,    new SerialInt(ChunkManager.INSTANCE.getLoadedChunkAmount())));
+				PacketManager.sendPacketToAllSwing(new NetDataValue(Message.VALUE_TIMING_TICK,     new DataTiming(((ProfilerTick)ProfilerSection.TICK.getProfiler()).data.getGeometricMean())));
+				PacketManager.sendPacketToAllSwing(new NetDataValue(Message.VALUE_AMOUNT_TILEENTS, new SerialInt(TileEntityManager.INSTANCE.getAmountTileEntities())));
+				PacketManager.sendPacketToAllSwing(new NetDataValue(Message.VALUE_AMOUNT_ENTITIES, new SerialInt(EntityManager.INSTANCE.getAmountEntities())));
 				
 				for (EntityPlayerMP player : PlayerTracker.INSTANCE.playersSwing){
 					if (!cachedAccess.containsKey(player) || cachedAccess.get(player) != PlayerTracker.INSTANCE.getPlayerAccessLevel(player)){
-						OpisPacketHandler_OLD.validateAndSend(NetDataValue_OLD.create(Message.STATUS_ACCESS_LEVEL, new SerialInt(PlayerTracker.INSTANCE.getPlayerAccessLevel(player).ordinal())), player);
+						PacketManager.validateAndSend(new NetDataValue(Message.STATUS_ACCESS_LEVEL, new SerialInt(PlayerTracker.INSTANCE.getPlayerAccessLevel(player).ordinal())), player);
 						cachedAccess.put(player, PlayerTracker.INSTANCE.getPlayerAccessLevel(player));
 					}
 				}
@@ -94,19 +95,19 @@ public enum OpisServerTickHandler{
 				for (Thread t : Thread.getAllStackTraces().keySet()){
 					threads.add(new DataThread().fill(t));
 				}
-				OpisPacketHandler_OLD.sendPacketToAllSwing(NetDataList_OLD.create(Message.LIST_THREADS, threads));
+				PacketManager.sendPacketToAllSwing(new NetDataList(Message.LIST_THREADS, threads));
 				
 				// Dimension data update.
 				ArrayList<DataDimension> dimData = new ArrayList<DataDimension>();
 				for (int dim : DimensionManager.getIDs()){
 					dimData.add(new DataDimension().fill(dim));
 				}
-				OpisPacketHandler_OLD.sendPacketToAllSwing(NetDataList_OLD.create(Message.LIST_DIMENSION_DATA, dimData));
+				PacketManager.sendPacketToAllSwing(new NetDataList(Message.LIST_DIMENSION_DATA, dimData));
 
 				// Profiler update (if running)
 				if (modOpis.profilerRun){
-					OpisPacketHandler_OLD.sendPacketToAllSwing(NetDataValue_OLD.create(Message.STATUS_RUNNING,    new SerialInt(modOpis.profilerMaxTicks)));
-					OpisPacketHandler_OLD.sendPacketToAllSwing(NetDataValue_OLD.create(Message.STATUS_RUN_UPDATE, new SerialInt(profilerRunningTicks)));
+					PacketManager.sendPacketToAllSwing(new NetDataValue(Message.STATUS_RUNNING,    new SerialInt(modOpis.profilerMaxTicks)));
+					PacketManager.sendPacketToAllSwing(new NetDataValue(Message.STATUS_RUN_UPDATE, new SerialInt(profilerRunningTicks)));
 				}
 				
 				((ProfilerPacket)ProfilerSection.PACKET_INBOUND.getProfiler()).dataAmount = 0L;
@@ -115,18 +116,18 @@ public enum OpisServerTickHandler{
 			
 			// Two second timer
 			if (timer2000.isDone()){
-				OpisPacketHandler_OLD.sendPacketToAllSwing(NetDataList_OLD.create(Message.LIST_PLAYERS, EntityManager.INSTANCE.getAllPlayers()));				
+				PacketManager.sendPacketToAllSwing(new NetDataList(Message.LIST_PLAYERS, EntityManager.INSTANCE.getAllPlayers()));				
 			}
 			
 			// Five second timer
 			if (timer5000.isDone()){
 				updatePlayers();
 				
-				OpisPacketHandler_OLD.sendPacketToAllSwing(NetDataList_OLD.create(Message.LIST_PACKETS_OUTBOUND, ((ProfilerPacket)ProfilerSection.PACKET_OUTBOUND.getProfiler()).data));
-				OpisPacketHandler_OLD.sendPacketToAllSwing(NetDataList_OLD.create(Message.LIST_PACKETS_INBOUND,  ((ProfilerPacket)ProfilerSection.PACKET_INBOUND.getProfiler()).data));
+				PacketManager.sendPacketToAllSwing(new NetDataList(Message.LIST_PACKETS_OUTBOUND, ((ProfilerPacket)ProfilerSection.PACKET_OUTBOUND.getProfiler()).data));
+				PacketManager.sendPacketToAllSwing(new NetDataList(Message.LIST_PACKETS_INBOUND,  ((ProfilerPacket)ProfilerSection.PACKET_INBOUND.getProfiler()).data));
 				
-				OpisPacketHandler_OLD.sendPacketToAllSwing(NetDataList_OLD.create(Message.LIST_PACKETS_OUTBOUND_250, new ArrayList<DataPacket250>( ((ProfilerPacket)ProfilerSection.PACKET_OUTBOUND.getProfiler()).data250.values())));
-				OpisPacketHandler_OLD.sendPacketToAllSwing(NetDataList_OLD.create(Message.LIST_PACKETS_INBOUND_250,  new ArrayList<DataPacket250>( ((ProfilerPacket)ProfilerSection.PACKET_INBOUND.getProfiler()).data250.values())));
+				PacketManager.sendPacketToAllSwing(new NetDataList(Message.LIST_PACKETS_OUTBOUND_250, new ArrayList<DataPacket250>( ((ProfilerPacket)ProfilerSection.PACKET_OUTBOUND.getProfiler()).data250.values())));
+				PacketManager.sendPacketToAllSwing(new NetDataList(Message.LIST_PACKETS_INBOUND_250,  new ArrayList<DataPacket250>( ((ProfilerPacket)ProfilerSection.PACKET_INBOUND.getProfiler()).data250.values())));
 
 				((ProfilerPacket)ProfilerSection.PACKET_OUTBOUND.getProfiler()).startInterval();
 				((ProfilerPacket)ProfilerSection.PACKET_INBOUND.getProfiler()).startInterval();				
@@ -147,7 +148,7 @@ public enum OpisServerTickHandler{
 				modOpis.profilerRun = false;
 				ProfilerSection.desactivateAll(Side.SERVER);
 				
-				OpisPacketHandler_OLD.sendPacketToAllSwing(NetDataValue_OLD.create(Message.STATUS_STOP, new SerialInt(modOpis.profilerMaxTicks)));
+				PacketManager.sendPacketToAllSwing(new NetDataValue(Message.STATUS_STOP, new SerialInt(modOpis.profilerMaxTicks)));
 				
 				for (EntityPlayerMP player : PlayerTracker.INSTANCE.playersSwing){
 					OpisPacketHandler_OLD.sendFullUpdate(player);
@@ -162,14 +163,14 @@ public enum OpisServerTickHandler{
 		for (EntityPlayerMP player : PlayerTracker.INSTANCE.playerOverlayStatus.keySet()){
 			
 			if (PlayerTracker.INSTANCE.playerOverlayStatus.get(player) == OverlayStatus.CHUNKSTATUS){
-				OpisPacketHandler_OLD.validateAndSend(NetDataCommand_OLD.create(Message.LIST_CHUNK_LOADED_CLEAR), player);
-				OpisPacketHandler_OLD.splitAndSend(Message.LIST_CHUNK_LOADED, ChunkManager.INSTANCE.getLoadedChunks(PlayerTracker.INSTANCE.playerDimension.get(player)), player);				
+				PacketManager.validateAndSend(new NetDataCommand(Message.LIST_CHUNK_LOADED_CLEAR), player);
+				PacketManager.splitAndSend(Message.LIST_CHUNK_LOADED, ChunkManager.INSTANCE.getLoadedChunks(PlayerTracker.INSTANCE.playerDimension.get(player)), player);				
 			}
 			
 			if (PlayerTracker.INSTANCE.playerOverlayStatus.get(player) == OverlayStatus.MEANTIME){
 				ArrayList<StatsChunk> timingChunks = ChunkManager.INSTANCE.getTopChunks(100);
 				//OpisPacketHandler.validateAndSend(Packet_DataList.create(DataReq.LIST_TIMING_CHUNK, timingChunks), player);
-				OpisPacketHandler_OLD.validateAndSend(NetDataList_OLD.create(Message.LIST_TIMING_CHUNK, timingChunks), player);
+				PacketManager.validateAndSend(new NetDataList(Message.LIST_TIMING_CHUNK, timingChunks), player);
 			}
 		}
 	}

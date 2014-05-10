@@ -8,12 +8,13 @@ import mcp.mobius.opis.api.IMessageHandler;
 import mcp.mobius.opis.api.ITabPanel;
 import mcp.mobius.opis.data.holders.newtypes.DataTileEntityRender;
 import mcp.mobius.opis.data.holders.newtypes.DataTiming;
+import mcp.mobius.opis.network.PacketBase;
 import mcp.mobius.opis.network.enums.Message;
-import mcp.mobius.opis.network.packets.server.NetDataRaw_OLD;
 import mcp.mobius.opis.swing.SelectedTab;
 import mcp.mobius.opis.swing.actions.ActionRunOpisClient;
 import mcp.mobius.opis.swing.widgets.JTableStats;
 import net.miginfocom.swing.MigLayout;
+import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 
 import javax.swing.JButton;
@@ -63,7 +64,7 @@ public class PanelRenderTileEnts extends JPanel implements ITabPanel, IMessageHa
 			String name  = String.format("te.%d.%d", o.id, o.meta);
 			
 			try{
-				is = new ItemStack(o.id, 1, o.meta);
+				is = new ItemStack(Block.getBlockById(o.id), 1, o.meta);
 				name  = is.getDisplayName();
 			}  catch (Exception e) {	}			
 			
@@ -108,7 +109,7 @@ public class PanelRenderTileEnts extends JPanel implements ITabPanel, IMessageHa
 	}
 
 	@Override
-	public boolean handleMessage(Message msg, NetDataRaw_OLD rawdata) {
+	public boolean handleMessage(Message msg, PacketBase rawdata) {
 		// TODO Auto-generated method stub
 		return false;
 	}

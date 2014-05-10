@@ -12,11 +12,11 @@ import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.api.IMessageHandler;
 import mcp.mobius.opis.data.holders.ISerializable;
 import mcp.mobius.opis.data.holders.newtypes.DataStringUpdate;
+import mcp.mobius.opis.network.PacketBase;
 import mcp.mobius.opis.network.PacketManager;
 import mcp.mobius.opis.network.enums.Message;
-import mcp.mobius.opis.network.packets.server.NetDataList_OLD;
-import mcp.mobius.opis.network.packets.server.NetDataRaw_OLD;
-import mcp.mobius.opis.network.packets.server.NetDataValue_OLD;
+import mcp.mobius.opis.network.packets.server.NetDataList;
+import mcp.mobius.opis.network.packets.server.NetDataValue;
 
 public enum StringCache implements IMessageHandler {
 	INSTANCE;
@@ -52,7 +52,7 @@ public enum StringCache implements IMessageHandler {
 			DataStringUpdate upd = new DataStringUpdate(str, currentIndex);
 			this.toSend.add(upd);
 			
-			PacketManager.sendToAll(NetDataValue_OLD.create(Message.STATUS_STRINGUPD, upd).packet);
+			PacketManager.sendToAll(new NetDataValue(Message.STATUS_STRINGUPD, upd));
 			return currentIndex;
 		}
 	}
@@ -64,7 +64,7 @@ public enum StringCache implements IMessageHandler {
 		ArrayList<DataStringUpdate> toSendCopy = new ArrayList(toSend);
 		
 		while (i < toSendCopy.size()){
-			PacketManager.sendToPlayer(NetDataList_OLD.create(Message.STATUS_STRINGUPD_FULL, toSendCopy.subList(i, Math.min(i + 50, toSendCopy.size()))).packet, player);			
+			PacketManager.sendToPlayer(new NetDataList(Message.STATUS_STRINGUPD_FULL, toSendCopy.subList(i, Math.min(i + 50, toSendCopy.size()))), player);			
 			i += 50;
 		}		
 		
@@ -72,7 +72,7 @@ public enum StringCache implements IMessageHandler {
 	}
 	
 	@Override
-	public boolean handleMessage(Message msg, NetDataRaw_OLD rawdata) {
+	public boolean handleMessage(Message msg, PacketBase rawdata) {
 		switch(msg){
 		case STATUS_STRINGUPD:{
 			DataStringUpdate data = (DataStringUpdate)rawdata.value;

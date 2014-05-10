@@ -10,9 +10,10 @@ import mcp.mobius.opis.data.holders.basetypes.SerialLong;
 import mcp.mobius.opis.data.managers.StringCache;
 import mcp.mobius.opis.gui.overlay.OverlayStatus;
 import mcp.mobius.opis.network.OpisPacketHandler_OLD;
+import mcp.mobius.opis.network.PacketManager;
 import mcp.mobius.opis.network.enums.AccessLevel;
 import mcp.mobius.opis.network.enums.Message;
-import mcp.mobius.opis.network.packets.server.NetDataValue_OLD;
+import mcp.mobius.opis.network.packets.server.NetDataValue;
 import mcp.mobius.opis.swing.SelectedTab;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -101,7 +102,7 @@ public enum PlayerTracker{
 	
 	@SubscribeEvent
 	public void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event){
-		OpisPacketHandler_OLD.validateAndSend(NetDataValue_OLD.create(Message.STATUS_CURRENT_TIME, new SerialLong(System.currentTimeMillis())), event.player);
+		PacketManager.validateAndSend(new NetDataValue(Message.STATUS_CURRENT_TIME, new SerialLong(System.currentTimeMillis())), (EntityPlayerMP)event.player);
 		
 		/*
 		if (manager instanceof MemoryConnection){

@@ -34,11 +34,11 @@ import mcp.mobius.opis.gui.widgets.LayoutCanvas;
 import mcp.mobius.opis.gui.widgets.WidgetGeometry;
 import mcp.mobius.opis.gui.widgets.tableview.TableRow;
 import mcp.mobius.opis.gui.widgets.tableview.ViewTable;
+import mcp.mobius.opis.network.PacketBase;
 import mcp.mobius.opis.network.PacketManager;
 import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.packets.client.PacketReqChunks;
 import mcp.mobius.opis.network.packets.client.PacketReqData;
-import mcp.mobius.opis.network.packets.server.NetDataRaw_OLD;
 
 public class OverlayMeanTime implements IMwDataProvider, IMessageHandler{
 
@@ -334,7 +334,7 @@ public class OverlayMeanTime implements IMwDataProvider, IMessageHandler{
 	}
 
 	@Override
-	public boolean handleMessage(Message msg, NetDataRaw_OLD rawdata) {
+	public boolean handleMessage(Message msg, PacketBase rawdata) {
 		switch(msg){
 		case LIST_CHUNK_TILEENTS:{
 			this.setupTable(rawdata.array);

@@ -10,7 +10,6 @@ import mcp.mobius.opis.data.managers.TickHandlerManager;
 import mcp.mobius.opis.events.PlayerTracker;
 import mcp.mobius.opis.network.OpisPacketHandler_OLD;
 import mcp.mobius.opis.network.enums.Message;
-import mcp.mobius.opis.network.packets.server.NetDataList_OLD;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -42,10 +41,10 @@ public class CommandHandler extends CommandBase  implements IOpisCommand {
 			return;
 		}				
 		
-		ArrayList<DataHandler> stats = TickHandlerManager.getCumulatedStatsServer();
+		//ArrayList<DataHandler> stats = TickHandlerManager.getCumulatedStatsServer();
 		
-		for (DataHandler s : stats)
-			icommandsender.addChatMessage(new ChatComponentText(String.format("%s : %.2f", s.name, s.update.toString())));
+		//for (DataHandler s : stats)
+		//	icommandsender.addChatMessage(new ChatComponentText(String.format("%s : %.2f", s.name, s.update.toString())));
 	}
 
 	@Override

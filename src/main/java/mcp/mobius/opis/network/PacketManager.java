@@ -9,20 +9,47 @@ import io.netty.channel.ChannelHandler.Sharable;
 
 import java.io.IOException;
 import java.lang.reflect.Constructor;
+import java.util.ArrayList;
 import java.util.EnumMap;
 
+import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.google.common.base.Charsets;
+import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Table.Cell;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 
+import mcp.mobius.mobiuscore.profiler.ProfilerSection;
+import mcp.mobius.opis.modOpis;
+import mcp.mobius.opis.data.holders.ISerializable;
+import mcp.mobius.opis.data.holders.basetypes.AmountHolder;
+import mcp.mobius.opis.data.holders.basetypes.SerialInt;
+import mcp.mobius.opis.data.holders.basetypes.SerialLong;
+import mcp.mobius.opis.data.holders.newtypes.DataBlockTick;
+import mcp.mobius.opis.data.holders.newtypes.DataBlockTileEntity;
+import mcp.mobius.opis.data.holders.newtypes.DataBlockTileEntityPerClass;
+import mcp.mobius.opis.data.holders.newtypes.DataEntity;
+import mcp.mobius.opis.data.holders.newtypes.DataEntityPerClass;
+import mcp.mobius.opis.data.holders.newtypes.DataEvent;
+import mcp.mobius.opis.data.holders.newtypes.DataNetworkTick;
+import mcp.mobius.opis.data.holders.newtypes.DataTiming;
+import mcp.mobius.opis.data.holders.stats.StatsChunk;
+import mcp.mobius.opis.data.managers.ChunkManager;
+import mcp.mobius.opis.data.managers.EntityManager;
+import mcp.mobius.opis.data.managers.TileEntityManager;
+import mcp.mobius.opis.data.profilers.ProfilerEvent;
+import mcp.mobius.opis.events.PlayerTracker;
+import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.packets.client.PacketReqChunks;
 import mcp.mobius.opis.network.packets.client.PacketReqData;
+import mcp.mobius.opis.network.packets.server.NetDataList;
+import mcp.mobius.opis.network.packets.server.NetDataValue;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -37,6 +64,8 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S02PacketChat;
+import net.minecraft.util.ChatComponentText;
 
 @Sharable
 public class PacketManager extends FMLIndexedMessageToMessageCodec<PacketBase>
@@ -113,6 +142,11 @@ public class PacketManager extends FMLIndexedMessageToMessageCodec<PacketBase>
         channels.get(SERVER).writeAndFlush(packet);
     }
 
+    public static void sendToPlayer(Packet packet, EntityPlayerMP player)
+    {
+    	player.playerNetServerHandler.sendPacket(packet);
+    }
+    
     public static void sendToAllAround(PacketBase packet, NetworkRegistry.TargetPoint point)
     {
         channels.get(SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.ALLAROUNDPOINT);
@@ -154,6 +188,30 @@ public class PacketManager extends FMLIndexedMessageToMessageCodec<PacketBase>
     }    
     */
     
+	public static void validateAndSend(PacketBase capsule, EntityPlayerMP player){
+		if (!capsule.msg.isDisplayActive(PlayerTracker.INSTANCE.getPlayerSelectedTab(player))) return;
+		
+		if (capsule.msg.canPlayerUseCommand(player))
+			PacketManager.sendToPlayer(capsule, player);
+	}    
+    
+	public static void sendPacketToAllSwing(PacketBase capsule){
+		for (EntityPlayerMP player : PlayerTracker.INSTANCE.playersSwing)
+			PacketManager.validateAndSend(capsule, player);
+	}	
+	
+	public static void sendChatMsg(String msg, EntityPlayerMP player){
+		PacketManager.sendToPlayer(new S02PacketChat(new ChatComponentText(msg)), player);
+	}	
+	
+	public static void splitAndSend(Message msg, ArrayList<? extends ISerializable> data, EntityPlayerMP player){
+		int i = 0;
+		while (i < data.size()){
+			validateAndSend(new NetDataList(msg, data.subList(i, Math.min(i + 500, data.size()))), player);
+			i += 500;
+		}
+	}	
+	
     // OTHER METHODS
 
     @Override
@@ -198,4 +256,56 @@ public class PacketManager extends FMLIndexedMessageToMessageCodec<PacketBase>
         return false;
     }
 
+    
+	public static void sendFullUpdate(EntityPlayerMP player){
+		ArrayList<DataEntity>       timingEntities = EntityManager.INSTANCE.getWorses(100);
+		ArrayList<DataBlockTileEntity>   timingTileEnts = TileEntityManager.INSTANCE.getWorses(100);
+		//ArrayList<DataHandler>      timingHandlers = TickHandlerManager.getCumulatedStatsServer();
+		ArrayList<StatsChunk>         timingChunks = ChunkManager.INSTANCE.getTopChunks(100);
+		ArrayList<DataEntityPerClass> timingEntsClass = EntityManager.INSTANCE.getTotalPerClass();
+		ArrayList<DataBlockTileEntityPerClass> timingTEsClass = TileEntityManager.INSTANCE.getCumulativeTimingTileEntities();
+		
+		DataTiming    totalTimeTE      = TileEntityManager.INSTANCE.getTotalUpdateTime();
+		DataTiming    totalTimeEnt     = EntityManager.INSTANCE.getTotalUpdateTime();
+		//DataTiming    totalTimeHandler = TickHandlerManager.getTotalUpdateTime();
+		DataNetworkTick  totalNetwork  = new DataNetworkTick().fill(); 
+		DataBlockTick totalWorldTick   = new DataBlockTick().fill();
+
+		ArrayList<DataEvent> timingEvents = new ArrayList<DataEvent>();
+		HashBasedTable<Class, String, DescriptiveStatistics> eventData = ((ProfilerEvent)ProfilerSection.EVENT_INVOKE.getProfiler()).data;
+		for (Cell<Class, String, DescriptiveStatistics> cell : eventData.cellSet()){
+			timingEvents.add(new DataEvent().fill(cell));
+		}		
+
+		//PacketManager.validateAndSend(NetDataList_OLD.create(Message.LIST_TIMING_HANDLERS,    timingHandlers),   player);
+		PacketManager.validateAndSend(new NetDataList(Message.LIST_TIMING_ENTITIES,    timingEntities),   player);
+		PacketManager.validateAndSend(new NetDataList(Message.LIST_TIMING_TILEENTS,    timingTileEnts),   player);
+		PacketManager.validateAndSend(new NetDataList(Message.LIST_TIMING_TILEENTS_PER_CLASS,    timingTEsClass),   player);
+		PacketManager.validateAndSend(new NetDataList(Message.LIST_TIMING_CHUNK,       timingChunks),     player);
+		PacketManager.validateAndSend(new NetDataList(Message.LIST_TIMING_EVENTS,      timingEvents),     player);
+		PacketManager.validateAndSend(new NetDataList(Message.LIST_TIMING_ENTITIES_PER_CLASS,      timingEntsClass),     player);
+		PacketManager.validateAndSend(new NetDataValue(Message.VALUE_TIMING_TILEENTS,  totalTimeTE),      player);
+		PacketManager.validateAndSend(new NetDataValue(Message.VALUE_TIMING_ENTITIES,  totalTimeEnt),     player);
+		//PacketManager.validateAndSend(NetDataValue_OLD.create(Message.VALUE_TIMING_HANDLERS,  totalTimeHandler), player);
+		PacketManager.validateAndSend(new NetDataValue(Message.VALUE_TIMING_WORLDTICK, totalWorldTick),   player);
+		PacketManager.validateAndSend(new NetDataValue(Message.VALUE_TIMING_NETWORK,   totalNetwork),     player);
+		
+		//PacketManager.validateAndSend(NetDataValue_OLD.create(Message.VALUE_AMOUNT_HANDLERS, new SerialInt(timingHandlers.size())), player);
+		
+		PacketManager.validateAndSend(new NetDataValue(Message.STATUS_TIME_LAST_RUN, new SerialLong(ProfilerSection.timeStampLastRun)), player);
+		
+		PacketManager.validateAndSend(new NetDataValue(Message.STATUS_ACCESS_LEVEL, new SerialInt(PlayerTracker.INSTANCE.getPlayerAccessLevel(player).ordinal())), player);
+		
+		// This portion is to get the proper filtered amounts depending on the player preferences.
+		String name = player.getDisplayName();
+		boolean filtered = false;
+		if (PlayerTracker.INSTANCE.filteredAmount.containsKey(name))
+			filtered = PlayerTracker.INSTANCE.filteredAmount.get(name);
+		ArrayList<AmountHolder> amountEntities = EntityManager.INSTANCE.getCumulativeEntities(filtered);
+
+		// Here we send a full update to the player
+		//OpisPacketHandler.validateAndSend(Packet_DataList.create(DataReq.LIST_AMOUNT_ENTITIES, amountEntities), player);
+		PacketManager.validateAndSend(new NetDataList(Message.LIST_AMOUNT_ENTITIES, amountEntities), player);		
+		
+	}    
 }

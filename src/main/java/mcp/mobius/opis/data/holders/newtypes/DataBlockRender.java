@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.World;
 import mcp.mobius.mobiuscore.profiler.ProfilerSection;
@@ -16,7 +17,7 @@ public class DataBlockRender extends DataBlockTileEntity {
 		this.pos    = coord;
 		World world = Minecraft.getMinecraft().theWorld; //DimensionManager.getWorld(this.pos.dim);
 		
-		this.id     = (short) world.getBlockId(this.pos.x, this.pos.y, this.pos.z);
+		this.id     = (short) Block.getIdFromBlock(world.getBlock(this.pos.x, this.pos.y, this.pos.z));
 		this.meta   = (short) world.getBlockMetadata(this.pos.x, this.pos.y, this.pos.z);
 
 		HashMap<CoordinatesBlock, DescriptiveStatistics> data = ((ProfilerRenderBlock)(ProfilerSection.RENDER_BLOCK.getProfiler())).data;
