@@ -4,8 +4,11 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import com.google.common.io.ByteArrayDataInput;
+import com.google.common.io.ByteArrayDataOutput;
+
 import mcp.mobius.opis.data.holders.ISerializable;
-import net.minecraft.network.packet.Packet;
+import mcp.mobius.opis.network.PacketManager;
 
 public class AmountHolder implements ISerializable {
 
@@ -18,13 +21,13 @@ public class AmountHolder implements ISerializable {
 	}
 	
 	@Override
-	public void writeToStream(DataOutputStream stream) throws IOException {
-		Packet.writeString(this.key, stream);
+	public void writeToStream(ByteArrayDataOutput stream){
+		stream.writeUTF(this.key);
 		stream.writeInt(this.value);
 	}
 
-	public static AmountHolder readFromStream(DataInputStream istream) throws IOException {
-		String  key   = Packet.readString(istream, 255);
+	public static AmountHolder readFromStream(ByteArrayDataInput istream){
+		String  key   = istream.readUTF();
 		Integer value = istream.readInt();
 		
 		return new AmountHolder(key, value);

@@ -4,6 +4,9 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import com.google.common.io.ByteArrayDataInput;
+import com.google.common.io.ByteArrayDataOutput;
+
 import mcp.mobius.opis.data.holders.ISerializable;
 
 public class DataTiming implements Comparable, ISerializable{
@@ -25,11 +28,11 @@ public class DataTiming implements Comparable, ISerializable{
 		return String.format("%.3f µs", this.timing / 1000.0);
 	}
 	
-	public void  writeToStream(DataOutputStream stream) throws IOException{
+	public void  writeToStream(ByteArrayDataOutput stream){
 		stream.writeDouble(this.timing);
 	}
 	
-	public static  DataTiming readFromStream(DataInputStream stream) throws IOException {
+	public static  DataTiming readFromStream(ByteArrayDataInput stream){
 		return new DataTiming(stream.readDouble());
 	}
 }

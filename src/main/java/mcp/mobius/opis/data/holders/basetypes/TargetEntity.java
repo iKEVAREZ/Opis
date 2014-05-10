@@ -4,6 +4,9 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import com.google.common.io.ByteArrayDataInput;
+import com.google.common.io.ByteArrayDataOutput;
+
 import mcp.mobius.opis.data.holders.ISerializable;
 
 public class TargetEntity implements ISerializable {
@@ -17,12 +20,12 @@ public class TargetEntity implements ISerializable {
 	}
 	
 	@Override
-	public void writeToStream(DataOutputStream stream) throws IOException {
+	public void writeToStream(ByteArrayDataOutput stream){
 		stream.writeInt(this.entityID);
 		stream.writeInt(this.dim);
 	}
 
-	public static  TargetEntity readFromStream(DataInputStream stream) throws IOException {
+	public static  TargetEntity readFromStream(ByteArrayDataInput stream){
 		return new TargetEntity(stream.readInt(), stream.readInt());
 	}
 }

@@ -138,6 +138,22 @@ public class PacketManager extends FMLIndexedMessageToMessageCodec<PacketBase>
         return channels.get(FMLCommonHandler.instance().getEffectiveSide()).generatePacketFrom(packet);
     }
     
+    /*
+    public void writeString(ByteArrayDataOutput buffer, String data) throws IOException
+    {
+        byte[] abyte = data.getBytes(Charsets.UTF_8);
+       	buffer.writeShort(abyte.length);
+       	buffer.writeBytes(abyte);
+    }
+    
+    public String readString(ByteArrayDataInput buffer) throws IOException
+    {
+        int j = buffer.readShort();
+        String s = new String(buffer.readBytes(j).array(), Charsets.UTF_8);
+        return s;
+    }    
+    */
+    
     // OTHER METHODS
 
     @Override

@@ -4,6 +4,9 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import com.google.common.io.ByteArrayDataInput;
+import com.google.common.io.ByteArrayDataOutput;
+
 import mcp.mobius.opis.data.holders.ISerializable;
 
 public class SerialDouble implements ISerializable {
@@ -16,11 +19,11 @@ public class SerialDouble implements ISerializable {
 	
 	
 	@Override
-	public void writeToStream(DataOutputStream stream) throws IOException {
+	public void writeToStream(ByteArrayDataOutput stream){
 		stream.writeDouble(this.value);
 	}
 
-	public static  SerialDouble readFromStream(DataInputStream stream) throws IOException {
+	public static  SerialDouble readFromStream(ByteArrayDataInput stream){
 		return new SerialDouble(stream.readDouble());
 	}	
 	

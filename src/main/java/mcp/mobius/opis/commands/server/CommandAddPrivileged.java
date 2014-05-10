@@ -6,6 +6,7 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.dedicated.DedicatedServer;
+import net.minecraft.util.ChatComponentText;
 
 
 public class CommandAddPrivileged  extends CommandBase  implements IOpisCommand{
@@ -22,8 +23,8 @@ public class CommandAddPrivileged  extends CommandBase  implements IOpisCommand{
 
 	@Override
 	public void processCommand(ICommandSender icommandsender, String[] astring) {
-		PlayerTracker.instance().addPrivilegedPlayer(astring[0]);
-		icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText(String.format("Player %s added to Opis user list", astring[0])));
+		PlayerTracker.INSTANCE.addPrivilegedPlayer(astring[0]);
+		icommandsender.addChatMessage(new ChatComponentText(String.format("Player %s added to Opis user list", astring[0])));
 	}
 	
 	@Override
@@ -38,7 +39,7 @@ public class CommandAddPrivileged  extends CommandBase  implements IOpisCommand{
 		if (sender  instanceof DedicatedServer) return true;
 		if ((sender instanceof EntityPlayerMP) && ((EntityPlayerMP)sender).playerNetServerHandler.netManager instanceof MemoryConnection) return true;
 		if (!(sender instanceof DedicatedServer) && !(sender instanceof EntityPlayerMP)) return true;
-		return PlayerTracker.instance().isAdmin(((EntityPlayerMP)sender).username);
+		return PlayerTracker.INSTANCE.isAdmin(((EntityPlayerMP)sender).getDisplayName());
     }
 
 	@Override

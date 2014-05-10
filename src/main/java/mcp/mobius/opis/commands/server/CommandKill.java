@@ -1,18 +1,14 @@
 package mcp.mobius.opis.commands.server;
 
-import cpw.mods.fml.common.network.PacketDispatcher;
-import cpw.mods.fml.common.network.Player;
 import mcp.mobius.opis.commands.IOpisCommand;
 import mcp.mobius.opis.events.PlayerTracker;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.network.MemoryConnection;
-import net.minecraft.network.packet.Packet3Chat;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.dedicated.DedicatedServer;
-import net.minecraft.util.ChatMessageComponent;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 
@@ -41,18 +37,18 @@ public class CommandKill extends CommandBase implements IOpisCommand {
 		
 		World world = DimensionManager.getWorld(dim);
 		if (world == null){
-			icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText(String.format("\u00A7oCannot find dim %d in world %d", dim)));
+			icommandsender.addChatMessage(new ChatComponentText(String.format("\u00A7oCannot find dim %d in world %d", dim)));
 			return;
 		}
 		
 		Entity entity = world.getEntityByID(eid);
 		if (entity == null) {
-			icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText(String.format("\u00A7oCannot find entity %d in dim %d", eid, dim))); 
+			icommandsender.addChatMessage(new ChatComponentText(String.format("\u00A7oCannot find entity %d in dim %d", eid, dim))); 
 			return;
 		}
 		
 		entity.setDead();
-		icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText(String.format("\u00A7oKilled entity %d in dim %d", eid, dim)));
+		icommandsender.addChatMessage(new ChatComponentText(String.format("\u00A7oKilled entity %d in dim %d", eid, dim)));
 		return;		
 	}
 
@@ -68,7 +64,7 @@ public class CommandKill extends CommandBase implements IOpisCommand {
 		if (sender instanceof DedicatedServer) return true;
 		if ((sender instanceof EntityPlayerMP) && ((EntityPlayerMP)sender).playerNetServerHandler.netManager instanceof MemoryConnection) return true;
 		if (!(sender instanceof DedicatedServer) && !(sender instanceof EntityPlayerMP)) return true;
-		return PlayerTracker.instance().isPrivileged(((EntityPlayerMP)sender).username);
+		return PlayerTracker.INSTANCE.isPrivileged(((EntityPlayerMP)sender).getDisplayName());
     }
 
 	@Override

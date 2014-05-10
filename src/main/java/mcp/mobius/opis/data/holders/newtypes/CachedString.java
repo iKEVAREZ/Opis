@@ -4,6 +4,9 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import com.google.common.io.ByteArrayDataInput;
+import com.google.common.io.ByteArrayDataOutput;
+
 import net.minecraft.server.ServerListenThread;
 import net.minecraft.server.ThreadMinecraftServer;
 import net.minecraft.network.TcpReaderThread;
@@ -50,11 +53,11 @@ public class CachedString implements Comparable, ISerializable{
 		return str;
 	}
 	
-	public void  writeToStream(DataOutputStream stream) throws IOException{
+	public void  writeToStream(ByteArrayDataOutput stream){
 		stream.writeInt(this.index);
 	}
 	
-	public static  CachedString readFromStream(DataInputStream stream) throws IOException {
+	public static  CachedString readFromStream(ByteArrayDataInput stream){
 		return new CachedString(stream.readInt());
 	}	
 	

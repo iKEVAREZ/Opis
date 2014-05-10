@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
-import cpw.mods.fml.common.network.Player;
 import mcp.mobius.opis.commands.IOpisCommand;
 import mcp.mobius.opis.data.holders.newtypes.DataHandler;
 import mcp.mobius.opis.data.managers.TickHandlerManager;
@@ -15,10 +14,9 @@ import mcp.mobius.opis.network.packets.server.NetDataList_OLD;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.network.MemoryConnection;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.dedicated.DedicatedServer;
-import net.minecraft.util.ChatMessageComponent;
+import net.minecraft.util.ChatComponentText;
 
 public class CommandHandler extends CommandBase  implements IOpisCommand {
 
@@ -39,15 +37,15 @@ public class CommandHandler extends CommandBase  implements IOpisCommand {
 
 	@Override
 	public void processCommand(ICommandSender icommandsender, String[] astring) {
-		if (icommandsender instanceof Player){
-			icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText("DEPRECATED ! Please run /opis instead."));
+		if (icommandsender instanceof EntityPlayerMP){
+			icommandsender.addChatMessage(new ChatComponentText("DEPRECATED ! Please run /opis instead."));
 			return;
 		}				
 		
 		ArrayList<DataHandler> stats = TickHandlerManager.getCumulatedStatsServer();
 		
 		for (DataHandler s : stats)
-			icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText(String.format("%s : %.2f", s.name, s.update.toString())));
+			icommandsender.addChatMessage(new ChatComponentText(String.format("%s : %.2f", s.name, s.update.toString())));
 	}
 
 	@Override

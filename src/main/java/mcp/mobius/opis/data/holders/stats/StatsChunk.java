@@ -4,6 +4,9 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import com.google.common.io.ByteArrayDataInput;
+import com.google.common.io.ByteArrayDataOutput;
+
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesChunk;
 
 public class StatsChunk extends StatAbstract{
@@ -41,14 +44,14 @@ public class StatsChunk extends StatAbstract{
 	}
 	
 	@Override
-	public   void writeToStream(DataOutputStream stream) throws IOException{
+	public   void writeToStream(ByteArrayDataOutput stream){
 		this.chunk.writeToStream(stream);
 		stream.writeInt(this.tileEntities);
 		stream.writeInt(this.entities);
 		stream.writeDouble(this.getDataSum());
 	}
 
-	public static  StatsChunk readFromStream(DataInputStream stream) throws IOException {
+	public static  StatsChunk readFromStream(ByteArrayDataInput stream){
 		CoordinatesChunk chunk   = CoordinatesChunk.readFromStream(stream);
 		StatsChunk chunkStats = new StatsChunk(chunk, stream.readInt(), stream.readInt());
 		chunkStats.setDataSum(stream.readDouble());

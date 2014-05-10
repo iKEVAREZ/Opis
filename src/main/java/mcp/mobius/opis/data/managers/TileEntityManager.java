@@ -20,6 +20,7 @@ import mcp.mobius.opis.data.holders.stats.StatsChunk;
 import mcp.mobius.opis.data.profilers.ProfilerTileEntityUpdate;
 import mcp.mobius.opis.helpers.ModIdentification;
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MovingObjectPosition;
@@ -132,11 +133,11 @@ public enum TileEntityManager {
 				
 				if (registeredEntities.contains(hash)) continue;	//This entitie has already been seen;
 				
-				int id = world.getBlockId(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord);
-				if (id == 0 || Block.blocksList[id] == null
-							|| !Block.blocksList[id].hasTileEntity()
-						    || world.getBlockTileEntity(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord) == null
-						    || world.getBlockTileEntity(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord).getClass() != tileEntity.getClass()){
+				Block block = world.getBlock(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord);
+				if (block == Blocks.air || block == null
+							|| block.hasTileEntity()
+						    || world.getTileEntity(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord) == null
+						    || world.getTileEntity(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord).getClass() != tileEntity.getClass()){
 
 					orphans.add(new DataTileEntity().fill(tileEntity, "Orphan"));
 					registeredEntities.add(hash);
@@ -167,7 +168,7 @@ public enum TileEntityManager {
 		for (WorldServer world : DimensionManager.getWorlds()){
 			for (Object o : world.loadedTileEntityList){
 				TileEntity tileEntity = (TileEntity)o;
-				int id   = world.getBlockId(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord);
+				int id   = Block.getIdFromBlock(world.getBlock(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord));
 				int meta = world.getBlockMetadata(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord);
 				
 				if (!data.contains(id, meta))
@@ -185,7 +186,7 @@ public enum TileEntityManager {
 		
 		for (CoordinatesBlock coord : ((ProfilerTileEntityUpdate)ProfilerSection.TILEENT_UPDATETIME.getProfiler()).data.keySet()){
 			World world = DimensionManager.getWorld(coord.dim);
-			int   id    = world.getBlockId(coord.x, coord.y, coord.z);
+			int   id    = Block.getIdFromBlock(world.getBlock(coord.x, coord.y, coord.z));
 			int   meta  = world.getBlockMetadata(coord.x, coord.y, coord.z);
 		
 			if (!data.contains(id, meta))

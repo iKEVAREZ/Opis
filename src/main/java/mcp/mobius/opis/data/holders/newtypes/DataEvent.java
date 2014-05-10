@@ -7,8 +7,9 @@ import java.io.IOException;
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 
 import com.google.common.collect.Table.Cell;
+import com.google.common.io.ByteArrayDataInput;
+import com.google.common.io.ByteArrayDataOutput;
 
-import net.minecraft.network.packet.Packet;
 import mcp.mobius.opis.data.holders.ISerializable;
 
 public class DataEvent implements ISerializable, Comparable {
@@ -44,7 +45,7 @@ public class DataEvent implements ISerializable, Comparable {
 	}
 	
 	@Override
-	public void writeToStream(DataOutputStream stream) throws IOException {
+	public void writeToStream(ByteArrayDataOutput stream){
 		this.event.writeToStream(stream);
 		this.package_.writeToStream(stream);
 		this.handler.writeToStream(stream);
@@ -52,7 +53,7 @@ public class DataEvent implements ISerializable, Comparable {
 		stream.writeLong(this.nCalls);
 	}
 
-	public static DataEvent readFromStream(DataInputStream stream) throws IOException {
+	public static DataEvent readFromStream(ByteArrayDataInput stream){
 		DataEvent retVal = new DataEvent();
 		retVal.event   = CachedString.readFromStream(stream);
 		retVal.package_= CachedString.readFromStream(stream);

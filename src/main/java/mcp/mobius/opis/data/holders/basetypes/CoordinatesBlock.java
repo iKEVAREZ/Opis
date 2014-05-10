@@ -4,6 +4,9 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import com.google.common.io.ByteArrayDataInput;
+import com.google.common.io.ByteArrayDataOutput;
+
 import mcp.mobius.opis.data.holders.ISerializable;
 import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
@@ -110,14 +113,14 @@ public final class CoordinatesBlock implements ISerializable {
 	}
 
 	@Override
-	public void writeToStream(DataOutputStream stream) throws IOException {
+	public void writeToStream(ByteArrayDataOutput stream){
 		stream.writeInt(this.dim);
 		stream.writeInt(this.x);
 		stream.writeInt(this.y);
 		stream.writeInt(this.z);
 	}
 
-	public static CoordinatesBlock readFromStream(DataInputStream stream) throws IOException {
+	public static CoordinatesBlock readFromStream(ByteArrayDataInput stream){
 		return new CoordinatesBlock(stream.readInt(), stream.readInt(), stream.readInt(), stream.readInt());
 	}
 	

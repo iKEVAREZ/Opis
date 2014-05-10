@@ -4,6 +4,9 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import com.google.common.io.ByteArrayDataInput;
+import com.google.common.io.ByteArrayDataOutput;
+
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
@@ -38,7 +41,7 @@ public class DataTileEntity implements ISerializable {
 	*/	
 	
 	@Override
-	public void writeToStream(DataOutputStream stream) throws IOException {
+	public void writeToStream(ByteArrayDataOutput stream){
 		this.clazz.writeToStream(stream);
 		this.pos.writeToStream(stream);
 		this.cause.writeToStream(stream);
@@ -47,7 +50,7 @@ public class DataTileEntity implements ISerializable {
 		
 	}
 
-	public static DataTileEntity readFromStream(DataInputStream stream) throws IOException {
+	public static DataTileEntity readFromStream(ByteArrayDataInput stream){
 		DataTileEntity retVal = new DataTileEntity();
 		retVal.clazz = CachedString.readFromStream(stream);
 		retVal.pos   = CoordinatesBlock.readFromStream(stream);
@@ -56,4 +59,5 @@ public class DataTileEntity implements ISerializable {
 		retVal.isValid = stream.readBoolean();
 		return retVal;
 	}
+
 }

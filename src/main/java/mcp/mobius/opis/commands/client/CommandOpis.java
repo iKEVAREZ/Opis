@@ -3,7 +3,6 @@ package mcp.mobius.opis.commands.client;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-import cpw.mods.fml.common.network.Player;
 import mcp.mobius.opis.events.PlayerTracker;
 import mcp.mobius.opis.network.ServerMessageHandler;
 import mcp.mobius.opis.network.OpisPacketHandler_OLD;
@@ -13,7 +12,7 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.util.ChatMessageComponent;
+import net.minecraft.util.ChatComponentText;
 
 public class CommandOpis extends CommandBase {
 
@@ -29,21 +28,21 @@ public class CommandOpis extends CommandBase {
 
 	@Override
 	public void processCommand(ICommandSender icommandsender, String[] astring) {
-		if (!(icommandsender instanceof Player)){
-			icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText("You are not a normal client and can't open the Swing interface."));
+		if (!(icommandsender instanceof EntityPlayerMP)){
+			icommandsender.addChatMessage(new ChatComponentText("You are not a normal client and can't open the Swing interface."));
 			return;
 		}
 		
-		if (!Message.COMMAND_OPEN_SWING.canPlayerUseCommand((Player)icommandsender)){
-			icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText("Your access level prevents you from doing that."));
+		if (!Message.COMMAND_OPEN_SWING.canPlayerUseCommand((EntityPlayerMP)icommandsender)){
+			icommandsender.addChatMessage(new ChatComponentText("Your access level prevents you from doing that."));
 			return;			
 		}
 		
-		PlayerTracker.instance().playersSwing.add((Player)icommandsender);
+		PlayerTracker.INSTANCE.playersSwing.add((EntityPlayerMP)icommandsender);
 		//((EntityPlayerMP)icommandsender).playerNetServerHandler.sendPacketToPlayer(NetDataCommand.create(Message.CLIENT_SHOW_SWING));
-		if (icommandsender instanceof Player)
-			OpisPacketHandler_OLD.validateAndSend(NetDataCommand_OLD.create(Message.CLIENT_SHOW_SWING), (Player)icommandsender);		
-		OpisPacketHandler_OLD.sendFullUpdate((Player)icommandsender);
+		if (icommandsender instanceof EntityPlayerMP)
+			OpisPacketHandler_OLD.validateAndSend(NetDataCommand_OLD.create(Message.CLIENT_SHOW_SWING), (EntityPlayerMP)icommandsender);		
+		OpisPacketHandler_OLD.sendFullUpdate((EntityPlayerMP)icommandsender);
 	}
 	
 	@Override

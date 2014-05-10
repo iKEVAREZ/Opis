@@ -5,10 +5,9 @@ import mcp.mobius.opis.events.PlayerTracker;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.network.MemoryConnection;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.dedicated.DedicatedServer;
-import net.minecraft.util.ChatMessageComponent;
+import net.minecraft.util.ChatComponentText;
 
 public class CommandEntityCreate extends CommandBase {
 
@@ -34,7 +33,7 @@ public class CommandEntityCreate extends CommandBase {
 			OpisServerEventHandler.printEntityFull  = false;
 		}
 		
-		icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText(String.format("Entity trace is %s", OpisServerEventHandler.printEntityTrace)));
+		icommandsender.addChatMessage(new ChatComponentText(String.format("Entity trace is %s", OpisServerEventHandler.printEntityTrace)));
 	}
 
 	@Override
@@ -49,7 +48,7 @@ public class CommandEntityCreate extends CommandBase {
 		if (sender  instanceof DedicatedServer) return true;
 		if ((sender instanceof EntityPlayerMP) && ((EntityPlayerMP)sender).playerNetServerHandler.netManager instanceof MemoryConnection) return true;
 		if (!(sender instanceof DedicatedServer) && !(sender instanceof EntityPlayerMP)) return true;
-		return PlayerTracker.instance().isPrivileged(((EntityPlayerMP)sender).username);
+		return PlayerTracker.INSTANCE.isPrivileged(((EntityPlayerMP)sender).getDisplayName());
     }	
 	
 }

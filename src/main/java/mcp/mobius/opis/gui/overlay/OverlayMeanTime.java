@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import org.lwjgl.input.Mouse;
 
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
@@ -285,7 +286,7 @@ public class OverlayMeanTime implements IMwDataProvider, IMessageHandler{
 			String name  = String.format("te.%d.%d", data.id, data.meta);
 			
 			try{
-				is = new ItemStack(data.id, 1, data.meta);
+				is = new ItemStack(Block.getBlockById(data.id), 1, data.meta);
 				name  = is.getDisplayName();
 			}  catch (Exception e) {	}
 			

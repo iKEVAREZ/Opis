@@ -4,8 +4,6 @@ import java.util.ArrayList;
 
 import org.apache.commons.lang3.StringUtils;
 
-import cpw.mods.fml.common.network.PacketDispatcher;
-import cpw.mods.fml.common.network.Player;
 import mcp.mobius.opis.commands.IOpisCommand;
 import mcp.mobius.opis.data.managers.EntityManager;
 import mcp.mobius.opis.events.PlayerTracker;
@@ -14,11 +12,9 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.network.MemoryConnection;
-import net.minecraft.network.packet.Packet3Chat;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.dedicated.DedicatedServer;
-import net.minecraft.util.ChatMessageComponent;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 
@@ -48,11 +44,11 @@ public class CommandKillAll extends CommandBase implements IOpisCommand {
 		int nkilled = EntityManager.INSTANCE.killAll(searchname);
 		
 		if (nkilled == -1){
-			icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText(String.format("\u00A7oSeriously ? I can't, seriously, I can't. I should remove you from the OP list !")));
+			icommandsender.addChatMessage(new ChatComponentText(String.format("\u00A7oSeriously ? I can't, seriously, I can't. I should remove you from the OP list !")));
 			return;
 		}
 
-		icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText(String.format("\u00A7oKilled %d entities of type %s", nkilled, searchname)));		
+		icommandsender.addChatMessage(new ChatComponentText(String.format("\u00A7oKilled %d entities of type %s", nkilled, searchname)));		
 		
 		/*
 		World world = DimensionManager.getWorld(dim);
@@ -91,7 +87,7 @@ public class CommandKillAll extends CommandBase implements IOpisCommand {
 		if (sender instanceof DedicatedServer) return true;
 		if ((sender instanceof EntityPlayerMP) && ((EntityPlayerMP)sender).playerNetServerHandler.netManager instanceof MemoryConnection) return true;
 		if (!(sender instanceof DedicatedServer) && !(sender instanceof EntityPlayerMP)) return true;
-		return PlayerTracker.instance().isPrivileged(((EntityPlayerMP)sender).username);
+		return PlayerTracker.INSTANCE.isPrivileged(((EntityPlayerMP)sender).getDisplayName());
     }
 
 	@Override

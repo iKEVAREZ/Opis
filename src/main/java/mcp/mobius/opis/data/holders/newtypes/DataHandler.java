@@ -4,12 +4,13 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import net.minecraft.network.packet.Packet;
+import com.google.common.io.ByteArrayDataInput;
+import com.google.common.io.ByteArrayDataOutput;
+
 import mcp.mobius.mobiuscore.profiler.ProfilerSection;
 import mcp.mobius.opis.data.holders.ISerializable;
 import mcp.mobius.opis.data.managers.TickHandlerManager;
 import mcp.mobius.opis.data.profilers.ProfilerHandler;
-import cpw.mods.fml.common.IScheduledTickHandler;
 
 public class DataHandler implements ISerializable, Comparable {
 	public CachedString name;
@@ -36,12 +37,12 @@ public class DataHandler implements ISerializable, Comparable {
 	}	
 	
 	@Override
-	public void writeToStream(DataOutputStream stream) throws IOException {
+	public void writeToStream(ByteArrayDataOutput stream){
 		this.name.writeToStream(stream);
 		this.update.writeToStream(stream);
 	}
 
-	public static DataHandler readFromStream(DataInputStream stream) throws IOException {
+	public static DataHandler readFromStream(ByteArrayDataInput stream){
 		DataHandler retVal = new DataHandler();
 		retVal.name   = CachedString.readFromStream(stream);
 		retVal.update = DataTiming.readFromStream(stream);

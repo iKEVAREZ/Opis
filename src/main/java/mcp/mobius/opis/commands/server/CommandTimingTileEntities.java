@@ -2,7 +2,6 @@ package mcp.mobius.opis.commands.server;
 
 import java.util.ArrayList;
 
-import cpw.mods.fml.common.network.Player;
 import mcp.mobius.opis.commands.IOpisCommand;
 import mcp.mobius.opis.data.holders.newtypes.DataBlockTileEntity;
 import mcp.mobius.opis.data.managers.TileEntityManager;
@@ -14,10 +13,9 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.network.MemoryConnection;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.dedicated.DedicatedServer;
-import net.minecraft.util.ChatMessageComponent;
+import net.minecraft.util.ChatComponentText;
 
 public class CommandTimingTileEntities extends CommandBase implements IOpisCommand {
 
@@ -38,8 +36,8 @@ public class CommandTimingTileEntities extends CommandBase implements IOpisComma
 
 	@Override
 	public void processCommand(ICommandSender icommandsender, String[] astring) {
-		if (icommandsender instanceof Player){
-			icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText("DEPRECATED ! Please run /opis instead."));
+		if (icommandsender instanceof EntityPlayerMP){
+			icommandsender.addChatMessage(new ChatComponentText("DEPRECATED ! Please run /opis instead."));
 			return;
 		}				
 		
@@ -54,7 +52,7 @@ public class CommandTimingTileEntities extends CommandBase implements IOpisComma
 		}
 		
 		for (DataBlockTileEntity stat : tes){
-			icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText(stat.toString()));
+			icommandsender.addChatMessage(new ChatComponentText(stat.toString()));
 		}
 			
 		

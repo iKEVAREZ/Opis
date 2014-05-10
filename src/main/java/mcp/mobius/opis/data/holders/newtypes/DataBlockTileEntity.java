@@ -7,6 +7,10 @@ import java.util.HashMap;
 
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 
+import com.google.common.io.ByteArrayDataInput;
+import com.google.common.io.ByteArrayDataOutput;
+
+import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
@@ -26,7 +30,7 @@ public class DataBlockTileEntity implements ISerializable, Comparable {
 		this.pos    = coord;
 		World world = DimensionManager.getWorld(this.pos.dim);
 		
-		this.id     = (short) world.getBlockId(this.pos.x, this.pos.y, this.pos.z);
+		this.id     = (short) Block.getIdFromBlock(world.getBlock(this.pos.x, this.pos.y, this.pos.z));
 		this.meta   = (short) world.getBlockMetadata(this.pos.x, this.pos.y, this.pos.z);
 
 		HashMap<CoordinatesBlock, DescriptiveStatistics> data = ((ProfilerTileEntityUpdate)(ProfilerSection.TILEENT_UPDATETIME.getProfiler())).data;
@@ -36,14 +40,14 @@ public class DataBlockTileEntity implements ISerializable, Comparable {
 	}
 	
 	@Override
-	public void writeToStream(DataOutputStream stream) throws IOException {
+	public void writeToStream(ByteArrayDataOutput stream) {
 		stream.writeShort(this.id);
 		stream.writeShort(this.meta);
 		this.pos.writeToStream(stream);
 		this.update.writeToStream(stream);
 	}
 
-	public static DataBlockTileEntity readFromStream(DataInputStream stream) throws IOException {
+	public static DataBlockTileEntity readFromStream(ByteArrayDataInput stream){
 		DataBlockTileEntity retVal = new DataBlockTileEntity();
 		retVal.id = stream.readShort();
 		retVal.meta = stream.readShort();

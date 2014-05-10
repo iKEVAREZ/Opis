@@ -9,6 +9,8 @@ import mcp.mobius.opis.data.holders.basetypes.CoordinatesChunk;
 
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 
+import com.google.common.io.ByteArrayDataOutput;
+
 public abstract class StatAbstract implements Comparable, ISerializable{
 	protected DescriptiveStatistics dstat = new DescriptiveStatistics();
 	public    Long   dataPoints      = 0L;
@@ -86,6 +88,6 @@ public abstract class StatAbstract implements Comparable, ISerializable{
 	public CoordinatesBlock getTeleportTarget(){return this.coord;}
 	
 	
-	public abstract void  writeToStream(DataOutputStream stream) throws IOException;
+	public abstract void  writeToStream(ByteArrayDataOutput stream);
 
 }

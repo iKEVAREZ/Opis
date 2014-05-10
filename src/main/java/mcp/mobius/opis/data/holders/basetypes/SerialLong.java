@@ -4,6 +4,9 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import com.google.common.io.ByteArrayDataInput;
+import com.google.common.io.ByteArrayDataOutput;
+
 import mcp.mobius.opis.data.holders.ISerializable;
 
 public class SerialLong implements ISerializable {
@@ -15,11 +18,11 @@ public class SerialLong implements ISerializable {
 	}
 	
 	@Override
-	public void writeToStream(DataOutputStream stream) throws IOException {
+	public void writeToStream(ByteArrayDataOutput stream){
 		stream.writeLong(this.value);
 	}
 
-	public static  SerialLong readFromStream(DataInputStream stream) throws IOException {
+	public static  SerialLong readFromStream(ByteArrayDataInput stream){
 		return new SerialLong(stream.readLong());
 	}	
 	

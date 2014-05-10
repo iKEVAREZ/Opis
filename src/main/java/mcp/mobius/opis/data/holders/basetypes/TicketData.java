@@ -6,9 +6,10 @@ import java.io.IOException;
 import java.util.LinkedHashSet;
 
 import com.google.common.collect.ImmutableSet;
+import com.google.common.io.ByteArrayDataInput;
+import com.google.common.io.ByteArrayDataOutput;
 
 import mcp.mobius.opis.data.holders.ISerializable;
-import net.minecraft.network.packet.Packet;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraftforge.common.ForgeChunkManager.Ticket;
 
@@ -44,15 +45,14 @@ public final class TicketData implements ISerializable{
 	}
 	
 	@Override
-	public void writeToStream(DataOutputStream stream) throws IOException {	
+	public void writeToStream(ByteArrayDataOutput stream){	
 		this.coord.writeToStream(stream);
 		stream.writeInt(this.nchunks);		
-		Packet.writeString(this.modID, stream);
-		
+		stream.writeUTF(this.modID);
 	}
 	
-	public static TicketData readFromStream(DataInputStream stream) throws IOException {
-		return new TicketData(CoordinatesChunk.readFromStream(stream), stream.readInt(), Packet.readString(stream, 255));
+	public static TicketData readFromStream(ByteArrayDataInput stream){
+		return new TicketData(CoordinatesChunk.readFromStream(stream), stream.readInt(), stream.readUTF());
 	}
 	
 	public boolean equals(Object o)  {

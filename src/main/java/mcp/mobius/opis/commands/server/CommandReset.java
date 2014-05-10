@@ -1,7 +1,5 @@
 package mcp.mobius.opis.commands.server;
 
-import cpw.mods.fml.common.network.PacketDispatcher;
-import cpw.mods.fml.common.network.Player;
 import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.commands.IOpisCommand;
 import mcp.mobius.opis.data.managers.EntityManager;
@@ -17,11 +15,9 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.network.MemoryConnection;
-import net.minecraft.network.packet.Packet3Chat;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.dedicated.DedicatedServer;
-import net.minecraft.util.ChatMessageComponent;
+import net.minecraft.util.ChatComponentText;
 
 public class CommandReset extends CommandBase implements IOpisCommand {
 
@@ -44,11 +40,11 @@ public class CommandReset extends CommandBase implements IOpisCommand {
 	public void processCommand(ICommandSender icommandsender, String[] astring) {
 		MetaManager.reset();
 		
-		icommandsender.sendChatToPlayer(ChatMessageComponent.createFromText(String.format("\u00A7oInternal data reseted.")));
+		icommandsender.addChatMessage(new ChatComponentText(String.format("\u00A7oInternal data reseted.")));
 		
 		//PacketDispatcher.sendPacketToAllPlayers(NetDataCommand.create(Message.CLIENT_CLEAR_SELECTION));
-		if (icommandsender instanceof Player)
-			OpisPacketHandler_OLD.validateAndSend(NetDataCommand_OLD.create(Message.CLIENT_CLEAR_SELECTION), (Player)icommandsender);
+		if (icommandsender instanceof EntityPlayerMP)
+			OpisPacketHandler_OLD.validateAndSend(NetDataCommand_OLD.create(Message.CLIENT_CLEAR_SELECTION), (EntityPlayerMP)icommandsender);
 	}
 
 	@Override
@@ -63,7 +59,7 @@ public class CommandReset extends CommandBase implements IOpisCommand {
 		if (sender instanceof DedicatedServer) return true;
 		if ((sender instanceof EntityPlayerMP) && ((EntityPlayerMP)sender).playerNetServerHandler.netManager instanceof MemoryConnection) return true;
 		if (!(sender instanceof DedicatedServer) && !(sender instanceof EntityPlayerMP)) return true;
-		return PlayerTracker.instance().isPrivileged(((EntityPlayerMP)sender).username);
+		return PlayerTracker.INSTANCE.isPrivileged(((EntityPlayerMP)sender).getDisplayName());
     }
 
 	@Override
