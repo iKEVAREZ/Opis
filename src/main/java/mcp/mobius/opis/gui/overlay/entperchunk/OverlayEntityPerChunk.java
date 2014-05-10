@@ -6,9 +6,7 @@ import java.util.Collections;
 import java.util.HashMap;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.util.MathHelper;
-import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import mapwriter.api.IMwChunkOverlay;
@@ -29,9 +27,10 @@ import mcp.mobius.opis.gui.widgets.LayoutCanvas;
 import mcp.mobius.opis.gui.widgets.WidgetGeometry;
 import mcp.mobius.opis.gui.widgets.tableview.TableRow;
 import mcp.mobius.opis.gui.widgets.tableview.ViewTable;
+import mcp.mobius.opis.network.PacketManager;
 import mcp.mobius.opis.network.enums.Message;
-import mcp.mobius.opis.network.packets.client.Packet_ReqChunks;
-import mcp.mobius.opis.network.packets.client.Packet_ReqData;
+import mcp.mobius.opis.network.packets.client.PacketReqChunks;
+import mcp.mobius.opis.network.packets.client.PacketReqData;
 import mcp.mobius.opis.network.packets.server.NetDataRaw_OLD;
 
 public class OverlayEntityPerChunk implements IMwDataProvider, IMessageHandler {
@@ -136,13 +135,13 @@ public class OverlayEntityPerChunk implements IMwDataProvider, IMessageHandler {
 			this.showList = true;
 		
 		if (prevSelected == null && this.selectedChunk != null)
-			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.LIST_CHUNK_ENTITIES, this.selectedChunk));
+			PacketManager.sendToServer(new PacketReqData(Message.LIST_CHUNK_ENTITIES, this.selectedChunk));
 
 		else if (this.selectedChunk != null && !this.selectedChunk.equals(prevSelected))
-			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.LIST_CHUNK_ENTITIES, this.selectedChunk));			
+			PacketManager.sendToServer(new PacketReqData(Message.LIST_CHUNK_ENTITIES, this.selectedChunk));			
 		
 		else if (this.selectedChunk == null)
-			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.OVERLAY_CHUNK_ENTITIES));			
+			PacketManager.sendToServer(new PacketReqData(Message.OVERLAY_CHUNK_ENTITIES));			
 	}
 
 	@Override
@@ -158,7 +157,7 @@ public class OverlayEntityPerChunk implements IMwDataProvider, IMessageHandler {
 
 	@Override
 	public void onOverlayActivated(MapView mapview) {
-		PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.OVERLAY_CHUNK_ENTITIES));
+		PacketManager.sendToServer(new PacketReqData(Message.OVERLAY_CHUNK_ENTITIES));
 	}
 
 	@Override
@@ -276,16 +275,14 @@ public class OverlayEntityPerChunk implements IMwDataProvider, IMessageHandler {
 			for (int z = -5; z <= 5; z++){
 				chunks.add(new CoordinatesChunk(dim, chunkX + x, chunkZ + z));
 				if (chunks.size() >= 1){
-					Packet250CustomPayload packet = Packet_ReqChunks.create(dim, chunks);
-					if (packet != null)
-						PacketDispatcher.sendPacketToServer(packet);
+					PacketManager.sendToServer(new PacketReqChunks(dim, chunks));
 					chunks.clear();
 				}
 			}
 		}
 		
 		if (chunks.size() > 0)
-			PacketDispatcher.sendPacketToServer(Packet_ReqChunks.create(dim, chunks));				
+			PacketManager.sendToServer(new PacketReqChunks(dim, chunks));				
 	}
 
 	@Override

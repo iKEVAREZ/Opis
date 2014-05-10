@@ -8,8 +8,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.network.packet.Packet41EntityEffect;
-import net.minecraft.network.packet.Packet9Respawn;
+import net.minecraft.init.Blocks;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.management.ServerConfigurationManager;
@@ -35,6 +34,7 @@ public class Teleport {
     // Originally in ServerConfigurationManager
     public boolean transferPlayerToDimension(ServerConfigurationManager manager, EntityPlayerMP player, int targetID)
     {
+    	/*
         int sourceID = player.dimension;
         WorldServer sourceWorld = DimensionManager.getWorld(player.dimension);
         WorldServer targetWorld = DimensionManager.getWorld(targetID);
@@ -44,7 +44,7 @@ public class Teleport {
 
         player.dimension = targetID;        
         
-        player.playerNetServerHandler.sendPacketToPlayer(new Packet9Respawn(player.dimension, (byte)player.worldObj.difficultySetting, targetWorld.getWorldInfo().getTerrainType(), targetWorld.getHeight(), player.theItemInWorldManager.getGameType()));
+        player.playerNetServerHandler.sendPacket(new Packet9Respawn(player.dimension, (byte)player.worldObj.difficultySetting, targetWorld.getWorldInfo().getTerrainType(), targetWorld.getHeight(), player.theItemInWorldManager.getGameType()));
         sourceWorld.removePlayerEntityDangerously(player);
         player.isDead = false;
         this.transferEntityToWorld(player, sourceID, sourceWorld, targetWorld);
@@ -60,10 +60,11 @@ public class Teleport {
         while (iterator.hasNext())
         {
             PotionEffect potioneffect = (PotionEffect)iterator.next();
-            player.playerNetServerHandler.sendPacketToPlayer(new Packet41EntityEffect(player.entityId, potioneffect));
+            player.playerNetServerHandler.sendPacket(new Packet41EntityEffect(player.entityId, potioneffect));
         }
 
         GameRegistry.onPlayerChangedDimension(player);
+        */
         return true;
     }    
    
@@ -174,7 +175,7 @@ public class Teleport {
 		} else {
 			int y = 256;
 			while (world.isAirBlock(coord.x, y, coord.z) ||
-				   world.getBlockId(coord.x, y, coord.z) == Block.vine.blockID
+				   world.getBlock(coord.x, y, coord.z) == Blocks.vine
 				  )
 				y--;
 	
@@ -200,7 +201,7 @@ public class Teleport {
     
 	public CoordinatesBlock fixNetherTP(CoordinatesBlock target){
 		World   targetWorld = DimensionManager.getWorld(target.dim);
-		boolean isBedrock   = targetWorld.getBlockId(target.x, target.y - 1, target.z) == Block.bedrock.blockID;
+		boolean isBedrock   = targetWorld.getBlock(target.x, target.y - 1, target.z) == Blocks.bedrock;
 		boolean canTeleport = false;
 		CoordinatesBlock finalTarget;
 		

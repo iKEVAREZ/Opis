@@ -128,13 +128,15 @@ public class modOpis {
 		
 		MinecraftForge.EVENT_BUS.register(new OpisClientEventHandler());
 		MinecraftForge.EVENT_BUS.register(new OpisServerEventHandler());
+		FMLCommonHandler.instance().bus().register(OpisClientTickHandler.INSTANCE);
+		FMLCommonHandler.instance().bus().register(OpisServerTickHandler.INSTANCE);
 		//Packet.addIdClassMapping(251, true, true, Packet251Extended.class);
 	}	
 	
 	@EventHandler
 	public void load(FMLInitializationEvent event) {
-		TickRegistry.registerTickHandler(OpisServerTickHandler.INSTANCE, Side.SERVER);
-		TickRegistry.registerTickHandler(OpisClientTickHandler.INSTANCE, Side.CLIENT);
+		//TickRegistry.registerTickHandler(OpisServerTickHandler.INSTANCE, Side.SERVER);
+		//TickRegistry.registerTickHandler(OpisClientTickHandler.INSTANCE, Side.CLIENT);
 		
 		if (lagGenID != -1){
 			Block blockDemo = new BlockLag(lagGenID, Material.wood);

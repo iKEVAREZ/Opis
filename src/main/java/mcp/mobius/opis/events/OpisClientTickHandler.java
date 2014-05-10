@@ -28,19 +28,20 @@ import mcp.mobius.opis.data.profilers.ProfilerEvent;
 import mcp.mobius.opis.data.profilers.ProfilerRenderBlock;
 import mcp.mobius.opis.data.profilers.ProfilerRenderEntity;
 import mcp.mobius.opis.data.profilers.ProfilerRenderTileEntity;
+import mcp.mobius.opis.network.PacketManager;
 import mcp.mobius.opis.network.enums.Message;
-import mcp.mobius.opis.network.packets.client.Packet_ReqData;
+import mcp.mobius.opis.network.packets.client.PacketReqData;
 import mcp.mobius.opis.swing.SelectedTab;
 import mcp.mobius.opis.swing.panels.timingclient.PanelRenderEntities;
 import mcp.mobius.opis.swing.panels.timingclient.PanelRenderHandlers;
 import mcp.mobius.opis.swing.panels.timingclient.PanelRenderTileEnts;
 import mcp.mobius.opis.swing.panels.timingclient.PanelEventClient;
-import cpw.mods.fml.common.ITickHandler;
-import cpw.mods.fml.common.TickType;
-import cpw.mods.fml.common.network.PacketDispatcher;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
-public enum OpisClientTickHandler implements ITickHandler {
+public enum OpisClientTickHandler{
 	INSTANCE;
 	
 	public long profilerUpdateTickCounter = 0;	
@@ -51,59 +52,45 @@ public enum OpisClientTickHandler implements ITickHandler {
 	public EventTimer timer5000  = new EventTimer(5000);
 	public EventTimer timer10000 = new EventTimer(10000);
 	
-	@Override
-	public void tickStart(EnumSet<TickType> type, Object... tickData) {}
-
-	@Override
-	public void tickEnd(EnumSet<TickType> type, Object... tickData) {
-		if(type.contains(TickType.CLIENT)){
+	@SubscribeEvent
+	@SideOnly(Side.CLIENT)
+	public void tickEnd(TickEvent.ClientTickEvent event) {
 			
-			// One second timer
-			if (timer1000.isDone()){
-				if(modOpis.swingOpen)
-					PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.STATUS_PING, new SerialLong(System.nanoTime())));
-			}
-			
-			
-			
-			if (modOpis.profilerRunClient){
-				((PanelRenderTileEnts)(TabPanelRegistrar.INSTANCE.getTab(SelectedTab.RENDERTILEENTS))).getBtnRunRender().setText("Running...");
-				((PanelRenderEntities)(TabPanelRegistrar.INSTANCE.getTab(SelectedTab.RENDERENTITIES))).getBtnRunRender().setText("Running...");
-				((PanelRenderHandlers)(TabPanelRegistrar.INSTANCE.getTab(SelectedTab.RENDERHANDLERS))).getBtnRunRender().setText("Running...");
-				((PanelEventClient)(TabPanelRegistrar.INSTANCE.getTab(SelectedTab.CLIENTEVENTS))).getBtnRunRender().setText("Running...");
-			}
-			else{
-				((PanelRenderTileEnts)(TabPanelRegistrar.INSTANCE.getTab(SelectedTab.RENDERTILEENTS))).getBtnRunRender().setText("Run Render");
-				((PanelRenderEntities)(TabPanelRegistrar.INSTANCE.getTab(SelectedTab.RENDERENTITIES))).getBtnRunRender().setText("Run Render");
-				((PanelRenderHandlers)(TabPanelRegistrar.INSTANCE.getTab(SelectedTab.RENDERHANDLERS))).getBtnRunRender().setText("Run Render");
-				((PanelEventClient)(TabPanelRegistrar.INSTANCE.getTab(SelectedTab.CLIENTEVENTS))).getBtnRunRender().setText("Run Render");				
-			}
-			
-			profilerUpdateTickCounter++;
-			
-			if (profilerRunningTicks < modOpis.profilerMaxTicks && modOpis.profilerRunClient){
-				profilerRunningTicks++;
-			}else if (profilerRunningTicks >= modOpis.profilerMaxTicks && modOpis.profilerRunClient){
-				profilerRunningTicks = 0;
-				modOpis.profilerRunClient = false;
-				ProfilerSection.desactivateAll(Side.CLIENT);
-				
-				System.out.printf("Profiling done\n");
-
-				this.updateTabs();
-				
-			}		
+		// One second timer
+		if (timer1000.isDone()){
+			if(modOpis.swingOpen)
+				PacketManager.sendToServer(new PacketReqData(Message.STATUS_PING, new SerialLong(System.nanoTime())));
 		}
-	}
+		
+		
+		
+		if (modOpis.profilerRunClient){
+			((PanelRenderTileEnts)(TabPanelRegistrar.INSTANCE.getTab(SelectedTab.RENDERTILEENTS))).getBtnRunRender().setText("Running...");
+			((PanelRenderEntities)(TabPanelRegistrar.INSTANCE.getTab(SelectedTab.RENDERENTITIES))).getBtnRunRender().setText("Running...");
+			((PanelRenderHandlers)(TabPanelRegistrar.INSTANCE.getTab(SelectedTab.RENDERHANDLERS))).getBtnRunRender().setText("Running...");
+			((PanelEventClient)(TabPanelRegistrar.INSTANCE.getTab(SelectedTab.CLIENTEVENTS))).getBtnRunRender().setText("Running...");
+		}
+		else{
+			((PanelRenderTileEnts)(TabPanelRegistrar.INSTANCE.getTab(SelectedTab.RENDERTILEENTS))).getBtnRunRender().setText("Run Render");
+			((PanelRenderEntities)(TabPanelRegistrar.INSTANCE.getTab(SelectedTab.RENDERENTITIES))).getBtnRunRender().setText("Run Render");
+			((PanelRenderHandlers)(TabPanelRegistrar.INSTANCE.getTab(SelectedTab.RENDERHANDLERS))).getBtnRunRender().setText("Run Render");
+			((PanelEventClient)(TabPanelRegistrar.INSTANCE.getTab(SelectedTab.CLIENTEVENTS))).getBtnRunRender().setText("Run Render");				
+		}
+		
+		profilerUpdateTickCounter++;
+		
+		if (profilerRunningTicks < modOpis.profilerMaxTicks && modOpis.profilerRunClient){
+			profilerRunningTicks++;
+		}else if (profilerRunningTicks >= modOpis.profilerMaxTicks && modOpis.profilerRunClient){
+			profilerRunningTicks = 0;
+			modOpis.profilerRunClient = false;
+			ProfilerSection.desactivateAll(Side.CLIENT);
+			
+			System.out.printf("Profiling done\n");
 
-	@Override
-	public EnumSet<TickType> ticks() {
-		return EnumSet.of(TickType.CLIENT);
-	}
-
-	@Override
-	public String getLabel() {
-		return "opis.client.tickhandler";
+			this.updateTabs();
+			
+		}		
 	}
 
 	private void updateTabs(){
@@ -172,13 +159,15 @@ public enum OpisClientTickHandler implements ITickHandler {
 			}					
 		}
 
+		/*
 		Collections.sort(blockData);
 		for (DataBlockRender data : blockData){
 			ItemStack stack = new ItemStack(data.id, 0, data.meta);
 			String    name  = stack.getDisplayName();
 			
 			System.out.printf("%s %s : %s\n", data.pos, name, data.update);
-		}		
+		}
+		*/		
 	}
 	
 }

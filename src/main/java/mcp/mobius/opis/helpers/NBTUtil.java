@@ -36,6 +36,7 @@ public class NBTUtil {
 		return deepTag;
 	}
 	
+	/*
 	public static NBTTagCompound setTag(String key, NBTTagCompound targetTag, NBTBase addedTag){
 		String[] path = key.split("\\.");
 		
@@ -66,6 +67,7 @@ public class NBTUtil {
 		
 		return outTag;
 	}
+	*/
 	
     public static void writeNBTTagCompound(NBTTagCompound par0NBTTagCompound, DataOutputStream ostream) throws IOException
     {

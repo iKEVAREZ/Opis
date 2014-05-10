@@ -1,6 +1,5 @@
 package mcp.mobius.opis.gui.overlay.entperchunk;
 
-import cpw.mods.fml.common.network.PacketDispatcher;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.MathHelper;
 import mapwriter.map.MapView;
@@ -13,8 +12,9 @@ import mcp.mobius.opis.gui.interfaces.IWidget;
 import mcp.mobius.opis.gui.overlay.entperchunk.OverlayEntityPerChunk.ReducedData;
 import mcp.mobius.opis.gui.widgets.tableview.TableRow;
 import mcp.mobius.opis.gui.widgets.tableview.ViewTable;
+import mcp.mobius.opis.network.PacketManager;
 import mcp.mobius.opis.network.enums.Message;
-import mcp.mobius.opis.network.packets.client.Packet_ReqData;
+import mcp.mobius.opis.network.packets.client.PacketReqData;
 
 public class TableEntities extends ViewTable {
 	MapView mapView;
@@ -39,7 +39,7 @@ public class TableEntities extends ViewTable {
 			//PacketDispatcher.sendPacketToServer(Packet_ReqTeleport.create(coord));
 			int eid = ((DataEntity)row.getObject()).eid;
 			int dim = ((DataEntity)row.getObject()).pos.dim;
-			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.COMMAND_TELEPORT_TO_ENTITY, new TargetEntity(eid, dim)));
+			PacketManager.sendToServer(new PacketReqData(Message.COMMAND_TELEPORT_TO_ENTITY, new TargetEntity(eid, dim)));
 			Minecraft.getMinecraft().setIngameFocus();			
 		}
 	}

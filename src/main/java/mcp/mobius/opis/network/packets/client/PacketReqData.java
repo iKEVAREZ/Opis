@@ -47,7 +47,6 @@ public class PacketReqData extends PacketBase{
 		
 		if (param1 != null){
 			output.writeBoolean(true);
-			//Packet.writeString(param1.getClass().getCanonicalName(), outputStream);
 			output.writeInt(DataType.getForClass(param1.getClass()).ordinal());
 			param1.writeToStream(output);
 		} else {
@@ -68,7 +67,6 @@ public class PacketReqData extends PacketBase{
 		this.dataReq   = Message.values()[input.readInt()];
 		
 		if (input.readBoolean()){
-			//String datatype = Packet.readString(istream, 255);
 			Class datatype = DataType.getForOrdinal(input.readInt());
 			this.param1    = dataRead(datatype, input); 
 		}

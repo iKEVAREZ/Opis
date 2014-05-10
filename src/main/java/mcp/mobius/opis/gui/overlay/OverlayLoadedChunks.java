@@ -5,11 +5,9 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
-import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.ChunkCoordIntPair;
 import mapwriter.Mw;
@@ -31,9 +29,10 @@ import mcp.mobius.opis.gui.widgets.LayoutCanvas;
 import mcp.mobius.opis.gui.widgets.WidgetGeometry;
 import mcp.mobius.opis.gui.widgets.tableview.TableRow;
 import mcp.mobius.opis.gui.widgets.tableview.ViewTable;
+import mcp.mobius.opis.network.PacketManager;
 import mcp.mobius.opis.network.enums.Message;
-import mcp.mobius.opis.network.packets.client.Packet_ReqChunks;
-import mcp.mobius.opis.network.packets.client.Packet_ReqData;
+import mcp.mobius.opis.network.packets.client.PacketReqChunks;
+import mcp.mobius.opis.network.packets.client.PacketReqData;
 
 public class OverlayLoadedChunks implements IMwDataProvider {
 
@@ -65,7 +64,7 @@ public class OverlayLoadedChunks implements IMwDataProvider {
 							MathHelper.ceiling_double_int(this.mapView.getX()) >> 4, 
 							MathHelper.ceiling_double_int(this.mapView.getZ()) >> 4);
 				} else {
-					PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.COMMAND_TELEPORT_BLOCK, new CoordinatesBlock(coord)));					
+					PacketManager.sendToServer(new PacketReqData(Message.COMMAND_TELEPORT_BLOCK, new CoordinatesBlock(coord)));					
 					Minecraft.getMinecraft().setIngameFocus();
 				}
 			}
@@ -159,9 +158,7 @@ public class OverlayLoadedChunks implements IMwDataProvider {
 			for (int z = -5; z <= 5; z++){
 				chunks.add(new CoordinatesChunk(dim, chunkX + x, chunkZ + z));
 				if (chunks.size() >= 1){
-					Packet250CustomPayload packet = Packet_ReqChunks.create(dim, chunks);
-					if (packet != null)
-						PacketDispatcher.sendPacketToServer(packet);
+					PacketManager.sendToServer(new PacketReqChunks(dim, chunks));	
 					chunks.clear();
 				}
 			}
@@ -183,12 +180,12 @@ public class OverlayLoadedChunks implements IMwDataProvider {
 		*/
 		
 		if (chunks.size() > 0)
-			PacketDispatcher.sendPacketToServer(Packet_ReqChunks.create(dim, chunks));				
+			PacketManager.sendToServer(new PacketReqChunks(dim, chunks));				
 	}
 	
 	@Override
 	public void onDimensionChanged(int dimension, MapView mapview) {
-		PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.LIST_CHUNK_LOADED, new SerialInt(dimension)));
+		PacketManager.sendToServer(new PacketReqData(Message.LIST_CHUNK_LOADED, new SerialInt(dimension)));
 	}
 
 	@Override
@@ -202,15 +199,15 @@ public class OverlayLoadedChunks implements IMwDataProvider {
 	@Override
 	public void onOverlayActivated(MapView mapview) {
 		this.selectedChunk = null;
-		PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.LIST_CHUNK_LOADED, new SerialInt(mapview.getDimension())));		
-		PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.LIST_CHUNK_TICKETS));		
+		PacketManager.sendToServer(new PacketReqData(Message.LIST_CHUNK_LOADED, new SerialInt(mapview.getDimension())));		
+		PacketManager.sendToServer(new PacketReqData(Message.LIST_CHUNK_TICKETS));		
 	}
 
 	@Override
 	public void onOverlayDeactivated(MapView mapview) {
 		this.showList = false;
 		this.selectedChunk = null;		
-		PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.COMMAND_UNREGISTER));
+		PacketManager.sendToServer(new PacketReqData(Message.COMMAND_UNREGISTER));
 	}
 
 	@Override

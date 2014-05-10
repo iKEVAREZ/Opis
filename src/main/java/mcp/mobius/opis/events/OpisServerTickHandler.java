@@ -13,8 +13,6 @@ import com.google.common.collect.Table.Cell;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.network.packet.Packet3Chat;
-import net.minecraft.util.ChatMessageComponent;
 import net.minecraftforge.common.DimensionManager;
 import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.data.holders.basetypes.AmountHolder;
@@ -43,14 +41,12 @@ import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.packets.server.NetDataCommand_OLD;
 import mcp.mobius.opis.network.packets.server.NetDataList_OLD;
 import mcp.mobius.opis.network.packets.server.NetDataValue_OLD;
-import cpw.mods.fml.common.ITickHandler;
-import cpw.mods.fml.common.TickType;
-import cpw.mods.fml.common.network.PacketDispatcher;
-import cpw.mods.fml.common.network.Player;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
 import mcp.mobius.mobiuscore.profiler.ProfilerSection;
 
-public enum OpisServerTickHandler implements ITickHandler {
+public enum OpisServerTickHandler{
 	INSTANCE;
 	
 	public long profilerUpdateTickCounter = 0;	
@@ -61,15 +57,10 @@ public enum OpisServerTickHandler implements ITickHandler {
 	public EventTimer timer5000  = new EventTimer(5000);
 	public EventTimer timer10000 = new EventTimer(10000);
 	
-	public HashMap<Player, AccessLevel> cachedAccess = new HashMap<Player, AccessLevel>(); 
+	public HashMap<EntityPlayerMP, AccessLevel> cachedAccess = new HashMap<EntityPlayerMP, AccessLevel>(); 
 	
-	@Override
-	public void tickStart(EnumSet<TickType> type, Object... tickData) {
-	}
-
-	@Override
-	public void tickEnd(EnumSet<TickType> type, Object... tickData) {
-		if(type.contains(TickType.SERVER)){
+	@SubscribeEvent
+	public void tickEnd(TickEvent.ServerTickEvent event) {
 
 			/*
 			if (System.nanoTime() - timer500 >  500000000){
@@ -92,7 +83,7 @@ public enum OpisServerTickHandler implements ITickHandler {
 				OpisPacketHandler_OLD.sendPacketToAllSwing(NetDataValue_OLD.create(Message.VALUE_AMOUNT_TILEENTS, new SerialInt(TileEntityManager.INSTANCE.getAmountTileEntities())));
 				OpisPacketHandler_OLD.sendPacketToAllSwing(NetDataValue_OLD.create(Message.VALUE_AMOUNT_ENTITIES, new SerialInt(EntityManager.INSTANCE.getAmountEntities())));
 				
-				for (Player player : PlayerTracker.instance().playersSwing){
+				for (EntityPlayerMP player : PlayerTracker.instance().playersSwing){
 					if (!cachedAccess.containsKey(player) || cachedAccess.get(player) != PlayerTracker.instance().getPlayerAccessLevel(player)){
 						OpisPacketHandler_OLD.validateAndSend(NetDataValue_OLD.create(Message.STATUS_ACCESS_LEVEL, new SerialInt(PlayerTracker.instance().getPlayerAccessLevel(player).ordinal())), player);
 						cachedAccess.put(player, PlayerTracker.instance().getPlayerAccessLevel(player));
@@ -158,28 +149,17 @@ public enum OpisServerTickHandler implements ITickHandler {
 				
 				OpisPacketHandler_OLD.sendPacketToAllSwing(NetDataValue_OLD.create(Message.STATUS_STOP, new SerialInt(modOpis.profilerMaxTicks)));
 				
-				for (Player player : PlayerTracker.instance().playersSwing){
+				for (EntityPlayerMP player : PlayerTracker.instance().playersSwing){
 					OpisPacketHandler_OLD.sendFullUpdate(player);
 				}
 				
 
 				
 			}			
-		}
-	}
-
-	@Override
-	public EnumSet<TickType> ticks() {
-		return EnumSet.of(TickType.SERVER);
-	}
-
-	@Override
-	public String getLabel() {
-		return "opis.server.tickhandler";
 	}
 
 	private void updatePlayers(){
-		for (Player player : PlayerTracker.instance().playerOverlayStatus.keySet()){
+		for (EntityPlayerMP player : PlayerTracker.instance().playerOverlayStatus.keySet()){
 			
 			if (PlayerTracker.instance().playerOverlayStatus.get(player) == OverlayStatus.CHUNKSTATUS){
 				OpisPacketHandler_OLD.validateAndSend(NetDataCommand_OLD.create(Message.LIST_CHUNK_LOADED_CLEAR), player);
