@@ -4,7 +4,6 @@ import java.io.DataInputStream;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 
-import net.minecraft.network.packet.Packet250CustomPayload;
 import mcp.mobius.opis.data.holders.ISerializable;
 import mcp.mobius.opis.data.holders.newtypes.DataError;
 import mcp.mobius.opis.network.enums.Message;

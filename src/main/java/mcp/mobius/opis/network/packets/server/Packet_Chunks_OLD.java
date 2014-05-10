@@ -8,15 +8,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 
-import cpw.mods.fml.common.network.PacketDispatcher;
-import cpw.mods.fml.common.network.Player;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import mapwriter.region.MwChunk;
 import mcp.mobius.opis.modOpis;
+import mcp.mobius.opis.network.PacketManager;
 import mcp.mobius.opis.network.enums.Packets;
-import net.minecraft.network.packet.Packet250CustomPayload;
-import net.minecraft.network.packet.Packet56MapChunks;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.NibbleArray;
 import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
@@ -119,13 +118,13 @@ public class Packet_Chunks_OLD {
 		} catch (IOException e){}
 	}
 
-	public static void send(int dim, boolean hasNoSky, ArrayList<Chunk> chunks, Player player){
+	public static void send(int dim, boolean hasNoSky, ArrayList<Chunk> chunks, EntityPlayerMP player){
 		Packet250CustomPayload packet    = create(dim, hasNoSky, chunks);
 		Packet250CustomPayload[] packets = createPackets("Opis_Chunk", Packets.CHUNKS, packet.data);
 		
 		for (Packet250CustomPayload p : packets){
 			if (p != null)
-				PacketDispatcher.sendPacketToPlayer(p, player);
+				PacketManager.sendToPlayer(p, player);
 		}
 	}
 	

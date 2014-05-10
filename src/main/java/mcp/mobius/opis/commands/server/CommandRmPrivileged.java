@@ -40,7 +40,7 @@ public class CommandRmPrivileged extends CommandBase  implements IOpisCommand{
     public boolean canCommandSenderUseCommand(ICommandSender sender)
     {
 		if (sender  instanceof DedicatedServer) return true;
-		if ((sender instanceof EntityPlayerMP) && ((EntityPlayerMP)sender).playerNetServerHandler.netManager instanceof MemoryConnection) return true;
+		//if ((sender instanceof EntityPlayerMP) && ((EntityPlayerMP)sender).playerNetServerHandler.netManager instanceof MemoryConnection) return true;
 		if (!(sender instanceof DedicatedServer) && !(sender instanceof EntityPlayerMP)) return true;
 		return PlayerTracker.INSTANCE.isAdmin(((EntityPlayerMP)sender).getDisplayName());
     }

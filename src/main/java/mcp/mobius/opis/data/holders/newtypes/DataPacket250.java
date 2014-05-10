@@ -4,9 +4,10 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import net.minecraft.network.packet.Packet;
+import com.google.common.io.ByteArrayDataInput;
+import com.google.common.io.ByteArrayDataOutput;
+
 import mcp.mobius.opis.data.holders.ISerializable;
-import net.minecraft.network.packet.Packet250CustomPayload;
 
 public class DataPacket250 implements ISerializable{
 	public CachedString   channel;
@@ -23,12 +24,14 @@ public class DataPacket250 implements ISerializable{
 		this.amount  = new DataAmountRate(0, 5);
 	}
 	
+	/*
 	public DataPacket250 fill(Packet packet){
 		this.size.size += packet.getPacketSize() + 1;
 		this.rate.size += packet.getPacketSize() + 1;
 		this.amount.size += 1;
 		return this;
 	}
+	*/
 	
 	public void startInterval(){
 		this.rate.reset();
@@ -36,14 +39,14 @@ public class DataPacket250 implements ISerializable{
 	}	
 	
 	@Override
-	public void writeToStream(DataOutputStream stream) throws IOException {
+	public void writeToStream(ByteArrayDataOutput stream){
 		this.channel.writeToStream(stream);
 		this.size.writeToStream(stream);
 		this.rate.writeToStream(stream);
 		this.amount.writeToStream(stream);
 	}
 
-	public static DataPacket250 readFromStream(DataInputStream stream) throws IOException {
+	public static DataPacket250 readFromStream(ByteArrayDataInput stream){
 		DataPacket250 retVal = new DataPacket250();
 		retVal.channel    = CachedString.readFromStream(stream);
 		retVal.size       = DataByteSize.readFromStream(stream);

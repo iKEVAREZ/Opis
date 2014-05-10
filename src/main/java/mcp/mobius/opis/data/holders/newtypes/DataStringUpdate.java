@@ -4,7 +4,9 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import net.minecraft.network.packet.Packet;
+import com.google.common.io.ByteArrayDataInput;
+import com.google.common.io.ByteArrayDataOutput;
+
 import mcp.mobius.opis.data.holders.ISerializable;
 
 public class DataStringUpdate implements ISerializable {
@@ -20,14 +22,14 @@ public class DataStringUpdate implements ISerializable {
 	}
 	
 	@Override
-	public void writeToStream(DataOutputStream stream) throws IOException {
-		Packet.writeString(this.str, stream);
+	public void writeToStream(ByteArrayDataOutput stream){
+		stream.writeUTF(this.str);
 		stream.writeInt(this.index);
 
 	}
 
-	public static  DataStringUpdate readFromStream(DataInputStream stream) throws IOException {
-		return new DataStringUpdate(Packet.readString(stream, 255), stream.readInt());
+	public static  DataStringUpdate readFromStream(ByteArrayDataInput stream){
+		return new DataStringUpdate(stream.readUTF(), stream.readInt());
 	}	
 	
 }

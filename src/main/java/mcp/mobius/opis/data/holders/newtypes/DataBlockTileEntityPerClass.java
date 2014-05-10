@@ -4,6 +4,9 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import com.google.common.io.ByteArrayDataInput;
+import com.google.common.io.ByteArrayDataOutput;
+
 import mcp.mobius.opis.data.holders.ISerializable;
 
 public class DataBlockTileEntityPerClass implements ISerializable, Comparable {
@@ -42,14 +45,14 @@ public class DataBlockTileEntityPerClass implements ISerializable, Comparable {
 	}	
 	
 	@Override
-	public void writeToStream(DataOutputStream stream) throws IOException {
+	public void writeToStream(ByteArrayDataOutput stream){
 		stream.writeInt(this.id);
 		stream.writeInt(this.meta);
 		stream.writeInt(this.amount);
 		this.update.writeToStream(stream);
 	}
 
-	public static DataBlockTileEntityPerClass readFromStream(DataInputStream stream) throws IOException {
+	public static DataBlockTileEntityPerClass readFromStream(ByteArrayDataInput stream){
 		DataBlockTileEntityPerClass retVal = new DataBlockTileEntityPerClass();
 		retVal.id = stream.readInt();
 		retVal.meta = stream.readInt();

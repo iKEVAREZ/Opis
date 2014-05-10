@@ -4,6 +4,9 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import com.google.common.io.ByteArrayDataInput;
+import com.google.common.io.ByteArrayDataOutput;
+
 import mcp.mobius.opis.data.holders.ISerializable;
 
 public class DataEntityPerClass implements Comparable, ISerializable{
@@ -28,13 +31,13 @@ public class DataEntityPerClass implements Comparable, ISerializable{
 	}
 	
 	@Override
-	public void writeToStream(DataOutputStream stream) throws IOException {
+	public void writeToStream(ByteArrayDataOutput stream){
 		stream.writeInt(this.nents);
 		this.name.writeToStream(stream);
 		this.update.writeToStream(stream);
 	}
 
-	public static DataEntityPerClass readFromStream(DataInputStream stream) throws IOException {
+	public static DataEntityPerClass readFromStream(ByteArrayDataInput stream){
 		DataEntityPerClass retVal = new DataEntityPerClass();
 		retVal.nents  = stream.readInt();
 		retVal.name   = CachedString.readFromStream(stream);

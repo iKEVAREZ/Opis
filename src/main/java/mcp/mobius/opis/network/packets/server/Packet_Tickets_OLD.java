@@ -9,7 +9,6 @@ import java.util.HashSet;
 
 import mcp.mobius.opis.data.holders.basetypes.TicketData;
 import mcp.mobius.opis.network.enums.Packets;
-import net.minecraft.network.packet.Packet250CustomPayload;
 
 public class Packet_Tickets_OLD {
 

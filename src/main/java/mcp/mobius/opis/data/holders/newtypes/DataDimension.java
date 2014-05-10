@@ -8,6 +8,9 @@ import java.util.HashMap;
 
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 
+import com.google.common.io.ByteArrayDataInput;
+import com.google.common.io.ByteArrayDataOutput;
+
 import mcp.mobius.mobiuscore.profiler.ProfilerSection;
 import mcp.mobius.opis.data.holders.ISerializable;
 import mcp.mobius.opis.data.profilers.ProfilerDimTick;
@@ -15,7 +18,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityAnimal;
-import net.minecraft.network.packet.Packet;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
 
@@ -64,7 +66,7 @@ public class DataDimension implements ISerializable {
 	}
 	
 	@Override
-	public void writeToStream(DataOutputStream stream) throws IOException {
+	public void writeToStream(ByteArrayDataOutput stream){
 		stream.writeInt(dim);
 		stream.writeInt(players);
 		stream.writeInt(forced);
@@ -78,7 +80,7 @@ public class DataDimension implements ISerializable {
 		this.name.writeToStream(stream);
 	}
 
-	public static DataDimension readFromStream(DataInputStream stream) throws IOException {
+	public static DataDimension readFromStream(ByteArrayDataInput stream){
 		DataDimension retVal = new DataDimension();
 		retVal.dim     = stream.readInt();
 		retVal.players = stream.readInt();

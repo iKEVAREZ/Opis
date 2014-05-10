@@ -16,6 +16,7 @@ public class DataHandler implements ISerializable, Comparable {
 	public CachedString name;
 	public DataTiming   update;
 	
+	/*
 	public DataHandler fillServer(IScheduledTickHandler ticker){
 		double timingPre  = ((ProfilerHandler)(ProfilerSection.HANDLER_TICKSTART.getProfiler())).dataServer.get(ticker).getGeometricMean();
 		double timingPost = ((ProfilerHandler)(ProfilerSection.HANDLER_TICKSTOP.getProfiler())).dataServer.get(ticker).getGeometricMean();		
@@ -35,6 +36,7 @@ public class DataHandler implements ISerializable, Comparable {
 		
 		return this;
 	}	
+	*/
 	
 	@Override
 	public void writeToStream(ByteArrayDataOutput stream){

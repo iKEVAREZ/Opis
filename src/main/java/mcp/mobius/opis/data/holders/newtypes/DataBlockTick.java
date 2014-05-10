@@ -7,6 +7,9 @@ import java.util.HashMap;
 
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 
+import com.google.common.io.ByteArrayDataInput;
+import com.google.common.io.ByteArrayDataOutput;
+
 import mcp.mobius.mobiuscore.profiler.ProfilerSection;
 import mcp.mobius.opis.data.holders.ISerializable;
 import mcp.mobius.opis.data.profilers.ProfilerDimBlockTick;
@@ -28,7 +31,7 @@ public class DataBlockTick implements ISerializable{
 	}
 
 	@Override
-	public void writeToStream(DataOutputStream stream) throws IOException {
+	public void writeToStream(ByteArrayDataOutput stream){
 		stream.writeShort(this.perdim.size());
 		for (Integer key : this.perdim.keySet()){
 			stream.writeInt(key);
@@ -37,7 +40,7 @@ public class DataBlockTick implements ISerializable{
 		this.total.writeToStream(stream);
 	}
 	
-	public static DataBlockTick readFromStream(DataInputStream stream) throws IOException {
+	public static DataBlockTick readFromStream(ByteArrayDataInput stream){
 		DataBlockTick retVal = new DataBlockTick();
 		int nkeys = stream.readShort();
 		for (int i = 0; i < nkeys; i++)

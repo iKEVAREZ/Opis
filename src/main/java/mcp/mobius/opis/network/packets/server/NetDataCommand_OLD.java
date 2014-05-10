@@ -8,7 +8,6 @@ import java.io.IOException;
 
 import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.enums.Packets;
-import net.minecraft.network.packet.Packet250CustomPayload;
 
 public class NetDataCommand_OLD extends NetDataRaw_OLD{
 

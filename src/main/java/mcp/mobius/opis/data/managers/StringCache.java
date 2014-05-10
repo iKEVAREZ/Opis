@@ -7,13 +7,12 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import com.google.common.collect.HashBiMap;
 
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.network.PacketDispatcher;
-import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.relauncher.Side;
 import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.api.IMessageHandler;
 import mcp.mobius.opis.data.holders.ISerializable;
 import mcp.mobius.opis.data.holders.newtypes.DataStringUpdate;
+import mcp.mobius.opis.network.PacketManager;
 import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.packets.server.NetDataList_OLD;
 import mcp.mobius.opis.network.packets.server.NetDataRaw_OLD;
@@ -53,7 +52,7 @@ public enum StringCache implements IMessageHandler {
 			DataStringUpdate upd = new DataStringUpdate(str, currentIndex);
 			this.toSend.add(upd);
 			
-			PacketDispatcher.sendPacketToAllPlayers(NetDataValue_OLD.create(Message.STATUS_STRINGUPD, upd).packet);
+			PacketManager.sendToAll(NetDataValue_OLD.create(Message.STATUS_STRINGUPD, upd).packet);
 			return currentIndex;
 		}
 	}
@@ -65,7 +64,7 @@ public enum StringCache implements IMessageHandler {
 		ArrayList<DataStringUpdate> toSendCopy = new ArrayList(toSend);
 		
 		while (i < toSendCopy.size()){
-			PacketDispatcher.sendPacketToPlayer(NetDataList_OLD.create(Message.STATUS_STRINGUPD_FULL, toSendCopy.subList(i, Math.min(i + 50, toSendCopy.size()))).packet, player);			
+			PacketManager.sendToPlayer(NetDataList_OLD.create(Message.STATUS_STRINGUPD_FULL, toSendCopy.subList(i, Math.min(i + 50, toSendCopy.size()))).packet, player);			
 			i += 50;
 		}		
 		

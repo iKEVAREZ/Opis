@@ -14,7 +14,7 @@ public class DataEntityRender extends DataEntity {
 
 	public DataEntityRender fill(Entity entity){
 		
-		this.eid    = entity.entityId;
+		this.eid    = entity.getEntityId();
 		this.name   = new CachedString(EntityManager.INSTANCE.getEntityName(entity, false));
 		this.pos    = new CoordinatesBlock(entity);
 		

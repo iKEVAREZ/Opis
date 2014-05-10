@@ -7,8 +7,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import mcp.mobius.opis.data.holders.DataType;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.Packet250CustomPayload;
 import mcp.mobius.opis.data.holders.ISerializable;
 import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.enums.Packets;

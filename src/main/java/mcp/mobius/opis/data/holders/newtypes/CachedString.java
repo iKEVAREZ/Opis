@@ -7,10 +7,6 @@ import java.io.IOException;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 
-import net.minecraft.server.ServerListenThread;
-import net.minecraft.server.ThreadMinecraftServer;
-import net.minecraft.network.TcpReaderThread;
-import net.minecraft.network.TcpWriterThread;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.server.FMLServerHandler;

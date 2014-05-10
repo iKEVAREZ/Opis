@@ -9,7 +9,6 @@ import java.util.HashMap;
 
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesChunk;
 import mcp.mobius.opis.network.enums.Packets;
-import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.world.ChunkCoordIntPair;
 
 public class Packet_DataOverlayChunkEntities_OLD {

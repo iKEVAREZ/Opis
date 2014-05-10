@@ -68,8 +68,9 @@ import cpw.mods.fml.relauncher.Side;
 
 public class OpisPacketHandler_OLD implements IPacketHandler {
 
+	/*
 	@Override
-	public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player player) {
+	public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, EntityPlayerMP player) {
         if (packet.channel.equals("Opis") || packet.channel.equals("Opis_Chunk")) {
 			byte header = this.getHeader(packet);
 			
@@ -79,8 +80,9 @@ public class OpisPacketHandler_OLD implements IPacketHandler {
 				this.onPacketToClient(manager, packet, player, header);
         }
 	}
+	*/
 
-	void onPacketToClient(INetworkManager manager, Packet250CustomPayload packet, Player player, Byte header) {
+	void onPacketToClient(INetworkManager manager, Packet250CustomPayload packet, EntityPlayerMP player, Byte header) {
 		
 		if (header == Packets.TICKETS){
 			Packet_Tickets_OLD castedPacket = new Packet_Tickets_OLD(packet);
@@ -116,6 +118,7 @@ public class OpisPacketHandler_OLD implements IPacketHandler {
 		}
 	}
 
+	/*
 	public byte getHeader(Packet250CustomPayload packet){
 		try{
 			DataInputStream inputStream = new DataInputStream(new ByteArrayInputStream(packet.data));			
@@ -123,7 +126,8 @@ public class OpisPacketHandler_OLD implements IPacketHandler {
 		} catch (Exception e){
 			return -1;
 		}
-	}        
+	} 
+	*/       
 	
 	public static void validateAndSend(NetDataRaw_OLD capsule, EntityPlayerMP player){
 		if (!capsule.msg.isDisplayActive(PlayerTracker.instance().getPlayerSelectedTab(player))) return;

@@ -4,8 +4,10 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import com.google.common.io.ByteArrayDataInput;
+import com.google.common.io.ByteArrayDataOutput;
+
 import mcp.mobius.opis.data.holders.ISerializable;
-import net.minecraft.network.packet.Packet;
 
 public class DataPacket implements ISerializable{
 	public int  id;
@@ -18,6 +20,7 @@ public class DataPacket implements ISerializable{
 	}	
 	
 	public DataPacket(int id){
+		/*
 		this.id   = id;
 		this.size = new DataByteSize(0);
 		this.rate = new DataByteRate(0, 5);
@@ -27,14 +30,17 @@ public class DataPacket implements ISerializable{
 		} catch (Exception e) {
 			this.type = "<UNUSED>";
 		}
+		*/
 	}
-	
+
+	/*
 	public DataPacket fill(Packet packet){
 		this.size.size += packet.getPacketSize() + 1;
 		this.rate.size += packet.getPacketSize() + 1;
 		this.amount.size += 1;
 		return this;
 	}
+	*/
 	
 	public void startInterval(){
 		this.rate.reset();
@@ -42,15 +48,16 @@ public class DataPacket implements ISerializable{
 	}
 	
 	@Override
-	public void writeToStream(DataOutputStream stream) throws IOException {
+	public void writeToStream(ByteArrayDataOutput stream){
 		stream.writeInt(this.id);
 		this.size.writeToStream(stream);
 		this.rate.writeToStream(stream);
 		this.amount.writeToStream(stream);
 	}
 
-	public static DataPacket readFromStream(DataInputStream stream) throws IOException {
+	public static DataPacket readFromStream(ByteArrayDataInput stream){
 		DataPacket retVal = new DataPacket();
+		/*
 		retVal.id         = stream.readInt();
 		retVal.size       = DataByteSize.readFromStream(stream);
 		retVal.rate       = DataByteRate.readFromStream(stream);
@@ -60,6 +67,7 @@ public class DataPacket implements ISerializable{
 		} catch (Exception e) {
 			retVal.type = "<UNUSED>";
 		}
+		*/
 		return retVal;
 	}	
 }

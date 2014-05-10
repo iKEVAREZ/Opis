@@ -223,7 +223,7 @@ public class ServerMessageHandler {
 		
 		else if(maintype == Message.SWING_TAB_CHANGED){
 			SelectedTab tab = SelectedTab.values()[((SerialInt)param1).value];
-			PlayerTracker.instance().playerTab.put(player, tab);
+			PlayerTracker.INSTANCE.playerTab.put(player, tab);
 		}		
 		
 		else if(maintype == Message.LIST_ORPHAN_TILEENTS){

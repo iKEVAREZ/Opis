@@ -4,6 +4,9 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import com.google.common.io.ByteArrayDataInput;
+import com.google.common.io.ByteArrayDataOutput;
+
 import mcp.mobius.opis.data.holders.ISerializable;
 
 public class DataByteSize implements Comparable, ISerializable {
@@ -30,11 +33,11 @@ public class DataByteSize implements Comparable, ISerializable {
 		return String.format("%4d   B", this.size);		
 	}
 	
-	public void  writeToStream(DataOutputStream stream) throws IOException{
+	public void  writeToStream(ByteArrayDataOutput stream){
 		stream.writeLong(this.size);
 	}
 	
-	public static  DataByteSize readFromStream(DataInputStream stream) throws IOException {
+	public static  DataByteSize readFromStream(ByteArrayDataInput stream){
 		return new DataByteSize(stream.readLong());
 	}
 }

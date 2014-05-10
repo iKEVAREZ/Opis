@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
-import cpw.mods.fml.common.IScheduledTickHandler;
-import cpw.mods.fml.common.SingleIntervalHandler;
 import mcp.mobius.mobiuscore.profiler.ProfilerSection;
 import mcp.mobius.opis.data.holders.newtypes.DataHandler;
 import mcp.mobius.opis.data.holders.newtypes.DataTiming;
@@ -30,6 +28,7 @@ public class TickHandlerManager {
 		}
 	}
 	
+	/*
 	public static ArrayList<DataHandler> getCumulatedStatsServer(){
 		ArrayList<DataHandler> retVal = new ArrayList<DataHandler>();
 		for (IScheduledTickHandler ticker : ((ProfilerHandler)(ProfilerSection.HANDLER_TICKSTART.getProfiler())).dataServer.keySet())
@@ -39,7 +38,9 @@ public class TickHandlerManager {
 		
 		return retVal;
 	}
+	*/
 
+	/*
 	public static ArrayList<DataHandler> getCumulatedStatsRender(){
 		ArrayList<DataHandler> retVal = new ArrayList<DataHandler>();
 		for (IScheduledTickHandler ticker : ((ProfilerHandler)(ProfilerSection.HANDLER_TICKSTART.getProfiler())).dataRender.keySet())
@@ -48,8 +49,10 @@ public class TickHandlerManager {
 		Collections.sort(retVal);
 		
 		return retVal;
-	}	
-	
+	}
+	*/	
+
+	/*
 	public static String getHandlerName(IScheduledTickHandler handler){
 		String name = handler.getLabel();
 		if (name == null || name.equals("")){
@@ -64,25 +67,18 @@ public class TickHandlerManager {
 				name = handler.getClass().getName();
 			}
 		}
-		/*
-		}else{
-			name = handler.getClass().getName();
-		}
-		*/
-		/*
-		if (name == null || name.equals("")){
-			name = "<Unnamed SingleIntervalHandler>";
-		}
-		*/
 		
 		return name;
 	}
+	*/
 	
+	/*
 	public static DataTiming getTotalUpdateTime(){
 		double updateTime = 0D;
 		for (IScheduledTickHandler ticker : ((ProfilerHandler)(ProfilerSection.HANDLER_TICKSTART.getProfiler())).dataServer.keySet())
 			updateTime += new DataHandler().fillServer(ticker).update.timing;
 		
 		return new DataTiming(updateTime);
-	}	
+	}
+	*/	
 }

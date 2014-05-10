@@ -5,6 +5,9 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import com.google.common.io.ByteArrayDataInput;
+import com.google.common.io.ByteArrayDataOutput;
+
 import mcp.mobius.opis.data.holders.ISerializable;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesChunk;
 import mcp.mobius.opis.data.managers.EntityManager;
@@ -35,14 +38,14 @@ public class DataChunk implements ISerializable, Comparable {
 	}
 	
 	@Override
-	public void writeToStream(DataOutputStream stream) throws IOException {
+	public void writeToStream(ByteArrayDataOutput stream){
 		stream.writeInt(this.nentities);
 		stream.writeInt(this.ntileents);
 		this.update.writeToStream(stream);
 		this.chunk.writeToStream(stream);
 	}
 
-	public static DataChunk readFromStream(DataInputStream stream) throws IOException {
+	public static DataChunk readFromStream(ByteArrayDataInput stream){
 		DataChunk retVal = new DataChunk();
 		retVal.nentities = stream.readInt();
 		retVal.ntileents = stream.readInt();

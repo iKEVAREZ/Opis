@@ -34,6 +34,7 @@ import mcp.mobius.opis.data.holders.newtypes.DataEntityPerClass;
 import mcp.mobius.opis.data.holders.newtypes.DataTiming;
 import mcp.mobius.opis.data.profilers.ProfilerEntityUpdate;
 import mcp.mobius.opis.helpers.Teleport;
+import mcp.mobius.opis.network.PacketManager;
 
 public enum EntityManager {
 	INSTANCE;
@@ -183,14 +184,14 @@ public enum EntityManager {
 		return true;
 	}
 
-	public boolean teleportEntity(Entity src, Entity trg, Player msgtrg){
+	public boolean teleportEntity(Entity src, Entity trg, EntityPlayerMP msgtrg){
 		if ((src == null) && (msgtrg != null)) {
-			PacketDispatcher.sendPacketToPlayer(new Packet3Chat(ChatMessageComponent.createFromText(String.format("\u00A7oCannot find source entity %s", src))), (Player)msgtrg);
+			PacketManager.sendToPlayer(new Packet3Chat(ChatMessageComponent.createFromText(String.format("\u00A7oCannot find source entity %s", src))), msgtrg);
 			return false;
 		}		
 
 		if ((trg == null) && (msgtrg != null)) {
-			PacketDispatcher.sendPacketToPlayer(new Packet3Chat(ChatMessageComponent.createFromText(String.format("\u00A7oCannot find target entity %s", trg))), (Player)msgtrg);
+			PacketManager.sendToPlayer(new Packet3Chat(ChatMessageComponent.createFromText(String.format("\u00A7oCannot find target entity %s", trg))), msgtrg);
 			return false;
 		}				
 		

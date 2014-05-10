@@ -4,6 +4,9 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import com.google.common.io.ByteArrayDataInput;
+import com.google.common.io.ByteArrayDataOutput;
+
 import mcp.mobius.opis.data.holders.ISerializable;
 
 public class DataAmountRate implements Comparable, ISerializable {
@@ -26,12 +29,12 @@ public class DataAmountRate implements Comparable, ISerializable {
 		return String.format("%.2f packet/s", (double)this.size / (double)this.interval);		
 	}
 	
-	public void  writeToStream(DataOutputStream stream) throws IOException{
+	public void  writeToStream(ByteArrayDataOutput stream){
 		stream.writeLong(this.size);
 		stream.writeInt(this.interval);
 	}
 	
-	public static  DataAmountRate readFromStream(DataInputStream stream) throws IOException {
+	public static  DataAmountRate readFromStream(ByteArrayDataInput stream){
 		return new DataAmountRate(stream.readLong(), stream.readInt());
 	}
 }
