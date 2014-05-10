@@ -23,15 +23,15 @@ import javax.swing.SwingConstants;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiChat;
-import cpw.mods.fml.common.network.PacketDispatcher;
 import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.api.IMessageHandler;
 import mcp.mobius.opis.api.ITabPanel;
 import mcp.mobius.opis.api.TabPanelRegistrar;
 import mcp.mobius.opis.data.holders.basetypes.SerialInt;
+import mcp.mobius.opis.network.PacketManager;
 import mcp.mobius.opis.network.enums.AccessLevel;
 import mcp.mobius.opis.network.enums.Message;
-import mcp.mobius.opis.network.packets.client.Packet_ReqData;
+import mcp.mobius.opis.network.packets.client.PacketReqData;
 import mcp.mobius.opis.network.packets.server.NetDataRaw_OLD;
 import mcp.mobius.opis.swing.panels.PanelSummary;
 import mcp.mobius.opis.swing.panels.timingserver.PanelTimingChunks;
@@ -96,7 +96,7 @@ public class SwingUI extends JFrame implements WindowListener, ChangeListener, I
 	@Override
 	public void windowClosed(WindowEvent arg0) {
 		modOpis.swingOpen = false;
-		PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.COMMAND_UNREGISTER_SWING));
+		PacketManager.sendToServer(new PacketReqData(Message.COMMAND_UNREGISTER_SWING));
 	}
 
 	@Override
@@ -142,7 +142,7 @@ public class SwingUI extends JFrame implements WindowListener, ChangeListener, I
 			modOpis.swingOpen = true;
 			this.showUI();
 			Minecraft.getMinecraft().displayGuiScreen(new GuiChat());
-			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.SWING_TAB_CHANGED, new SerialInt(SelectedTab.SUMMARY.ordinal())));
+			PacketManager.sendToServer(new PacketReqData(Message.SWING_TAB_CHANGED, new SerialInt(SelectedTab.SUMMARY.ordinal())));
 			break;
 		}
 		default:
@@ -158,13 +158,13 @@ public class SwingUI extends JFrame implements WindowListener, ChangeListener, I
 		
 		if (source instanceof ITabPanel){
 			ITabPanel panel = (ITabPanel)source;
-			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.SWING_TAB_CHANGED, new SerialInt(panel.getSelectedTab().ordinal())));
+			PacketManager.sendToServer(new PacketReqData(Message.SWING_TAB_CHANGED, new SerialInt(panel.getSelectedTab().ordinal())));
 		}
 		
 		if (source instanceof JTabbedPane){
 			JTabbedPane pane = (JTabbedPane)source;
 			ITabPanel panel = (ITabPanel)pane.getSelectedComponent();
-			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.SWING_TAB_CHANGED, new SerialInt(panel.getSelectedTab().ordinal())));
+			PacketManager.sendToServer(new PacketReqData(Message.SWING_TAB_CHANGED, new SerialInt(panel.getSelectedTab().ordinal())));
 		}
 	}
 }

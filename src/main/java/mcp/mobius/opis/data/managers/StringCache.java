@@ -2,6 +2,8 @@ package mcp.mobius.opis.data.managers;
 
 import java.util.ArrayList;
 
+import net.minecraft.entity.player.EntityPlayerMP;
+
 import com.google.common.collect.HashBiMap;
 
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -56,7 +58,7 @@ public enum StringCache implements IMessageHandler {
 		}
 	}
 	
-	public void syncCache(Player player){
+	public void syncCache(EntityPlayerMP player){
 		
 		int i = 0;
 		

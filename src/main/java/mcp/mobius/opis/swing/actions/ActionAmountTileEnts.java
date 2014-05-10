@@ -5,8 +5,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
+import mcp.mobius.opis.network.PacketManager;
 import mcp.mobius.opis.network.enums.Message;
-import mcp.mobius.opis.network.packets.client.Packet_ReqData;
+import mcp.mobius.opis.network.packets.client.PacketReqData;
 import mcp.mobius.opis.swing.SelectedTab;
 import mcp.mobius.opis.swing.SwingUI;
 import mcp.mobius.opis.swing.panels.tracking.PanelAmountEntities;
@@ -15,7 +16,6 @@ import mcp.mobius.opis.swing.widgets.JTableStats;
 
 import javax.swing.JButton;
 
-import cpw.mods.fml.common.network.PacketDispatcher;
 import mcp.mobius.opis.api.TabPanelRegistrar;
 import mcp.mobius.opis.data.holders.basetypes.AmountHolder;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesBlock;
@@ -39,7 +39,7 @@ public class ActionAmountTileEnts implements ActionListener{
 		*/
 		
 		if (e.getSource() == panel.getBtnRefresh()){
-			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.LIST_AMOUNT_TILEENTS));
+			PacketManager.sendToServer(new PacketReqData(Message.LIST_AMOUNT_TILEENTS));
 		}
 		
 	}

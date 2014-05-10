@@ -8,8 +8,9 @@ import java.awt.event.ItemListener;
 import mapwriter.Mw;
 import mapwriter.api.MwAPI;
 import mapwriter.gui.MwGui;
+import mcp.mobius.opis.network.PacketManager;
 import mcp.mobius.opis.network.enums.Message;
-import mcp.mobius.opis.network.packets.client.Packet_ReqData;
+import mcp.mobius.opis.network.packets.client.PacketReqData;
 import mcp.mobius.opis.swing.SelectedTab;
 import mcp.mobius.opis.swing.SwingUI;
 import mcp.mobius.opis.swing.panels.timingserver.PanelTimingChunks;
@@ -17,7 +18,6 @@ import mcp.mobius.opis.swing.widgets.JTableStats;
 
 import javax.swing.JButton;
 
-import cpw.mods.fml.common.network.PacketDispatcher;
 import mcp.mobius.opis.api.TabPanelRegistrar;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesBlock;
 import mcp.mobius.opis.data.holders.stats.StatAbstract;
@@ -45,7 +45,7 @@ public class ActionTimingChunks implements ActionListener {
 		}				
 		
 		if (e.getSource() == panel.getBtnTeleport()){
-            PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.COMMAND_TELEPORT_CHUNK, data.getChunk()));
+			PacketManager.sendToServer(new PacketReqData(Message.COMMAND_TELEPORT_CHUNK, data.getChunk()));
 		}
 	}
 }

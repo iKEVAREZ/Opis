@@ -5,8 +5,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
+import mcp.mobius.opis.network.PacketManager;
 import mcp.mobius.opis.network.enums.Message;
-import mcp.mobius.opis.network.packets.client.Packet_ReqData;
+import mcp.mobius.opis.network.packets.client.PacketReqData;
 import mcp.mobius.opis.swing.SelectedTab;
 import mcp.mobius.opis.swing.SwingUI;
 import mcp.mobius.opis.swing.panels.tracking.PanelAmountEntities;
@@ -14,7 +15,6 @@ import mcp.mobius.opis.swing.widgets.JTableStats;
 
 import javax.swing.JButton;
 
-import cpw.mods.fml.common.network.PacketDispatcher;
 import mcp.mobius.opis.api.TabPanelRegistrar;
 import mcp.mobius.opis.data.holders.basetypes.AmountHolder;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesBlock;
@@ -36,12 +36,12 @@ public class ActionAmountEntities implements ActionListener, ItemListener {
 		AmountHolder data       = (AmountHolder)table.getTableData().get(indexData);
 		
 		if (e.getSource() == panel.getBtnKillAll()){
-            PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.COMMAND_KILLALL, new SerialString(data.key)));
-            PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.LIST_AMOUNT_ENTITIES));			
+			PacketManager.sendToServer(new PacketReqData(Message.COMMAND_KILLALL, new SerialString(data.key)));
+            PacketManager.sendToServer(new PacketReqData(Message.LIST_AMOUNT_ENTITIES));			
 		}				
 		
 		if (e.getSource() == panel.getBtnRefresh()){
-			PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.LIST_AMOUNT_ENTITIES));
+			PacketManager.sendToServer(new PacketReqData(Message.LIST_AMOUNT_ENTITIES));
 		}
 		
 	}
@@ -49,12 +49,12 @@ public class ActionAmountEntities implements ActionListener, ItemListener {
 	@Override
 	public void itemStateChanged(ItemEvent e) {
         if      (e.getStateChange() == ItemEvent.SELECTED){
-            PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.COMMAND_FILTERING_TRUE));
+        	PacketManager.sendToServer(new PacketReqData(Message.COMMAND_FILTERING_TRUE));
         }
         else if (e.getStateChange() == ItemEvent.DESELECTED){
-            PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.COMMAND_FILTERING_FALSE));
+        	PacketManager.sendToServer(new PacketReqData(Message.COMMAND_FILTERING_FALSE));
         }
-        PacketDispatcher.sendPacketToServer(Packet_ReqData.create(Message.LIST_AMOUNT_ENTITIES));
+        PacketManager.sendToServer(new PacketReqData(Message.LIST_AMOUNT_ENTITIES));
 	}
 
 }

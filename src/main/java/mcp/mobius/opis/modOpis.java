@@ -48,7 +48,6 @@ import mcp.mobius.opis.events.OpisServerEventHandler;
 import mcp.mobius.opis.events.OpisServerTickHandler;
 import mcp.mobius.opis.events.PlayerTracker;
 import mcp.mobius.opis.helpers.ModIdentification;
-import mcp.mobius.opis.network.OpisConnectionHandler;
 import mcp.mobius.opis.network.OpisPacketHandler_OLD;
 import mcp.mobius.opis.network.enums.AccessLevel;
 import mcp.mobius.opis.network.enums.Message;
