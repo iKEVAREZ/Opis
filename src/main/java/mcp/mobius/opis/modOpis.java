@@ -139,11 +139,11 @@ public class modOpis {
 		//TickRegistry.registerTickHandler(OpisClientTickHandler.INSTANCE, Side.CLIENT);
 		
 		if (lagGenID != -1){
-			Block blockDemo = new BlockLag(lagGenID, Material.wood);
+			Block blockDemo = new BlockLag(Material.wood);
 			GameRegistry.registerBlock(blockDemo, "opis.laggen");
 			GameRegistry.registerTileEntity(TileLag.class, "opis.laggen");
 			
-			Block blockDebug = new BlockDebug(lagGenID+1, Material.wood);
+			Block blockDebug = new BlockDebug(Material.wood);
 			GameRegistry.registerBlock(blockDebug, "opis.debug");
 			GameRegistry.registerTileEntity(TileDebug.class, "opis.debug");			
 		}

@@ -8,13 +8,13 @@ import net.minecraft.world.World;
 
 public class BlockDebug extends BlockContainer {
 
-    public BlockDebug(int par1, Material par2Material) {
-        super(par1, par2Material);
-        this.setUnlocalizedName("Debug Companion Cube");
+    public BlockDebug(Material par2Material) {
+        super(par2Material);
+        //this.setUnlocalizedName("Debug Companion Cube");
     }	
-	
+
 	@Override
-	public TileEntity createNewTileEntity(World world) {
+	public TileEntity createNewTileEntity(World var1, int var2) {
 		return new TileDebug();
 	}
 

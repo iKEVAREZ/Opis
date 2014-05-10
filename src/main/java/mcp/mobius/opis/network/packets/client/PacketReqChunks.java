@@ -49,7 +49,7 @@ public class PacketReqChunks extends PacketBase{
 
 	@Override
 	public void actionServer(World world, EntityPlayerMP player) {
-		if (PlayerTracker.instance().getPlayerAccessLevel(player).ordinal() > AccessLevel.PRIVILEGED.ordinal()){				
+		if (PlayerTracker.INSTANCE.getPlayerAccessLevel(player).ordinal() > AccessLevel.PRIVILEGED.ordinal()){				
 			ArrayList<Chunk> list = new ArrayList();
 			
 			if (world != null){

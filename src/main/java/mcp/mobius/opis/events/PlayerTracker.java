@@ -110,6 +110,6 @@ public enum PlayerTracker{
 		}
 		*/
 		
-		StringCache.INSTANCE.syncCache(event.player);		
+		StringCache.INSTANCE.syncCache((EntityPlayerMP)event.player);		
 	}
 }

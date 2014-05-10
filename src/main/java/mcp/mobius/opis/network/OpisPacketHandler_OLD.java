@@ -130,7 +130,7 @@ public class OpisPacketHandler_OLD implements IPacketHandler {
 	*/       
 	
 	public static void validateAndSend(NetDataRaw_OLD capsule, EntityPlayerMP player){
-		if (!capsule.msg.isDisplayActive(PlayerTracker.instance().getPlayerSelectedTab(player))) return;
+		if (!capsule.msg.isDisplayActive(PlayerTracker.INSTANCE.getPlayerSelectedTab(player))) return;
 		
 		if (capsule.msg.canPlayerUseCommand(player) && capsule.packet.getPacketSize() < 32000)
 			PacketManager.sendPacketToPlayer(capsule.packet, player);
@@ -139,7 +139,7 @@ public class OpisPacketHandler_OLD implements IPacketHandler {
 	}
 
 	public static void sendPacketToAllSwing(NetDataRaw_OLD capsule){
-		for (EntityPlayerMP player : PlayerTracker.instance().playersSwing)
+		for (EntityPlayerMP player : PlayerTracker.INSTANCE.playersSwing)
 			OpisPacketHandler_OLD.validateAndSend(capsule, player);
 	}
 
@@ -153,7 +153,7 @@ public class OpisPacketHandler_OLD implements IPacketHandler {
 	}
 	
 	public static void sendChatMsg(String msg, EntityPlayerMP player){
-		PacketManager.sendPacketToPlayer(new Packet3Chat(ChatMessageComponent.createFromText(msg)), player);		
+		PacketManager.sendToPlayer(new Packet3Chat(ChatMessageComponent.createFromText(msg)), player);		
 	}
 	
 	public static void sendFullUpdate(EntityPlayerMP player){
@@ -193,13 +193,13 @@ public class OpisPacketHandler_OLD implements IPacketHandler {
 		
 		OpisPacketHandler_OLD.validateAndSend(NetDataValue_OLD.create(Message.STATUS_TIME_LAST_RUN, new SerialLong(ProfilerSection.timeStampLastRun)), player);
 		
-		OpisPacketHandler_OLD.validateAndSend(NetDataValue_OLD.create(Message.STATUS_ACCESS_LEVEL, new SerialInt(PlayerTracker.instance().getPlayerAccessLevel(player).ordinal())), player);
+		OpisPacketHandler_OLD.validateAndSend(NetDataValue_OLD.create(Message.STATUS_ACCESS_LEVEL, new SerialInt(PlayerTracker.INSTANCE.getPlayerAccessLevel(player).ordinal())), player);
 		
 		// This portion is to get the proper filtered amounts depending on the player preferences.
 		String name = player.getDisplayName();
 		boolean filtered = false;
-		if (PlayerTracker.instance().filteredAmount.containsKey(name))
-			filtered = PlayerTracker.instance().filteredAmount.get(name);
+		if (PlayerTracker.INSTANCE.filteredAmount.containsKey(name))
+			filtered = PlayerTracker.INSTANCE.filteredAmount.get(name);
 		ArrayList<AmountHolder> amountEntities = EntityManager.INSTANCE.getCumulativeEntities(filtered);
 
 		// Here we send a full update to the player

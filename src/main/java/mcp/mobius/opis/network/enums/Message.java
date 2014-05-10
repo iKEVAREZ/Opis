@@ -127,11 +127,11 @@ public enum Message {
 	}	
 	
 	public boolean canPlayerUseCommand(EntityPlayerMP player){
-		return PlayerTracker.instance().getPlayerAccessLevel(player).ordinal() >= this.accessLevel.ordinal();
+		return PlayerTracker.INSTANCE.getPlayerAccessLevel(player).ordinal() >= this.accessLevel.ordinal();
 	}
 	
 	public boolean canPlayerUseCommand(String name){
-		return PlayerTracker.instance().getPlayerAccessLevel(name).ordinal() >= this.accessLevel.ordinal();
+		return PlayerTracker.INSTANCE.getPlayerAccessLevel(name).ordinal() >= this.accessLevel.ordinal();
 	}
 	
 	public boolean isDisplayActive(SelectedTab tab){

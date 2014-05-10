@@ -7,13 +7,13 @@ import net.minecraft.world.World;
 
 public class BlockLag extends BlockContainer {
 
-    public BlockLag(int par1, Material par2Material) {
-        super(par1, par2Material);
-        this.setUnlocalizedName("Lag Generator");
+    public BlockLag(Material par2Material) {
+        super(par2Material);
+        //this.setUnlocalizedName("Lag Generator");
     }	
-	
+
 	@Override
-	public TileEntity createNewTileEntity(World world) {
+	public TileEntity createNewTileEntity(World var1, int var2) {
 		return new TileLag();
 	}
 

@@ -77,14 +77,14 @@ public class ServerMessageHandler {
 		}
 
 		else if (maintype == Message.LIST_CHUNK_LOADED){
-			PlayerTracker.instance().playerOverlayStatus.put(player, OverlayStatus.CHUNKSTATUS);
-			PlayerTracker.instance().playerDimension.put(player, ((SerialInt)param1).value);
+			PlayerTracker.INSTANCE.playerOverlayStatus.put(player, OverlayStatus.CHUNKSTATUS);
+			PlayerTracker.INSTANCE.playerDimension.put(player, ((SerialInt)param1).value);
 			OpisPacketHandler_OLD.validateAndSend(NetDataCommand_OLD.create(Message.LIST_CHUNK_LOADED_CLEAR), player);
 			OpisPacketHandler_OLD.splitAndSend(Message.LIST_CHUNK_LOADED, ChunkManager.INSTANCE.getLoadedChunks(((SerialInt)param1).value), player);
 		}		
 
 		else if (maintype == Message.LIST_CHUNK_TICKETS){
-			PacketManager.sendPacketToPlayer(Packet_Tickets_OLD.create(ChunkManager.INSTANCE.getTickets()), player);
+			PacketManager.sendToPlayer(Packet_Tickets_OLD.create(ChunkManager.INSTANCE.getTickets()), player);
 		}		
 		
 		else if (maintype == Message.LIST_TIMING_TILEENTS){
@@ -122,8 +122,8 @@ public class ServerMessageHandler {
 		
 		else if (maintype == Message.LIST_AMOUNT_ENTITIES){
 			boolean filtered = false;
-			if (PlayerTracker.instance().filteredAmount.containsKey(name))
-				filtered = PlayerTracker.instance().filteredAmount.get(name);
+			if (PlayerTracker.INSTANCE.filteredAmount.containsKey(name))
+				filtered = 	PlayerTracker.INSTANCE.filteredAmount.get(name);
 			
 			ArrayList<AmountHolder> ents = EntityManager.INSTANCE.getCumulativeEntities(filtered);
 			OpisPacketHandler_OLD.validateAndSend(NetDataList_OLD.create(Message.LIST_AMOUNT_ENTITIES,  ents), player);
@@ -134,16 +134,16 @@ public class ServerMessageHandler {
 		}		
 		
 		else if (maintype == Message.COMMAND_FILTERING_TRUE){
-			PlayerTracker.instance().filteredAmount.put(name, true);
+			PlayerTracker.INSTANCE.filteredAmount.put(name, true);
 		}
 
 		else if (maintype == Message.COMMAND_FILTERING_FALSE){
-			PlayerTracker.instance().filteredAmount.put(name, false);
+			PlayerTracker.INSTANCE.filteredAmount.put(name, false);
 		}		
 		
 		else if (maintype == Message.COMMAND_UNREGISTER){
-			PlayerTracker.instance().playerOverlayStatus.remove(player);
-			PlayerTracker.instance().playerDimension.remove(player);
+			PlayerTracker.INSTANCE.playerOverlayStatus.remove(player);
+			PlayerTracker.INSTANCE.playerDimension.remove(player);
 		}		
 
 		else if (maintype == Message.COMMAND_START){
@@ -183,7 +183,7 @@ public class ServerMessageHandler {
 		}			
 		
 		else if(maintype == Message.COMMAND_UNREGISTER_SWING){
-			PlayerTracker.instance().playersSwing.remove(player);
+			PlayerTracker.INSTANCE.playersSwing.remove(player);
 		}
 			
 		else if(maintype == Message.STATUS_TIME_LAST_RUN){	
@@ -244,7 +244,7 @@ public class ServerMessageHandler {
 		for (CoordinatesChunk chunk : entities.keySet())
 			perChunk.put(chunk, entities.get(chunk).size());
 
-		PacketManager.sendPacketToPlayer(Packet_DataOverlayChunkEntities_OLD.create(perChunk), player);
+		PacketManager.sendToPlayer(Packet_DataOverlayChunkEntities_OLD.create(perChunk), player);
 	}
 	
 }
