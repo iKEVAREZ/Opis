@@ -83,10 +83,10 @@ public enum OpisServerTickHandler{
 				OpisPacketHandler_OLD.sendPacketToAllSwing(NetDataValue_OLD.create(Message.VALUE_AMOUNT_TILEENTS, new SerialInt(TileEntityManager.INSTANCE.getAmountTileEntities())));
 				OpisPacketHandler_OLD.sendPacketToAllSwing(NetDataValue_OLD.create(Message.VALUE_AMOUNT_ENTITIES, new SerialInt(EntityManager.INSTANCE.getAmountEntities())));
 				
-				for (EntityPlayerMP player : PlayerTracker.instance().playersSwing){
-					if (!cachedAccess.containsKey(player) || cachedAccess.get(player) != PlayerTracker.instance().getPlayerAccessLevel(player)){
-						OpisPacketHandler_OLD.validateAndSend(NetDataValue_OLD.create(Message.STATUS_ACCESS_LEVEL, new SerialInt(PlayerTracker.instance().getPlayerAccessLevel(player).ordinal())), player);
-						cachedAccess.put(player, PlayerTracker.instance().getPlayerAccessLevel(player));
+				for (EntityPlayerMP player : PlayerTracker.INSTANCE.playersSwing){
+					if (!cachedAccess.containsKey(player) || cachedAccess.get(player) != PlayerTracker.INSTANCE.getPlayerAccessLevel(player)){
+						OpisPacketHandler_OLD.validateAndSend(NetDataValue_OLD.create(Message.STATUS_ACCESS_LEVEL, new SerialInt(PlayerTracker.INSTANCE.getPlayerAccessLevel(player).ordinal())), player);
+						cachedAccess.put(player, PlayerTracker.INSTANCE.getPlayerAccessLevel(player));
 					}
 				}
 				
@@ -149,7 +149,7 @@ public enum OpisServerTickHandler{
 				
 				OpisPacketHandler_OLD.sendPacketToAllSwing(NetDataValue_OLD.create(Message.STATUS_STOP, new SerialInt(modOpis.profilerMaxTicks)));
 				
-				for (EntityPlayerMP player : PlayerTracker.instance().playersSwing){
+				for (EntityPlayerMP player : PlayerTracker.INSTANCE.playersSwing){
 					OpisPacketHandler_OLD.sendFullUpdate(player);
 				}
 				
@@ -159,14 +159,14 @@ public enum OpisServerTickHandler{
 	}
 
 	private void updatePlayers(){
-		for (EntityPlayerMP player : PlayerTracker.instance().playerOverlayStatus.keySet()){
+		for (EntityPlayerMP player : PlayerTracker.INSTANCE.playerOverlayStatus.keySet()){
 			
-			if (PlayerTracker.instance().playerOverlayStatus.get(player) == OverlayStatus.CHUNKSTATUS){
+			if (PlayerTracker.INSTANCE.playerOverlayStatus.get(player) == OverlayStatus.CHUNKSTATUS){
 				OpisPacketHandler_OLD.validateAndSend(NetDataCommand_OLD.create(Message.LIST_CHUNK_LOADED_CLEAR), player);
-				OpisPacketHandler_OLD.splitAndSend(Message.LIST_CHUNK_LOADED, ChunkManager.INSTANCE.getLoadedChunks(PlayerTracker.instance().playerDimension.get(player)), player);				
+				OpisPacketHandler_OLD.splitAndSend(Message.LIST_CHUNK_LOADED, ChunkManager.INSTANCE.getLoadedChunks(PlayerTracker.INSTANCE.playerDimension.get(player)), player);				
 			}
 			
-			if (PlayerTracker.instance().playerOverlayStatus.get(player) == OverlayStatus.MEANTIME){
+			if (PlayerTracker.INSTANCE.playerOverlayStatus.get(player) == OverlayStatus.MEANTIME){
 				ArrayList<StatsChunk> timingChunks = ChunkManager.INSTANCE.getTopChunks(100);
 				//OpisPacketHandler.validateAndSend(Packet_DataList.create(DataReq.LIST_TIMING_CHUNK, timingChunks), player);
 				OpisPacketHandler_OLD.validateAndSend(NetDataList_OLD.create(Message.LIST_TIMING_CHUNK, timingChunks), player);

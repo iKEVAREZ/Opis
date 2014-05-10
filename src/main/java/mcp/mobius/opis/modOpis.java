@@ -122,7 +122,7 @@ public class modOpis {
 		Message.setOpisMinimumLevel(openOpis);
 		
 		for (String s : users)
-			PlayerTracker.instance().addPrivilegedPlayer(s,false);
+			PlayerTracker.INSTANCE.addPrivilegedPlayer(s,false);
 		
 		config.save();
 		
@@ -130,6 +130,7 @@ public class modOpis {
 		MinecraftForge.EVENT_BUS.register(new OpisServerEventHandler());
 		FMLCommonHandler.instance().bus().register(OpisClientTickHandler.INSTANCE);
 		FMLCommonHandler.instance().bus().register(OpisServerTickHandler.INSTANCE);
+		FMLCommonHandler.instance().bus().register(PlayerTracker.INSTANCE);
 		//Packet.addIdClassMapping(251, true, true, Packet251Extended.class);
 	}	
 	
@@ -196,7 +197,7 @@ public class modOpis {
 		
 		event.registerServerCommand(new CommandHelp());
 		
-		GameRegistry.registerPlayerTracker(PlayerTracker.instance());
+		//GameRegistry.registerPlayerTracker(PlayerTracker.instance());
 		
 		//DeadManSwitch.startDeadManSwitch(MinecraftServer.getServer());
 	}	

@@ -3,6 +3,8 @@ package mcp.mobius.opis.events;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.PlayerEvent;
 import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.gui.overlay.OverlayStatus;
 import mcp.mobius.opis.network.enums.AccessLevel;
@@ -11,9 +13,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 
-public class PlayerTracker implements IPlayerTracker{
-	private static PlayerTracker _instance  = new PlayerTracker();
-	public  static PlayerTracker instance() {return _instance;} 
+//public class PlayerTracker implements IPlayerTracker{
+public enum PlayerTracker{
+	INSTANCE;
+	
 	private PlayerTracker(){}
 	
 	public HashSet<EntityPlayerMP> playersSwing = new HashSet<EntityPlayerMP>();		 //This is the list of players who have opened the UI
@@ -62,7 +65,7 @@ public class PlayerTracker implements IPlayerTracker{
 	public void reloeadPriviligedPlayers(){
 		String[] users   = modOpis.instance.config.get("ACCESS_RIGHTS", "privileged", new String[]{}, modOpis.commentPrivileged).getStringList();
 		for (String s : users)
-			PlayerTracker.instance().addPrivilegedPlayer(s,false);		
+			PlayerTracker.INSTANCE.addPrivilegedPlayer(s,false);		
 	}
 	
 	public boolean isAdmin(EntityPlayerMP player){
@@ -83,6 +86,15 @@ public class PlayerTracker implements IPlayerTracker{
 	
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
 	
+	@SubscribeEvent
+	public void onPlayerLogout(PlayerEvent.PlayerLoggedOutEvent event){
+		this.playerOverlayStatus.remove(event.player);
+		this.playerDimension.remove(event.player);
+		//this.playersOpis.remove(player);
+		this.playersSwing.remove(event.player);		
+	}
+	
+	/*
 	@Override
 	public void onPlayerLogin(EntityPlayer player) {
 	}
@@ -101,5 +113,6 @@ public class PlayerTracker implements IPlayerTracker{
 
 	@Override
 	public void onPlayerRespawn(EntityPlayer player) {
-	}	
+	}
+	*/	
 }
