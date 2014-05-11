@@ -16,10 +16,11 @@ public class DataEvent implements ISerializable, Comparable {
 	public CachedString     event;
 	public CachedString     handler;
 	public CachedString     package_;
+	public CachedString     mod;
 	public long       nCalls;
 	public DataTiming update;
 	
-	public DataEvent fill(Cell<Class, String, DescriptiveStatistics> cell){
+	public DataEvent fill(Cell<Class, String, DescriptiveStatistics> cellData, String modName){
 		/*
 		String handlerName = cell.getColumnKey().getSimpleName();
 		try {
@@ -27,7 +28,7 @@ public class DataEvent implements ISerializable, Comparable {
 			handlerName  = splitHandler[2] + "." + splitHandler[3];
 		} catch (Exception e){}
 		*/		
-		String[] nameRaw = cell.getColumnKey().split("\\|");
+		String[] nameRaw = cellData.getColumnKey().split("\\|");
 		
 		String handlerName = nameRaw[1];
 		try {
@@ -37,10 +38,11 @@ public class DataEvent implements ISerializable, Comparable {
 		
 		this.package_= new CachedString(nameRaw[0]);
 		this.handler = new CachedString(handlerName);
-		this.event   = new CachedString(cell.getRowKey().getName().replace("net.minecraftforge.event.", ""));
-		this.nCalls  = cell.getValue().getN();
+		this.event   = new CachedString(cellData.getRowKey().getName().replace("net.minecraftforge.event.", ""));
+		this.nCalls  = cellData.getValue().getN();
+		this.mod     = new CachedString(modName);
 		
-		this.update = new DataTiming(cell.getValue().getGeometricMean());
+		this.update = new DataTiming(cellData.getValue().getGeometricMean());
 		return this;
 	}
 	
@@ -50,6 +52,7 @@ public class DataEvent implements ISerializable, Comparable {
 		this.package_.writeToStream(stream);
 		this.handler.writeToStream(stream);
 		this.update.writeToStream(stream);
+		this.mod.writeToStream(stream);
 		stream.writeLong(this.nCalls);
 	}
 
@@ -59,6 +62,7 @@ public class DataEvent implements ISerializable, Comparable {
 		retVal.package_= CachedString.readFromStream(stream);
 		retVal.handler = CachedString.readFromStream(stream);
 		retVal.update  = DataTiming.readFromStream(stream);
+		retVal.mod     = CachedString.readFromStream(stream);
 		retVal.nCalls  = stream.readLong();
 		return retVal;
 	}

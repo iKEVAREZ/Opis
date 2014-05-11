@@ -3,6 +3,7 @@ package mcp.mobius.opis.swing.panels.timingserver;
 import javax.swing.JPanel;
 
 import mcp.mobius.opis.api.ITabPanel;
+import mcp.mobius.opis.data.holders.newtypes.CachedString;
 import mcp.mobius.opis.data.holders.newtypes.DataEvent;
 import mcp.mobius.opis.data.holders.newtypes.DataTiming;
 import mcp.mobius.opis.network.PacketBase;
@@ -35,9 +36,9 @@ public class PanelTimingEvents extends JPanelMsgHandler implements ITabPanel {
 		add(scrollPane, "cell 0 1 2 1,grow");
 		
 		table = new JTableStats(
-				new String[] {"Event", "Class", "Handler", "Calls", "Timing"},
-				new Class[]  {String.class, String.class, String.class, Long.class, DataTiming.class},
-				new int[]    {SwingConstants.LEFT, SwingConstants.LEFT, SwingConstants.LEFT, SwingConstants.CENTER, SwingConstants.CENTER}
+				new String[] {"Event", "Mod", "Class", "Handler", "Calls", "Timing"},
+				new Class[]  {CachedString.class, CachedString.class, CachedString.class, CachedString.class, Long.class, DataTiming.class},
+				new int[]    {SwingConstants.LEFT, SwingConstants.LEFT, SwingConstants.LEFT, SwingConstants.LEFT, SwingConstants.CENTER, SwingConstants.CENTER}
 				);
 		scrollPane.setViewportView(table);			
 	}
@@ -55,7 +56,7 @@ public class PanelTimingEvents extends JPanelMsgHandler implements ITabPanel {
 			
 			for (Object o : rawdata.array){
 				DataEvent data = (DataEvent)o;
-				model.addRow(new Object[] {data.event, data.package_, data.handler, data.nCalls, data.update});
+				model.addRow(new Object[] {data.event, data.mod, data.package_, data.handler, data.nCalls, data.update});
 			}
 
 			this.getTable().dataUpdated(row);			
