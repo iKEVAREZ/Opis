@@ -34,7 +34,6 @@ public class PacketTickets extends PacketBase {
 
 	@Override
 	public void decode(ByteArrayDataInput input) {
-		this.header = input.readByte();
 		int ntickets = input.readInt();
 		
 		for (int i = 0; i < ntickets; i++)

@@ -26,23 +26,25 @@ public class PacketDataOverlayChunkEntities extends PacketBase {
 	
 	@Override
 	public void encode(ByteArrayDataOutput output) {
+		/*
 		output.writeInt(chunkStatus.size());
 		for (CoordinatesChunk chunk : chunkStatus.keySet()){
 			chunk.writeToStream(output);
 			output.writeInt(chunkStatus.get(chunk));
 		}
-
+		*/
 	}
 
 	@Override
 	public void decode(ByteArrayDataInput input) {
+		/*
 		int nchunks  = input.readInt();
 		
 		for (int i = 0; i <= nchunks; i++){
 			CoordinatesChunk chunk = CoordinatesChunk.readFromStream(input);
 			this.chunkStatus.put(chunk, input.readInt());
 		}
-
+		*/
 	}
 
     @SideOnly(Side.CLIENT)
