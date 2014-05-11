@@ -14,8 +14,9 @@ import javax.swing.table.DefaultTableModel;
 import net.miginfocom.swing.MigLayout;
 import mcp.mobius.opis.api.IMessageHandler;
 import mcp.mobius.opis.api.ITabPanel;
+import mcp.mobius.opis.data.holders.newtypes.CachedString;
 import mcp.mobius.opis.data.holders.newtypes.DataEntityRender;
-import mcp.mobius.opis.data.holders.newtypes.DataHandler;
+import mcp.mobius.opis.data.holders.newtypes.DataEvent;
 import mcp.mobius.opis.data.holders.newtypes.DataTiming;
 import mcp.mobius.opis.network.PacketBase;
 import mcp.mobius.opis.network.enums.Message;
@@ -43,19 +44,19 @@ public class PanelRenderHandlers extends JPanel implements ITabPanel, IMessageHa
 		add(scrollPane, "cell 0 1 3 1,grow");
 		
 		table = new JTableStats(
-				new String[] {"Name", "Update Time"},
-				new Class[]  {String.class, DataTiming.class}
+				new String[] {"Mod", "Tick", "Update Time"},
+				new Class[]  {CachedString.class, String.class, DataTiming.class}
 				);			
 		scrollPane.setViewportView(table);		
 	}
 
-	public void setTable(ArrayList<DataHandler> data){
+	public void setTable(ArrayList<DataEvent> data){
 		
 		DefaultTableModel model = (DefaultTableModel)table.getModel();
-		int               row   = this.updateData(table, model, DataHandler.class);		
+		int               row   = this.updateData(table, model, DataEvent.class);		
 		
-		for (DataHandler o : data){
-			model.addRow(new Object[] {o.name, o.update});
+		for (DataEvent o : data){
+			model.addRow(new Object[] {o.mod, o.event.toString().split("\\$")[1], o.update});
 		}
 
 		this.dataUpdated(table, model, row);			

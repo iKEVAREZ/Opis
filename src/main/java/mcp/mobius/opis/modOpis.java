@@ -17,7 +17,6 @@ import mcp.mobius.opis.commands.server.CommandChunkDump;
 import mcp.mobius.opis.commands.server.CommandChunkList;
 import mcp.mobius.opis.commands.server.CommandEntityCreate;
 import mcp.mobius.opis.commands.server.CommandFrequency;
-import mcp.mobius.opis.commands.server.CommandHandler;
 import mcp.mobius.opis.commands.server.CommandHelp;
 import mcp.mobius.opis.commands.server.CommandKill;
 import mcp.mobius.opis.commands.server.CommandKillAll;
@@ -34,7 +33,6 @@ import mcp.mobius.opis.data.profilers.ProfilerDimBlockTick;
 import mcp.mobius.opis.data.profilers.ProfilerDimTick;
 import mcp.mobius.opis.data.profilers.ProfilerEntityUpdate;
 import mcp.mobius.opis.data.profilers.ProfilerEvent;
-import mcp.mobius.opis.data.profilers.ProfilerHandler;
 import mcp.mobius.opis.data.profilers.ProfilerNetworkTick;
 import mcp.mobius.opis.data.profilers.ProfilerPacket;
 import mcp.mobius.opis.data.profilers.ProfilerRenderBlock;
@@ -153,8 +151,8 @@ public class modOpis {
 		ProfilerSection.RENDER_TILEENTITY  .setProfiler(new ProfilerRenderTileEntity());
 		ProfilerSection.RENDER_ENTITY      .setProfiler(new ProfilerRenderEntity());
 		ProfilerSection.RENDER_BLOCK       .setProfiler(new ProfilerRenderBlock());
-		ProfilerSection.HANDLER_TICKSTART  .setProfiler(new ProfilerHandler());
-		ProfilerSection.HANDLER_TICKSTOP   .setProfiler(new ProfilerHandler());
+		//ProfilerSection.HANDLER_TICKSTART  .setProfiler(new ProfilerHandler());
+		//ProfilerSection.HANDLER_TICKSTOP   .setProfiler(new ProfilerHandler());
 		ProfilerSection.EVENT_INVOKE       .setProfiler(new ProfilerEvent());		
 	}
 	
@@ -186,7 +184,6 @@ public class modOpis {
 		event.registerServerCommand(new CommandKill());
 		event.registerServerCommand(new CommandKillAll());		
 		event.registerServerCommand(new CommandReset());
-		event.registerServerCommand(new CommandHandler());
 		event.registerServerCommand(new CommandEntityCreate());
 		event.registerServerCommand(new CommandOpis());
 		event.registerServerCommand(new CommandAddPrivileged());

@@ -286,7 +286,14 @@ public class PacketManager extends FMLIndexedMessageToMessageCodec<PacketBase>
 			timingEvents.add(new DataEvent().fill(cell, eventMod.get(cell.getRowKey(), cell.getColumnKey())));
 		}		
 
-		//PacketManager.validateAndSend(NetDataList_OLD.create(Message.LIST_TIMING_HANDLERS,    timingHandlers),   player);
+		ArrayList<DataEvent> timingTicks = new ArrayList<DataEvent>();
+		HashBasedTable<Class, String, DescriptiveStatistics> eventTickData = ((ProfilerEvent)ProfilerSection.EVENT_INVOKE.getProfiler()).dataTick;
+		HashBasedTable<Class, String, String>                eventTickMod  = ((ProfilerEvent)ProfilerSection.EVENT_INVOKE.getProfiler()).dataModTick;
+		for (Cell<Class, String, DescriptiveStatistics> cell : eventTickData.cellSet()){
+			timingTicks.add(new DataEvent().fill(cell, eventTickMod.get(cell.getRowKey(), cell.getColumnKey())));
+		}		
+		
+		PacketManager.validateAndSend(new NetDataList(Message.LIST_TIMING_HANDLERS,    timingTicks),   player);
 		PacketManager.validateAndSend(new NetDataList(Message.LIST_TIMING_ENTITIES,    timingEntities),   player);
 		PacketManager.validateAndSend(new NetDataList(Message.LIST_TIMING_TILEENTS,    timingTileEnts),   player);
 		PacketManager.validateAndSend(new NetDataList(Message.LIST_TIMING_TILEENTS_PER_CLASS,    timingTEsClass),   player);

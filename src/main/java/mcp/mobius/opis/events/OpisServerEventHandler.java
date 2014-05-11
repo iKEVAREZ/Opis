@@ -8,6 +8,7 @@ import net.minecraftforge.event.entity.EntityEvent;
 
 public class OpisServerEventHandler {
 
+	/*
 	public static boolean printEntityTrace = false;
 	public static boolean printEntityFull  = false;
 	
@@ -34,4 +35,5 @@ public class OpisServerEventHandler {
 			}
 		}
 	}
+	*/
 }

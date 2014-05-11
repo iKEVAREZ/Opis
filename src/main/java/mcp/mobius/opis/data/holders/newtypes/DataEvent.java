@@ -69,6 +69,6 @@ public class DataEvent implements ISerializable, Comparable {
 
 	@Override
 	public int compareTo(Object o) {
-		return this.update.compareTo(((DataHandler)o).update);
+		return this.update.compareTo(((DataEvent)o).update);
 	}
 }
