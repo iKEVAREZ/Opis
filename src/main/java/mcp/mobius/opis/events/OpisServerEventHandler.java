@@ -8,10 +8,10 @@ import net.minecraftforge.event.entity.EntityEvent;
 
 public class OpisServerEventHandler {
 
-	/*
 	public static boolean printEntityTrace = false;
 	public static boolean printEntityFull  = false;
 	
+	/*
 	@SubscribeEvent
     @SideOnly(Side.SERVER)
     public void onEntityConstructed(EntityEvent.EntityConstructing event) {
