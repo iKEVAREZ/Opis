@@ -50,12 +50,12 @@ public class PanelSummary extends JPanelMsgHandler implements ITabPanel{
 	private JLabel lblTimingWorldTick;
 	private JLabel lblTimingTileEnts;
 	private JLabel lblTimingEntities;
-	private JLabel lblTimingHandlers;
+	//private JLabel lblTimingHandlers;
 	private JLabel lblTimingTotal;
 	private JLabel lblTickTime;
 	private JLabel lblAmountTileEnts;
 	private JLabel lblAmountEntities;
-	private JLabel lblAmountHandlers;
+	//private JLabel lblAmountHandlers;
 	private JLabel lblAmountUpload;
 	private JLabel lblAmountDownload;
 	private JLabel lblAmountForced;
@@ -141,14 +141,14 @@ public class PanelSummary extends JPanelMsgHandler implements ITabPanel{
 		lblTimingPing = new JLabel("0");
 		add(lblTimingPing, "cell 10 4 2 1,alignx right");
 		
-		JLabel lblNewLabel_3 = new JLabel("Handlers");
-		add(lblNewLabel_3, "cell 1 5");
+		//JLabel lblNewLabel_3 = new JLabel("Handlers");
+		//add(lblNewLabel_3, "cell 1 5");
 		
-		lblTimingHandlers = new JLabel("0");
-		add(lblTimingHandlers, "cell 3 5 2 1,alignx right");
+		//lblTimingHandlers = new JLabel("0");
+		//add(lblTimingHandlers, "cell 3 5 2 1,alignx right");
 		
-		lblAmountHandlers = new JLabel("0");
-		add(lblAmountHandlers, "cell 6 5,alignx right");
+		//lblAmountHandlers = new JLabel("0");
+		//add(lblAmountHandlers, "cell 6 5,alignx right");
 		
 		JLabel lblNewLabel_22 = new JLabel("Forced chunks");
 		add(lblNewLabel_22, "cell 8 6");
@@ -163,10 +163,10 @@ public class PanelSummary extends JPanelMsgHandler implements ITabPanel{
 		add(lblAmountLoaded, "cell 10 7 2 1,alignx right");
 
 		JLabel lblNewLabel_4 = new JLabel("Total");
-		add(lblNewLabel_4, "cell 1 7");
+		add(lblNewLabel_4, "cell 1 6");
 		
 		lblTimingTotal = new JLabel("0");
-		add(lblTimingTotal, "cell 3 7 2 1,alignx right");		
+		add(lblTimingTotal, "cell 3 6 2 1,alignx right");		
 		
 		JLabel lblNewLabel_31 = new JLabel("Tick Time");
 		add(lblNewLabel_31, "cell 1 10");
@@ -200,12 +200,12 @@ public class PanelSummary extends JPanelMsgHandler implements ITabPanel{
 	public JLabel getLblTimingWorldTick() {return lblTimingWorldTick;}
 	public JLabel getLblTimingTileEnts()  {return lblTimingTileEnts;}
 	public JLabel getLblTimingEntities()  {return lblTimingEntities;}
-	public JLabel getLblTimingHandlers()  {return lblTimingHandlers;}
+	//public JLabel getLblTimingHandlers()  {return lblTimingHandlers;}
 	public JLabel getLblTimingTotal()     {return lblTimingTotal;}
 	public JLabel getLblTickTime()        {return lblTickTime;}
 	public JLabel getLblAmountTileEnts()  {return lblAmountTileEnts;}
 	public JLabel getLblAmountEntities()  {return lblAmountEntities;}
-	public JLabel getLblAmountHandlers()  {return lblAmountHandlers;}
+	//public JLabel getLblAmountHandlers()  {return lblAmountHandlers;}
 	public JLabel getLblAmountUpload()    {return lblAmountUpload;}
 	public JLabel getLblAmountDownload()  {return lblAmountDownload;}
 	public JLabel getLblAmountForced()    {return lblAmountForced;}
@@ -341,10 +341,10 @@ public class PanelSummary extends JPanelMsgHandler implements ITabPanel{
 			this.getLblAmountEntities().setText(String.valueOf(((SerialInt)rawdata.value).value));		
 			break;
 		}
-		case VALUE_AMOUNT_HANDLERS:{
-			this.getLblAmountHandlers().setText(String.valueOf(((SerialInt)rawdata.value).value));
-			break;
-		}
+		//case VALUE_AMOUNT_HANDLERS:{
+		//	this.getLblAmountHandlers().setText(String.valueOf(((SerialInt)rawdata.value).value));
+		//	break;
+		//}
 		case VALUE_AMOUNT_UPLOAD:{
 			double uploadKB = (((SerialLong)rawdata.value).value) / 1024.0;
 			this.getLblAmountUpload().setText(String.format("%.3f", uploadKB));	
@@ -384,12 +384,12 @@ public class PanelSummary extends JPanelMsgHandler implements ITabPanel{
 			this.getLblTimingTotal().setText(String.format("%s", this.getProfiledTickTotalTime().toString() ));
 			break;
 		}			
-		case VALUE_TIMING_HANDLERS:{
-			this.timingHandlersTotal = ((DataTiming)rawdata.value).asMillisecond();
-			this.getLblTimingHandlers().setText(this.timingHandlersTotal.toString());
-			this.getLblTimingTotal().setText(String.format("%s", this.getProfiledTickTotalTime().toString() ));
-			break;
-		}					
+		//case VALUE_TIMING_HANDLERS:{
+		//	this.timingHandlersTotal = ((DataTiming)rawdata.value).asMillisecond();
+		//	this.getLblTimingHandlers().setText(this.timingHandlersTotal.toString());
+		//	this.getLblTimingTotal().setText(String.format("%s", this.getProfiledTickTotalTime().toString() ));
+		//	break;
+		//}					
 		case VALUE_TIMING_WORLDTICK:{
 			this.timingWorldTickTotal = ((DataBlockTick)rawdata.value).total.asMillisecond();
 			this.getLblTimingWorldTick().setText(this.timingWorldTickTotal.toString());
