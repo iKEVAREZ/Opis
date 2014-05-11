@@ -48,7 +48,7 @@ import mcp.mobius.opis.events.OpisServerEventHandler;
 import mcp.mobius.opis.events.OpisServerTickHandler;
 import mcp.mobius.opis.events.PlayerTracker;
 import mcp.mobius.opis.helpers.ModIdentification;
-import mcp.mobius.opis.network.OpisPacketHandler_OLD;
+import mcp.mobius.opis.network.PacketManager;
 import mcp.mobius.opis.network.enums.AccessLevel;
 import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.proxy.ProxyServer;
@@ -131,6 +131,8 @@ public class modOpis {
 		FMLCommonHandler.instance().bus().register(OpisServerTickHandler.INSTANCE);
 		FMLCommonHandler.instance().bus().register(PlayerTracker.INSTANCE);
 		//Packet.addIdClassMapping(251, true, true, Packet251Extended.class);
+		
+		PacketManager.init();
 	}	
 	
 	@EventHandler

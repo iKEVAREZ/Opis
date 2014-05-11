@@ -4,6 +4,8 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import net.minecraft.network.Packet;
+
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 
@@ -20,27 +22,23 @@ public class DataPacket implements ISerializable{
 	}	
 	
 	public DataPacket(int id){
-		/*
 		this.id   = id;
 		this.size = new DataByteSize(0);
 		this.rate = new DataByteRate(0, 5);
 		this.amount = new DataAmountRate(0, 5);
-		try {
-			this.type = ((Class)(Packet.packetIdToClassMap.lookup(this.id))).getSimpleName();
-		} catch (Exception e) {
+		//try {
+		//	this.type = ((Class)(Packet.packetIdToClassMap.lookup(this.id))).getSimpleName();
+		//} catch (Exception e) {
 			this.type = "<UNUSED>";
-		}
-		*/
+		//}
 	}
 
-	/*
 	public DataPacket fill(Packet packet){
-		this.size.size += packet.getPacketSize() + 1;
-		this.rate.size += packet.getPacketSize() + 1;
-		this.amount.size += 1;
+		//this.size.size += packet.getPacketSize() + 1;
+		//this.rate.size += packet.getPacketSize() + 1;
+		//this.amount.size += 1;
 		return this;
 	}
-	*/
 	
 	public void startInterval(){
 		this.rate.reset();
@@ -57,17 +55,16 @@ public class DataPacket implements ISerializable{
 
 	public static DataPacket readFromStream(ByteArrayDataInput stream){
 		DataPacket retVal = new DataPacket();
-		/*
 		retVal.id         = stream.readInt();
 		retVal.size       = DataByteSize.readFromStream(stream);
 		retVal.rate       = DataByteRate.readFromStream(stream);
 		retVal.amount     = DataAmountRate.readFromStream(stream);
-		try {
-			retVal.type = ((Class)(Packet.packetIdToClassMap.lookup(retVal.id))).getSimpleName();
-		} catch (Exception e) {
+		//try {
+		//	retVal.type = ((Class)(Packet.packetIdToClassMap.lookup(retVal.id))).getSimpleName();
+		//} catch (Exception e) {
 			retVal.type = "<UNUSED>";
-		}
-		*/
+		//}
+
 		return retVal;
 	}	
 }

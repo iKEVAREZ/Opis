@@ -1,6 +1,5 @@
 package mcp.mobius.opis.commands.client;
 
-import mcp.mobius.opis.network.OpisPacketHandler_OLD;
 import mcp.mobius.opis.network.PacketManager;
 import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.packets.server.NetDataCommand;

@@ -6,7 +6,6 @@ import mcp.mobius.opis.commands.IOpisCommand;
 import mcp.mobius.opis.data.holders.stats.StatsChunk;
 import mcp.mobius.opis.data.managers.ChunkManager;
 import mcp.mobius.opis.events.PlayerTracker;
-import mcp.mobius.opis.network.OpisPacketHandler_OLD;
 import mcp.mobius.opis.network.enums.Message;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;

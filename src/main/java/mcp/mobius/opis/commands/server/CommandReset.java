@@ -8,7 +8,6 @@ import mcp.mobius.opis.data.managers.TickHandlerManager;
 import mcp.mobius.opis.data.managers.TileEntityManager;
 import mcp.mobius.opis.events.OpisServerTickHandler;
 import mcp.mobius.opis.events.PlayerTracker;
-import mcp.mobius.opis.network.OpisPacketHandler_OLD;
 import mcp.mobius.opis.network.PacketManager;
 import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.packets.server.NetDataCommand;

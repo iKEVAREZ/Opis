@@ -41,8 +41,8 @@ import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.packets.server.NetDataCommand;
 import mcp.mobius.opis.network.packets.server.NetDataList;
 import mcp.mobius.opis.network.packets.server.NetDataValue;
-import mcp.mobius.opis.network.packets.server.Packet_DataOverlayChunkEntities_OLD;
-import mcp.mobius.opis.network.packets.server.Packet_Tickets_OLD;
+import mcp.mobius.opis.network.packets.server.PacketDataOverlayChunkEntities;
+import mcp.mobius.opis.network.packets.server.PacketTickets;
 import mcp.mobius.opis.swing.SelectedTab;
 
 public class ServerMessageHandler {
@@ -84,7 +84,7 @@ public class ServerMessageHandler {
 		}		
 
 		else if (maintype == Message.LIST_CHUNK_TICKETS){
-			PacketManager.sendToPlayer(new Packet_Tickets(ChunkManager.INSTANCE.getTickets()), player);
+			PacketManager.sendToPlayer(new PacketTickets(ChunkManager.INSTANCE.getTickets()), player);
 		}		
 		
 		else if (maintype == Message.LIST_TIMING_TILEENTS){
@@ -244,7 +244,7 @@ public class ServerMessageHandler {
 		for (CoordinatesChunk chunk : entities.keySet())
 			perChunk.put(chunk, entities.get(chunk).size());
 
-		PacketManager.sendToPlayer(Packet_DataOverlayChunkEntities_OLD.create(perChunk), player);
+		PacketManager.sendToPlayer(new PacketDataOverlayChunkEntities(perChunk), player);
 	}
 	
 }

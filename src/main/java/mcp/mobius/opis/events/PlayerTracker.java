@@ -9,7 +9,6 @@ import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.data.holders.basetypes.SerialLong;
 import mcp.mobius.opis.data.managers.StringCache;
 import mcp.mobius.opis.gui.overlay.OverlayStatus;
-import mcp.mobius.opis.network.OpisPacketHandler_OLD;
 import mcp.mobius.opis.network.PacketManager;
 import mcp.mobius.opis.network.enums.AccessLevel;
 import mcp.mobius.opis.network.enums.Message;

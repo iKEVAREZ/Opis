@@ -48,8 +48,12 @@ import mcp.mobius.opis.events.PlayerTracker;
 import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.packets.client.PacketReqChunks;
 import mcp.mobius.opis.network.packets.client.PacketReqData;
+import mcp.mobius.opis.network.packets.server.NetDataCommand;
 import mcp.mobius.opis.network.packets.server.NetDataList;
 import mcp.mobius.opis.network.packets.server.NetDataValue;
+import mcp.mobius.opis.network.packets.server.PacketChunks;
+import mcp.mobius.opis.network.packets.server.PacketDataOverlayChunkEntities;
+import mcp.mobius.opis.network.packets.server.PacketTickets;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -80,9 +84,13 @@ public class PacketManager extends FMLIndexedMessageToMessageCodec<PacketBase>
             return;
         
         INSTANCE.addDiscriminator(0, PacketReqChunks.class);
-        INSTANCE.addDiscriminator(0, PacketReqData.class);
-        //INSTANCE.addDiscriminator(1, PacketShowToggle.class);
-        //INSTANCE.addDiscriminator(2, PacketKey.class);
+        INSTANCE.addDiscriminator(1, PacketReqData.class);
+        INSTANCE.addDiscriminator(2, NetDataCommand.class);
+        INSTANCE.addDiscriminator(3, NetDataList.class);
+        INSTANCE.addDiscriminator(4, NetDataValue.class);
+        INSTANCE.addDiscriminator(5, PacketChunks.class);
+        INSTANCE.addDiscriminator(6, PacketTickets.class);
+        INSTANCE.addDiscriminator(7, PacketDataOverlayChunkEntities.class);
 
         channels.putAll(NetworkRegistry.INSTANCE.newChannel("Opis", INSTANCE));
     }
@@ -163,8 +171,8 @@ public class PacketManager extends FMLIndexedMessageToMessageCodec<PacketBase>
     
     public static void sendToAll(PacketBase packet)
     {
-        channels.get(SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.ALL);
-        channels.get(SERVER).writeAndFlush(packet);
+		channels.get(SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.ALL);
+		channels.get(SERVER).writeAndFlush(packet);
     }
     
     public static Packet toMcPacket(PacketBase packet)

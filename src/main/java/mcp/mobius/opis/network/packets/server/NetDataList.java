@@ -23,7 +23,7 @@ public class NetDataList extends PacketBase {
 	
 	public NetDataList(Message msg, List<? extends ISerializable> data) {
 		this.msg   = msg;
-		this.array = (ArrayList<ISerializable>) data;
+		this.array = new ArrayList<ISerializable>(data); 
 	}
 	
 	@Override

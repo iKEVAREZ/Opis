@@ -241,7 +241,7 @@ public enum EntityManager {
 		else if (ent instanceof EntityPlayerMP && !filtered)
 			return "[ Player ] " + ((EntityPlayerMP)ent).getDisplayName();
 		
-		String name = ent.getTranslatedEntityName();
+		String name = ent.getCommandSenderName();
 		
 		if (name.contains(".")){
 			String[] namelst = ent.getClass().getName().split("\\.");
@@ -291,7 +291,9 @@ public enum EntityManager {
 	}
 	
 	public ArrayList<DataEntity> getAllPlayers(){
-		List players = MinecraftServer.getServerConfigurationManager(MinecraftServer.getServer()).playerEntityList;
+		//List players = MinecraftServer.getServerConfigurationManager(MinecraftServer.getServer()).playerEntityList;
+		List players = MinecraftServer.getServer().getConfigurationManager().playerEntityList;
+		
 		ArrayList<DataEntity> outList = new ArrayList<DataEntity>();
 		
 		for (Object p : players)

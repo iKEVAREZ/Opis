@@ -35,7 +35,6 @@ import mcp.mobius.opis.data.profilers.ProfilerEvent;
 import mcp.mobius.opis.data.profilers.ProfilerPacket;
 import mcp.mobius.opis.data.profilers.ProfilerTick;
 import mcp.mobius.opis.gui.overlay.OverlayStatus;
-import mcp.mobius.opis.network.OpisPacketHandler_OLD;
 import mcp.mobius.opis.network.PacketManager;
 import mcp.mobius.opis.network.enums.AccessLevel;
 import mcp.mobius.opis.network.enums.Message;
@@ -151,7 +150,7 @@ public enum OpisServerTickHandler{
 				PacketManager.sendPacketToAllSwing(new NetDataValue(Message.STATUS_STOP, new SerialInt(modOpis.profilerMaxTicks)));
 				
 				for (EntityPlayerMP player : PlayerTracker.INSTANCE.playersSwing){
-					OpisPacketHandler_OLD.sendFullUpdate(player);
+					PacketManager.sendFullUpdate(player);
 				}
 				
 
