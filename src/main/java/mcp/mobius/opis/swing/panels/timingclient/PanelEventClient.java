@@ -46,9 +46,9 @@ public class PanelEventClient extends JPanel implements ITabPanel, IMessageHandl
 		add(scrollPane, "cell 0 1 3 1,grow");
 		
 		table = new JTableStats(
-				new String[] {"Event", "Class", "Handler", "Calls", "Timing"},
-				new Class[]  {CachedString.class, CachedString.class, CachedString.class, Long.class, DataTiming.class},
-				new int[]    {SwingConstants.LEFT, SwingConstants.LEFT, SwingConstants.LEFT, SwingConstants.CENTER, SwingConstants.CENTER}
+				new String[] {"Event", "Mod", "Class", "Handler", "Calls", "Timing"},
+				new Class[]  {CachedString.class, CachedString.class, CachedString.class, CachedString.class, Long.class, DataTiming.class},
+				new int[]    {SwingConstants.LEFT, SwingConstants.LEFT, SwingConstants.LEFT, SwingConstants.LEFT, SwingConstants.CENTER, SwingConstants.CENTER}
 				);
 	
 		scrollPane.setViewportView(table);
@@ -60,7 +60,7 @@ public class PanelEventClient extends JPanel implements ITabPanel, IMessageHandl
 		int               row   = this.updateData(table, model, DataEvent.class);		
 		
 		for (DataEvent o : data){
-			model.addRow(new Object[] {o.event, o.package_, o.handler, o.nCalls, o.update});
+			model.addRow(new Object[] {o.event, o.mod, o.package_, o.handler, o.nCalls, o.update});
 		}
 
 		this.dataUpdated(table, model, row);			

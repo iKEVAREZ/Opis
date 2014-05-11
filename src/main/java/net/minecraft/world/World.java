@@ -2,6 +2,7 @@ package net.minecraft.world;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -11,6 +12,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.Callable;
+
+import mcp.mobius.mobiuscore.profiler.ProfilerSection;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockHopper;
 import net.minecraft.block.BlockLiquid;
@@ -51,7 +54,6 @@ import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.storage.ISaveHandler;
 import net.minecraft.world.storage.MapStorage;
 import net.minecraft.world.storage.WorldInfo;
-
 import cpw.mods.fml.common.FMLLog;
 
 import com.google.common.collect.ImmutableSetMultimap;
@@ -2061,7 +2063,9 @@ public abstract class World implements IBlockAccess
             {
                 try
                 {
+                	ProfilerSection.ENTITY_UPDATETIME.start(entity);
                     this.updateEntity(entity);
+                    ProfilerSection.ENTITY_UPDATETIME.stop(entity);
                 }
                 catch (Throwable throwable1)
                 {
@@ -2113,7 +2117,9 @@ public abstract class World implements IBlockAccess
             {
                 try
                 {
+                	ProfilerSection.TILEENT_UPDATETIME.start(tileentity);
                     tileentity.updateEntity();
+                    ProfilerSection.TILEENT_UPDATETIME.stop(tileentity);
                 }
                 catch (Throwable throwable)
                 {
