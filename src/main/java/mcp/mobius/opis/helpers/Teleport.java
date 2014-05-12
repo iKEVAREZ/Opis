@@ -2,6 +2,7 @@ package mcp.mobius.opis.helpers;
 
 import java.util.Iterator;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesBlock;
 import net.minecraft.block.Block;
@@ -9,6 +10,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
+import net.minecraft.network.play.server.S07PacketRespawn;
+import net.minecraft.network.play.server.S1DPacketEntityEffect;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.management.ServerConfigurationManager;
@@ -34,7 +37,7 @@ public class Teleport {
     // Originally in ServerConfigurationManager
     public boolean transferPlayerToDimension(ServerConfigurationManager manager, EntityPlayerMP player, int targetID)
     {
-    	/*
+
         int sourceID = player.dimension;
         WorldServer sourceWorld = DimensionManager.getWorld(player.dimension);
         WorldServer targetWorld = DimensionManager.getWorld(targetID);
@@ -44,7 +47,8 @@ public class Teleport {
 
         player.dimension = targetID;        
         
-        player.playerNetServerHandler.sendPacket(new Packet9Respawn(player.dimension, (byte)player.worldObj.difficultySetting, targetWorld.getWorldInfo().getTerrainType(), targetWorld.getHeight(), player.theItemInWorldManager.getGameType()));
+        //player.playerNetServerHandler.sendPacket(new Packet9Respawn(player.dimension, (byte)player.worldObj.difficultySetting, targetWorld.getWorldInfo().getTerrainType(), targetWorld.getHeight(), player.theItemInWorldManager.getGameType()));
+        player.playerNetServerHandler.sendPacket(new S07PacketRespawn(player.dimension, player.worldObj.difficultySetting, player.worldObj.getWorldInfo().getTerrainType(), player.theItemInWorldManager.getGameType()));        
         sourceWorld.removePlayerEntityDangerously(player);
         player.isDead = false;
         this.transferEntityToWorld(player, sourceID, sourceWorld, targetWorld);
@@ -60,11 +64,13 @@ public class Teleport {
         while (iterator.hasNext())
         {
             PotionEffect potioneffect = (PotionEffect)iterator.next();
-            player.playerNetServerHandler.sendPacket(new Packet41EntityEffect(player.entityId, potioneffect));
+            //player.playerNetServerHandler.sendPacket(new Packet41EntityEffect(player.entityId, potioneffect));
+            player.playerNetServerHandler.sendPacket(new S1DPacketEntityEffect(player.getEntityId(), potioneffect));
         }
 
-        GameRegistry.onPlayerChangedDimension(player);
-        */
+        //GameRegistry.onPlayerChangedDimension(player);
+        FMLCommonHandler.instance().firePlayerChangedDimensionEvent(player, sourceID, targetID);        
+
         return true;
     }    
    

@@ -16,7 +16,6 @@ import mcp.mobius.opis.data.holders.DataType;
 import mcp.mobius.opis.data.holders.ISerializable;
 import mcp.mobius.opis.network.PacketBase;
 import mcp.mobius.opis.network.enums.Message;
-import mcp.mobius.opis.network.enums.Packets;
 
 public class NetDataValue extends PacketBase {
 

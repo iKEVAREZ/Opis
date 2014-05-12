@@ -10,7 +10,6 @@ import mcp.mobius.opis.network.PacketBase;
 import mcp.mobius.opis.network.ServerMessageHandler;
 import mcp.mobius.opis.network.enums.AccessLevel;
 import mcp.mobius.opis.network.enums.Message;
-import mcp.mobius.opis.network.enums.Packets;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.world.World;
