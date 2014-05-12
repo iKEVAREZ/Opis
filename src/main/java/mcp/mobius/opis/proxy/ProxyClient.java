@@ -192,8 +192,8 @@ public class ProxyClient extends ProxyServer implements IMessageHandler{
 		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.CLIENT_START_PROFILING,  modOpis.proxy);
 		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.CLIENT_SHOW_RENDER_TICK, modOpis.proxy);
 
-		
-		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.LIST_CHUNK_ENTITIES, OverlayEntityPerChunk.INSTANCE);
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.OVERLAY_CHUNK_ENTITIES, OverlayEntityPerChunk.INSTANCE);
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.LIST_CHUNK_ENTITIES,    OverlayEntityPerChunk.INSTANCE);
 		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.LIST_CHUNK_TICKETS,  OverlayLoadedChunks.INSTANCE);
 		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.LIST_CHUNK_TILEENTS, OverlayMeanTime.INSTANCE);
 		

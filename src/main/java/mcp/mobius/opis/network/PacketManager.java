@@ -52,7 +52,6 @@ import mcp.mobius.opis.network.packets.server.NetDataCommand;
 import mcp.mobius.opis.network.packets.server.NetDataList;
 import mcp.mobius.opis.network.packets.server.NetDataValue;
 import mcp.mobius.opis.network.packets.server.PacketChunks;
-import mcp.mobius.opis.network.packets.server.PacketDataOverlayChunkEntities;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -88,7 +87,6 @@ public class PacketManager extends FMLIndexedMessageToMessageCodec<PacketBase>
         INSTANCE.addDiscriminator(3, NetDataList.class);
         INSTANCE.addDiscriminator(4, NetDataValue.class);
         INSTANCE.addDiscriminator(5, PacketChunks.class);
-        INSTANCE.addDiscriminator(6, PacketDataOverlayChunkEntities.class);
 
         channels.putAll(NetworkRegistry.INSTANCE.newChannel("Opis", INSTANCE));
     }

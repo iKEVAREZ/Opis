@@ -25,6 +25,7 @@ import mcp.mobius.opis.data.holders.basetypes.SerialLong;
 import mcp.mobius.opis.data.holders.basetypes.SerialString;
 import mcp.mobius.opis.data.holders.basetypes.TargetEntity;
 import mcp.mobius.opis.data.holders.newtypes.DataBlockTick;
+import mcp.mobius.opis.data.holders.newtypes.DataChunkEntities;
 import mcp.mobius.opis.data.holders.newtypes.DataEntity;
 import mcp.mobius.opis.data.holders.newtypes.DataBlockTileEntity;
 import mcp.mobius.opis.data.holders.newtypes.DataTiming;
@@ -39,7 +40,6 @@ import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.packets.server.NetDataCommand;
 import mcp.mobius.opis.network.packets.server.NetDataList;
 import mcp.mobius.opis.network.packets.server.NetDataValue;
-import mcp.mobius.opis.network.packets.server.PacketDataOverlayChunkEntities;
 import mcp.mobius.opis.swing.SelectedTab;
 import mcp.mobius.opis.data.holders.basetypes.TicketData;
 
@@ -238,12 +238,13 @@ public class ServerMessageHandler {
 	public void handleOverlayChunkEntities(CoordinatesChunk coord, EntityPlayerMP player){
 		
 		HashMap<CoordinatesChunk, ArrayList<DataEntity>> entities = EntityManager.INSTANCE.getAllEntitiesPerChunk();
-		HashMap<CoordinatesChunk, Integer> perChunk = new HashMap<CoordinatesChunk, Integer>();
+		//HashMap<CoordinatesChunk, Integer> perChunk = new HashMap<CoordinatesChunk, Integer>();
+		ArrayList<DataChunkEntities> perChunk = new ArrayList<DataChunkEntities>(); 
 		
 		for (CoordinatesChunk chunk : entities.keySet())
-			perChunk.put(chunk, entities.get(chunk).size());
+			perChunk.add(new DataChunkEntities(chunk, entities.get(chunk).size()));
 
-		PacketManager.sendToPlayer(new PacketDataOverlayChunkEntities(perChunk), player);
+		PacketManager.validateAndSend(new NetDataList(Message.OVERLAY_CHUNK_ENTITIES, perChunk), player);
 	}
 	
 }

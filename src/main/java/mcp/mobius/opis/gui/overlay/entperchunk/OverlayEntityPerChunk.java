@@ -17,6 +17,7 @@ import mcp.mobius.opis.api.IMessageHandler;
 import mcp.mobius.opis.data.holders.ISerializable;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesBlock;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesChunk;
+import mcp.mobius.opis.data.holders.newtypes.DataChunkEntities;
 import mcp.mobius.opis.data.holders.newtypes.DataEntity;
 import mcp.mobius.opis.gui.events.MouseEvent;
 import mcp.mobius.opis.gui.interfaces.CType;
@@ -285,6 +286,16 @@ public enum OverlayEntityPerChunk implements IMwDataProvider, IMessageHandler {
 			this.setupEntTable();
 			break;
 		}
+		case OVERLAY_CHUNK_ENTITIES:{
+			HashMap<CoordinatesChunk, Integer> chunkStatus = new HashMap<CoordinatesChunk, Integer>();
+			for (ISerializable s : rawdata.array){
+				chunkStatus.put(((DataChunkEntities)s).chunk, ((DataChunkEntities)s).entities);
+			}
+			this.overlayData = chunkStatus;
+			this.reduceData();
+			this.setupChunkTable();			
+		}
+		
 		default:
 			return false;
 		}

@@ -22,6 +22,7 @@ import mcp.mobius.opis.data.holders.newtypes.DataByteSize;
 import mcp.mobius.opis.data.holders.newtypes.DataBlockRender;
 import mcp.mobius.opis.data.holders.newtypes.DataBlockTick;
 import mcp.mobius.opis.data.holders.newtypes.DataChunk;
+import mcp.mobius.opis.data.holders.newtypes.DataChunkEntities;
 import mcp.mobius.opis.data.holders.newtypes.DataDimension;
 import mcp.mobius.opis.data.holders.newtypes.DataEntity;
 import mcp.mobius.opis.data.holders.newtypes.DataEntityPerClass;
@@ -63,6 +64,7 @@ public enum DataType {
 	DATABLOCKTILEENTITY        	(DataBlockTileEntity.class),
 	DATABLOCKTILEENTITYPERCLASS	(DataBlockTileEntityPerClass.class),
 	DATACHUNK       		   	(DataChunk.class),
+	DATACHUNKENTITIES  		   	(DataChunkEntities.class),
 	DATADIMENSION   		   	(DataDimension.class),
 	DATAENTITY      		   	(DataEntity.class),
 	DATAENTITYPERCLASS		   	(DataEntityPerClass.class),
