@@ -25,8 +25,7 @@ public class DataPacket250 implements ISerializable{
 		this.amount  = new DataAmountRate(0, 5);
 	}
 	
-	public DataPacket250 fill(FMLProxyPacket packet){
-		int pktsize = packet.payload().readableBytes();//packet.payload().array().length;
+	public DataPacket250 fill(FMLProxyPacket packet, int pktsize){
 		this.size.size += pktsize;
 		this.rate.size += pktsize;
 		this.amount.size += 1;

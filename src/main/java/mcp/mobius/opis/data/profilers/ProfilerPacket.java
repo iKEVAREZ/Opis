@@ -38,6 +38,8 @@ public class ProfilerPacket extends ProfilerAbstract {
 			if (!(msg instanceof FMLProxyPacket)){
 				Packet pkt         = (Packet) msg;
 			
+				dataAmount += (Integer)size;
+				
 				try{
 					data.get(msg.getClass().getSimpleName()).fill(pkt, (Integer)size);
 				} catch (Exception e){
@@ -54,12 +56,14 @@ public class ProfilerPacket extends ProfilerAbstract {
 			if (msg instanceof FMLProxyPacket){
 				FMLProxyPacket pkt = (FMLProxyPacket) msg;
 				String channel     = pkt.channel();
+				int pktsize        = pkt.payload().capacity();
+				dataAmount += pktsize;
 				
 				try{
-					data250.get(channel).fill(pkt);
+					data250.get(channel).fill(pkt, pktsize);
 				} catch (Exception e){
 					data250.put(channel, new DataPacket250(channel));
-					data250.get(channel).fill(pkt);
+					data250.get(channel).fill(pkt, pktsize);
 				}					
 			}
 		}
