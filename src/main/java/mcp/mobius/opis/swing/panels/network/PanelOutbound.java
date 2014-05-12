@@ -29,9 +29,9 @@ public class PanelOutbound extends JPanelMsgHandler implements ITabPanel {
 		add(scrollPane, "cell 0 0,grow");
 		
 		table = new JTableStats(
-				new String[] {"Type", "ID", "Amount", "Rate", "Total Size"},
-				new Class[]  {String.class, Integer.class, DataAmountRate.class, DataByteRate.class, DataByteSize.class},
-				new int[]    {SwingConstants.LEFT, SwingConstants.CENTER, SwingConstants.RIGHT, SwingConstants.RIGHT, SwingConstants.RIGHT}
+				new String[] {"Type", "Amount", "Rate", "Total Size"},
+				new Class[]  {String.class, DataAmountRate.class, DataByteRate.class, DataByteSize.class},
+				new int[]    {SwingConstants.LEFT, SwingConstants.RIGHT, SwingConstants.RIGHT, SwingConstants.RIGHT}
 				);			
 		scrollPane.setViewportView(table);	
 		
@@ -52,7 +52,6 @@ public class PanelOutbound extends JPanelMsgHandler implements ITabPanel {
 				if (packet.type.equals("<UNUSED>")) continue;
 				model.addRow(new Object[]  {
 					packet.type,
-					packet.id,
 					packet.amount,
 					packet.rate,
 					packet.size    

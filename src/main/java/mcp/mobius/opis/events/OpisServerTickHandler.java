@@ -121,8 +121,8 @@ public enum OpisServerTickHandler{
 			if (timer5000.isDone()){
 				updatePlayers();
 				
-				PacketManager.sendPacketToAllSwing(new NetDataList(Message.LIST_PACKETS_OUTBOUND, ((ProfilerPacket)ProfilerSection.PACKET_OUTBOUND.getProfiler()).data));
-				PacketManager.sendPacketToAllSwing(new NetDataList(Message.LIST_PACKETS_INBOUND,  ((ProfilerPacket)ProfilerSection.PACKET_INBOUND.getProfiler()).data));
+				PacketManager.sendPacketToAllSwing(new NetDataList(Message.LIST_PACKETS_OUTBOUND, new ArrayList<DataPacket>( ((ProfilerPacket)ProfilerSection.PACKET_OUTBOUND.getProfiler()).data.values())));
+				PacketManager.sendPacketToAllSwing(new NetDataList(Message.LIST_PACKETS_INBOUND,  new ArrayList<DataPacket>( ((ProfilerPacket)ProfilerSection.PACKET_INBOUND.getProfiler()).data.values())));
 				
 				PacketManager.sendPacketToAllSwing(new NetDataList(Message.LIST_PACKETS_OUTBOUND_250, new ArrayList<DataPacket250>( ((ProfilerPacket)ProfilerSection.PACKET_OUTBOUND.getProfiler()).data250.values())));
 				PacketManager.sendPacketToAllSwing(new NetDataList(Message.LIST_PACKETS_INBOUND_250,  new ArrayList<DataPacket250>( ((ProfilerPacket)ProfilerSection.PACKET_INBOUND.getProfiler()).data250.values())));

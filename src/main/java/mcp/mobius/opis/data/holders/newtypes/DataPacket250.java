@@ -7,6 +7,7 @@ import java.io.IOException;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 
+import cpw.mods.fml.common.network.internal.FMLProxyPacket;
 import mcp.mobius.opis.data.holders.ISerializable;
 
 public class DataPacket250 implements ISerializable{
@@ -24,14 +25,13 @@ public class DataPacket250 implements ISerializable{
 		this.amount  = new DataAmountRate(0, 5);
 	}
 	
-	/*
-	public DataPacket250 fill(Packet packet){
-		this.size.size += packet.getPacketSize() + 1;
-		this.rate.size += packet.getPacketSize() + 1;
+	public DataPacket250 fill(FMLProxyPacket packet){
+		int pktsize = packet.payload().readableBytes();//packet.payload().array().length;
+		this.size.size += pktsize;
+		this.rate.size += pktsize;
 		this.amount.size += 1;
 		return this;
 	}
-	*/
 	
 	public void startInterval(){
 		this.rate.reset();

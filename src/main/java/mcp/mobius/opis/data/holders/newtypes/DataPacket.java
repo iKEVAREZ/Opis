@@ -1,10 +1,14 @@
 package mcp.mobius.opis.data.holders.newtypes;
 
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
 import net.minecraft.network.Packet;
+import net.minecraft.network.PacketBuffer;
 
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
@@ -16,27 +20,32 @@ public class DataPacket implements ISerializable{
 	public DataByteSize size;
 	public DataByteRate rate;
 	public DataAmountRate amount;
-	public String type;
+	public CachedString type;
 	
 	public DataPacket(){
 	}	
 	
-	public DataPacket(int id){
-		this.id   = id;
-		this.size = new DataByteSize(0);
-		this.rate = new DataByteRate(0, 5);
+	public DataPacket(Packet packet){
+		this.type   = new CachedString(packet.getClass().getSimpleName());
+		this.size   = new DataByteSize(0);
+		this.rate   = new DataByteRate(0, 5);
 		this.amount = new DataAmountRate(0, 5);
-		//try {
-		//	this.type = ((Class)(Packet.packetIdToClassMap.lookup(this.id))).getSimpleName();
-		//} catch (Exception e) {
-			this.type = "<UNUSED>";
-		//}
 	}
 
-	public DataPacket fill(Packet packet){
-		//this.size.size += packet.getPacketSize() + 1;
-		//this.rate.size += packet.getPacketSize() + 1;
-		//this.amount.size += 1;
+	public DataPacket fill(Packet packet, int pktsize){
+		/*
+		PacketBuffer buff = new PacketBuffer(Unpooled.buffer());
+		int pktsize = 0;
+		try{
+			packet.writePacketData(buff);
+			pktsize = buff.readableBytes();
+		} catch (Exception e){
+			
+		}
+		*/
+		this.size.size += pktsize;
+		this.rate.size += pktsize;
+		this.amount.size += 1;
 		return this;
 	}
 	
@@ -47,23 +56,18 @@ public class DataPacket implements ISerializable{
 	
 	@Override
 	public void writeToStream(ByteArrayDataOutput stream){
-		stream.writeInt(this.id);
 		this.size.writeToStream(stream);
 		this.rate.writeToStream(stream);
 		this.amount.writeToStream(stream);
+		this.type.writeToStream(stream);
 	}
 
 	public static DataPacket readFromStream(ByteArrayDataInput stream){
 		DataPacket retVal = new DataPacket();
-		retVal.id         = stream.readInt();
 		retVal.size       = DataByteSize.readFromStream(stream);
 		retVal.rate       = DataByteRate.readFromStream(stream);
 		retVal.amount     = DataAmountRate.readFromStream(stream);
-		//try {
-		//	retVal.type = ((Class)(Packet.packetIdToClassMap.lookup(retVal.id))).getSimpleName();
-		//} catch (Exception e) {
-			retVal.type = "<UNUSED>";
-		//}
+		retVal.type       = CachedString.readFromStream(stream);
 
 		return retVal;
 	}	
