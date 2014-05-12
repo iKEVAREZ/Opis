@@ -135,7 +135,7 @@ public enum TileEntityManager {
 				
 				Block block = world.getBlock(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord);
 				if (block == Blocks.air || block == null
-							|| block.hasTileEntity()
+							|| !block.hasTileEntity()
 						    || world.getTileEntity(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord) == null
 						    || world.getTileEntity(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord).getClass() != tileEntity.getClass()){
 
