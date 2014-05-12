@@ -40,8 +40,8 @@ import mcp.mobius.opis.network.packets.server.NetDataCommand;
 import mcp.mobius.opis.network.packets.server.NetDataList;
 import mcp.mobius.opis.network.packets.server.NetDataValue;
 import mcp.mobius.opis.network.packets.server.PacketDataOverlayChunkEntities;
-import mcp.mobius.opis.network.packets.server.PacketTickets;
 import mcp.mobius.opis.swing.SelectedTab;
+import mcp.mobius.opis.data.holders.basetypes.TicketData;
 
 public class ServerMessageHandler {
 
@@ -82,7 +82,8 @@ public class ServerMessageHandler {
 		}		
 
 		else if (maintype == Message.LIST_CHUNK_TICKETS){
-			PacketManager.sendToPlayer(new PacketTickets(ChunkManager.INSTANCE.getTickets()), player);
+			//PacketManager.sendToPlayer(new PacketTickets(ChunkManager.INSTANCE.getTickets()), player);
+			PacketManager.validateAndSend(new NetDataList(Message.LIST_CHUNK_TICKETS, new ArrayList<TicketData>(ChunkManager.INSTANCE.getTickets())), player);
 		}		
 		
 		else if (maintype == Message.LIST_TIMING_TILEENTS){

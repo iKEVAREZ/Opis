@@ -60,7 +60,7 @@ public class ProxyClient extends ProxyServer implements IMessageHandler{
 	@Override
 	public void init(){
 		//MwAPI.registerDataProvider("Loaded chunks", OverlayLoadedChunks.instance);
-		MwAPI.registerDataProvider("Loaded chunks", OverlayLoadedChunks.instance());
+		MwAPI.registerDataProvider("Loaded chunks", OverlayLoadedChunks.INSTANCE);
 		MwAPI.registerDataProvider("Mean time",     OverlayMeanTime.instance());
 		MwAPI.registerDataProvider("Ent per chunk", OverlayEntityPerChunk.instance());
 		
@@ -201,7 +201,9 @@ public class ProxyClient extends ProxyServer implements IMessageHandler{
 		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.LIST_CHUNK_LOADED_CLEAR, ChunkManager.INSTANCE);
 		
 		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.STATUS_STRINGUPD,      StringCache.INSTANCE);
-		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.STATUS_STRINGUPD_FULL, StringCache.INSTANCE);		
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.STATUS_STRINGUPD_FULL, StringCache.INSTANCE);
+		
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.LIST_CHUNK_TICKETS, OverlayLoadedChunks.INSTANCE);
 	}
 
 	@Override

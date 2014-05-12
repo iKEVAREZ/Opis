@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.swing.table.DefaultTableModel;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
@@ -15,10 +17,13 @@ import mapwriter.api.IMwChunkOverlay;
 import mapwriter.api.IMwDataProvider;
 import mapwriter.map.MapView;
 import mapwriter.map.mapmode.MapMode;
+import mcp.mobius.opis.api.IMessageHandler;
+import mcp.mobius.opis.data.holders.ISerializable;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesBlock;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesChunk;
 import mcp.mobius.opis.data.holders.basetypes.SerialInt;
 import mcp.mobius.opis.data.holders.basetypes.TicketData;
+import mcp.mobius.opis.data.holders.stats.StatsChunk;
 import mcp.mobius.opis.data.managers.ChunkManager;
 import mcp.mobius.opis.gui.events.MouseEvent;
 import mcp.mobius.opis.gui.interfaces.CType;
@@ -29,13 +34,16 @@ import mcp.mobius.opis.gui.widgets.LayoutCanvas;
 import mcp.mobius.opis.gui.widgets.WidgetGeometry;
 import mcp.mobius.opis.gui.widgets.tableview.TableRow;
 import mcp.mobius.opis.gui.widgets.tableview.ViewTable;
+import mcp.mobius.opis.network.PacketBase;
 import mcp.mobius.opis.network.PacketManager;
 import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.packets.client.PacketReqChunks;
 import mcp.mobius.opis.network.packets.client.PacketReqData;
+import mcp.mobius.opis.swing.widgets.JTableStats;
 
-public class OverlayLoadedChunks implements IMwDataProvider {
-
+public enum OverlayLoadedChunks implements IMwDataProvider, IMessageHandler {
+	INSTANCE;
+	
 	public class TicketTable extends ViewTable{
 		MapView mapView;
 		MapMode mapMode;
@@ -105,17 +113,8 @@ public class OverlayLoadedChunks implements IMwDataProvider {
 	//private OverlayLoadedChunks(){};
 	
 	CoordinatesChunk selectedChunk = null;
-	private static OverlayLoadedChunks _instance;
 	public boolean    showList = false;
 	public LayoutCanvas canvas = null;
-	
-	private OverlayLoadedChunks(){}
-	
-	public static OverlayLoadedChunks instance(){
-		if(_instance == null)
-			_instance = new OverlayLoadedChunks();			
-		return _instance;
-	}	
 	
 	@Override
 	public ArrayList<IMwChunkOverlay> getChunksOverlay(int dim, double centerX,	double centerZ, double minX, double minZ, double maxX, double maxZ) {
@@ -229,7 +228,7 @@ public class OverlayLoadedChunks implements IMwDataProvider {
 	}
 
 	@SideOnly(Side.CLIENT)
-	public void setupTable(HashSet<TicketData> tickets){
+	public void setupTable(ArrayList<TicketData> tickets){
 		if (this.canvas == null)
 			this.canvas = new LayoutCanvas();		
 		
@@ -264,5 +263,24 @@ public class OverlayLoadedChunks implements IMwDataProvider {
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	public boolean handleMessage(Message msg, PacketBase rawdata) {
+		switch(msg){
+		case LIST_CHUNK_TICKETS:{
+			ArrayList<TicketData> arr = new ArrayList<TicketData>();
+			for (ISerializable s : rawdata.array)
+				arr.add((TicketData)s);
+			
+			this.setupTable(arr);
+			
+			break;
+		}
+		default:
+			return false;
+			
+		}
+		return true;
 	}
 }
