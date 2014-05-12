@@ -40,8 +40,9 @@ import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.packets.client.PacketReqChunks;
 import mcp.mobius.opis.network.packets.client.PacketReqData;
 
-public class OverlayMeanTime implements IMwDataProvider, IMessageHandler{
-
+public enum OverlayMeanTime implements IMwDataProvider, IMessageHandler{
+	INSTANCE;
+	
 	public class EntitiesTable extends ViewTable{
 		MapView mapView;
 		MapMode mapMode;
@@ -125,19 +126,8 @@ public class OverlayMeanTime implements IMwDataProvider, IMessageHandler{
 	}		
 	
 	CoordinatesChunk selectedChunk = null;
-	private static OverlayMeanTime _instance;
 	public boolean    showList = false;
 	public LayoutCanvas canvas = null;
-	
-	private OverlayMeanTime(){
-
-	}
-	
-	public static OverlayMeanTime instance(){
-		if(_instance == null)
-			_instance = new OverlayMeanTime();			
-		return _instance;
-	}
 	
 	@Override
 	public ArrayList<IMwChunkOverlay> getChunksOverlay(int dim, double centerX,	double centerZ, double minX, double minZ, double maxX, double maxZ) {

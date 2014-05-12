@@ -33,8 +33,9 @@ import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.packets.client.PacketReqChunks;
 import mcp.mobius.opis.network.packets.client.PacketReqData;
 
-public class OverlayEntityPerChunk implements IMwDataProvider, IMessageHandler {
-
+public enum OverlayEntityPerChunk implements IMwDataProvider, IMessageHandler {
+	INSTANCE;
+	
 	class ReducedData implements Comparable{
 		CoordinatesChunk chunk;
 		int amount;
@@ -51,21 +52,12 @@ public class OverlayEntityPerChunk implements IMwDataProvider, IMessageHandler {
 		
 	}
 	
-	private static OverlayEntityPerChunk _instance;
 	public boolean    showList = false;
 	public LayoutCanvas canvas = null;
 	public HashMap<CoordinatesChunk, Integer> overlayData = new HashMap<CoordinatesChunk, Integer>(); 
 	public ArrayList<ReducedData> reducedData = new ArrayList<ReducedData>();
 	public ArrayList<DataEntity> entStats    = new ArrayList<DataEntity>();
 	public CoordinatesChunk selectedChunk = null;
-	
-	private OverlayEntityPerChunk(){}
-	
-	public static OverlayEntityPerChunk instance(){
-		if(_instance == null)
-			_instance = new OverlayEntityPerChunk();			
-		return _instance;
-	}	
 	
 	public void setEntStats(ArrayList<ISerializable> data){
 		this.entStats.clear();

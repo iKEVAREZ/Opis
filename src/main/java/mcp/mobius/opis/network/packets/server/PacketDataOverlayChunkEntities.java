@@ -49,9 +49,9 @@ public class PacketDataOverlayChunkEntities extends PacketBase {
 
     @SideOnly(Side.CLIENT)
     public void actionClient(World world, EntityPlayer player){
-		OverlayEntityPerChunk.instance().overlayData = this.chunkStatus;
-		OverlayEntityPerChunk.instance().reduceData();
-		OverlayEntityPerChunk.instance().setupChunkTable();
+		OverlayEntityPerChunk.INSTANCE.overlayData = this.chunkStatus;
+		OverlayEntityPerChunk.INSTANCE.reduceData();
+		OverlayEntityPerChunk.INSTANCE.setupChunkTable();
     }	
 	
 }

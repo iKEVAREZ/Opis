@@ -61,8 +61,8 @@ public class ProxyClient extends ProxyServer implements IMessageHandler{
 	public void init(){
 		//MwAPI.registerDataProvider("Loaded chunks", OverlayLoadedChunks.instance);
 		MwAPI.registerDataProvider("Loaded chunks", OverlayLoadedChunks.INSTANCE);
-		MwAPI.registerDataProvider("Mean time",     OverlayMeanTime.instance());
-		MwAPI.registerDataProvider("Ent per chunk", OverlayEntityPerChunk.instance());
+		MwAPI.registerDataProvider("Mean time",     OverlayMeanTime.INSTANCE);
+		MwAPI.registerDataProvider("Ent per chunk", OverlayEntityPerChunk.INSTANCE);
 		
 		//fontMC12 = Fonts.createFont(new ResourceLocation("opis", "fonts/Minecraftia.ttf"), 12, false);
 		//fontMC24 = Fonts.createFont(new ResourceLocation("opis", "fonts/Minecraftia.ttf"), 24, false);
@@ -193,8 +193,9 @@ public class ProxyClient extends ProxyServer implements IMessageHandler{
 		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.CLIENT_SHOW_RENDER_TICK, modOpis.proxy);
 
 		
-		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.LIST_CHUNK_ENTITIES, OverlayEntityPerChunk.instance());
-		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.LIST_CHUNK_TILEENTS, OverlayMeanTime.instance());
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.LIST_CHUNK_ENTITIES, OverlayEntityPerChunk.INSTANCE);
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.LIST_CHUNK_TICKETS,  OverlayLoadedChunks.INSTANCE);
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.LIST_CHUNK_TILEENTS, OverlayMeanTime.INSTANCE);
 		
 		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.LIST_TIMING_CHUNK, ChunkManager.INSTANCE);
 		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.LIST_CHUNK_LOADED, ChunkManager.INSTANCE);
@@ -202,8 +203,6 @@ public class ProxyClient extends ProxyServer implements IMessageHandler{
 		
 		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.STATUS_STRINGUPD,      StringCache.INSTANCE);
 		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.STATUS_STRINGUPD_FULL, StringCache.INSTANCE);
-		
-		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.LIST_CHUNK_TICKETS, OverlayLoadedChunks.INSTANCE);
 	}
 
 	@Override

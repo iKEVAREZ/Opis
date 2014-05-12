@@ -40,8 +40,8 @@ public class ActionTimingTileEnts implements ActionListener {
 		
 		if (e.getSource() == panel.getBtnCenter()){
             CoordinatesBlock coord = data.pos;
-            OverlayMeanTime.instance().setSelectedChunk(coord.dim, coord.x >> 4, coord.z >> 4);
-            MwAPI.setCurrentDataProvider(OverlayMeanTime.instance());
+            OverlayMeanTime.INSTANCE.setSelectedChunk(coord.dim, coord.x >> 4, coord.z >> 4);
+            MwAPI.setCurrentDataProvider(OverlayMeanTime.INSTANCE);
             Minecraft.getMinecraft().displayGuiScreen(new MwGui(Mw.instance, coord.dim, coord.x, coord.z));            			
 		}				
 		

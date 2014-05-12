@@ -43,8 +43,8 @@ public class ActionPlayers implements ActionListener {
             CoordinatesBlock coord = data.pos;
             PacketManager.sendToServer(new PacketReqData(Message.OVERLAY_CHUNK_ENTITIES));
             PacketManager.sendToServer(new PacketReqData(Message.LIST_CHUNK_ENTITIES, data.pos.asCoordinatesChunk()));           
-            OverlayEntityPerChunk.instance().selectedChunk = coord.asCoordinatesChunk();
-            MwAPI.setCurrentDataProvider(OverlayEntityPerChunk.instance());
+            OverlayEntityPerChunk.INSTANCE.selectedChunk = coord.asCoordinatesChunk();
+            MwAPI.setCurrentDataProvider(OverlayEntityPerChunk.INSTANCE);
             Minecraft.getMinecraft().displayGuiScreen(new MwGui(Mw.instance, coord.dim, coord.x, coord.z));         			
 		}				
 		
