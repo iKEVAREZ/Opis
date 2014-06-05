@@ -1,7 +1,6 @@
 package mcp.mobius.opis.swing.panels.network;
 
 import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
 import javax.swing.SwingConstants;
 
 import net.miginfocom.swing.MigLayout;
@@ -17,8 +16,6 @@ import mcp.mobius.opis.swing.SelectedTab;
 import mcp.mobius.opis.swing.widgets.JPanelMsgHandler;
 import mcp.mobius.opis.swing.widgets.JTableStats;
 
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 public class PanelOutbound250 extends JPanelMsgHandler implements ITabPanel {
@@ -43,9 +40,9 @@ public class PanelOutbound250 extends JPanelMsgHandler implements ITabPanel {
 		switch(msg){
 		case LIST_PACKETS_OUTBOUND_250:{
 			
-			((JTableStats)this.getTable()).setTableData(rawdata.array);
+			this.getTable().setTableData(rawdata.array);
 			
-			DefaultTableModel model = (DefaultTableModel)this.getTable().getModel();
+			DefaultTableModel model = this.getTable().getModel();
 			int               row   = this.getTable().clearTable(DataPacket250.class);
 
 			for (Object o : rawdata.array){

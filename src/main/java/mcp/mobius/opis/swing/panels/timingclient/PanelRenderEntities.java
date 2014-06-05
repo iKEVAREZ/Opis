@@ -6,8 +6,6 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.SwingConstants;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import net.miginfocom.swing.MigLayout;
@@ -54,7 +52,7 @@ public class PanelRenderEntities extends JPanel implements ITabPanel, IMessageHa
 
 	public void setTable(ArrayList<DataEntityRender> data){
 		
-		DefaultTableModel model = (DefaultTableModel)table.getModel();
+		DefaultTableModel model = table.getModel();
 		int               row   = this.updateData(table, model, DataEntityRender.class);		
 		
 		for (DataEntityRender o : data){

@@ -9,7 +9,6 @@ import javax.swing.table.DefaultTableModel;
 
 import net.miginfocom.swing.MigLayout;
 import mcp.mobius.opis.api.ITabPanel;
-import mcp.mobius.opis.data.holders.newtypes.CachedString;
 import mcp.mobius.opis.data.holders.newtypes.DataBlockTileEntityPerClass;
 import mcp.mobius.opis.data.holders.newtypes.DataTiming;
 import mcp.mobius.opis.helpers.ModIdentification;
@@ -49,9 +48,9 @@ public class PanelTimingTileEntsPerClass extends JPanelMsgHandler implements ITa
 		
 		case LIST_TIMING_TILEENTS_PER_CLASS:{
 			
-			((JTableStats)this.getTable()).setTableData(rawdata.array);
+			this.getTable().setTableData(rawdata.array);
 			
-			DefaultTableModel model = (DefaultTableModel)table.getModel();
+			DefaultTableModel model = table.getModel();
 			int               row   = this.getTable().clearTable(DataBlockTileEntityPerClass.class);	
 			
 			HashMap<String, DataBlockTileEntityPerClass> cumData = new HashMap<String, DataBlockTileEntityPerClass>();

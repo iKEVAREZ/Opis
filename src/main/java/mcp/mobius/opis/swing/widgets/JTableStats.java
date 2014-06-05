@@ -10,7 +10,6 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import mcp.mobius.opis.data.holders.ISerializable;
-import mcp.mobius.opis.data.holders.stats.StatAbstract;
 
 public class JTableStats extends JTable {
 
@@ -102,6 +101,7 @@ public class JTableStats extends JTable {
 		this.statistics.addAll(statistics);
 	}
 	
+	@Override
 	public DefaultTableModel getModel(){
 		return (DefaultTableModel)super.getModel();
 	}

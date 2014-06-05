@@ -1,6 +1,15 @@
+apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'shadow'
+
+version = "1.2.2"
+group= "mcp.mobius.opis" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = "Opis"
+
 buildscript {
     repositories {
         mavenCentral()
+        //jcenter()
         maven {
             name = "forge"
             url = "http://files.minecraftforge.net/maven"
@@ -9,42 +18,107 @@ buildscript {
             name = "sonatype"
             url = "https://oss.sonatype.org/content/repositories/snapshots/"
         }
+        maven {
+            name = "shadow-repo"
+            url = 'http://dl.bintray.com/content/johnrengelman/gradle-plugins/'
+        }        
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
+        classpath 'com.github.jengelman.gradle.plugins:shadow:0.8'
     }
 }
 
+apply plugin: 'forge'
+
+minecraft {
+    version = "1.7.2-10.12.1.1101"
+    assetDir = "eclipse/assets"
+}
+
+shadow {
+
+    //relocation {
+    //    pattern = 'org.apache.commons.lang3'
+    //    shadedPattern = 'opisapache.lang3'
+    //}
+
+    relocation {
+        pattern = 'org.apache.commons.math3'
+        shadedPattern = 'opisapache.math3'
+    }
+
+    artifactSet {
+        include 'org.apache.commons'
+        exclude 'org.apache.commons.lang3'
+        include 'org.jfree'
+        include 'com.miglayout'
+        include 'net.sf.opencsv'         
+    }
+}
+
+tasks.shadowJar.dependsOn "reobf"
+
 configurations {
     deployerJars
-    packed
-    compile.extendsFrom packed    
 }
 
 repositories {
+    mavenLocal()
     mavenCentral()
+    maven {
+        name "Mobius Repo"
+        url "http://mobiusstrip.eu/maven"
+    }    
 }
 
-apply plugin: 'java'
-apply plugin: 'forge'
-apply plugin: 'maven'
-
-version = "1.0"
-group= "com.yourname.modid" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "modid"
-
 dependencies {
-    packed 'org.apache.commons:commons-math3:3.2'
-    packed 'org.jfree:jcommon:1.0.21'
-    packed 'org.jfree:jfreechart:1.0.17'
-    packed 'com.miglayout:miglayout-swing:4.2'
-    packed 'net.sf.opencsv:opencsv:2.3'
+    compile 'org.apache.commons:commons-math3:3.2'
+    compile 'org.jfree:jcommon:1.0.21'
+    compile 'org.jfree:jfreechart:1.0.17'
+    compile 'com.miglayout:miglayout-swing:4.2'
+    compile 'net.sf.opencsv:opencsv:2.3'    
+    compile "mcp.mobius.mobiuscore:MobiusCore:1.2.1:dev"
     deployerJars "org.apache.maven.wagon:wagon-ssh:2.2"
 }
 
-minecraft {
-    version = "1.7.2-10.12.1.1065"
-    assetDir = "eclipse/assets"
+def root = project.projectDir.parentFile
+sourceSets {
+    main {
+        java {
+            srcDir new File(root, "src")
+        }
+        resources {
+            srcDir new File(root, "resources")
+        }
+    }
+}
+
+task sourceJar(type: Jar) {
+    from sourceSets.main.java
+    from new File(root, "dev")
+    classifier = 'sources'
+}
+
+task devJar(type: Jar) {
+    from sourceSets.main.output
+    classifier = 'dev'
+}
+
+// some crazy stuff to make sure the chicken stuff is in the mods folder...
+// because it wont work otherwise... because FML doesnt laod coremods from the classpath
+task copyCoreMods(type: Copy, dependsOn: "extractUserDev") {
+    from configurations.compile
+    include "**/*Mobius*.jar"
+    //include "**/*Chicken*.jar", "**/*NotEnoughItems*.jar"
+    //exclude "**/CodeChickenLib*" // because CCC downloads it anyways.. -_-    
+    into file(minecraft.assetDir + "/../mods") // paralell to the assets dir
+}
+tasks.setupDevWorkspace.dependsOn copyCoreMods
+tasks.setupDecompWorkspace.dependsOn copyCoreMods
+
+artifacts {
+    archives sourceJar, devJar
 }
 
 processResources
@@ -64,19 +138,5 @@ processResources
     // copy everything else, thats not the mcmod.info
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
-    }
-}
-
-jar
-{
-    // packs a bunch of stuff into my jar.
-    // everything marked as packed
-    from {
-        configurations.packed.collect {
-            it.isDirectory() ? it : zipTree(it).matching {
-                exclude "META-INF", "META-INF/**", "*META-INF*", "meta-inf"
-                exclude "**.jar", "**/*.jar", "*.jar"
-            }
-        }
     }
 }

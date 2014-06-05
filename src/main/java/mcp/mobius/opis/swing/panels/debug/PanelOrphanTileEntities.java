@@ -15,7 +15,6 @@ import net.miginfocom.swing.MigLayout;
 
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
@@ -47,8 +46,8 @@ public class PanelOrphanTileEntities extends JPanelMsgHandler implements ITabPan
 		switch(msg){
 		case LIST_ORPHAN_TILEENTS:{
 			
-			((JTableStats)this.getTable()).addTableData(rawdata.array);
-			DefaultTableModel model = (DefaultTableModel)this.getTable().getModel();
+			this.getTable().addTableData(rawdata.array);
+			DefaultTableModel model = this.getTable().getModel();
 			//int               row   = this.updateData(table, model, DataTileEntity.class);
 
 			for (Object o : rawdata.array){
@@ -68,8 +67,8 @@ public class PanelOrphanTileEntities extends JPanelMsgHandler implements ITabPan
 		}		
 		
 		case LIST_ORPHAN_TILEENTS_CLEAR:{
-			((JTableStats)this.getTable()).clearTableData();
-			DefaultTableModel model = (DefaultTableModel)this.getTable().getModel();
+			this.getTable().clearTableData();
+			DefaultTableModel model = this.getTable().getModel();
 			row = this.getTable().clearTable(DataTileEntity.class);			
 		}
 		

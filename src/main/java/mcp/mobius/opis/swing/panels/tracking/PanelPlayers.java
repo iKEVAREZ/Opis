@@ -1,11 +1,7 @@
 package mcp.mobius.opis.swing.panels.tracking;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 import mcp.mobius.opis.api.ITabPanel;
 import mcp.mobius.opis.data.holders.newtypes.DataEntity;
-import mcp.mobius.opis.gui.overlay.entperchunk.OverlayEntityPerChunk;
 import mcp.mobius.opis.network.PacketBase;
 import mcp.mobius.opis.network.enums.AccessLevel;
 import mcp.mobius.opis.network.enums.Message;
@@ -17,11 +13,7 @@ import mcp.mobius.opis.swing.widgets.JTableStats;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.SwingConstants;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 public class PanelPlayers extends JPanelMsgHandler implements ITabPanel{
@@ -74,9 +66,9 @@ public class PanelPlayers extends JPanelMsgHandler implements ITabPanel{
 		switch(msg){
 		case LIST_PLAYERS:{
 			
-			((JTableStats)this.getTable()).setTableData(rawdata.array);
+			this.getTable().setTableData(rawdata.array);
 			
-			DefaultTableModel model = (DefaultTableModel)this.getTable().getModel();
+			DefaultTableModel model = this.getTable().getModel();
 			int               row   = this.getTable().clearTable(DataEntity.class);
 
 			for (Object o : rawdata.array){

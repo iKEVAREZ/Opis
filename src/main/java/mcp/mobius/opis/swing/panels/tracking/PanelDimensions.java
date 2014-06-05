@@ -1,11 +1,8 @@
 package mcp.mobius.opis.swing.panels.tracking;
 
-import javax.swing.JPanel;
-
 import mcp.mobius.opis.api.IMessageHandler;
 import mcp.mobius.opis.api.ITabPanel;
 import mcp.mobius.opis.data.holders.newtypes.DataDimension;
-import mcp.mobius.opis.data.holders.newtypes.DataTiming;
 import mcp.mobius.opis.data.holders.newtypes.DataTimingMillisecond;
 import mcp.mobius.opis.network.PacketBase;
 import mcp.mobius.opis.network.enums.AccessLevel;
@@ -18,11 +15,7 @@ import mcp.mobius.opis.swing.widgets.JTableButton;
 import mcp.mobius.opis.swing.widgets.JTableStats;
 import net.miginfocom.swing.MigLayout;
 
-import javax.swing.JTable;
 import javax.swing.JScrollPane;
-import javax.swing.SwingConstants;
-import javax.swing.UIManager;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JButton;
 
@@ -56,9 +49,9 @@ public class PanelDimensions extends JPanelMsgHandler implements IMessageHandler
 	public boolean handleMessage(Message msg, PacketBase rawdata) {	
 		switch(msg){
 		case LIST_DIMENSION_DATA:{
-			((JTableStats)this.getTable()).setTableData(rawdata.array);
+			this.getTable().setTableData(rawdata.array);
 			
-			DefaultTableModel model = (DefaultTableModel)this.getTable().getModel();
+			DefaultTableModel model = this.getTable().getModel();
 			int               row   = this.getTable().clearTable(DataDimension.class);	
 
 			for (Object o : rawdata.array){

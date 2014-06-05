@@ -20,8 +20,6 @@ import net.minecraft.item.ItemStack;
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.SwingConstants;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JLabel;
 
@@ -55,7 +53,7 @@ public class PanelRenderTileEnts extends JPanel implements ITabPanel, IMessageHa
 
 	public void setTable(ArrayList<DataTileEntityRender> data){
 		
-		DefaultTableModel model = (DefaultTableModel)table.getModel();
+		DefaultTableModel model = table.getModel();
 		int               row   = this.updateData(table, model, DataTileEntityRender.class);		
 		
 		for (DataTileEntityRender o : data){

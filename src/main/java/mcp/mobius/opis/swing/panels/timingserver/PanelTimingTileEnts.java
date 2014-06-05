@@ -1,16 +1,10 @@
 package mcp.mobius.opis.swing.panels.timingserver;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.api.ITabPanel;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesBlock;
-import mcp.mobius.opis.data.holders.basetypes.SerialDouble;
 import mcp.mobius.opis.data.holders.newtypes.DataBlockTileEntity;
 import mcp.mobius.opis.data.holders.newtypes.DataTiming;
-import mcp.mobius.opis.data.holders.stats.StatAbstract;
-import mcp.mobius.opis.gui.overlay.OverlayMeanTime;
 import mcp.mobius.opis.helpers.ModIdentification;
 import mcp.mobius.opis.network.PacketBase;
 import mcp.mobius.opis.network.enums.AccessLevel;
@@ -22,15 +16,9 @@ import mcp.mobius.opis.swing.widgets.JButtonAccess;
 import mcp.mobius.opis.swing.widgets.JPanelMsgHandler;
 import mcp.mobius.opis.swing.widgets.JTableStats;
 import net.miginfocom.swing.MigLayout;
-import net.minecraft.item.ItemStack;
-
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JLabel;
-import javax.swing.JTable;
-import javax.swing.ListSelectionModel;
-import javax.swing.SwingConstants;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 public class PanelTimingTileEnts extends JPanelMsgHandler implements ITabPanel{
@@ -87,9 +75,9 @@ public class PanelTimingTileEnts extends JPanelMsgHandler implements ITabPanel{
 		switch(msg){
 		case LIST_TIMING_TILEENTS:{
 			
-			((JTableStats)this.getTable()).setTableData(rawdata.array);
+			this.getTable().setTableData(rawdata.array);
 			
-			DefaultTableModel model = (DefaultTableModel)table.getModel();
+			DefaultTableModel model = table.getModel();
 			int               row   = this.getTable().clearTable(DataBlockTileEntity.class);
 
 			for (Object o : rawdata.array){

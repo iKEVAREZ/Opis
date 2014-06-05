@@ -3,18 +3,14 @@ package mcp.mobius.opis.swing.panels.debug;
 import mcp.mobius.opis.api.ITabPanel;
 import mcp.mobius.opis.data.holders.newtypes.CachedString;
 import mcp.mobius.opis.data.holders.newtypes.DataThread;
-import mcp.mobius.opis.data.holders.newtypes.DataTileEntity;
 import mcp.mobius.opis.network.PacketBase;
 import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.swing.SelectedTab;
-import mcp.mobius.opis.swing.actions.ActionOrphanTileEntities;
 import mcp.mobius.opis.swing.widgets.JPanelMsgHandler;
 import mcp.mobius.opis.swing.widgets.JTableStats;
 import net.miginfocom.swing.MigLayout;
 
-import javax.swing.JButton;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
@@ -39,9 +35,9 @@ public class PanelThreads extends JPanelMsgHandler implements ITabPanel {
 		switch(msg){
 		case LIST_THREADS:{
 			
-			((JTableStats)this.getTable()).setTableData(rawdata.array);
+			this.getTable().setTableData(rawdata.array);
 			
-			DefaultTableModel model = (DefaultTableModel)this.getTable().getModel();
+			DefaultTableModel model = this.getTable().getModel();
 			int               row   = this.getTable().clearTable(DataThread.class);
 
 			for (Object o : rawdata.array){

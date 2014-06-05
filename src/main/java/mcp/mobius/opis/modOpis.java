@@ -2,18 +2,16 @@ package mcp.mobius.opis;
 
 import java.util.logging.Logger;
 
+import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import mcp.mobius.mobiuscore.profiler.ProfilerSection;
-import mcp.mobius.opis.commands.client.CommandClientShowRenderTick;
-import mcp.mobius.opis.commands.client.CommandClientStart;
 import mcp.mobius.opis.commands.client.CommandOpis;
 import mcp.mobius.opis.commands.server.CommandAddPrivileged;
 import mcp.mobius.opis.commands.server.CommandAmountEntities;
-import mcp.mobius.opis.commands.server.CommandChunkDump;
 import mcp.mobius.opis.commands.server.CommandChunkList;
 import mcp.mobius.opis.commands.server.CommandEntityCreate;
 import mcp.mobius.opis.commands.server.CommandFrequency;
@@ -28,7 +26,6 @@ import mcp.mobius.opis.commands.server.CommandTicks;
 import mcp.mobius.opis.commands.server.CommandTimingEntities;
 import mcp.mobius.opis.commands.server.CommandTimingTileEntities;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesBlock;
-import mcp.mobius.opis.data.profilers.DeadManSwitch;
 import mcp.mobius.opis.data.profilers.ProfilerDimBlockTick;
 import mcp.mobius.opis.data.profilers.ProfilerDimTick;
 import mcp.mobius.opis.data.profilers.ProfilerEntityUpdate;
@@ -64,8 +61,6 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
-import cpw.mods.fml.relauncher.Side;
 
 @Mod(modid="Opis", name="Opis", version="1.2.2")
 //@NetworkMod(channels={"Opis", "Opis_Chunk"},clientSideRequired=false, serverSideRequired=false, connectionHandler=OpisConnectionHandler.class, packetHandler=OpisPacketHandler.class)
@@ -199,5 +194,10 @@ public class modOpis {
 		//GameRegistry.registerPlayerTracker(PlayerTracker.instance());
 		
 		//DeadManSwitch.startDeadManSwitch(MinecraftServer.getServer());
+		/*
+		for (ProfilerSection sec : ProfilerSection.values()){
+			System.out.printf("%s : %s\n", sec, sec.getProfiler().getClass().getSimpleName());
+		}
+		*/
 	}	
 }

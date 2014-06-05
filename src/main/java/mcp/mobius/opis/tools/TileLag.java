@@ -4,6 +4,7 @@ import net.minecraft.tileentity.TileEntity;
 
 public class TileLag extends TileEntity {
 
+	@Override
 	public void updateEntity(){
 		if (this.worldObj.isRemote) return;
 		

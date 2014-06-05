@@ -1,34 +1,23 @@
 package mcp.mobius.opis.swing.panels.tracking;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.util.HashMap;
 
 import mcp.mobius.opis.api.ITabPanel;
-import mcp.mobius.opis.data.holders.basetypes.AmountHolder;
 import mcp.mobius.opis.data.holders.newtypes.DataBlockTileEntityPerClass;
 import mcp.mobius.opis.helpers.ModIdentification;
 import mcp.mobius.opis.network.PacketBase;
 import mcp.mobius.opis.network.enums.AccessLevel;
 import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.swing.SelectedTab;
-import mcp.mobius.opis.swing.actions.ActionAmountEntities;
 import mcp.mobius.opis.swing.actions.ActionAmountTileEnts;
 import mcp.mobius.opis.swing.widgets.JButtonAccess;
 import mcp.mobius.opis.swing.widgets.JPanelMsgHandler;
 import mcp.mobius.opis.swing.widgets.JTableStats;
 import net.miginfocom.swing.MigLayout;
 
-import javax.swing.JCheckBox;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 public class PanelAmountTileEnts extends JPanelMsgHandler implements ITabPanel{
@@ -63,9 +52,9 @@ public class PanelAmountTileEnts extends JPanelMsgHandler implements ITabPanel{
 		switch(msg){
 		case LIST_AMOUNT_TILEENTS:{
 			
-			((JTableStats)this.getTable()).setTableData(rawdata.array);
+			this.getTable().setTableData(rawdata.array);
 			
-			DefaultTableModel model = (DefaultTableModel)table.getModel();
+			DefaultTableModel model = table.getModel();
 			int               row   = this.getTable().clearTable(DataBlockTileEntityPerClass.class);	
 			
 			HashMap<String, DataBlockTileEntityPerClass> cumData = new HashMap<String, DataBlockTileEntityPerClass>();

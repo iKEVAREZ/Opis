@@ -1,8 +1,6 @@
 package mcp.mobius.opis.swing.panels;
 
 import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -12,12 +10,9 @@ import javax.swing.JPanel;
 import mcp.mobius.opis.api.ITabPanel;
 import mcp.mobius.opis.data.client.DataCache;
 import mcp.mobius.opis.data.holders.ISerializable;
-import mcp.mobius.opis.data.holders.basetypes.SerialDouble;
 import mcp.mobius.opis.data.holders.basetypes.SerialInt;
 import mcp.mobius.opis.data.holders.basetypes.SerialLong;
 import mcp.mobius.opis.data.holders.newtypes.DataBlockTick;
-import mcp.mobius.opis.data.holders.newtypes.DataNetworkTick;
-import mcp.mobius.opis.data.holders.newtypes.DataBlockTileEntity;
 import mcp.mobius.opis.data.holders.newtypes.DataTiming;
 import mcp.mobius.opis.data.holders.newtypes.DataTimingMillisecond;
 import mcp.mobius.opis.network.PacketBase;
@@ -446,7 +441,7 @@ public class PanelSummary extends JPanelMsgHandler implements ITabPanel{
 		}
 		
 		case STATUS_PING:{
-			this.pingData.addValue((double)(System.nanoTime() - ((SerialLong)rawdata.value).value));
+			this.pingData.addValue(System.nanoTime() - ((SerialLong)rawdata.value).value);
 			this.nPings += 1;
 			
 			//if (this.nPings % 2 == 0){

@@ -9,7 +9,6 @@ import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.packets.client.PacketReqData;
 import mcp.mobius.opis.swing.SelectedTab;
 import mcp.mobius.opis.swing.panels.debug.PanelOrphanTileEntities;
-import mcp.mobius.opis.swing.widgets.JTableStats;
 
 public class ActionOrphanTileEntities implements ActionListener {
 

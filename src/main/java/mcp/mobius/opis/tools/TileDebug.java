@@ -1,6 +1,5 @@
 package mcp.mobius.opis.tools;
 
-import cpw.mods.fml.common.FMLCommonHandler;
 import mcp.mobius.opis.modOpis;
 import net.minecraft.tileentity.TileEntity;
 
@@ -19,6 +18,7 @@ public class TileDebug extends TileEntity {
 		
 	}
 	
+	@Override
 	public void updateEntity(){
 	}
 }

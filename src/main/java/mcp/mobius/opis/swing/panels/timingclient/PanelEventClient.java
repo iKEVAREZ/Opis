@@ -7,16 +7,13 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import net.miginfocom.swing.MigLayout;
 import mcp.mobius.opis.api.IMessageHandler;
 import mcp.mobius.opis.api.ITabPanel;
 import mcp.mobius.opis.data.holders.newtypes.CachedString;
-import mcp.mobius.opis.data.holders.newtypes.DataEntityRender;
 import mcp.mobius.opis.data.holders.newtypes.DataEvent;
 import mcp.mobius.opis.data.holders.newtypes.DataTiming;
 import mcp.mobius.opis.network.PacketBase;
@@ -24,8 +21,6 @@ import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.swing.SelectedTab;
 import mcp.mobius.opis.swing.actions.ActionRunOpisClient;
 import mcp.mobius.opis.swing.widgets.JTableStats;
-
-import javax.swing.JLabel;
 
 public class PanelEventClient extends JPanel implements ITabPanel, IMessageHandler{
 	private JTableStats table;
@@ -55,7 +50,7 @@ public class PanelEventClient extends JPanel implements ITabPanel, IMessageHandl
 
 	public void setTable(ArrayList<DataEvent> data){
 		
-		DefaultTableModel model = (DefaultTableModel)table.getModel();
+		DefaultTableModel model = table.getModel();
 		int               row   = this.updateData(table, model, DataEvent.class);		
 		
 		for (DataEvent o : data){

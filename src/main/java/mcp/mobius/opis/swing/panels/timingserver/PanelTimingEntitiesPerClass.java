@@ -46,9 +46,9 @@ public class PanelTimingEntitiesPerClass extends JPanelMsgHandler implements ITa
 		
 		case LIST_TIMING_ENTITIES_PER_CLASS:{
 			
-			((JTableStats)this.getTable()).setTableData(rawdata.array);
+			this.getTable().setTableData(rawdata.array);
 			
-			DefaultTableModel model = (DefaultTableModel)table.getModel();
+			DefaultTableModel model = table.getModel();
 			int               row   = this.getTable().clearTable(DataEntityPerClass.class);	
 			
 			for (Object o : rawdata.array){

@@ -1,7 +1,5 @@
 package mcp.mobius.opis.swing.panels.timingserver;
 
-import javax.swing.JPanel;
-
 import mcp.mobius.opis.api.ITabPanel;
 import mcp.mobius.opis.data.holders.newtypes.CachedString;
 import mcp.mobius.opis.data.holders.newtypes.DataEvent;
@@ -18,7 +16,6 @@ import net.miginfocom.swing.MigLayout;
 
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
@@ -49,9 +46,9 @@ public class PanelTimingEvents extends JPanelMsgHandler implements ITabPanel {
 		
 		case LIST_TIMING_EVENTS:{
 			
-			((JTableStats)this.getTable()).setTableData(rawdata.array);
+			this.getTable().setTableData(rawdata.array);
 			
-			DefaultTableModel model = (DefaultTableModel)table.getModel();
+			DefaultTableModel model = table.getModel();
 			int               row   = this.getTable().clearTable(DataEvent.class);	
 			
 			for (Object o : rawdata.array){

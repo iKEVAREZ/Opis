@@ -1,6 +1,5 @@
 package mcp.mobius.opis.tools;
 
-import mcp.mobius.opis.modOpis;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
