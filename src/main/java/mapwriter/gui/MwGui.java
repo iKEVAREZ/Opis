@@ -113,6 +113,12 @@ public class MwGui extends GuiScreen {
     	
     }
     
+    @Override
+    public boolean doesGuiPauseGame()
+    {
+        return false;
+    }     
+    
     public void exitGui() {
     	//MwUtil.log("closing GUI");
     	// set the mini map dimension to the GUI map dimension when closing
