@@ -1,6 +1,7 @@
 apply plugin: 'java'
 apply plugin: 'maven'
 apply plugin: 'shadow'
+apply plugin: 'forge'
 
 version = "1.2.2"
 group= "mcp.mobius.opis" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
@@ -29,10 +30,8 @@ buildscript {
     }
 }
 
-apply plugin: 'forge'
-
 minecraft {
-    version = "1.7.2-10.12.1.1101"
+    version = "1.7.2-10.12.1.1112"
     assetDir = "eclipse/assets"
 }
 

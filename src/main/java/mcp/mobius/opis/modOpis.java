@@ -62,8 +62,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-@Mod(modid="Opis", name="Opis", version="1.2.2", dependencies="MobiusCore@[1.2.1]", acceptableRemoteVersions="*")
-//@NetworkMod(channels={"Opis", "Opis_Chunk"},clientSideRequired=false, serverSideRequired=false, connectionHandler=OpisConnectionHandler.class, packetHandler=OpisPacketHandler.class)
+@Mod(modid="Opis", name="Opis", version="1.2.2", dependencies="required-after:MobiusCore@[1.2.1]", acceptableRemoteVersions="*")
 
 public class modOpis {
 
