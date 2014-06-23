@@ -102,8 +102,8 @@ public class PacketManager
             String codecName = channel.findChannelHandlerNameForType(Codec.class);
             channel.pipeline().addAfter(codecName, "ClientHandler", new HandlerClient());
         }
-        else
-        {
+        //else
+        { 
             // for the server
             FMLEmbeddedChannel channel = channels.get(Side.SERVER);
             String codecName = channel.findChannelHandlerNameForType(Codec.class);
