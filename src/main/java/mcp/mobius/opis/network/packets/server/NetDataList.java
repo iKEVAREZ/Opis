@@ -54,7 +54,8 @@ public class NetDataList extends PacketBase {
 			this.array.add(dataRead(this.clazz, input));		
 	}
 
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
     public void actionClient(World world, EntityPlayer player){
     	MessageHandlerRegistrar.INSTANCE.routeMessage(this.msg, this);
     }	

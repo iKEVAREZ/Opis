@@ -6,20 +6,16 @@ import java.util.logging.Level;
 
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 import cpw.mods.fml.relauncher.Side;
 import mcp.mobius.mobiuscore.profiler.ProfilerSection;
 import mcp.mobius.opis.modOpis;
-import mcp.mobius.opis.commands.server.CommandAmountEntities;
-import mcp.mobius.opis.data.client.DataCache;
 import mcp.mobius.opis.data.holders.ISerializable;
 import mcp.mobius.opis.data.holders.basetypes.AmountHolder;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesBlock;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesChunk;
-import mcp.mobius.opis.data.holders.basetypes.SerialDouble;
 import mcp.mobius.opis.data.holders.basetypes.SerialInt;
 import mcp.mobius.opis.data.holders.basetypes.SerialLong;
 import mcp.mobius.opis.data.holders.basetypes.SerialString;
@@ -153,7 +149,7 @@ public class ServerMessageHandler {
 		}		
 		
 		else if (maintype == Message.COMMAND_TELEPORT_BLOCK){
-			EntityManager.INSTANCE.teleportPlayer((CoordinatesBlock)param1, (EntityPlayerMP)player);
+			EntityManager.INSTANCE.teleportPlayer((CoordinatesBlock)param1, player);
 			PacketManager.validateAndSend(new NetDataValue(Message.CLIENT_HIGHLIGHT_BLOCK, param1), player);
 		}	
 		
@@ -172,7 +168,7 @@ public class ServerMessageHandler {
 			
 			CoordinatesBlock blockCoord = new CoordinatesBlock(chunkCoord.dim, chunkCoord.x + 8, world.getTopSolidOrLiquidBlock(chunkCoord.x, chunkCoord.z), chunkCoord.z + 8);
 			
-			EntityManager.INSTANCE.teleportPlayer(blockCoord, (EntityPlayerMP)player);
+			EntityManager.INSTANCE.teleportPlayer(blockCoord, player);
 		}		
 				
 		

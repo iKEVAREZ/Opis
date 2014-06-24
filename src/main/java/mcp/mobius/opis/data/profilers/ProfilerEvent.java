@@ -5,8 +5,6 @@ import mcp.mobius.opis.data.profilers.Clock.IClock;
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 
 import com.google.common.collect.HashBasedTable;
-import com.google.common.collect.HashMultimap;
-
 import cpw.mods.fml.common.ModContainer;
 
 public class ProfilerEvent extends ProfilerAbstract {
@@ -37,24 +35,24 @@ public class ProfilerEvent extends ProfilerAbstract {
 			
 			try{
 				String name = (String)pkg + "|" + handler.getClass().getSimpleName();
-				dataTick.get(event.getClass(), name).addValue((double)clock.getDelta());
+				dataTick.get(event.getClass(), name).addValue(clock.getDelta());
 			} catch (Exception e) {
 				String name = (String)pkg + "|" + handler.getClass().getSimpleName();
 				dataTick.put(event.getClass(), name, new DescriptiveStatistics(250));
 				dataModTick.put(event.getClass(), name, ((ModContainer)mod).getName());
-				dataTick.get(event.getClass(), name).addValue((double)clock.getDelta());
+				dataTick.get(event.getClass(), name).addValue(clock.getDelta());
 			}			
 			
 		} else {
 			
 			try{
 				String name = (String)pkg + "|" + handler.getClass().getSimpleName();
-				data.get(event.getClass(), name).addValue((double)clock.getDelta());
+				data.get(event.getClass(), name).addValue(clock.getDelta());
 			} catch (Exception e) {
 				String name = (String)pkg + "|" + handler.getClass().getSimpleName();
 				data.put(event.getClass(), name, new DescriptiveStatistics(250));
 				dataMod.put(event.getClass(), name, ((ModContainer)mod).getName());
-				data.get(event.getClass(), name).addValue((double)clock.getDelta());
+				data.get(event.getClass(), name).addValue(clock.getDelta());
 			}
 			
 		}

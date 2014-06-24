@@ -10,7 +10,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import mapwriter.Mw;
 import mapwriter.region.MwChunk;
-import mcp.mobius.opis.api.MessageHandlerRegistrar;
 import mcp.mobius.opis.network.PacketBase;
 
 public class PacketChunks extends PacketBase{
@@ -30,7 +29,8 @@ public class PacketChunks extends PacketBase{
 		
 	}
 
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
     public void actionClient(World world, EntityPlayer player){
     	Mw.instance.chunkManager.forceChunks(this.chunks);
     }		

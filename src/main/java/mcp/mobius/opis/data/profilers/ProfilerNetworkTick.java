@@ -22,7 +22,7 @@ public class ProfilerNetworkTick extends ProfilerAbstract {
 	@Override
 	public void stop(){
 		clock.stop();
-		data.addValue((double)clock.getDelta());
+		data.addValue(clock.getDelta());
 	}	
 	
 }

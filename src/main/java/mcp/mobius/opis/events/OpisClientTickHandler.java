@@ -2,16 +2,12 @@ package mcp.mobius.opis.events;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.EnumSet;
-import java.util.logging.Level;
-
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table.Cell;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import mcp.mobius.mobiuscore.profiler.ProfilerSection;
 import mcp.mobius.opis.modOpis;

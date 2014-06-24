@@ -1,20 +1,12 @@
 package mcp.mobius.opis.network.packets.client;
 
-import java.util.ArrayList;
-
 import mcp.mobius.opis.data.holders.DataType;
 import mcp.mobius.opis.data.holders.ISerializable;
-import mcp.mobius.opis.data.holders.basetypes.CoordinatesChunk;
-import mcp.mobius.opis.events.PlayerTracker;
 import mcp.mobius.opis.network.PacketBase;
 import mcp.mobius.opis.network.ServerMessageHandler;
-import mcp.mobius.opis.network.enums.AccessLevel;
 import mcp.mobius.opis.network.enums.Message;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.world.World;
-import net.minecraft.world.chunk.Chunk;
-
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 

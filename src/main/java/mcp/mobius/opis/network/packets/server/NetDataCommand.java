@@ -30,7 +30,8 @@ public class NetDataCommand extends PacketBase {
 		this.msg = Message.values()[input.readInt()];
 	}
 
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
     public void actionClient(World world, EntityPlayer player){
     	MessageHandlerRegistrar.INSTANCE.routeMessage(this.msg, this);
     }	

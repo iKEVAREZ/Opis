@@ -36,6 +36,6 @@ public class ProfilerDimBlockTick extends ProfilerAbstract implements IProfilerB
 		if (DimensionManager.getWorld(dim).isRemote) return;
 		
 		clock.stop();
-		data.get(dim).addValue((double)clock.getDelta());
+		data.get(dim).addValue(clock.getDelta());
 	}
 }

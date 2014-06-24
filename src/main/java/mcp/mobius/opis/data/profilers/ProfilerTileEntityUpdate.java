@@ -1,8 +1,6 @@
 package mcp.mobius.opis.data.profilers;
 
 import java.util.HashMap;
-import java.util.WeakHashMap;
-
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesBlock;
@@ -43,6 +41,6 @@ public class ProfilerTileEntityUpdate extends ProfilerAbstract {
 		clock.stop();
 		CoordinatesBlock coord = new CoordinatesBlock(tileent);
 
-		data.get(coord).addValue((double)clock.getDelta());
+		data.get(coord).addValue(clock.getDelta());
 	}
 }

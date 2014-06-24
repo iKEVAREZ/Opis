@@ -1,8 +1,5 @@
 package mcp.mobius.opis.network.packets.server;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 
@@ -41,7 +38,8 @@ public class NetDataValue extends PacketBase {
 
 	}
 
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
     public void actionClient(World world, EntityPlayer player){
     	MessageHandlerRegistrar.INSTANCE.routeMessage(this.msg, this);
     }		

@@ -1,6 +1,5 @@
 package mcp.mobius.opis.network;
 
-import java.io.DataInputStream;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 
@@ -9,7 +8,6 @@ import mcp.mobius.opis.data.holders.newtypes.DataError;
 import mcp.mobius.opis.network.enums.Message;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.network.Packet;
 import net.minecraft.world.World;
 
 import com.google.common.io.ByteArrayDataInput;

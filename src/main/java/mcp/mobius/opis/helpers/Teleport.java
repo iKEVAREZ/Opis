@@ -3,9 +3,7 @@ package mcp.mobius.opis.helpers;
 import java.util.Iterator;
 
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.registry.GameRegistry;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesBlock;
-import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -15,9 +13,7 @@ import net.minecraft.network.play.server.S1DPacketEntityEffect;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.management.ServerConfigurationManager;
-import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.MathHelper;
-import net.minecraft.world.Teleporter;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
@@ -101,8 +97,8 @@ public class Teleport {
         float f = ent.rotationYaw;
 
         srcWorld.theProfiler.startSection("placing");
-        d0 = (double)MathHelper.clamp_int((int)d0, -29999872, 29999872);
-        d1 = (double)MathHelper.clamp_int((int)d1, -29999872, 29999872);
+        d0 = MathHelper.clamp_int((int)d0, -29999872, 29999872);
+        d1 = MathHelper.clamp_int((int)d1, -29999872, 29999872);
 
         if (ent.isEntityAlive())
         {

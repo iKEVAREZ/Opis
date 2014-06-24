@@ -1,6 +1,5 @@
 package mcp.mobius.opis.data.profilers;
 
-import java.util.HashMap;
 import java.util.WeakHashMap;
 
 import net.minecraft.entity.Entity;
@@ -38,7 +37,7 @@ public class ProfilerEntityUpdate extends ProfilerAbstract implements IProfilerB
 		
 		clock.stop();
 		try{
-			data.get(entity).addValue((double)clock.getDelta());
+			data.get(entity).addValue(clock.getDelta());
 		} catch (Exception e){
 			modOpis.log.warning(String.format("Error while profiling entity %s\n", key));
 		}

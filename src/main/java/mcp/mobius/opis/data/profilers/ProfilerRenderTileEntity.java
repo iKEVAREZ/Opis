@@ -31,7 +31,7 @@ public class ProfilerRenderTileEntity extends ProfilerAbstract {
 	public void stop(Object key){
 		clock.stop();
 		try{
-			data.get((TileEntity)key).addValue((double)clock.getDelta());
+			data.get(key).addValue(clock.getDelta());
 		} catch (Exception e) {
 			modOpis.log.warning(String.format("Error while profiling entity %s\n", key));
 		}

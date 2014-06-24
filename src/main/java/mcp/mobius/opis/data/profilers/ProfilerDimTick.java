@@ -34,6 +34,6 @@ public class ProfilerDimTick extends ProfilerAbstract implements IProfilerBase {
 		if (world.isRemote) return;
 		
 		clock.stop();
-		data.get(world.provider.dimensionId).addValue((double)clock.getDelta());
+		data.get(world.provider.dimensionId).addValue(clock.getDelta());
 	}
 }

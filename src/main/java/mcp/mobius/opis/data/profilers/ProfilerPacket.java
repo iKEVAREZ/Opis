@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import net.minecraft.network.Packet;
-import net.minecraft.network.play.client.C17PacketCustomPayload;
 import cpw.mods.fml.common.network.internal.FMLProxyPacket;
 import cpw.mods.fml.relauncher.Side;
 import mcp.mobius.opis.data.holders.newtypes.DataPacket;
