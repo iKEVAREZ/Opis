@@ -29,6 +29,7 @@ import mcp.mobius.opis.data.holders.newtypes.DataTiming;
 import mcp.mobius.opis.data.holders.stats.StatsChunk;
 import mcp.mobius.opis.data.managers.ChunkManager;
 import mcp.mobius.opis.data.managers.EntityManager;
+import mcp.mobius.opis.data.managers.StringCache;
 import mcp.mobius.opis.data.managers.TileEntityManager;
 import mcp.mobius.opis.data.profilers.ProfilerEvent;
 import mcp.mobius.opis.data.profilers.ProfilerPacket;
@@ -71,6 +72,8 @@ public enum OpisServerTickHandler{
 			}
 			*/
 				
+			StringCache.INSTANCE.syncNewCache();		
+		
 			// One second timer
 			if (timer1000.isDone()){
 

@@ -62,8 +62,8 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-//@Mod(modid="Opis", name="Opis", version="1.2.2", dependencies="required-after:MobiusCore@[1.2.2]", acceptableRemoteVersions="*")
-@Mod(modid="Opis", name="Opis", version="1.2.2")
+@Mod(modid="Opis", name="Opis", version="1.2.2a", dependencies="required-after:MobiusCore@[1.2.2]", acceptableRemoteVersions="*")
+//@Mod(modid="Opis", name="Opis", version="1.2.2")
 
 public class modOpis {
 

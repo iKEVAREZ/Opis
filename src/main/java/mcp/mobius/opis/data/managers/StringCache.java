@@ -1,10 +1,13 @@
 package mcp.mobius.opis.data.managers;
 
 import java.util.ArrayList;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import net.minecraft.entity.player.EntityPlayerMP;
 
+import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+import com.google.common.collect.Maps;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
@@ -22,38 +25,38 @@ public enum StringCache implements IMessageHandler {
 	INSTANCE;
 
 	private int currentIndex = -1;
-	private HashBiMap<Integer, String>  cache  = HashBiMap.create();
-	private ArrayList<DataStringUpdate> toSend = new ArrayList<DataStringUpdate>();
+	//private HashBiMap<Integer, String>  cache  = HashBiMap.create();
+	//private ArrayList<DataStringUpdate> toSend = new ArrayList<DataStringUpdate>();
+	private BiMap<Integer, String> cache = Maps.synchronizedBiMap(HashBiMap.<Integer,String>create());
+	private ConcurrentLinkedQueue<DataStringUpdate> fullsync = new ConcurrentLinkedQueue<DataStringUpdate>();
+	private ConcurrentLinkedQueue<DataStringUpdate> unsynced = new ConcurrentLinkedQueue<DataStringUpdate>();	// This is the current list of unsynced
 	
 	public String getString(int index){
-		String retVal = this.cache.get(index);
-		if (retVal == null){
-			//modOpis.log.info(String.format("++++ Couldn't find string for index %d", index));			
-			return "<ERROR>";
-		}else
-			return retVal;
+		synchronized(cache){	
+			String retVal = this.cache.get(index);
+			if (retVal == null){
+				return "<ERROR>";
+			}else
+				return retVal;
+		}
 	}
 	
 	public int getIndex(String str){
-		
-		if (cache.inverse().containsKey(str)){
-			//if (cache.inverse().get(str) == -1){
-			//	throw new RuntimeException(String.format("Found a misaligned key ! %s", str));
-			//}
-			
-			return cache.inverse().get(str);
-		}
-		else{
-			currentIndex += 1;
-			cache.put(currentIndex, str);
-
-			//System.out.printf("++++ Adding string %s with index %d to cache\n", str, currentIndex);
-			
-			DataStringUpdate upd = new DataStringUpdate(str, currentIndex);
-			this.toSend.add(upd);
-			
-			PacketManager.sendToAll(new NetDataValue(Message.STATUS_STRINGUPD, upd));
-			return currentIndex;
+		synchronized(cache){
+			if (cache.inverse().containsKey(str)){
+				return cache.inverse().get(str);
+			}
+			else{
+				currentIndex += 1;
+				cache.put(currentIndex, str);
+	
+				DataStringUpdate upd = new DataStringUpdate(str, currentIndex);
+				this.fullsync.add(upd);
+				this.unsynced.add(upd);
+				
+				//PacketManager.sendToAll(new NetDataValue(Message.STATUS_STRINGUPD, upd));
+				return currentIndex;
+			}
 		}
 	}
 	
@@ -61,7 +64,7 @@ public enum StringCache implements IMessageHandler {
 		
 		int i = 0;
 		
-		ArrayList<DataStringUpdate> toSendCopy = new ArrayList(toSend);
+		ArrayList<DataStringUpdate> toSendCopy = new ArrayList(fullsync);
 		
 		while (i < toSendCopy.size()){
 			PacketManager.sendToPlayer(new NetDataList(Message.STATUS_STRINGUPD_FULL, toSendCopy.subList(i, Math.min(i + 50, toSendCopy.size()))), player);			
@@ -70,6 +73,12 @@ public enum StringCache implements IMessageHandler {
 		
 		
 	}
+
+	public void syncNewCache(){
+		while (!unsynced.isEmpty()){
+			PacketManager.sendToAll(new NetDataValue(Message.STATUS_STRINGUPD, this.unsynced.poll()));
+		}
+	}	
 	
 	@Override
 	public boolean handleMessage(Message msg, PacketBase rawdata) {
