@@ -3,8 +3,10 @@ package mcp.mobius.opis.helpers;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTSizeTracker;
 import net.minecraft.nbt.NBTTagByte;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagInt;
@@ -94,7 +96,7 @@ public class NBTUtil {
         {
             byte[] abyte = new byte[short1];
             istream.readFully(abyte);
-            return CompressedStreamTools.decompress(abyte);
+            return CompressedStreamTools.func_152457_a(abyte, NBTSizeTracker.field_152451_a);
         }
     }   	
 	

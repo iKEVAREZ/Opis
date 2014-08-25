@@ -27,7 +27,7 @@ public class FontHelper {
 
 	public static void drawString(String s, int x, int y, TrueTypeFont font, float scaleX, float scaleY, float... rgba){
 		Minecraft mc = Minecraft.getMinecraft();
-		ScaledResolution sr = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
+		ScaledResolution sr = new ScaledResolution(mc, mc.displayWidth, mc.displayHeight);
 		if(mc.gameSettings.hideGUI){
 			return;
 		}

@@ -3,6 +3,8 @@ package mcp.mobius.opis.events;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import com.mojang.authlib.GameProfile;
+
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
 import mcp.mobius.opis.modOpis;
@@ -40,7 +42,9 @@ public enum PlayerTracker{
 	}
 	
 	public AccessLevel getPlayerAccessLevel(String name){
-		if (MinecraftServer.getServer().getConfigurationManager().isPlayerOpped(name) || MinecraftServer.getServer().isSinglePlayer())
+		GameProfile profile = MinecraftServer.getServer().getConfigurationManager().func_152612_a(name).getGameProfile();
+		
+		if (MinecraftServer.getServer().getConfigurationManager().func_152596_g(profile) || MinecraftServer.getServer().isSinglePlayer())
 			return AccessLevel.ADMIN;
 		else if (playerPrivileged.contains(name))
 			return AccessLevel.PRIVILEGED;

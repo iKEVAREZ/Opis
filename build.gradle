@@ -1,12 +1,3 @@
-apply plugin: 'java'
-apply plugin: 'maven'
-apply plugin: 'shadow'
-apply plugin: 'forge'
-
-version = "1.2.2a"
-group= "mcp.mobius.opis" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "Opis"
-
 buildscript {
     repositories {
         mavenCentral()
@@ -19,47 +10,30 @@ buildscript {
             name = "sonatype"
             url = "https://oss.sonatype.org/content/repositories/snapshots/"
         }
-        maven {
-            name = "shadow-repo"
-            url = 'http://dl.bintray.com/content/johnrengelman/gradle-plugins/'
-        }        
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
-        classpath 'com.github.jengelman.gradle.plugins:shadow:0.8'
     }
 }
+
+apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'forge'
+
+version = "1.2.2a_1.7.10"
+group= "mcp.mobius.opis" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = "Opis"
 
 minecraft {
     version = "1.7.10-10.13.0.1208"
     assetDir = "eclipse/assets"
+    srgExtra "PK: org/apache/commons/math3 opisapache/math3"
 }
-
-shadow {
-
-    //relocation {
-    //    pattern = 'org.apache.commons.lang3'
-    //    shadedPattern = 'opisapache.lang3'
-    //}
-
-    relocation {
-        pattern = 'org.apache.commons.math3'
-        shadedPattern = 'opisapache.math3'
-    }
-
-    artifactSet {
-        include 'org.apache.commons'
-        exclude 'org.apache.commons.lang3'
-        include 'org.jfree'
-        include 'com.miglayout'
-        include 'net.sf.opencsv'         
-    }
-}
-
-tasks.shadowJar.dependsOn "reobf"
 
 configurations {
     deployerJars
+    shade
+    compile.extendsFrom shade    
 }
 
 repositories {
@@ -72,11 +46,11 @@ repositories {
 }
 
 dependencies {
-    compile 'org.apache.commons:commons-math3:3.2'
-    compile 'org.jfree:jcommon:1.0.21'
-    compile 'org.jfree:jfreechart:1.0.17'
-    compile 'com.miglayout:miglayout-swing:4.2'
-    compile 'net.sf.opencsv:opencsv:2.3'    
+    shade 'org.apache.commons:commons-math3:3.2'
+    shade 'org.jfree:jcommon:1.0.21'
+    shade 'org.jfree:jfreechart:1.0.17'
+    shade 'com.miglayout:miglayout-swing:4.2'
+    shade 'net.sf.opencsv:opencsv:2.3'    
     compile "mcp.mobius.mobiuscore:MobiusCore:1.2.2_1.7.10:dev"
     deployerJars "org.apache.maven.wagon:wagon-ssh:2.2"
 }
@@ -111,7 +85,7 @@ task copyCoreMods(type: Copy, dependsOn: "extractUserDev") {
     include "**/*Mobius*.jar"
     //include "**/*Chicken*.jar", "**/*NotEnoughItems*.jar"
     //exclude "**/CodeChickenLib*" // because CCC downloads it anyways.. -_-    
-    into file(minecraft.assetDir + "/../mods") // paralell to the assets dir
+    into file(minecraft.runDir + "/../mods") // paralell to the assets dir
 }
 tasks.setupDevWorkspace.dependsOn copyCoreMods
 tasks.setupDecompWorkspace.dependsOn copyCoreMods
@@ -160,5 +134,13 @@ uploadArchives {
             }
         }
     }
+
+jar {
+    configurations.shade.each { dep ->
+        from(project.zipTree(dep)){
+            exclude 'META-INF', 'META-INF/**'
+        }
+    }
+}
 
 }
