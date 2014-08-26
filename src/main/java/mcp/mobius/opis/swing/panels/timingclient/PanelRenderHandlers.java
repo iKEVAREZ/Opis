@@ -93,4 +93,14 @@ public class PanelRenderHandlers extends JPanel implements ITabPanel, IMessageHa
 	public SelectedTab getSelectedTab() {
 		return SelectedTab.RENDERHANDLERS;
 	}	
+	
+	@Override
+	public boolean refreshOnString(){
+		return false;
+	}
+	
+	@Override
+	public boolean refresh(){
+		return false;
+	}		
 }

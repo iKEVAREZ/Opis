@@ -16,6 +16,7 @@ import mcp.mobius.opis.swing.widgets.JButtonAccess;
 import mcp.mobius.opis.swing.widgets.JPanelMsgHandler;
 import mcp.mobius.opis.swing.widgets.JTableStats;
 import net.miginfocom.swing.MigLayout;
+
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JLabel;
@@ -74,6 +75,7 @@ public class PanelTimingTileEnts extends JPanelMsgHandler implements ITabPanel{
 	public boolean handleMessage(Message msg, PacketBase rawdata) {
 		switch(msg){
 		case LIST_TIMING_TILEENTS:{
+			this.cacheData(msg, rawdata);
 			
 			this.getTable().setTableData(rawdata.array);
 			
@@ -128,4 +130,9 @@ public class PanelTimingTileEnts extends JPanelMsgHandler implements ITabPanel{
 	public SelectedTab getSelectedTab() {
 		return SelectedTab.TIMINGTILEENTS;
 	}		
+	
+	@Override
+	public boolean refreshOnString(){
+		return true;
+	}	
 }

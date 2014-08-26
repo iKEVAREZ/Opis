@@ -51,6 +51,7 @@ public class PanelAmountTileEnts extends JPanelMsgHandler implements ITabPanel{
 	public boolean handleMessage(Message msg, PacketBase rawdata) {
 		switch(msg){
 		case LIST_AMOUNT_TILEENTS:{
+			this.cacheData(msg, rawdata);
 			
 			this.getTable().setTableData(rawdata.array);
 			
@@ -90,4 +91,9 @@ public class PanelAmountTileEnts extends JPanelMsgHandler implements ITabPanel{
 	public SelectedTab getSelectedTab() {
 		return SelectedTab.AMOUNTTES;
 	}
+	
+	@Override
+	public boolean refreshOnString(){
+		return true;
+	}	
 }

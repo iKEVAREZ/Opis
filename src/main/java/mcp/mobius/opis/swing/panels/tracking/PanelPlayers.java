@@ -65,6 +65,7 @@ public class PanelPlayers extends JPanelMsgHandler implements ITabPanel{
 	public boolean handleMessage(Message msg, PacketBase rawdata) {
 		switch(msg){
 		case LIST_PLAYERS:{
+			this.cacheData(msg, rawdata);
 			
 			this.getTable().setTableData(rawdata.array);
 			
@@ -96,5 +97,10 @@ public class PanelPlayers extends JPanelMsgHandler implements ITabPanel{
 	@Override
 	public SelectedTab getSelectedTab() {
 		return SelectedTab.PLAYERS;
-	}			
+	}	
+	
+	@Override
+	public boolean refreshOnString(){
+		return true;
+	}	
 }

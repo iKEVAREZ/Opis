@@ -52,6 +52,12 @@ public enum TabPanelRegistrar implements ChangeListener{
 		return (JPanel)lookup.get(refname);
 	}
 
+	public void refreshAll(){
+		for (ITabPanel panel : this.lookup.values())
+			if (panel.refreshOnString())
+				panel.refresh();
+	}
+	
 	@Override
 	public void stateChanged(ChangeEvent e) {
 		Component source = ((JTabbedPane)e.getSource()).getSelectedComponent();

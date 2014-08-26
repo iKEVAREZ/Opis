@@ -45,6 +45,7 @@ public class PanelTimingEntitiesPerClass extends JPanelMsgHandler implements ITa
 		switch(msg){
 		
 		case LIST_TIMING_ENTITIES_PER_CLASS:{
+			this.cacheData(msg, rawdata);
 			
 			this.getTable().setTableData(rawdata.array);
 			
@@ -88,4 +89,9 @@ public class PanelTimingEntitiesPerClass extends JPanelMsgHandler implements ITa
 	public JButton getBtnRun() {
 		return btnRun;
 	}
+	
+	@Override
+	public boolean refreshOnString(){
+		return true;
+	}	
 }

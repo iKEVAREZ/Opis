@@ -34,6 +34,7 @@ public class PanelThreads extends JPanelMsgHandler implements ITabPanel {
 	public boolean handleMessage(Message msg, PacketBase rawdata) {
 		switch(msg){
 		case LIST_THREADS:{
+			this.cacheData(msg, rawdata);
 			
 			this.getTable().setTableData(rawdata.array);
 			
@@ -61,4 +62,9 @@ public class PanelThreads extends JPanelMsgHandler implements ITabPanel {
 	public SelectedTab getSelectedTab() {
 		return SelectedTab.THREADS;
 	}
+	
+	@Override
+	public boolean refreshOnString(){
+		return true;
+	}	
 }

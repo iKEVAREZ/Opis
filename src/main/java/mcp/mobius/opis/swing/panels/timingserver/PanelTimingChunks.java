@@ -59,6 +59,7 @@ public class PanelTimingChunks extends JPanelMsgHandler implements ITabPanel{
 	public boolean handleMessage(Message msg, PacketBase rawdata) {
 		switch(msg){
 		case LIST_TIMING_CHUNK:{
+			this.cacheData(msg, rawdata);
 			
 			this.getTable().setTableData(rawdata.array);
 			
@@ -101,5 +102,10 @@ public class PanelTimingChunks extends JPanelMsgHandler implements ITabPanel{
 	@Override
 	public SelectedTab getSelectedTab() {
 		return SelectedTab.TIMINGCHUNKS;
+	}	
+	
+	@Override
+	public boolean refreshOnString(){
+		return true;
 	}	
 }

@@ -37,6 +37,7 @@ public class PanelInbound extends JPanelMsgHandler implements ITabPanel {
 	public boolean handleMessage(Message msg, PacketBase rawdata) {
 		switch(msg){
 		case LIST_PACKETS_INBOUND:{
+			this.cacheData(msg, rawdata);
 			
 			this.getTable().setTableData(rawdata.array);
 			
@@ -71,5 +72,9 @@ public class PanelInbound extends JPanelMsgHandler implements ITabPanel {
 	public SelectedTab getSelectedTab() {
 		return SelectedTab.PACKETINBOUND;
 	}	
-	
+
+	@Override
+	public boolean refreshOnString(){
+		return false;
+	}	
 }

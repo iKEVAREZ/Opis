@@ -64,6 +64,8 @@ public class PanelAmountEntities extends JPanelMsgHandler implements ITabPanel{
 	public boolean handleMessage(Message msg, PacketBase rawdata) {
 		switch(msg){
 		case LIST_AMOUNT_ENTITIES:{
+			this.cacheData(msg, rawdata);
+			
 			this.getTable().setTableData(rawdata.array);
 			
 			DefaultTableModel model = this.getTable().getModel();
@@ -91,4 +93,9 @@ public class PanelAmountEntities extends JPanelMsgHandler implements ITabPanel{
 	public SelectedTab getSelectedTab() {
 		return SelectedTab.AMOUNTENTS;
 	}
+	
+	@Override
+	public boolean refreshOnString(){
+		return true;
+	}	
 }

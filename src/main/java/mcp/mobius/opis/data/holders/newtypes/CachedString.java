@@ -17,12 +17,15 @@ import mcp.mobius.opis.helpers.Helpers;
 
 public class CachedString implements Comparable, ISerializable{
 
-	String str;
-	int    index;
+	public String str;
+	public int    index;
+	private boolean valid = false;
+	
 	
 	public CachedString(int index) {
 		this.index = index;
 		this.str   = StringCache.INSTANCE.getString(index);
+		this.valid = !this.str.equals("<ERROR>");
 	}
 	
 	public CachedString(String str){
@@ -46,7 +49,13 @@ public class CachedString implements Comparable, ISerializable{
 	
 	public String toString(){
 		//return String.format("[%d] %s",this.index, this.str);
-		return str;
+		if (!this.valid){
+			this.str   = StringCache.INSTANCE.getString(index);
+			this.valid = !this.str.equals("<ERROR>");
+		}
+		
+		return this.str;
+			
 	}
 	
 	public void  writeToStream(ByteArrayDataOutput stream){

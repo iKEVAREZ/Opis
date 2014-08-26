@@ -106,5 +106,15 @@ public class PanelRenderEntities extends JPanel implements ITabPanel, IMessageHa
 	@Override
 	public SelectedTab getSelectedTab() {
 		return SelectedTab.RENDERENTITIES;
-	}				
+	}	
+	
+	@Override
+	public boolean refreshOnString(){
+		return false;
+	}
+	
+	@Override
+	public boolean refresh(){
+		return false;
+	}	
 }

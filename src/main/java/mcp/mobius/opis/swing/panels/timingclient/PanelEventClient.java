@@ -97,4 +97,14 @@ public class PanelEventClient extends JPanel implements ITabPanel, IMessageHandl
 	public SelectedTab getSelectedTab() {
 		return SelectedTab.CLIENTEVENTS;
 	}
+	
+	@Override
+	public boolean refreshOnString(){
+		return false;
+	}
+	
+	@Override
+	public boolean refresh(){
+		return false;
+	}		
 }

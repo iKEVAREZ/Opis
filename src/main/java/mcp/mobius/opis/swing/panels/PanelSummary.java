@@ -469,5 +469,10 @@ public class PanelSummary extends JPanelMsgHandler implements ITabPanel{
 	@Override
 	public SelectedTab getSelectedTab() {
 		return SelectedTab.SUMMARY;
-	}						
+	}					
+	
+	@Override
+	public boolean refreshOnString(){
+		return false;
+	}	
 }

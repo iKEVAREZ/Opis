@@ -55,6 +55,7 @@ public class PanelTimingHandlers extends JPanelMsgHandler implements ITabPanel{
 	public boolean handleMessage(Message msg, PacketBase rawdata) {
 		switch(msg){
 		case LIST_TIMING_HANDLERS:{
+			this.cacheData(msg, rawdata);
 			
 			this.getTable().setTableData(rawdata.array);
 			
@@ -63,7 +64,12 @@ public class PanelTimingHandlers extends JPanelMsgHandler implements ITabPanel{
 			
 			for (Object o : rawdata.array){
 				DataEvent data = (DataEvent)o;
-				model.addRow(new Object[] {data.mod, data.event.toString().split("\\$")[1], data.update});
+				try{
+					model.addRow(new Object[] {data.mod, data.event.toString().split("\\$")[1], data.update});
+				} catch (ArrayIndexOutOfBoundsException e){
+					System.out.printf("AIOOB : %s %s\n", data.event.index, data.event.toString());
+					model.addRow(new Object[] {data.mod, data.event.toString(), data.update});
+				}
 			}
 
 			this.getTable().dataUpdated(row);			
@@ -96,5 +102,10 @@ public class PanelTimingHandlers extends JPanelMsgHandler implements ITabPanel{
 	@Override
 	public SelectedTab getSelectedTab() {
 		return SelectedTab.TIMINGHANDLERS;
+	}	
+	
+	@Override
+	public boolean refreshOnString(){
+		return true;
 	}	
 }

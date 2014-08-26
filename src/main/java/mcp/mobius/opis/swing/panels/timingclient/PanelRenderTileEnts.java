@@ -115,5 +115,15 @@ public class PanelRenderTileEnts extends JPanel implements ITabPanel, IMessageHa
 	@Override
 	public SelectedTab getSelectedTab() {
 		return SelectedTab.RENDERTILEENTS;
-	}					
+	}
+
+	@Override
+	public boolean refreshOnString(){
+		return false;
+	}
+	
+	@Override
+	public boolean refresh(){
+		return false;
+	}		
 }

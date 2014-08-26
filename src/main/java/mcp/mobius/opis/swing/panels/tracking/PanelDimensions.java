@@ -49,6 +49,8 @@ public class PanelDimensions extends JPanelMsgHandler implements IMessageHandler
 	public boolean handleMessage(Message msg, PacketBase rawdata) {	
 		switch(msg){
 		case LIST_DIMENSION_DATA:{
+			this.cacheData(msg, rawdata);
+			
 			this.getTable().setTableData(rawdata.array);
 			
 			DefaultTableModel model = this.getTable().getModel();
@@ -85,5 +87,10 @@ public class PanelDimensions extends JPanelMsgHandler implements IMessageHandler
 	@Override
 	public SelectedTab getSelectedTab() {
 		return SelectedTab.DIMENSIONS;
+	}	
+	
+	@Override
+	public boolean refreshOnString(){
+		return true;
 	}	
 }

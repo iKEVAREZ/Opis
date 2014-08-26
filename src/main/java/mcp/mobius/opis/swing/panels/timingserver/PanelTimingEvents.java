@@ -45,6 +45,7 @@ public class PanelTimingEvents extends JPanelMsgHandler implements ITabPanel {
 		switch(msg){
 		
 		case LIST_TIMING_EVENTS:{
+			this.cacheData(msg, rawdata);
 			
 			this.getTable().setTableData(rawdata.array);
 			
@@ -88,4 +89,9 @@ public class PanelTimingEvents extends JPanelMsgHandler implements ITabPanel {
 	public JButton getBtnRun() {
 		return btnRun;
 	}
+	
+	@Override
+	public boolean refreshOnString(){
+		return true;
+	}	
 }

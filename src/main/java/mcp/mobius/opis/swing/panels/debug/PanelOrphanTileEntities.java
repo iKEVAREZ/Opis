@@ -45,6 +45,7 @@ public class PanelOrphanTileEntities extends JPanelMsgHandler implements ITabPan
 	public boolean handleMessage(Message msg, PacketBase rawdata) {
 		switch(msg){
 		case LIST_ORPHAN_TILEENTS:{
+			this.cacheData(msg, rawdata);
 			
 			this.getTable().addTableData(rawdata.array);
 			DefaultTableModel model = this.getTable().getModel();
@@ -86,5 +87,10 @@ public class PanelOrphanTileEntities extends JPanelMsgHandler implements ITabPan
 
 	public JButton getBtnRefresh() {
 		return btnRefresh;
+	}
+
+	@Override
+	public boolean refreshOnString(){
+		return true;
 	}
 }

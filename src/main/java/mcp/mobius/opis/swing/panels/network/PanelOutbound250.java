@@ -39,6 +39,7 @@ public class PanelOutbound250 extends JPanelMsgHandler implements ITabPanel {
 	public boolean handleMessage(Message msg, PacketBase rawdata) {
 		switch(msg){
 		case LIST_PACKETS_OUTBOUND_250:{
+			this.cacheData(msg, rawdata);
 			
 			this.getTable().setTableData(rawdata.array);
 			
@@ -71,5 +72,9 @@ public class PanelOutbound250 extends JPanelMsgHandler implements ITabPanel {
 	public SelectedTab getSelectedTab() {
 		return SelectedTab.PACKETOUTBOUND250;
 	}	
-	
+
+	@Override
+	public boolean refreshOnString(){
+		return false;
+	}	
 }

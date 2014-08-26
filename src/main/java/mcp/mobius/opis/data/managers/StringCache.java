@@ -11,6 +11,7 @@ import com.google.common.collect.Maps;
 
 import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.api.IMessageHandler;
+import mcp.mobius.opis.api.TabPanelRegistrar;
 import mcp.mobius.opis.data.holders.ISerializable;
 import mcp.mobius.opis.data.holders.newtypes.DataStringUpdate;
 import mcp.mobius.opis.network.PacketBase;
@@ -82,6 +83,8 @@ public enum StringCache implements IMessageHandler {
 	public boolean handleMessage(Message msg, PacketBase rawdata) {
 		switch(msg){
 		case STATUS_STRINGUPD:{
+			//modOpis.log.info(String.format("Received partial String Cache update : [ %d ] [ %s ]", ((DataStringUpdate)rawdata.value).index, ((DataStringUpdate)rawdata.value).str));
+			
 			DataStringUpdate data = (DataStringUpdate)rawdata.value;
 			//modOpis.log.info(String.format("++++ Received String Cache update : [%d] %s", data.index, data.str));			
 			try{
@@ -91,10 +94,13 @@ public enum StringCache implements IMessageHandler {
 				this.cache.inverse().remove(data.str);
 				this.cache.put(data.index, data.str);
 			}
+			
+			TabPanelRegistrar.INSTANCE.refreshAll();
+			
 			break;
 		}
 		case STATUS_STRINGUPD_FULL:{
-			modOpis.log.info(String.format("Received full String Cache update containing %d entries", rawdata.array.size()));
+			//modOpis.log.info(String.format("Received full String Cache update containing %d entries", rawdata.array.size()));
 			
 			for (ISerializable idata : rawdata.array){
 				DataStringUpdate data = (DataStringUpdate)idata;
@@ -107,6 +113,8 @@ public enum StringCache implements IMessageHandler {
 					this.cache.put(data.index, data.str);
 				}					
 			}
+			
+			TabPanelRegistrar.INSTANCE.refreshAll();
 			
 			break;
 		}
