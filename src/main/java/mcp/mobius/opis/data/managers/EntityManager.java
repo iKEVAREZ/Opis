@@ -227,7 +227,7 @@ public enum EntityManager {
 		if (ent instanceof EntityPlayerMP && filtered)
 			return "Player";
 		else if (ent instanceof EntityPlayerMP && !filtered)
-			return "[ Player ] " + ((EntityPlayerMP)ent).getDisplayName();
+			return "[ Player ] " + ((EntityPlayerMP)ent).getGameProfile().getName();
 		
 		String name = ent.getCommandSenderName();
 		

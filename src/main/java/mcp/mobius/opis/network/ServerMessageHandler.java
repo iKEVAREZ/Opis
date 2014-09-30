@@ -51,7 +51,7 @@ public class ServerMessageHandler {
 	}	
 
 	public void handle(Message maintype, ISerializable param1, ISerializable param2, EntityPlayerMP player){
-		String   name  = player.getDisplayName();
+		String   name  = player.getGameProfile().getName();
 		
 		if (maintype == Message.OVERLAY_CHUNK_ENTITIES){
 			this.handleOverlayChunkEntities((CoordinatesChunk)param1, player);

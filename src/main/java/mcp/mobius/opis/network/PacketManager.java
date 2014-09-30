@@ -340,7 +340,7 @@ public class PacketManager
 		PacketManager.validateAndSend(new NetDataValue(Message.STATUS_ACCESS_LEVEL, new SerialInt(PlayerTracker.INSTANCE.getPlayerAccessLevel(player).ordinal())), player);
 		
 		// This portion is to get the proper filtered amounts depending on the player preferences.
-		String name = player.getDisplayName();
+		String name = player.getGameProfile().getName();
 		boolean filtered = false;
 		if (PlayerTracker.INSTANCE.filteredAmount.containsKey(name))
 			filtered = PlayerTracker.INSTANCE.filteredAmount.get(name);

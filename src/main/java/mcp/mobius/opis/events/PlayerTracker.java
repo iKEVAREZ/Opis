@@ -38,7 +38,7 @@ public enum PlayerTracker{
 	}
 	
 	public AccessLevel getPlayerAccessLevel(EntityPlayerMP player){
-		return this.getPlayerAccessLevel(player.getDisplayName());
+		return this.getPlayerAccessLevel(player.getGameProfile().getName());
 	}
 	
 	public AccessLevel getPlayerAccessLevel(String name){
@@ -109,7 +109,7 @@ public enum PlayerTracker{
 		/*
 		if (manager instanceof MemoryConnection){
 			System.out.printf("Adding SSP player to list of privileged users\n");
-			PlayerTracker.INSTANCE.addPrivilegedPlayer(((EntityPlayer)event.player).getDisplayName(), false);
+			PlayerTracker.INSTANCE.addPrivilegedPlayer(((EntityPlayer)event.player).getGameProfile().getName(), false);
 		}
 		*/
 		

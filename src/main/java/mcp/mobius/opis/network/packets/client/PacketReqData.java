@@ -71,7 +71,7 @@ public class PacketReqData extends PacketBase{
 
 	@Override
 	public void actionServer(World world, EntityPlayerMP player) {
-		String logmsg = String.format("Received request %s from player %s ... ", this.dataReq, player.getDisplayName());
+		String logmsg = String.format("Received request %s from player %s ... ", this.dataReq, player.getGameProfile().getName());
 		
 		if (this.dataReq.canPlayerUseCommand(player)){
 			logmsg += "Accepted";
