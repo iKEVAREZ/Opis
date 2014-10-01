@@ -14,59 +14,38 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.util.ReferenceCountUtil;
 
-public class RConServer extends ChannelInboundHandlerAdapter implements Runnable {
+public class RConServer implements Runnable {
 
 	public final static RConServer instance = new RConServer();
 	private int port = -1;
-	
 	
 	private RConServer(){
 		this.port = modOpis.rconport;
 	}
 	
     @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) {
-        //((ByteBuf) msg).release();
-    	
-        try {
-            // Do something with msg
-        } finally {
-            ReferenceCountUtil.release(msg);
-        }    	
-    }
-
-    @Override
-    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-        cause.printStackTrace();
-        ctx.close();
-    }	
-	
-    @Override
     public void run(){
     	modOpis.log.info("Starting Opis remote control server.");
     	
-        EventLoopGroup bossGroup = new NioEventLoopGroup(); // (1)
+        EventLoopGroup bossGroup   = new NioEventLoopGroup();
         EventLoopGroup workerGroup = new NioEventLoopGroup();
         try {
-            ServerBootstrap b = new ServerBootstrap(); // (2)
+            ServerBootstrap b = new ServerBootstrap();
             b.group(bossGroup, workerGroup)
-             .channel(NioServerSocketChannel.class) // (3)
-             .childHandler(new ChannelInitializer<SocketChannel>() { // (4)
+             .channel(NioServerSocketChannel.class)
+             .childHandler(new ChannelInitializer<SocketChannel>() {
                  @Override
                  public void initChannel(SocketChannel ch) throws Exception {
-                     ch.pipeline().addLast(RConServer.instance);
+                     ch.pipeline().addLast(new RConInboundHandler());
                  }
              })
-             .option(ChannelOption.SO_BACKLOG, 128)          // (5)
-             .childOption(ChannelOption.SO_KEEPALIVE, true); // (6)
+             .option(ChannelOption.SO_BACKLOG, 128)
+             .childOption(ChannelOption.SO_KEEPALIVE, true);
 
-            // Bind and start to accept incoming connections.
             ChannelFuture f = b.bind(port).sync(); // (7)
 
-            // Wait until the server socket is closed.
-            // In this example, this does not happen, but you can do that to gracefully
-            // shut down your server.
             f.channel().closeFuture().sync();
+            
         } catch (Exception e){
         	modOpis.log.severe("Error in Opis remote control server.");
 			e.printStackTrace();
