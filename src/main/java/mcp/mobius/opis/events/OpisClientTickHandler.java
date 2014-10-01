@@ -98,7 +98,7 @@ public enum OpisClientTickHandler{
 				tileEntData.add(dataTe);
 				tileEntTotal += dataTe.update.timing;
 			} catch (Exception e) {
-				modOpis.log.warning(String.format("Error while adding entity %s to the list", te));
+				modOpis.log.warn(String.format("Error while adding entity %s to the list", te));
 			}
 		}
 
@@ -118,7 +118,7 @@ public enum OpisClientTickHandler{
 				entData.add(dataEnt);
 				entTotal += dataEnt.update.timing;
 			} catch (Exception e) {
-				modOpis.log.warning(String.format("Error while adding entity %s to the list", ent));
+				modOpis.log.warn(String.format("Error while adding entity %s to the list", ent));
 			}					
 		}
 
@@ -150,7 +150,7 @@ public enum OpisClientTickHandler{
 				DataBlockRender dataBlock = new DataBlockRender().fill(coord);
 				blockData.add(dataBlock);
 			} catch (Exception e) {
-				modOpis.log.warning(String.format("Error while adding block %s to the list", coord));
+				modOpis.log.warn(String.format("Error while adding block %s to the list", coord));
 			}					
 		}
 

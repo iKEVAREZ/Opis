@@ -2,7 +2,8 @@ package mcp.mobius.opis.network;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.logging.Level;
+
+import org.apache.logging.log4j.Level;
 
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityMob;
@@ -227,7 +228,7 @@ public class ServerMessageHandler {
 		}
 		
 		else{
-			modOpis.log.log(Level.WARNING, String.format("Unknown data request : %s ", maintype));
+			modOpis.log.log(Level.WARN, String.format("Unknown data request : %s ", maintype));
 		}
 	}
 	

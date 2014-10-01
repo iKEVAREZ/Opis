@@ -39,7 +39,7 @@ public class ProfilerEntityUpdate extends ProfilerAbstract implements IProfilerB
 		try{
 			data.get(entity).addValue(clock.getDelta());
 		} catch (Exception e){
-			modOpis.log.warning(String.format("Error while profiling entity %s\n", key));
+			modOpis.log.warn(String.format("Error while profiling entity %s\n", key));
 		}
 	}
 }

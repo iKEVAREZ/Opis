@@ -98,7 +98,7 @@ public enum DataType {
 	public static DataType getForClass(Class clazz){
 		DataType type = bimap.inverse().get(clazz);
 		if (type == null){
-			modOpis.log.warning(String.format("Class %s was not registered with the DataType enum", clazz));			
+			modOpis.log.warn(String.format("Class %s was not registered with the DataType enum", clazz));			
 		}
 		return type;
 	}
@@ -109,11 +109,11 @@ public enum DataType {
 			DataType type   = DataType.values()[ordinal];
 			retVal = bimap.get(type);
 			if (retVal == null){
-				modOpis.log.warning(String.format("DataType doesn't have a class registered for %s", type));
+				modOpis.log.warn(String.format("DataType doesn't have a class registered for %s", type));
 			}
 		} catch (Exception e) {
 			retVal = null;
-			modOpis.log.warning(String.format("Index out of bound for ordinal %d in DataType", ordinal));
+			modOpis.log.warn(String.format("Index out of bound for ordinal %d in DataType", ordinal));
 		}
 		return retVal;
 	}	
