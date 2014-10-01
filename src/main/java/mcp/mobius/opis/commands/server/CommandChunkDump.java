@@ -3,7 +3,8 @@ package mcp.mobius.opis.commands.server;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.logging.Level;
+
+import org.apache.logging.log4j.Level;
 
 import com.google.common.collect.ImmutableSetMultimap;
 

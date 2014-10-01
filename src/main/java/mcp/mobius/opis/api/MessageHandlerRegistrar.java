@@ -25,12 +25,12 @@ public enum MessageHandlerRegistrar {
 		if (msgHandlers.containsKey(msg)){
 			for (IMessageHandler handler : msgHandlers.get(msg)){
 				if (!handler.handleMessage(msg, rawdata)){
-					modOpis.log.warning(String.format("Unhandled msg %s in handler %s", msg, handler));
+					modOpis.log.warn(String.format("Unhandled msg %s in handler %s", msg, handler));
 				}
 			}
 		}
 		else{
-			modOpis.log.warning(String.format("Unhandled msg : %s", msg));
+			modOpis.log.warn(String.format("Unhandled msg : %s", msg));
 		}
 	}
 }

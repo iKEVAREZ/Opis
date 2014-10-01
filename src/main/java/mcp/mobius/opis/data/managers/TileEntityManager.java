@@ -152,7 +152,7 @@ public enum TileEntityManager {
 			}
 		}
 		
-		modOpis.log.warning(String.format("Found %d potential orphans !", orphans.size()));
+		modOpis.log.warn(String.format("Found %d potential orphans !", orphans.size()));
 		
 		return orphans;
 	}

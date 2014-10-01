@@ -3,7 +3,8 @@ package mcp.mobius.opis.proxy;
 import java.awt.Font;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.logging.Level;
+
+import org.apache.logging.log4j.Level;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

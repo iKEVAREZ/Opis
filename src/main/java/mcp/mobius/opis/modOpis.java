@@ -1,8 +1,8 @@
 package mcp.mobius.opis;
 
-import java.util.logging.Logger;
-
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -70,7 +70,7 @@ public class modOpis {
 	@Instance("Opis")
 	public static modOpis instance;	
 
-	public static Logger log = Logger.getLogger("Opis");	
+	public static Logger log = LogManager.getLogger("Opis");
 
 	@SidedProxy(clientSide="mcp.mobius.opis.proxy.ProxyClient", serverSide="mcp.mobius.opis.proxy.ProxyServer")
 	public static ProxyServer proxy;		
