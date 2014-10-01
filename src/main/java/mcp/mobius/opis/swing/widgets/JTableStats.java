@@ -108,7 +108,9 @@ public class JTableStats extends JTable {
 	
 	public <U> int clearTable(Class<U> datatype){
 		int row = this.getSelectedRow();
-		this.getModel().setRowCount(0);
+		try{
+			this.getModel().setRowCount(0);
+		} catch (NullPointerException e){}
 		return row;
 	}
 	
