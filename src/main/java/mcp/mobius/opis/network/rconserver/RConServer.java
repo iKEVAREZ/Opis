@@ -1,5 +1,8 @@
 package mcp.mobius.opis.network.rconserver;
 
+import java.util.HashMap;
+
+import net.minecraftforge.common.util.FakePlayer;
 import mcp.mobius.opis.modOpis;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.ByteBuf;
@@ -17,6 +20,8 @@ import io.netty.util.ReferenceCountUtil;
 public class RConServer implements Runnable {
 
 	public final static RConServer instance = new RConServer();
+	public HashMap<FakePlayer, ChannelHandlerContext> fakePlayers = new HashMap<FakePlayer, ChannelHandlerContext>();
+	
 	private int port = -1;
 	
 	private RConServer(){
