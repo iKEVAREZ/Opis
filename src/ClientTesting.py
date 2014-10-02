@@ -1,4 +1,4 @@
-import asyncore, socket
+import asyncore, socket, binascii
 
 class ClientTest(asyncore.dispatcher):
 
@@ -17,7 +17,7 @@ class ClientTest(asyncore.dispatcher):
 
 	def handle_read(self):
 		print "handle_read"
-		print self.recv(8192)
+		print binascii.hexlify(self.recv(8192))
 
 	def handle_write(self):
 		sent = self.send(self.buffer)

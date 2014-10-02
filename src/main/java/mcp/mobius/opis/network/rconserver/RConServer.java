@@ -94,9 +94,13 @@ public class RConServer implements Runnable {
     	ChannelHandlerContext ctx  = RConServer.instance.fakePlayers.get(player);
     	
     	packet.encode(output);
-    	ByteBuf msg = ctx.alloc().buffer(output.toByteArray().length);
-    	msg.writeBytes(output.toByteArray());
-    	ctx.write(msg);
+    	byte[] data = output.toByteArray();
+    	
+    	ByteBuf buf = ctx.alloc().buffer(data.length);
+    	buf.writeInt(data.length);
+    	buf.writeByte(packetTypes.indexOf(packet.getClass()));
+    	buf.writeBytes(data);
+    	ctx.write(buf);
     	ctx.flush();
 
     	modOpis.log.info("We should be sending back something here");
