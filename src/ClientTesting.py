@@ -6,7 +6,7 @@ class ClientTest(asyncore.dispatcher):
 		asyncore.dispatcher.__init__(self)
 		self.create_socket(socket.AF_INET, socket.SOCK_STREAM)
 		self.connect( (host, port) )
-		self.buffer = "Test"
+		self.buffer = "\x00\x00\x00\x00\x00"
 
 	def handle_connect(self):
 		print "handle_connect"
