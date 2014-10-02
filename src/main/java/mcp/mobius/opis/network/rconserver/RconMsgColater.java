@@ -21,13 +21,8 @@ public class RconMsgColater extends ByteToMessageDecoder {
         
         // Here we should get a list of potential packets and decode for the corresponding byte
         
-        Class packetClass = RConServer.instance.packetTypes.get(packetType);
-        modOpis.log.info(String.format("%d %d %s\n", packetSize, packetType, packetClass));
-        
-        PacketBase packet = (PacketBase) packetClass.newInstance();
-        if (packetSize > 0)
-        	packet.decode(ByteStreams.newDataInput(in.readBytes(packetSize).array()));
+        PacketBase packet = (PacketBase) RConServer.instance.packetTypes.get(packetType).newInstance();
+        packet.decode(ByteStreams.newDataInput(in.readBytes(packetSize).array()));
         out.add(packet);
 	}
-
 }
