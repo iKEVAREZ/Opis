@@ -14,6 +14,7 @@ import java.util.EnumMap;
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
+
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Table.Cell;
@@ -47,6 +48,7 @@ import mcp.mobius.opis.network.packets.server.NetDataCommand;
 import mcp.mobius.opis.network.packets.server.NetDataList;
 import mcp.mobius.opis.network.packets.server.NetDataValue;
 import mcp.mobius.opis.network.packets.server.PacketChunks;
+import mcp.mobius.opis.network.rconserver.RConServer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -61,6 +63,7 @@ import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S02PacketChat;
 import net.minecraft.util.ChatComponentText;
+import net.minecraftforge.common.util.FakePlayer;
 
 @Sharable
 //public class PacketManager extends FMLIndexedMessageToMessageCodec<PacketBase>
@@ -269,6 +272,10 @@ public class PacketManager
     */
     
 	public static void validateAndSend(PacketBase capsule, EntityPlayerMP player){
+		if (player instanceof FakePlayer){
+			RConServer.instance.sendToPlayer(capsule, (FakePlayer)player);
+		}
+		
 		if (!capsule.msg.isDisplayActive(PlayerTracker.INSTANCE.getPlayerSelectedTab(player))) return;
 		
 		if (capsule.msg.canPlayerUseCommand(player))

@@ -1,5 +1,6 @@
 package mcp.mobius.opis.network.packets.client;
 
+import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.data.holders.DataType;
 import mcp.mobius.opis.data.holders.ISerializable;
 import mcp.mobius.opis.network.PacketBase;
@@ -7,6 +8,7 @@ import mcp.mobius.opis.network.ServerMessageHandler;
 import mcp.mobius.opis.network.enums.Message;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.world.World;
+
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 
@@ -78,6 +80,6 @@ public class PacketReqData extends PacketBase{
 			ServerMessageHandler.instance().handle(this.dataReq, this.param1, this.param2,  player);
 		} else {
 			logmsg += "Rejected";
-		}		
+		}
 	}
 }

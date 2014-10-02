@@ -1,10 +1,20 @@
 package mcp.mobius.opis.network.rconserver;
 
+import static cpw.mods.fml.relauncher.Side.SERVER;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
+import com.google.common.io.ByteArrayDataOutput;
+import com.google.common.io.ByteStreams;
+
+import cpw.mods.fml.common.network.FMLOutboundHandler;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.util.FakePlayer;
 import mcp.mobius.opis.modOpis;
+import mcp.mobius.opis.network.PacketBase;
 import mcp.mobius.opis.network.packets.client.PacketReqChunks;
 import mcp.mobius.opis.network.packets.client.PacketReqData;
 import mcp.mobius.opis.network.packets.server.NetDataCommand;
@@ -35,7 +45,7 @@ public class RConServer implements Runnable {
 	}	
 	
 	public final static RConServer instance = new RConServer();
-	public HashMap<FakePlayer, ChannelHandlerContext> fakePlayers = new HashMap<FakePlayer, ChannelHandlerContext>();
+	public BiMap<FakePlayer, ChannelHandlerContext> fakePlayers = HashBiMap.create();
 	public ArrayList<Class> packetTypes = new ArrayList<Class>();
 	
 	private int port = -1;
@@ -76,6 +86,21 @@ public class RConServer implements Runnable {
             workerGroup.shutdownGracefully();
             bossGroup.shutdownGracefully();
         }
+    }    
+    
+    public void sendToPlayer(PacketBase packet, FakePlayer player)
+    {
+    	ByteArrayDataOutput output = ByteStreams.newDataOutput();
+    	ChannelHandlerContext ctx  = RConServer.instance.fakePlayers.get(player);
+    	
+    	packet.encode(output);
+    	ByteBuf msg = ctx.alloc().buffer(output.toByteArray().length);
+    	msg.writeBytes(output.toByteArray());
+    	ctx.write(msg);
+    	ctx.flush();
+
+    	modOpis.log.info("We should be sending back something here");
+
     }    
     
 }

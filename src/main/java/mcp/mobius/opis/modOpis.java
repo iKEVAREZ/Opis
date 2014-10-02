@@ -1,6 +1,7 @@
 package mcp.mobius.opis;
 
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -95,6 +96,7 @@ public class modOpis {
 	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
+
 		config = new Configuration(event.getSuggestedConfigurationFile());
 
 		profilerDelay    = config.get(Configuration.CATEGORY_GENERAL, "profiler.delay", 1).getInt();

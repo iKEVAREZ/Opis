@@ -5,6 +5,10 @@ import java.util.UUID;
 import com.mojang.authlib.GameProfile;
 
 import mcp.mobius.opis.modOpis;
+import mcp.mobius.opis.events.PlayerTracker;
+import mcp.mobius.opis.network.PacketBase;
+import mcp.mobius.opis.network.enums.Message;
+import mcp.mobius.opis.network.packets.client.PacketReqData;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.FakePlayerFactory;
@@ -30,23 +34,17 @@ class RConInboundHandler extends ChannelInboundHandlerAdapter{
 	
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
-    	// This method is called when new data is readable in the stream.
-
-    	System.out.printf("Context : %s\n", ctx);    	
-        ctx.write(msg);
-        ctx.flush();    	
-    	
-    	/*
-        ByteBuf in = (ByteBuf) msg;
         try {
-            while (in.isReadable()) { // (1)
-                System.out.print((char) in.readByte());
-                System.out.flush();
-            }
+        	FakePlayer fakePlayer = RConServer.instance.fakePlayers.inverse().get(ctx);
+        	PacketBase packet     = (PacketBase) msg;
+        	
+        	if (packet instanceof PacketReqData)
+        		modOpis.log.info(String.format("Received request %s from player %s", ((PacketReqData)packet).dataReq, fakePlayer.getDisplayName()));
+        	
+        	packet.actionServer(null, fakePlayer);
         } finally {
             ReferenceCountUtil.release(msg);
-        }
-        */
+        }    	
     }
 
     @Override

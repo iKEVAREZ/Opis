@@ -6,7 +6,7 @@ class ClientTest(asyncore.dispatcher):
 		asyncore.dispatcher.__init__(self)
 		self.create_socket(socket.AF_INET, socket.SOCK_STREAM)
 		self.connect( (host, port) )
-		self.buffer = "\x00\x00\x00\x00\x00"
+		self.buffer = "\x00\x00\x00\x06\x01\x00\x00\x00\x0c\x00\x00"
 
 	def handle_connect(self):
 		print "handle_connect"
@@ -16,6 +16,7 @@ class ClientTest(asyncore.dispatcher):
 		self.close()
 
 	def handle_read(self):
+		print "handle_read"
 		print self.recv(8192)
 
 	def handle_write(self):

@@ -42,6 +42,9 @@ public enum PlayerTracker{
 	}
 	
 	public AccessLevel getPlayerAccessLevel(String name){
+		if (name.startsWith("RConInboundHandler"))
+			return AccessLevel.PRIVILEGED;
+		
 		GameProfile profile = MinecraftServer.getServer().getConfigurationManager().func_152612_a(name).getGameProfile();
 		
 		if (MinecraftServer.getServer().getConfigurationManager().func_152596_g(profile) || MinecraftServer.getServer().isSinglePlayer())
