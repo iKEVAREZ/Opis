@@ -102,9 +102,6 @@ public class RConServer implements Runnable {
     	buf.writeBytes(data);
     	ctx.write(buf);
     	ctx.flush();
-
-    	modOpis.log.info("We should be sending back something here");
-
     }    
     
 }

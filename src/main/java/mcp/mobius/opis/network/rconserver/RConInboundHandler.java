@@ -9,6 +9,7 @@ import mcp.mobius.opis.events.PlayerTracker;
 import mcp.mobius.opis.network.PacketBase;
 import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.packets.client.PacketReqData;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.FakePlayerFactory;
@@ -27,6 +28,8 @@ class RConInboundHandler extends ChannelInboundHandlerAdapter{
     	UUID       fakeUUID   = UUID.randomUUID();
     	FakePlayer fakePlayer = FakePlayerFactory.get(DimensionManager.getWorld(0), new GameProfile(fakeUUID, ctx.name()));
     	RConServer.instance.fakePlayers.put(fakePlayer, ctx);
+    	
+    	PlayerTracker.INSTANCE.playersSwing.add(fakePlayer);
     	
     	modOpis.log.info(String.format("Connection to rcon detected. FakePlayer %s with uuid %s created.", ctx.name(), fakeUUID));
     	

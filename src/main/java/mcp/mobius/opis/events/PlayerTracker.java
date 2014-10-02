@@ -42,6 +42,9 @@ public enum PlayerTracker{
 	}
 	
 	public AccessLevel getPlayerAccessLevel(String name){
+		
+		//TODO : This should be made proper. Right now, this is a security risk with mods changing names.
+		//TODO : Maybe use uuid as a name and check here against the RconServer list of uuids ?
 		if (name.startsWith("RConInboundHandler"))
 			return AccessLevel.PRIVILEGED;
 		
