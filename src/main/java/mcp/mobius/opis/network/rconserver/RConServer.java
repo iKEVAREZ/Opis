@@ -46,19 +46,19 @@ public class RConServer implements Runnable {
 	
 	public final static RConServer instance = new RConServer();
 	public BiMap<FakePlayer, ChannelHandlerContext> fakePlayers = HashBiMap.create();
-	public ArrayList<Class> packetTypes = new ArrayList<Class>();
+	public BiMap<Byte, Class> packetTypes = HashBiMap.create();
 	
 	private int port = -1;
 	
 	private RConServer(){
 		this.port = modOpis.rconport;
 		
-		packetTypes.add(PacketReqChunks.class);
-		packetTypes.add(PacketReqData.class);
-		packetTypes.add(NetDataCommand.class);
-		packetTypes.add(NetDataList.class);
-		packetTypes.add(NetDataValue.class);
-		packetTypes.add(PacketChunks.class);		
+		packetTypes.put((byte)0, PacketReqChunks.class);
+		packetTypes.put((byte)1, PacketReqData.class);
+		packetTypes.put((byte)2, NetDataCommand.class);
+		packetTypes.put((byte)3, NetDataList.class);
+		packetTypes.put((byte)4, NetDataValue.class);
+		packetTypes.put((byte)5, PacketChunks.class);		
 	}
 	
     @Override
@@ -96,12 +96,14 @@ public class RConServer implements Runnable {
     	packet.encode(output);
     	byte[] data = output.toByteArray();
     	
-    	ByteBuf buf = ctx.alloc().buffer(data.length);
+    	ByteBuf buf = ctx.alloc().buffer(data.length + 4 + 1);
     	buf.writeInt(data.length);
-    	buf.writeByte(packetTypes.indexOf(packet.getClass()));
+    	buf.writeByte(packetTypes.inverse().get(packet.getClass()));
     	buf.writeBytes(data);
     	ctx.write(buf);
     	ctx.flush();
+    	
+    	modOpis.log.info(String.format("%s", data.length));
     }    
     
 }
