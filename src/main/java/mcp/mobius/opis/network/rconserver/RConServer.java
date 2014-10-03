@@ -40,7 +40,7 @@ public class RConServer implements Runnable {
 	class ChannelInit extends ChannelInitializer<SocketChannel>{
 		@Override
 		protected void initChannel(SocketChannel ch) throws Exception {
-            ch.pipeline().addLast(new RconMsgColater(), new RConInboundHandler());
+            ch.pipeline().addLast(new RconMsgDecoder(), new RConInboundHandler());
 		}
 	}	
 	
@@ -102,8 +102,6 @@ public class RConServer implements Runnable {
     	buf.writeBytes(data);
     	ctx.write(buf);
     	ctx.flush();
-    	
-    	modOpis.log.info(String.format("%s", data.length));
     }    
     
 }
