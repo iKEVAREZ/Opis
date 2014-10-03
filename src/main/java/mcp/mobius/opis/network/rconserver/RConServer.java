@@ -4,6 +4,7 @@ import static cpw.mods.fml.relauncher.Side.SERVER;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Timer;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
@@ -33,6 +34,8 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.timeout.IdleStateHandler;
+import io.netty.handler.timeout.ReadTimeoutHandler;
 import io.netty.util.ReferenceCountUtil;
 
 public class RConServer implements Runnable {
@@ -40,7 +43,7 @@ public class RConServer implements Runnable {
 	class ChannelInit extends ChannelInitializer<SocketChannel>{
 		@Override
 		protected void initChannel(SocketChannel ch) throws Exception {
-            ch.pipeline().addLast(new RconMsgDecoder(), new RConInboundHandler());
+            ch.pipeline().addLast(new ReadTimeoutHandler(10), new RconMsgDecoder(), new RConInboundHandler());
 		}
 	}	
 	
@@ -103,6 +106,8 @@ public class RConServer implements Runnable {
     	buf.writeBytes(data);
     	ctx.write(buf);
     	ctx.flush();
+    	
+    	//modOpis.log.info(String.format("%s", packet.msg));
     }    
     
 }
