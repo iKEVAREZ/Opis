@@ -220,9 +220,14 @@ public class PacketManager
     
     public static void sendToPlayer(PacketBase packet, EntityPlayer player)
     {
-        channels.get(SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.PLAYER);
-        channels.get(SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGETARGS).set(player);
-        channels.get(SERVER).writeAndFlush(packet);
+    	if (player instanceof FakePlayer){
+    		RConServer.instance.sendToPlayer(packet, (FakePlayer)player);
+    	}
+    	else {
+	        channels.get(SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.PLAYER);
+	        channels.get(SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGETARGS).set(player);
+	        channels.get(SERVER).writeAndFlush(packet);
+    	}
     }
 
     public static void sendToPlayer(Packet packet, EntityPlayerMP player)
@@ -248,6 +253,10 @@ public class PacketManager
     {
 		channels.get(SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.ALL);
 		channels.get(SERVER).writeAndFlush(packet);
+		
+		for (FakePlayer fakePlayer : RConServer.instance.fakePlayers.keySet()){
+			RConServer.instance.sendToPlayer(packet, fakePlayer);
+		}			
     }
     
     public static Packet toMcPacket(PacketBase packet)
@@ -272,10 +281,6 @@ public class PacketManager
     */
     
 	public static void validateAndSend(PacketBase capsule, EntityPlayerMP player){
-		if (player instanceof FakePlayer){
-			RConServer.instance.sendToPlayer(capsule, (FakePlayer)player);
-		}
-		
 		if (!capsule.msg.isDisplayActive(PlayerTracker.INSTANCE.getPlayerSelectedTab(player))) return;
 		
 		if (capsule.msg.canPlayerUseCommand(player))

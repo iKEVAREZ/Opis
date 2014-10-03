@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraftforge.common.util.FakePlayer;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
@@ -19,6 +20,7 @@ import mcp.mobius.opis.network.PacketManager;
 import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.packets.server.NetDataList;
 import mcp.mobius.opis.network.packets.server.NetDataValue;
+import mcp.mobius.opis.network.rconserver.RConServer;
 
 public enum StringCache implements IMessageHandler {
 	INSTANCE;
@@ -75,7 +77,8 @@ public enum StringCache implements IMessageHandler {
 
 	public void syncNewCache(){
 		while (!unsynced.isEmpty()){
-			PacketManager.sendToAll(new NetDataValue(Message.STATUS_STRINGUPD, this.unsynced.poll()));
+			DataStringUpdate update = this.unsynced.poll();
+			PacketManager.sendToAll(new NetDataValue(Message.STATUS_STRINGUPD, update));
 		}
 	}	
 	

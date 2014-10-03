@@ -7,14 +7,18 @@ import java.io.IOException;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 
+import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.data.holders.ISerializable;
+import mcp.mobius.opis.helpers.ModIdentification;
 
 public class DataBlockTileEntityPerClass implements ISerializable, Comparable {
 
 	public int            id;
 	public int            meta;
-	public int              amount;
-	public DataTiming       update;
+	public int            amount;
+    public CachedString   name;
+    public CachedString   mod;	
+	public DataTiming     update;
 	
 	public DataBlockTileEntityPerClass(){}
 	
@@ -22,6 +26,8 @@ public class DataBlockTileEntityPerClass implements ISerializable, Comparable {
 		this.id     = id;
 		this.meta   = meta;
 		this.amount = 0;
+		this.name   = new CachedString(ModIdentification.getStackName(id, meta));
+		this.mod    = new CachedString(ModIdentification.getModStackName(id, meta));		
 		this.update = new DataTiming();
 	}	
 	
@@ -49,6 +55,8 @@ public class DataBlockTileEntityPerClass implements ISerializable, Comparable {
 		stream.writeInt(this.id);
 		stream.writeInt(this.meta);
 		stream.writeInt(this.amount);
+		this.name.writeToStream(stream);
+		this.mod.writeToStream(stream);
 		this.update.writeToStream(stream);
 	}
 
@@ -57,6 +65,8 @@ public class DataBlockTileEntityPerClass implements ISerializable, Comparable {
 		retVal.id = stream.readInt();
 		retVal.meta = stream.readInt();
 		retVal.amount = stream.readInt();
+		retVal.name   = CachedString.readFromStream(stream);
+		retVal.mod    = CachedString.readFromStream(stream);		
 		retVal.update = DataTiming.readFromStream(stream);
 		return retVal;
 	}

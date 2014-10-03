@@ -6,7 +6,7 @@ public class Helpers {
 	public static Side getEffectiveSide(){
         Thread thr = Thread.currentThread();
         
-        if ((thr.getName().equals("Server thread")) || (thr.getName().contains("Netty IO")))
+        if ((thr.getName().equals("Server thread")) || (thr.getName().contains("Netty IO")) || (thr.getName().startsWith("nioEventLoopGroup")))
         {
             return Side.SERVER;
         }

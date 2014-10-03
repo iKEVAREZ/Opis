@@ -5,10 +5,14 @@ import java.util.UUID;
 import com.mojang.authlib.GameProfile;
 
 import mcp.mobius.opis.modOpis;
+import mcp.mobius.opis.data.holders.basetypes.SerialLong;
+import mcp.mobius.opis.data.managers.StringCache;
 import mcp.mobius.opis.events.PlayerTracker;
 import mcp.mobius.opis.network.PacketBase;
+import mcp.mobius.opis.network.PacketManager;
 import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.packets.client.PacketReqData;
+import mcp.mobius.opis.network.packets.server.NetDataValue;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.util.FakePlayer;
@@ -30,6 +34,8 @@ class RConInboundHandler extends ChannelInboundHandlerAdapter{
     	RConServer.instance.fakePlayers.put(fakePlayer, ctx);
     	
     	PlayerTracker.INSTANCE.playersSwing.add(fakePlayer);
+		PacketManager.validateAndSend(new NetDataValue(Message.STATUS_CURRENT_TIME, new SerialLong(System.currentTimeMillis())), fakePlayer);
+		StringCache.INSTANCE.syncCache(fakePlayer);    	
     	
     	modOpis.log.info(String.format("Connection to rcon detected. FakePlayer %s with uuid %s created.", ctx.name(), fakeUUID));
     	
