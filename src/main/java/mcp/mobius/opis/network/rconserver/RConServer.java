@@ -62,10 +62,12 @@ public class RConServer implements Runnable {
 			
 			ch.pipeline().addLast(sslCtx.newHandler(ch.alloc()));
             ch.pipeline().addLast(new ReadTimeoutHandler(10));
-            ch.pipeline().addLast(new JdkZlibDecoder());
-            ch.pipeline().addLast(new JdkZlibEncoder());
-            ch.pipeline().addLast(new RconMsgDecoder());
-            ch.pipeline().addLast(new RConInboundHandler());
+            ch.pipeline().addLast(new RConHandshakeDecoder());
+            ch.pipeline().addLast(new RConHandshakeHandler());
+            //ch.pipeline().addLast(new JdkZlibDecoder());
+            //ch.pipeline().addLast(new JdkZlibEncoder());
+            //ch.pipeline().addLast(new RconMsgDecoder());
+            //ch.pipeline().addLast(new RConInboundHandler());
 
 		}
 	}	

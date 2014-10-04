@@ -82,6 +82,7 @@ public class modOpis {
 	public static int profilerMaxTicks = 250;
 	public static int rconport         = 25566;
 	public static boolean rconactive   = false;
+	public static String  rconpass     = "";
 	public static boolean microseconds = true;
 	private static int lagGenID        = -1;
 	public static CoordinatesBlock selectedBlock = null;
@@ -103,8 +104,9 @@ public class modOpis {
 		lagGenID         = config.get(Configuration.CATEGORY_GENERAL, "laggenerator_id", -1).getInt();
 		profilerMaxTicks = config.get(Configuration.CATEGORY_GENERAL, "profiler.maxpts", 250).getInt();
 		microseconds     = config.get(Configuration.CATEGORY_GENERAL, "display.microseconds", true).getBoolean(true);
-		rconport         = config.get(Configuration.CATEGORY_GENERAL, "opisrcon.port", 25566).getInt();
-		rconactive       = config.get(Configuration.CATEGORY_GENERAL, "opisrcon.active", false).getBoolean(false);		
+		rconport         = config.get("REMOTE_CONSOLE", "opisrcon.port",   25566).getInt();
+		rconactive       = config.get("REMOTE_CONSOLE", "opisrcon.active", false).getBoolean(false);
+		rconpass         = config.get("REMOTE_CONSOLE", "opisrcon.password",  "").getString();
 		
 		String[] users   = config.get("ACCESS_RIGHTS", "privileged", new String[]{}, commentPrivileged).getStringList();
 		AccessLevel minTables   = AccessLevel.PRIVILEGED;
