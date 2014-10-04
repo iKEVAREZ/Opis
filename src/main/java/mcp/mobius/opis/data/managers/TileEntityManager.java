@@ -122,7 +122,7 @@ public enum TileEntityManager {
 		HashSet<Integer> registeredEntities                    = new HashSet<Integer>(); 
 		
 		for (WorldServer world : DimensionManager.getWorlds()){
-			for (Object o : Arrays.copyOf(world.loadedTileEntityList.toArray(), world.loadedTileEntityList.size(), Object[].class)){
+			for (Object o : world.loadedTileEntityList.toArray()){
 				TileEntity tileEntity = (TileEntity)o;
 				if (tileEntity == null) continue;
 				CoordinatesBlock coord = new CoordinatesBlock(world.provider.dimensionId, tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord);
@@ -163,7 +163,7 @@ public enum TileEntityManager {
 		HashBasedTable<Integer, Integer, DataBlockTileEntityPerClass> data = HashBasedTable.create();
 		
 		for (WorldServer world : DimensionManager.getWorlds()){
-			for (Object o : Arrays.copyOf(world.loadedTileEntityList.toArray(), world.loadedTileEntityList.size(), Object[].class)){
+			for (Object o : world.loadedTileEntityList.toArray()){
 				TileEntity tileEntity = (TileEntity)o;
 				if (tileEntity == null) continue;
 				int id   = Block.getIdFromBlock(world.getBlock(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord));

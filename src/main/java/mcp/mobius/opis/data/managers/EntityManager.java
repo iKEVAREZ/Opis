@@ -65,10 +65,8 @@ public enum EntityManager {
 		World world = DimensionManager.getWorld(dim);
 		if (world == null) return entities;
 		
-		ArrayList copyList = new ArrayList(world.loadedEntityList);
-		
-		for (int i = 0; i < copyList.size(); i++){
-			Entity ent = (Entity)copyList.get(i);
+		for (Object o : world.loadedEntityList.toArray()){
+			Entity ent = (Entity)o;
 			entities.add(new DataEntity().fill(ent));
 		}
 		
@@ -90,10 +88,8 @@ public enum EntityManager {
 		World world = DimensionManager.getWorld(dim);
 		if (world == null) return entities;
 		
-		ArrayList copyList = new ArrayList(world.loadedEntityList);
-		
-		for (int i = 0; i < copyList.size(); i++){
-			Entity ent = (Entity)copyList.get(i);
+		for (Object o : world.loadedEntityList.toArray()){
+			Entity ent = (Entity)o;
 			CoordinatesChunk chunk = new CoordinatesBlock(ent.dimension, (int)ent.posX, (int)ent.posY, (int)ent.posZ).asCoordinatesChunk();
 			
 			if (!entities.containsKey(chunk))
@@ -113,10 +109,8 @@ public enum EntityManager {
 		World world = DimensionManager.getWorld(coord.dim);
 		if (world == null) return entities;
 		
-		ArrayList copyList = new ArrayList(world.loadedEntityList);
-		
-		for (int i = 0; i < copyList.size(); i++){
-			Entity ent = (Entity)copyList.get(i);
+		for (Object o : world.loadedEntityList.toArray()){
+			Entity ent = (Entity)o;
 			CoordinatesChunk chunk = new CoordinatesBlock(ent.dimension, (int)ent.posX, (int)ent.posY, (int)ent.posZ).asCoordinatesChunk();
 			if (chunk.equals(coord))
 				//entities.add(new EntityStats(ent.entityId, ent.getClass().getName(), ent.dimension, ent.posX, ent.posY, ent.posZ));
@@ -135,10 +129,8 @@ public enum EntityManager {
 			World world = DimensionManager.getWorld(dim);
 			if (world == null) continue;
 			
-			ArrayList copyList = new ArrayList(world.loadedEntityList);
-			
-			for (int i = 0; i < copyList.size(); i++){
-				Entity ent = (Entity)copyList.get(i);
+			for (Object o : world.loadedEntityList.toArray()){
+				Entity ent = (Entity)o;
 				//String name = ent.getClass().getName();
 				String name = getEntityName(ent, filtered);
 				
@@ -259,9 +251,7 @@ public enum EntityManager {
 			World world = DimensionManager.getWorld(dim);
 			if (world == null) continue;
 			
-			ArrayList copyList = new ArrayList(world.loadedEntityList);
-			
-			for (Object o : copyList){
+			for (Object o : world.loadedEntityList.toArray()){
 				Entity ent  = (Entity)o;
 				String nameFiltered   = this.getEntityName(ent, true).toLowerCase();
 				String nameUnfiltered = this.getEntityName(ent, false).toLowerCase();
