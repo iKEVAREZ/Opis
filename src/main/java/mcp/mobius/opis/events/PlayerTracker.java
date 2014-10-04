@@ -15,9 +15,11 @@ import mcp.mobius.opis.network.PacketManager;
 import mcp.mobius.opis.network.enums.AccessLevel;
 import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.packets.server.NetDataValue;
+import mcp.mobius.opis.network.rconserver.RConServer;
 import mcp.mobius.opis.swing.SelectedTab;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
+import net.minecraftforge.common.util.FakePlayer;
 
 //public class PlayerTracker implements IPlayerTracker{
 public enum PlayerTracker{
@@ -38,17 +40,16 @@ public enum PlayerTracker{
 	}
 	
 	public AccessLevel getPlayerAccessLevel(EntityPlayerMP player){
+		if (player instanceof FakePlayer && RConServer.instance.fakePlayers.containsKey(player))
+			return AccessLevel.PRIVILEGED;		
+		
 		return this.getPlayerAccessLevel(player.getGameProfile().getName());
 	}
 	
 	public AccessLevel getPlayerAccessLevel(String name){
 		
-		//TODO : This should be made proper. Right now, this is a security risk with mods changing names.
-		//TODO : Maybe use uuid as a name and check here against the RconServer list of uuids ?
-		if (name.startsWith("RConInboundHandler"))
-			return AccessLevel.PRIVILEGED;
-		
-		GameProfile profile = MinecraftServer.getServer().getConfigurationManager().func_152612_a(name).getGameProfile();
+		EntityPlayerMP player = MinecraftServer.getServer().getConfigurationManager().func_152612_a(name);
+		GameProfile profile   = player.getGameProfile();
 		
 		if (MinecraftServer.getServer().getConfigurationManager().func_152596_g(profile) || MinecraftServer.getServer().isSinglePlayer())
 			return AccessLevel.ADMIN;
@@ -86,17 +87,14 @@ public enum PlayerTracker{
 		return this.getPlayerAccessLevel(player).ordinal() >= AccessLevel.ADMIN.ordinal();
 	}
 	
-	public boolean isAdmin(String name){
-		return this.getPlayerAccessLevel(name).ordinal() >= AccessLevel.ADMIN.ordinal();		
-	}		
-	
 	public boolean isPrivileged(EntityPlayerMP player){
 		return this.getPlayerAccessLevel(player).ordinal() >= AccessLevel.PRIVILEGED.ordinal();
 	}	
 	
-	public boolean isPrivileged(String name){
-		return this.getPlayerAccessLevel(name).ordinal() >= AccessLevel.PRIVILEGED.ordinal();
-	}	
+	public boolean isInPrivilegedList(String name){
+		return this.playerPrivileged.contains(name);
+	}
+
 	
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
 	

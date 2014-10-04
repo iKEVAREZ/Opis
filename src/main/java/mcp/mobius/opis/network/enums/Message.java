@@ -130,10 +130,6 @@ public enum Message {
 		return PlayerTracker.INSTANCE.getPlayerAccessLevel(player).ordinal() >= this.accessLevel.ordinal();
 	}
 	
-	public boolean canPlayerUseCommand(String name){
-		return PlayerTracker.INSTANCE.getPlayerAccessLevel(name).ordinal() >= this.accessLevel.ordinal();
-	}
-	
 	public boolean isDisplayActive(SelectedTab tab){
 		if (this.tabEnum.contains(SelectedTab.ANY))  return true;
 		if (this.tabEnum.contains(SelectedTab.NONE)) return false;
