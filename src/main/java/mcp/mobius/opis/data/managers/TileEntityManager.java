@@ -1,6 +1,7 @@
 package mcp.mobius.opis.data.managers;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -121,8 +122,9 @@ public enum TileEntityManager {
 		HashSet<Integer> registeredEntities                    = new HashSet<Integer>(); 
 		
 		for (WorldServer world : DimensionManager.getWorlds()){
-			for (Object o : world.loadedTileEntityList){
+			for (Object o : Arrays.copyOf(world.loadedTileEntityList.toArray(), world.loadedTileEntityList.size(), Object[].class)){
 				TileEntity tileEntity = (TileEntity)o;
+				if (tileEntity == null) continue;
 				CoordinatesBlock coord = new CoordinatesBlock(world.provider.dimensionId, tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord);
 				int hash = System.identityHashCode(tileEntity);
 				
@@ -161,8 +163,9 @@ public enum TileEntityManager {
 		HashBasedTable<Integer, Integer, DataBlockTileEntityPerClass> data = HashBasedTable.create();
 		
 		for (WorldServer world : DimensionManager.getWorlds()){
-			for (Object o : world.loadedTileEntityList){
+			for (Object o : Arrays.copyOf(world.loadedTileEntityList.toArray(), world.loadedTileEntityList.size(), Object[].class)){
 				TileEntity tileEntity = (TileEntity)o;
+				if (tileEntity == null) continue;
 				int id   = Block.getIdFromBlock(world.getBlock(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord));
 				int meta = world.getBlockMetadata(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord);
 				

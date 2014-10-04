@@ -47,8 +47,8 @@ class RConInboundHandler extends ChannelInboundHandlerAdapter{
         	FakePlayer fakePlayer = RConServer.instance.fakePlayers.inverse().get(ctx);
         	PacketBase packet     = (PacketBase) msg;
         	
-        	if (packet instanceof PacketReqData)
-        		modOpis.log.info(String.format("Received request %s from player %s", ((PacketReqData)packet).dataReq, fakePlayer.getDisplayName()));
+        	//if (packet instanceof PacketReqData)
+        	//	modOpis.log.info(String.format("Received request %s from player %s", ((PacketReqData)packet).dataReq, fakePlayer.getDisplayName()));
         	
         	packet.actionServer(null, fakePlayer);
         } finally {
