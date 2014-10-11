@@ -1,4 +1,4 @@
-package mcp.mobius.opis.network.rconserver;
+package mcp.mobius.opis.network.rcon.server;
 
 import static cpw.mods.fml.relauncher.Side.SERVER;
 

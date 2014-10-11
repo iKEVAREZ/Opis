@@ -1,4 +1,4 @@
-package mcp.mobius.opis.network.rconserver;
+package mcp.mobius.opis.network.rcon.server;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;

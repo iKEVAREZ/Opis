@@ -1,4 +1,4 @@
-package mcp.mobius.opis.network.rconserver;
+package mcp.mobius.opis.network.rcon.server;
 
 import java.util.UUID;
 

@@ -8,7 +8,7 @@ import mcp.mobius.opis.api.IMessageHandler;
 import mcp.mobius.opis.gui.overlay.OverlayStatus;
 import mcp.mobius.opis.network.PacketBase;
 import mcp.mobius.opis.network.enums.Message;
-import mcp.mobius.opis.network.rconserver.RConServer;
+import mcp.mobius.opis.network.rcon.server.RConServer;
 
 public class ProxyServer implements IMessageHandler{
 	
