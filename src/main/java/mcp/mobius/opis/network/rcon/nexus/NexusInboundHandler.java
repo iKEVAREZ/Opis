@@ -20,6 +20,7 @@ import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.packets.server.NetDataValue;
 import mcp.mobius.opis.network.rcon.RConHandler;
 import mcp.mobius.opis.network.rcon.server.RConServer;
+import mcp.mobius.opis.swing.SelectedTab;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -35,6 +36,7 @@ public class NexusInboundHandler extends ChannelInboundHandlerAdapter {
 		RConHandler.fakePlayers.put(fakePlayer, ctx);
 		
 		PlayerTracker.INSTANCE.playersSwing.add(fakePlayer);
+		PlayerTracker.INSTANCE.playerTab.put(fakePlayer, SelectedTab.SUMMARY);		
 		PacketManager.validateAndSend(new NetDataValue(Message.STATUS_CURRENT_TIME, new SerialLong(System.currentTimeMillis())), fakePlayer);
 		StringCache.INSTANCE.syncCache(fakePlayer);    	
 
