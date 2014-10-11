@@ -8,16 +8,12 @@ import mcp.mobius.opis.api.IMessageHandler;
 import mcp.mobius.opis.gui.overlay.OverlayStatus;
 import mcp.mobius.opis.network.PacketBase;
 import mcp.mobius.opis.network.enums.Message;
+import mcp.mobius.opis.network.rcon.nexus.NexusClient;
 import mcp.mobius.opis.network.rcon.server.RConServer;
 
 public class ProxyServer implements IMessageHandler{
 	
 	public void init(){
-		if (modOpis.rconactive){
-			Thread rconserver = new Thread(RConServer.instance);
-			rconserver.setName("Opis Server");
-			rconserver.start();
-		}
 	}
 
 	@Override

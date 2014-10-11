@@ -48,6 +48,7 @@ import mcp.mobius.opis.network.packets.server.NetDataCommand;
 import mcp.mobius.opis.network.packets.server.NetDataList;
 import mcp.mobius.opis.network.packets.server.NetDataValue;
 import mcp.mobius.opis.network.packets.server.PacketChunks;
+import mcp.mobius.opis.network.rcon.RConHandler;
 import mcp.mobius.opis.network.rcon.server.RConServer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
@@ -221,7 +222,7 @@ public class PacketManager
     public static void sendToPlayer(PacketBase packet, EntityPlayer player)
     {
     	if (player instanceof FakePlayer){
-    		RConServer.instance.sendToPlayer(packet, (FakePlayer)player);
+    		RConHandler.sendToPlayer(packet, (FakePlayer)player);
     	}
     	else {
 	        channels.get(SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.PLAYER);
@@ -254,8 +255,8 @@ public class PacketManager
 		channels.get(SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.ALL);
 		channels.get(SERVER).writeAndFlush(packet);
 		
-		for (FakePlayer fakePlayer : RConServer.instance.fakePlayers.keySet()){
-			RConServer.instance.sendToPlayer(packet, fakePlayer);
+		for (FakePlayer fakePlayer : RConHandler.fakePlayers.keySet()){
+			RConHandler.sendToPlayer(packet, fakePlayer);
 		}			
     }
     

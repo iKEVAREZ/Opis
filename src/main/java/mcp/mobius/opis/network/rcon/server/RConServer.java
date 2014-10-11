@@ -25,6 +25,7 @@ import mcp.mobius.opis.network.packets.server.NetDataCommand;
 import mcp.mobius.opis.network.packets.server.NetDataList;
 import mcp.mobius.opis.network.packets.server.NetDataValue;
 import mcp.mobius.opis.network.packets.server.PacketChunks;
+import mcp.mobius.opis.network.rcon.RConHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
@@ -73,24 +74,17 @@ public class RConServer implements Runnable {
 	}	
 	
 	public final static RConServer instance = new RConServer();
-	public BiMap<FakePlayer, ChannelHandlerContext> fakePlayers = HashBiMap.create();
-	public BiMap<Byte, Class> packetTypes = HashBiMap.create();
 	
 	private int port = -1;
 	
 	private RConServer(){
 		this.port = modOpis.rconport;
-		
-		packetTypes.put((byte)0, PacketReqChunks.class);
-		packetTypes.put((byte)1, PacketReqData.class);
-		packetTypes.put((byte)2, NetDataCommand.class);
-		packetTypes.put((byte)3, NetDataList.class);
-		packetTypes.put((byte)4, NetDataValue.class);
-		packetTypes.put((byte)5, PacketChunks.class);		
 	}
 	
     @Override
     public void run(){
+    	if (!modOpis.rconactive) return;
+    	
     	modOpis.log.info("Starting Opis remote control server.");
     	
 
@@ -125,23 +119,4 @@ public class RConServer implements Runnable {
             bossGroup.shutdownGracefully();
         }
     }    
-    
-    public void sendToPlayer(PacketBase packet, FakePlayer player)
-    {
-    	ByteArrayDataOutput output = ByteStreams.newDataOutput();
-    	ChannelHandlerContext ctx  = RConServer.instance.fakePlayers.get(player);
-    	
-    	packet.encode(output);
-    	byte[] data = output.toByteArray();
-    	
-    	ByteBuf buf = ctx.alloc().buffer(data.length + 4 + 1);
-    	buf.writeInt(data.length);
-    	buf.writeByte(packetTypes.inverse().get(packet.getClass()));
-    	buf.writeBytes(data);
-    	ctx.write(buf);
-    	ctx.flush();
-    	
-    	//modOpis.log.info(String.format("%s", packet.msg));
-    }    
-    
 }

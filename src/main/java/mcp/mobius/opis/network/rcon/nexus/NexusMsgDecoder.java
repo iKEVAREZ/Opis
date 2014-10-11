@@ -1,17 +1,17 @@
-package mcp.mobius.opis.network.rcon.server;
+package mcp.mobius.opis.network.rcon.nexus;
 
-import java.util.List;
-
-import com.google.common.io.ByteStreams;
-
-import mcp.mobius.opis.modOpis;
-import mcp.mobius.opis.network.PacketBase;
-import mcp.mobius.opis.network.rcon.RConHandler;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
 
-public class RConMsgDecoder extends ByteToMessageDecoder {
+import java.util.List;
+
+import mcp.mobius.opis.network.PacketBase;
+import mcp.mobius.opis.network.rcon.RConHandler;
+
+import com.google.common.io.ByteStreams;
+
+public class NexusMsgDecoder extends ByteToMessageDecoder {
 
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {

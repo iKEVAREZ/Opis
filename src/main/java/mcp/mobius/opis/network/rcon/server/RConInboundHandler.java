@@ -13,6 +13,7 @@ import mcp.mobius.opis.network.PacketManager;
 import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.packets.client.PacketReqData;
 import mcp.mobius.opis.network.packets.server.NetDataValue;
+import mcp.mobius.opis.network.rcon.RConHandler;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.util.FakePlayer;
@@ -31,7 +32,7 @@ class RConInboundHandler extends ChannelInboundHandlerAdapter{
     public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
     	UUID       fakeUUID   = UUID.randomUUID();
 		FakePlayer fakePlayer = FakePlayerFactory.get(DimensionManager.getWorld(0), new GameProfile(fakeUUID, ctx.name()));
-		RConServer.instance.fakePlayers.put(fakePlayer, ctx);
+		RConHandler.fakePlayers.put(fakePlayer, ctx);
 		
 		PlayerTracker.INSTANCE.playersSwing.add(fakePlayer);
 		PacketManager.validateAndSend(new NetDataValue(Message.STATUS_CURRENT_TIME, new SerialLong(System.currentTimeMillis())), fakePlayer);
@@ -44,7 +45,7 @@ class RConInboundHandler extends ChannelInboundHandlerAdapter{
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
         try {
-        	FakePlayer fakePlayer = RConServer.instance.fakePlayers.inverse().get(ctx);
+        	FakePlayer fakePlayer = RConHandler.fakePlayers.inverse().get(ctx);
         	PacketBase packet     = (PacketBase) msg;
         	
         	//if (packet instanceof PacketReqData)
@@ -59,8 +60,8 @@ class RConInboundHandler extends ChannelInboundHandlerAdapter{
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
         cause.printStackTrace();
-        FakePlayer fakePlayer = RConServer.instance.fakePlayers.inverse().get(ctx);
-        RConServer.instance.fakePlayers.remove(fakePlayer);
+        FakePlayer fakePlayer = RConHandler.fakePlayers.inverse().get(ctx);
+        RConHandler.fakePlayers.remove(fakePlayer);
         PlayerTracker.INSTANCE.playersSwing.remove(fakePlayer);
         modOpis.log.info(String.format("Lost connection from %s", fakePlayer.getDisplayName()));
         ctx.close();

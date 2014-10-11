@@ -15,6 +15,7 @@ import mcp.mobius.opis.network.PacketManager;
 import mcp.mobius.opis.network.enums.AccessLevel;
 import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.packets.server.NetDataValue;
+import mcp.mobius.opis.network.rcon.RConHandler;
 import mcp.mobius.opis.network.rcon.server.RConServer;
 import mcp.mobius.opis.swing.SelectedTab;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -40,7 +41,7 @@ public enum PlayerTracker{
 	}
 	
 	public AccessLevel getPlayerAccessLevel(EntityPlayerMP player){
-		if (player instanceof FakePlayer && RConServer.instance.fakePlayers.containsKey(player))
+		if (player instanceof FakePlayer && RConHandler.fakePlayers.containsKey(player))
 			return AccessLevel.PRIVILEGED;		
 		
 		return this.getPlayerAccessLevel(player.getGameProfile().getName());
