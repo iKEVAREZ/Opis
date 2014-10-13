@@ -12,6 +12,7 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.ssl.SslContext;
+import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
 import io.netty.handler.ssl.util.SelfSignedCertificate;
 import io.netty.handler.timeout.ReadTimeoutHandler;
 import io.netty.handler.timeout.WriteTimeoutHandler;
@@ -47,21 +48,20 @@ import mcp.mobius.opis.network.rcon.server.RConServer;
 public class NexusClient implements Runnable {
 
     class ChannelInit extends ChannelInitializer<SocketChannel>{
-        //private final SslContext sslCtx;
-        //public ChannelInit(SslContext sslCtx) {
-        //    this.sslCtx = sslCtx;
-        //}
+        private final SslContext sslCtx;
+        public ChannelInit(SslContext sslCtx) { this.sslCtx = sslCtx; }
 
         @Override
         protected void initChannel(SocketChannel ch) throws Exception {
-            //ch.pipeline().addLast(sslCtx.newHandler(ch.alloc(), RConClient.instance.host, RConClient.instance.port));
-            //ch.pipeline().addLast(new RConHandshakeDecoder());
-            //ch.pipeline().addLast(new RConHandshakeHandler());
+            ch.pipeline().addLast(sslCtx.newHandler(ch.alloc(), NexusClient.instance.host, NexusClient.instance.port));
+            ch.pipeline().addLast(new NexusHandshakeDecoder());
+            ch.pipeline().addLast(new NexusHandshakeHandler());
             //ch.pipeline().addLast(new JdkZlibDecoder());
             //ch.pipeline().addLast(new JdkZlibEncoder());
         	//ch.pipeline().addLast(new WriteTimeoutHandler(5));
-            ch.pipeline().addLast(new NexusMsgDecoder());
-            ch.pipeline().addLast(new NexusInboundHandler());
+            
+        	//ch.pipeline().addLast(new NexusMsgDecoder());
+            //ch.pipeline().addLast(new NexusInboundHandler());
         }
     }		
 	
@@ -87,6 +87,13 @@ public class NexusClient implements Runnable {
     	
     	modOpis.log.info(String.format("Connecting to OpixNexus %s:%s", this.host, this.port));
     	
+        SslContext sslCtx = null;
+        try {
+             sslCtx = SslContext.newClientContext(InsecureTrustManagerFactory.INSTANCE);
+        } catch (SSLException e) {
+            e.printStackTrace();
+        }    	
+    	
         EventLoopGroup workerGroup = new NioEventLoopGroup();
 
         try {
@@ -94,7 +101,7 @@ public class NexusClient implements Runnable {
             b.group(workerGroup); // (2)
             b.channel(NioSocketChannel.class); // (3)
             b.option(ChannelOption.SO_KEEPALIVE, true); // (4)
-            b.handler(new ChannelInit());
+            b.handler(new ChannelInit(sslCtx));
             ChannelFuture f = b.connect(this.host, this.port).sync(); // (5)
 
             // Wait until the connection is closed.

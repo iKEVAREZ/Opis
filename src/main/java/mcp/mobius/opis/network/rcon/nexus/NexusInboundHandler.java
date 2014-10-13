@@ -30,7 +30,7 @@ import io.netty.handler.codec.ByteToMessageDecoder;
 public class NexusInboundHandler extends ChannelInboundHandlerAdapter {
 
     @Override
-    public void channelActive(final ChannelHandlerContext ctx) {
+    public void handlerAdded(final ChannelHandlerContext ctx) {
     	UUID       fakeUUID   = UUID.randomUUID();
     	
 		FakePlayer fakePlayer = FakePlayerFactory.get(DimensionManager.getWorld(0), new GameProfile(fakeUUID, ctx.name()));
