@@ -14,6 +14,7 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.util.SelfSignedCertificate;
 import io.netty.handler.timeout.ReadTimeoutHandler;
+import io.netty.handler.timeout.WriteTimeoutHandler;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -58,6 +59,7 @@ public class NexusClient implements Runnable {
             //ch.pipeline().addLast(new RConHandshakeHandler());
             //ch.pipeline().addLast(new JdkZlibDecoder());
             //ch.pipeline().addLast(new JdkZlibEncoder());
+        	//ch.pipeline().addLast(new WriteTimeoutHandler(5));
             ch.pipeline().addLast(new NexusMsgDecoder());
             ch.pipeline().addLast(new NexusInboundHandler());
         }
@@ -78,6 +80,11 @@ public class NexusClient implements Runnable {
     public void run(){
     	this.readConfig(this.reverseprop);
     	if (!this.active) return;
+    	if (this.uuid.equals("")){
+    		modOpis.log.error("UUID not set properly.");
+    		return;
+    	}
+    	
     	modOpis.log.info(String.format("Connecting to OpixNexus %s:%s", this.host, this.port));
     	
         EventLoopGroup workerGroup = new NioEventLoopGroup();
