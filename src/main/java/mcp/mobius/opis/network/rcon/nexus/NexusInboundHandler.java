@@ -34,12 +34,12 @@ public class NexusInboundHandler extends ChannelInboundHandlerAdapter {
     	UUID       fakeUUID   = UUID.randomUUID();
     	
 		FakePlayer fakePlayer = FakePlayerFactory.get(DimensionManager.getWorld(0), new GameProfile(fakeUUID, ctx.name()));
-		RConHandler.fakePlayers.put(fakePlayer, ctx);
+		RConHandler.fakePlayersNexus.put(fakePlayer, ctx);
 		
-		PlayerTracker.INSTANCE.playersSwing.add(fakePlayer);
-		PlayerTracker.INSTANCE.playerTab.put(fakePlayer, SelectedTab.SUMMARY);
-		PacketManager.validateAndSend(new NetDataValue(Message.NEXUS_UUID, new SerialString(NexusClient.instance.uuid)), fakePlayer);
-		PacketManager.validateAndSend(new NetDataValue(Message.STATUS_CURRENT_TIME, new SerialLong(System.currentTimeMillis())), fakePlayer);
+		//PlayerTracker.INSTANCE.playersSwing.add(fakePlayer);
+		//PlayerTracker.INSTANCE.playerTab.put(fakePlayer, SelectedTab.SUMMARY);
+		RConHandler.sendToPlayerNexus(new NetDataValue(Message.NEXUS_UUID, new SerialString(NexusClient.instance.uuid)), fakePlayer);
+		RConHandler.sendToPlayerNexus(new NetDataValue(Message.STATUS_CURRENT_TIME, new SerialLong(System.currentTimeMillis())), fakePlayer);
 		StringCache.INSTANCE.syncCache(fakePlayer);    	
 
 		modOpis.log.info(String.format("FakePlayer %s with uuid %s created.", ctx.name(), fakeUUID));     	

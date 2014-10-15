@@ -94,7 +94,8 @@ public enum Message {
 	CLIENT_HIGHLIGHT_BLOCK,
 	
 	SWING_TAB_CHANGED,
-	NEXUS_UUID;
+	NEXUS_UUID,
+	NEXUS_DATA;
 	
 	private AccessLevel accessLevel = AccessLevel.NONE;
 	private EnumSet<SelectedTab>  tabEnum;

@@ -222,7 +222,7 @@ public class PacketManager
     public static void sendToPlayer(PacketBase packet, EntityPlayer player)
     {
     	if (player instanceof FakePlayer){
-    		RConHandler.sendToPlayer(packet, (FakePlayer)player);
+    		RConHandler.sendToPlayerRCon(packet, (FakePlayer)player);
     	}
     	else {
 	        channels.get(SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.PLAYER);
@@ -255,8 +255,8 @@ public class PacketManager
 		channels.get(SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.ALL);
 		channels.get(SERVER).writeAndFlush(packet);
 		
-		for (FakePlayer fakePlayer : RConHandler.fakePlayers.keySet()){
-			RConHandler.sendToPlayer(packet, fakePlayer);
+		for (FakePlayer fakePlayer : RConHandler.fakePlayersRcon.keySet()){
+			RConHandler.sendToPlayerRCon(packet, fakePlayer);
 		}			
     }
     

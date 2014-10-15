@@ -2,6 +2,7 @@ package mcp.mobius.opis.events;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.common.DimensionManager;
 import mcp.mobius.opis.modOpis;
@@ -12,6 +13,7 @@ import mcp.mobius.opis.data.holders.newtypes.DataPacket;
 import mcp.mobius.opis.data.holders.newtypes.DataPacket250;
 import mcp.mobius.opis.data.holders.newtypes.DataThread;
 import mcp.mobius.opis.data.holders.newtypes.DataTiming;
+import mcp.mobius.opis.data.holders.newtypes.NexusData;
 import mcp.mobius.opis.data.holders.stats.StatsChunk;
 import mcp.mobius.opis.data.managers.ChunkManager;
 import mcp.mobius.opis.data.managers.EntityManager;
@@ -26,6 +28,7 @@ import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.packets.server.NetDataCommand;
 import mcp.mobius.opis.network.packets.server.NetDataList;
 import mcp.mobius.opis.network.packets.server.NetDataValue;
+import mcp.mobius.opis.network.rcon.RConHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
@@ -62,13 +65,26 @@ public enum OpisServerTickHandler{
 			// One second timer
 			if (timer1000.isDone()){
 
-				PacketManager.sendPacketToAllSwing(new NetDataValue(Message.VALUE_AMOUNT_UPLOAD,   new SerialLong(((ProfilerPacket)ProfilerSection.PACKET_OUTBOUND.getProfiler()).dataAmount)));
-				PacketManager.sendPacketToAllSwing(new NetDataValue(Message.VALUE_AMOUNT_DOWNLOAD, new SerialLong(((ProfilerPacket)ProfilerSection.PACKET_INBOUND.getProfiler()).dataAmount)));
-				PacketManager.sendPacketToAllSwing(new NetDataValue(Message.VALUE_CHUNK_FORCED,    new SerialInt(ChunkManager.INSTANCE.getForcedChunkAmount())));
-				PacketManager.sendPacketToAllSwing(new NetDataValue(Message.VALUE_CHUNK_LOADED,    new SerialInt(ChunkManager.INSTANCE.getLoadedChunkAmount())));
-				PacketManager.sendPacketToAllSwing(new NetDataValue(Message.VALUE_TIMING_TICK,     new DataTiming(((ProfilerTick)ProfilerSection.TICK.getProfiler()).data.getGeometricMean())));
-				PacketManager.sendPacketToAllSwing(new NetDataValue(Message.VALUE_AMOUNT_TILEENTS, new SerialInt(TileEntityManager.INSTANCE.getAmountTileEntities())));
-				PacketManager.sendPacketToAllSwing(new NetDataValue(Message.VALUE_AMOUNT_ENTITIES, new SerialInt(EntityManager.INSTANCE.getAmountEntities())));
+				SerialLong amountUpload   = new SerialLong(((ProfilerPacket)ProfilerSection.PACKET_OUTBOUND.getProfiler()).dataAmount);
+				SerialLong amountDownload = new SerialLong(((ProfilerPacket)ProfilerSection.PACKET_INBOUND.getProfiler()).dataAmount);
+				SerialInt  chunkForced    = new SerialInt(ChunkManager.INSTANCE.getForcedChunkAmount());
+				SerialInt  chunkLoaded    = new SerialInt(ChunkManager.INSTANCE.getLoadedChunkAmount());
+				DataTiming timingTick     = new DataTiming(((ProfilerTick)ProfilerSection.TICK.getProfiler()).data.getGeometricMean());
+				SerialInt  amountTileEnts = new SerialInt(TileEntityManager.INSTANCE.getAmountTileEntities());
+				SerialInt  amountEntities = new SerialInt(EntityManager.INSTANCE.getAmountEntities());
+				
+				PacketManager.sendPacketToAllSwing(new NetDataValue(Message.VALUE_AMOUNT_UPLOAD,   amountUpload));
+				PacketManager.sendPacketToAllSwing(new NetDataValue(Message.VALUE_AMOUNT_DOWNLOAD, amountDownload));
+				PacketManager.sendPacketToAllSwing(new NetDataValue(Message.VALUE_CHUNK_FORCED,    chunkForced));
+				PacketManager.sendPacketToAllSwing(new NetDataValue(Message.VALUE_CHUNK_LOADED,    chunkLoaded));
+				PacketManager.sendPacketToAllSwing(new NetDataValue(Message.VALUE_TIMING_TICK,     timingTick));
+				PacketManager.sendPacketToAllSwing(new NetDataValue(Message.VALUE_AMOUNT_TILEENTS, amountTileEnts));
+				PacketManager.sendPacketToAllSwing(new NetDataValue(Message.VALUE_AMOUNT_ENTITIES, amountEntities));
+				
+				RConHandler.sendToAllNexus(new NetDataValue(Message.NEXUS_DATA,
+						new NexusData(amountUpload, amountDownload, chunkForced, chunkLoaded, 
+								timingTick, amountTileEnts, amountEntities)
+						));
 				
 				for (EntityPlayerMP player : PlayerTracker.INSTANCE.playersSwing){
 					if (!cachedAccess.containsKey(player) || cachedAccess.get(player) != PlayerTracker.INSTANCE.getPlayerAccessLevel(player)){

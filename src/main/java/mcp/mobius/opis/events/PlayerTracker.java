@@ -41,7 +41,7 @@ public enum PlayerTracker{
 	}
 	
 	public AccessLevel getPlayerAccessLevel(EntityPlayerMP player){
-		if (player instanceof FakePlayer && RConHandler.fakePlayers.containsKey(player))
+		if (player instanceof FakePlayer && RConHandler.isPriviledge((FakePlayer)player))
 			return AccessLevel.PRIVILEGED;		
 		
 		return this.getPlayerAccessLevel(player.getGameProfile().getName());
