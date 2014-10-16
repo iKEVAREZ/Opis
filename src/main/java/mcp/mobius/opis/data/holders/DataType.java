@@ -38,6 +38,7 @@ import mcp.mobius.opis.data.holders.newtypes.DataTileEntity;
 import mcp.mobius.opis.data.holders.newtypes.DataTileEntityRender;
 import mcp.mobius.opis.data.holders.newtypes.DataTiming;
 import mcp.mobius.opis.data.holders.newtypes.DataTimingMillisecond;
+import mcp.mobius.opis.data.holders.newtypes.NexusAuth;
 import mcp.mobius.opis.data.holders.newtypes.NexusData;
 import mcp.mobius.opis.data.holders.stats.StatAbstract;
 import mcp.mobius.opis.data.holders.stats.StatsChunk;
@@ -82,8 +83,9 @@ public enum DataType {
 	DATATIMINGMILLISECOND		(DataTimingMillisecond.class),
 	STATABSTRACT    			(StatAbstract.class),
 	STATSCHUNK      			(StatsChunk.class),
-	NEXUSDATA                   (NexusData.class);
-
+	NEXUSDATA                   (NexusData.class),
+	NEXUSAUTH					(NexusAuth.class);
+ 
 	private Class clazz;
 	private static HashBiMap<DataType, Class> bimap = HashBiMap.create(50);
 	

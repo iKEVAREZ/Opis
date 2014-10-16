@@ -13,6 +13,7 @@ import com.mojang.authlib.GameProfile;
 import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.data.holders.basetypes.SerialLong;
 import mcp.mobius.opis.data.holders.basetypes.SerialString;
+import mcp.mobius.opis.data.holders.newtypes.NexusAuth;
 import mcp.mobius.opis.data.managers.StringCache;
 import mcp.mobius.opis.events.PlayerTracker;
 import mcp.mobius.opis.network.PacketBase;
@@ -38,7 +39,7 @@ public class NexusInboundHandler extends ChannelInboundHandlerAdapter {
 		
 		//PlayerTracker.INSTANCE.playersSwing.add(fakePlayer);
 		//PlayerTracker.INSTANCE.playerTab.put(fakePlayer, SelectedTab.SUMMARY);
-		RConHandler.sendToPlayerNexus(new NetDataValue(Message.NEXUS_UUID, new SerialString(NexusClient.instance.uuid)), fakePlayer);
+		RConHandler.sendToPlayerNexus(new NetDataValue(Message.NEXUS_UUID, new NexusAuth(NexusClient.instance.uuid, NexusClient.instance.pass)), fakePlayer);
 		RConHandler.sendToPlayerNexus(new NetDataValue(Message.STATUS_CURRENT_TIME, new SerialLong(System.currentTimeMillis())), fakePlayer);
 		StringCache.INSTANCE.syncCache(fakePlayer);    	
 

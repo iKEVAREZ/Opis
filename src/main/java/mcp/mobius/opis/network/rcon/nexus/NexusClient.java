@@ -69,6 +69,7 @@ public class NexusClient implements Runnable {
 	
 	String  host   = "localhost";
 	String  uuid   = "";
+	String  pass   = "";
 	Integer port   = 8013;
 	Boolean active = false;
 	
@@ -138,6 +139,7 @@ public class NexusClient implements Runnable {
         this.port   = Integer.valueOf(prop.getProperty("port"));
         this.active = Boolean.valueOf(prop.getProperty("active"));
         this.uuid   = prop.getProperty("uuid");
+        this.pass   = prop.getProperty("passphrase");
     }
     
     private void writeConfig(String filename){
@@ -151,6 +153,7 @@ public class NexusClient implements Runnable {
             prop.setProperty("port",   this.port.toString());
             prop.setProperty("active", this.active.toString());
             prop.setProperty("uuid",   this.uuid);
+            prop.setProperty("passphrase",   this.pass);
             prop.store(output, null);
 
             output.close();
