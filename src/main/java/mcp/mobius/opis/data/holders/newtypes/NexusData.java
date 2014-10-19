@@ -17,12 +17,12 @@ public class NexusData  implements ISerializable {
 	DataTiming timingTick;
 	SerialInt  amountTileEnts;
 	SerialInt  amountEntities;
-	
+	SerialInt  amountPlayers;
 	
 		
 	
 	public NexusData(SerialLong Packet_Outbound, SerialLong Packet_Inbound, SerialInt Chunk_Forced, SerialInt Chunk_Loaded,
-			         DataTiming Timing_Tick, SerialInt Amount_TileEnts, SerialInt Amount_Entities			
+			         DataTiming Timing_Tick, SerialInt Amount_TileEnts, SerialInt Amount_Entities, SerialInt Amount_Players			
 			){
 		this.packetOutbound = Packet_Outbound;
 		this.packetInbound  = Packet_Inbound;
@@ -31,6 +31,7 @@ public class NexusData  implements ISerializable {
 		this.timingTick     = Timing_Tick;
 		this.amountTileEnts = Amount_TileEnts;
 		this.amountEntities = Amount_Entities;
+		this.amountPlayers  = Amount_Players;
 	}
 	
 	
@@ -43,6 +44,7 @@ public class NexusData  implements ISerializable {
 		this.timingTick.writeToStream(stream);
 		this.amountTileEnts.writeToStream(stream);
 		this.amountEntities.writeToStream(stream);
+		this.amountPlayers.writeToStream(stream);
 	}
 
 	public static  NexusData readFromStream(ByteArrayDataInput stream){
@@ -53,7 +55,8 @@ public class NexusData  implements ISerializable {
 				SerialInt.readFromStream(stream),
 				DataTiming.readFromStream(stream),
 				SerialInt.readFromStream(stream),
-				SerialInt.readFromStream(stream)				
+				SerialInt.readFromStream(stream),
+				SerialInt.readFromStream(stream)
 				);
 	}	
 }

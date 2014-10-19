@@ -29,6 +29,7 @@ import mcp.mobius.opis.network.packets.server.NetDataCommand;
 import mcp.mobius.opis.network.packets.server.NetDataList;
 import mcp.mobius.opis.network.packets.server.NetDataValue;
 import mcp.mobius.opis.network.rcon.RConHandler;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
@@ -72,6 +73,7 @@ public enum OpisServerTickHandler{
 				DataTiming timingTick     = new DataTiming(((ProfilerTick)ProfilerSection.TICK.getProfiler()).data.getGeometricMean());
 				SerialInt  amountTileEnts = new SerialInt(TileEntityManager.INSTANCE.getAmountTileEntities());
 				SerialInt  amountEntities = new SerialInt(EntityManager.INSTANCE.getAmountEntities());
+				SerialInt  amountPlayers  = new SerialInt(FMLCommonHandler.instance().getMinecraftServerInstance().getCurrentPlayerCount());
 				
 				PacketManager.sendPacketToAllSwing(new NetDataValue(Message.VALUE_AMOUNT_UPLOAD,   amountUpload));
 				PacketManager.sendPacketToAllSwing(new NetDataValue(Message.VALUE_AMOUNT_DOWNLOAD, amountDownload));
@@ -83,7 +85,7 @@ public enum OpisServerTickHandler{
 				
 				RConHandler.sendToAllNexus(new NetDataValue(Message.NEXUS_DATA,
 						new NexusData(amountUpload, amountDownload, chunkForced, chunkLoaded, 
-								timingTick, amountTileEnts, amountEntities)
+								timingTick, amountTileEnts, amountEntities, amountPlayers)
 						));
 				
 				for (EntityPlayerMP player : PlayerTracker.INSTANCE.playersSwing){
