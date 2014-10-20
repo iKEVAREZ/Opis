@@ -329,40 +329,6 @@ public class PanelSummary extends JPanelMsgHandler implements ITabPanel{
 	@Override
 	public boolean handleMessage(Message msg, PacketBase rawdata) {
 		switch(msg){
-		case VALUE_AMOUNT_TILEENTS:{
-			this.getLblAmountTileEnts().setText(String.valueOf(((SerialInt)rawdata.value).value));
-			break;
-		}
-		case VALUE_AMOUNT_ENTITIES:{
-			this.getLblAmountEntities().setText(String.valueOf(((SerialInt)rawdata.value).value));		
-			break;
-		}
-		//case VALUE_AMOUNT_HANDLERS:{
-		//	this.getLblAmountHandlers().setText(String.valueOf(((SerialInt)rawdata.value).value));
-		//	break;
-		//}
-		case VALUE_AMOUNT_UPLOAD:{
-			double uploadKB = (((SerialLong)rawdata.value).value) / 1024.0;
-			this.getLblAmountUpload().setText(String.format("%.3f", uploadKB));	
-			break;
-		}
-		case VALUE_AMOUNT_DOWNLOAD:{
-			double downloadKB = (((SerialLong)rawdata.value).value) / 1024.0;
-			this.getLblAmountDownload().setText(String.format("%.3f", downloadKB));	
-			break;
-		}
-		case VALUE_TIMING_TICK:{
-			this.setTimingTick(rawdata.value);
-			break;
-		}		
-		case VALUE_CHUNK_FORCED:{
-			this.getLblAmountForced().setText(String.valueOf(((SerialInt)rawdata.value).value));
-			break;
-		}		
-		case VALUE_CHUNK_LOADED:{
-			this.getLblAmountLoaded().setText(String.valueOf(((SerialInt)rawdata.value).value));
-			break;
-		}
 		
 		case NEXUS_DATA:{
 			NexusData data = (NexusData)rawdata.value;
