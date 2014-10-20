@@ -221,8 +221,10 @@ public class PacketManager
     
     public static void sendToPlayer(PacketBase packet, EntityPlayer player)
     {
-    	if (player instanceof FakePlayer){
+    	if ((player instanceof FakePlayer) && (RConHandler.fakePlayersRcon.containsKey(player))){
     		RConHandler.sendToPlayerRCon(packet, (FakePlayer)player);
+    	} else if ((player instanceof FakePlayer) && (RConHandler.fakePlayersNexus.containsKey(player))){
+    		RConHandler.sendToPlayerNexus(packet, (FakePlayer)player);
     	}
     	else {
 	        channels.get(SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.PLAYER);
@@ -257,7 +259,11 @@ public class PacketManager
 		
 		for (FakePlayer fakePlayer : RConHandler.fakePlayersRcon.keySet()){
 			RConHandler.sendToPlayerRCon(packet, fakePlayer);
-		}			
+		}	
+		
+		for (FakePlayer fakePlayer : RConHandler.fakePlayersNexus.keySet()){
+			RConHandler.sendToPlayerNexus(packet, fakePlayer);
+		}		
     }
     
     public static Packet toMcPacket(PacketBase packet)

@@ -10,14 +10,14 @@ import com.google.common.io.ByteArrayDataOutput;
 
 public class NexusData  implements ISerializable {
 
-	SerialLong packetOutbound;
-	SerialLong packetInbound;
-	SerialInt  chunkForced;
-	SerialInt  chunkLoaded;
-	DataTiming timingTick;
-	SerialInt  amountTileEnts;
-	SerialInt  amountEntities;
-	SerialInt  amountPlayers;
+	public SerialLong packetOutbound;
+	public SerialLong packetInbound;
+	public SerialInt  chunkForced;
+	public SerialInt  chunkLoaded;
+	public DataTiming timingTick;
+	public SerialInt  amountTileEnts;
+	public SerialInt  amountEntities;
+	public SerialInt  amountPlayers;
 	
 		
 	

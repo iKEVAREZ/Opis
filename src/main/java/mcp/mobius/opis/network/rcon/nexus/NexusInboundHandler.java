@@ -37,8 +37,8 @@ public class NexusInboundHandler extends ChannelInboundHandlerAdapter {
 		FakePlayer fakePlayer = FakePlayerFactory.get(DimensionManager.getWorld(0), new GameProfile(fakeUUID, ctx.name()));
 		RConHandler.fakePlayersNexus.put(fakePlayer, ctx);
 		
-		//PlayerTracker.INSTANCE.playersSwing.add(fakePlayer);
-		//PlayerTracker.INSTANCE.playerTab.put(fakePlayer, SelectedTab.SUMMARY);
+		PlayerTracker.INSTANCE.playersSwing.add(fakePlayer);
+		PlayerTracker.INSTANCE.playerTab.put(fakePlayer, SelectedTab.SUMMARY);
 		RConHandler.sendToPlayerNexus(new NetDataValue(Message.NEXUS_UUID, new NexusAuth(NexusClient.instance.uuid, NexusClient.instance.pass)), fakePlayer);
 		RConHandler.sendToPlayerNexus(new NetDataValue(Message.STATUS_CURRENT_TIME, new SerialLong(System.currentTimeMillis())), fakePlayer);
 		StringCache.INSTANCE.syncCache(fakePlayer);    	

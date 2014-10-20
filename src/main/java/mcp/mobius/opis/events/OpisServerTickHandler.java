@@ -66,6 +66,8 @@ public enum OpisServerTickHandler{
 			// One second timer
 			if (timer1000.isDone()){
 
+
+				// Summary panel
 				SerialLong amountUpload   = new SerialLong(((ProfilerPacket)ProfilerSection.PACKET_OUTBOUND.getProfiler()).dataAmount);
 				SerialLong amountDownload = new SerialLong(((ProfilerPacket)ProfilerSection.PACKET_INBOUND.getProfiler()).dataAmount);
 				SerialInt  chunkForced    = new SerialInt(ChunkManager.INSTANCE.getForcedChunkAmount());
@@ -75,18 +77,11 @@ public enum OpisServerTickHandler{
 				SerialInt  amountEntities = new SerialInt(EntityManager.INSTANCE.getAmountEntities());
 				SerialInt  amountPlayers  = new SerialInt(FMLCommonHandler.instance().getMinecraftServerInstance().getCurrentPlayerCount());
 				
-				PacketManager.sendPacketToAllSwing(new NetDataValue(Message.VALUE_AMOUNT_UPLOAD,   amountUpload));
-				PacketManager.sendPacketToAllSwing(new NetDataValue(Message.VALUE_AMOUNT_DOWNLOAD, amountDownload));
-				PacketManager.sendPacketToAllSwing(new NetDataValue(Message.VALUE_CHUNK_FORCED,    chunkForced));
-				PacketManager.sendPacketToAllSwing(new NetDataValue(Message.VALUE_CHUNK_LOADED,    chunkLoaded));
-				PacketManager.sendPacketToAllSwing(new NetDataValue(Message.VALUE_TIMING_TICK,     timingTick));
-				PacketManager.sendPacketToAllSwing(new NetDataValue(Message.VALUE_AMOUNT_TILEENTS, amountTileEnts));
-				PacketManager.sendPacketToAllSwing(new NetDataValue(Message.VALUE_AMOUNT_ENTITIES, amountEntities));
-				
-				RConHandler.sendToAllNexus(new NetDataValue(Message.NEXUS_DATA,
+				PacketManager.sendPacketToAllSwing(new NetDataValue(Message.NEXUS_DATA,
 						new NexusData(amountUpload, amountDownload, chunkForced, chunkLoaded, 
 								timingTick, amountTileEnts, amountEntities, amountPlayers)
-						));
+						));				
+				// End of summary update
 				
 				for (EntityPlayerMP player : PlayerTracker.INSTANCE.playersSwing){
 					if (!cachedAccess.containsKey(player) || cachedAccess.get(player) != PlayerTracker.INSTANCE.getPlayerAccessLevel(player)){

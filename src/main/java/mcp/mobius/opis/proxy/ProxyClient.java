@@ -156,14 +156,15 @@ public class ProxyClient extends ProxyServer implements IMessageHandler{
 		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.STATUS_ACCESS_LEVEL,   SwingUI.instance());
 		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.CLIENT_SHOW_SWING,     SwingUI.instance());	
 		
-		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.VALUE_AMOUNT_TILEENTS,  panelSummary);
-		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.VALUE_AMOUNT_ENTITIES,  panelSummary);
+		//MessageHandlerRegistrar.INSTANCE.registerHandler(Message.VALUE_AMOUNT_TILEENTS,  panelSummary);
+		//MessageHandlerRegistrar.INSTANCE.registerHandler(Message.VALUE_AMOUNT_ENTITIES,  panelSummary);
+		//MessageHandlerRegistrar.INSTANCE.registerHandler(Message.VALUE_AMOUNT_UPLOAD,    panelSummary);
+		//MessageHandlerRegistrar.INSTANCE.registerHandler(Message.VALUE_AMOUNT_DOWNLOAD,  panelSummary);
+		//MessageHandlerRegistrar.INSTANCE.registerHandler(Message.VALUE_TIMING_TICK,      panelSummary);
+		//MessageHandlerRegistrar.INSTANCE.registerHandler(Message.VALUE_CHUNK_FORCED,     panelSummary);	
+		//MessageHandlerRegistrar.INSTANCE.registerHandler(Message.VALUE_CHUNK_LOADED,     panelSummary);
+		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.NEXUS_DATA,             panelSummary);
 		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.VALUE_AMOUNT_HANDLERS,  panelSummary);
-		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.VALUE_AMOUNT_UPLOAD,    panelSummary);
-		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.VALUE_AMOUNT_DOWNLOAD,  panelSummary);
-		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.VALUE_TIMING_TICK,      panelSummary);
-		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.VALUE_CHUNK_FORCED,     panelSummary);	
-		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.VALUE_CHUNK_LOADED,     panelSummary);
 		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.VALUE_TIMING_TILEENTS,  panelSummary);		
 		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.VALUE_TIMING_ENTITIES,  panelSummary);
 		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.VALUE_TIMING_HANDLERS,  panelSummary);		

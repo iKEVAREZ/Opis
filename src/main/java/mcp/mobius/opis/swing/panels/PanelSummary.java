@@ -15,6 +15,7 @@ import mcp.mobius.opis.data.holders.basetypes.SerialLong;
 import mcp.mobius.opis.data.holders.newtypes.DataBlockTick;
 import mcp.mobius.opis.data.holders.newtypes.DataTiming;
 import mcp.mobius.opis.data.holders.newtypes.DataTimingMillisecond;
+import mcp.mobius.opis.data.holders.newtypes.NexusData;
 import mcp.mobius.opis.network.PacketBase;
 import mcp.mobius.opis.network.enums.AccessLevel;
 import mcp.mobius.opis.network.enums.Message;
@@ -362,6 +363,22 @@ public class PanelSummary extends JPanelMsgHandler implements ITabPanel{
 			this.getLblAmountLoaded().setText(String.valueOf(((SerialInt)rawdata.value).value));
 			break;
 		}
+		
+		case NEXUS_DATA:{
+			NexusData data = (NexusData)rawdata.value;
+			
+			this.getLblAmountTileEnts().setText(String.valueOf(data.amountTileEnts.value));
+			this.getLblAmountEntities().setText(String.valueOf(data.amountEntities.value));	
+			double uploadKB = data.packetOutbound.value / 1024.0;
+			this.getLblAmountUpload().setText(String.format("%.3f", uploadKB));		
+			double downloadKB = data.packetInbound.value / 1024.0;
+			this.getLblAmountDownload().setText(String.format("%.3f", downloadKB));
+			this.setTimingTick(data.timingTick);
+			this.getLblAmountForced().setText(String.valueOf(data.chunkForced.value));
+			this.getLblAmountLoaded().setText(String.valueOf(data.chunkLoaded.value));
+			break;
+		}
+		
 		case VALUE_TIMING_NETWORK:{
 			//this.timingNetworkTotal = ((DataNetworkTick)rawdata.value).update.asMillisecond();
 			//this.getLblTimingNetwork().setText(this.timingNetworkTotal.toString());			
