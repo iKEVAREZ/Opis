@@ -157,7 +157,7 @@ public class ProxyClient extends ProxyServer implements IMessageHandler{
 		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.CLIENT_SHOW_SWING,     SwingUI.instance());	
 		
 		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.NEXUS_DATA,             panelSummary);
-		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.VALUE_AMOUNT_HANDLERS,  panelSummary);
+		//MessageHandlerRegistrar.INSTANCE.registerHandler(Message.VALUE_AMOUNT_HANDLERS,  panelSummary);
 		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.VALUE_TIMING_TILEENTS,  panelSummary);		
 		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.VALUE_TIMING_ENTITIES,  panelSummary);
 		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.VALUE_TIMING_HANDLERS,  panelSummary);		
