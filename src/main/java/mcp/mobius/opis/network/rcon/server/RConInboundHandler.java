@@ -18,10 +18,10 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.FakePlayerFactory;
-import io.netty.buffer.ByteBuf;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandlerAdapter;
-import io.netty.util.ReferenceCountUtil;
+import io.nettyopis.buffer.ByteBuf;
+import io.nettyopis.channel.ChannelHandlerContext;
+import io.nettyopis.channel.ChannelInboundHandlerAdapter;
+import io.nettyopis.util.ReferenceCountUtil;
 
 class RConInboundHandler extends ChannelInboundHandlerAdapter{
 	// One object of this type is created by connection

@@ -1,21 +1,21 @@
 package mcp.mobius.opis.network.rcon.nexus;
 
-import io.netty.bootstrap.Bootstrap;
-import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInitializer;
-import io.netty.channel.ChannelOption;
-import io.netty.channel.EventLoopGroup;
-import io.netty.channel.nio.NioEventLoopGroup;
-import io.netty.channel.socket.SocketChannel;
-import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.handler.ssl.SslContext;
-import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
-import io.netty.handler.ssl.util.SelfSignedCertificate;
-import io.netty.handler.timeout.ReadTimeoutHandler;
-import io.netty.handler.timeout.WriteTimeoutHandler;
+import io.nettyopis.bootstrap.Bootstrap;
+import io.nettyopis.bootstrap.ServerBootstrap;
+import io.nettyopis.channel.ChannelFuture;
+import io.nettyopis.channel.ChannelHandlerContext;
+import io.nettyopis.channel.ChannelInitializer;
+import io.nettyopis.channel.ChannelOption;
+import io.nettyopis.channel.EventLoopGroup;
+import io.nettyopis.channel.nio.NioEventLoopGroup;
+import io.nettyopis.channel.socket.SocketChannel;
+import io.nettyopis.channel.socket.nio.NioServerSocketChannel;
+import io.nettyopis.channel.socket.nio.NioSocketChannel;
+import io.nettyopis.handler.ssl.SslContext;
+import io.nettyopis.handler.ssl.util.InsecureTrustManagerFactory;
+import io.nettyopis.handler.ssl.util.SelfSignedCertificate;
+import io.nettyopis.handler.timeout.ReadTimeoutHandler;
+import io.nettyopis.handler.timeout.WriteTimeoutHandler;
 
 import java.io.File;
 import java.io.FileInputStream;

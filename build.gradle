@@ -51,7 +51,9 @@ dependencies {
     shade 'org.jfree:jfreechart:1.0.17'
     shade 'com.miglayout:miglayout-swing:4.2'
     shade 'net.sf.opencsv:opencsv:2.3'    
-    shade 'io.netty:netty-all:4.0.23.Final'
+    shade 'io.netty-opis:Netty-opis:4.0.23'
+//  shade 'io.netty:netty-all:4.0.23.Final'
+//  compile 'io.netty:netty-all:4.0.15.Final'
     compile "mcp.mobius.mobiuscore:MobiusCore:1.2.4_1.7.10:dev"
     deployerJars "org.apache.maven.wagon:wagon-ssh:2.2"
 }

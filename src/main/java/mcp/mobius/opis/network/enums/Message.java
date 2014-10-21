@@ -97,8 +97,9 @@ public enum Message {
 	CLIENT_HIGHLIGHT_BLOCK,
 	
 	SWING_TAB_CHANGED,
-	NEXUS_UUID,
-	NEXUS_DATA;
+	NEXUS_UUID,								// Login data for the nexus system
+	NEXUS_DATA,								// Data blob with everything needed to update the summary screen in realtime
+	PLAYER_ONLINE_CHANGED;					// Sent when the online/offline status of a player changes
 	
 	private AccessLevel accessLevel = AccessLevel.NONE;
 	private EnumSet<SelectedTab>  tabEnum;

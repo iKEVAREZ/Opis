@@ -1,13 +1,13 @@
 package mcp.mobius.opis.network.rcon.nexus;
 
 import mcp.mobius.opis.modOpis;
-import io.netty.buffer.ByteBuf;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandlerAdapter;
-import io.netty.handler.ssl.SslHandler;
-import io.netty.util.concurrent.Future;
-import io.netty.util.concurrent.GenericFutureListener;
-import io.netty.channel.Channel;
+import io.nettyopis.buffer.ByteBuf;
+import io.nettyopis.channel.ChannelHandlerContext;
+import io.nettyopis.channel.ChannelInboundHandlerAdapter;
+import io.nettyopis.handler.ssl.SslHandler;
+import io.nettyopis.util.concurrent.Future;
+import io.nettyopis.util.concurrent.GenericFutureListener;
+import io.nettyopis.channel.Channel;
 
 public class NexusHandshakeHandler extends ChannelInboundHandlerAdapter {
     

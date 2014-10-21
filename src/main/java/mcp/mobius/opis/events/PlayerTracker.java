@@ -9,6 +9,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
 import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.data.holders.basetypes.SerialLong;
+import mcp.mobius.opis.data.holders.newtypes.PlayerLogging;
 import mcp.mobius.opis.data.managers.StringCache;
 import mcp.mobius.opis.gui.overlay.OverlayStatus;
 import mcp.mobius.opis.network.PacketManager;
@@ -104,7 +105,8 @@ public enum PlayerTracker{
 		this.playerOverlayStatus.remove(event.player);
 		this.playerDimension.remove(event.player);
 		//this.playersOpis.remove(player);
-		this.playersSwing.remove(event.player);		
+		this.playersSwing.remove(event.player);
+		PacketManager.sendPacketToAllSwing(new NetDataValue(Message.PLAYER_ONLINE_CHANGED, new PlayerLogging(event.player.getGameProfile().getName(), false)));
 	}
 	
 	@SubscribeEvent
@@ -118,6 +120,7 @@ public enum PlayerTracker{
 		}
 		*/
 		
-		StringCache.INSTANCE.syncCache((EntityPlayerMP)event.player);		
+		StringCache.INSTANCE.syncCache((EntityPlayerMP)event.player);
+		PacketManager.sendPacketToAllSwing(new NetDataValue(Message.PLAYER_ONLINE_CHANGED, new PlayerLogging(event.player.getGameProfile().getName(), true)));		
 	}
 }

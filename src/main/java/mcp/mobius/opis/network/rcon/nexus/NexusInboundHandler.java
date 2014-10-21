@@ -23,10 +23,10 @@ import mcp.mobius.opis.network.packets.server.NetDataValue;
 import mcp.mobius.opis.network.rcon.RConHandler;
 import mcp.mobius.opis.network.rcon.server.RConServer;
 import mcp.mobius.opis.swing.SelectedTab;
-import io.netty.buffer.ByteBuf;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandlerAdapter;
-import io.netty.handler.codec.ByteToMessageDecoder;
+import io.nettyopis.buffer.ByteBuf;
+import io.nettyopis.channel.ChannelHandlerContext;
+import io.nettyopis.channel.ChannelInboundHandlerAdapter;
+import io.nettyopis.handler.codec.ByteToMessageDecoder;
 
 public class NexusInboundHandler extends ChannelInboundHandlerAdapter {
 

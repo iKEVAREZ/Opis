@@ -15,12 +15,12 @@ import net.minecraftforge.common.util.FakePlayerFactory;
 
 import com.mojang.authlib.GameProfile;
 
-import io.netty.buffer.ByteBuf;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandlerAdapter;
-import io.netty.handler.codec.compression.JdkZlibDecoder;
-import io.netty.handler.codec.compression.JdkZlibEncoder;
-import io.netty.util.ReferenceCountUtil;
+import io.nettyopis.buffer.ByteBuf;
+import io.nettyopis.channel.ChannelHandlerContext;
+import io.nettyopis.channel.ChannelInboundHandlerAdapter;
+import io.nettyopis.handler.codec.compression.JdkZlibDecoder;
+import io.nettyopis.handler.codec.compression.JdkZlibEncoder;
+import io.nettyopis.util.ReferenceCountUtil;
 
 public class RConHandshakeHandler extends ChannelInboundHandlerAdapter {
 

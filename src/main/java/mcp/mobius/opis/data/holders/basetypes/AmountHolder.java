@@ -8,28 +8,31 @@ import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 
 import mcp.mobius.opis.data.holders.ISerializable;
+import mcp.mobius.opis.data.holders.newtypes.CachedString;
 import mcp.mobius.opis.network.PacketManager;
 
 public class AmountHolder implements ISerializable {
 
-	public String key    = null;
+	public CachedString key    = null;
 	public Integer value = 0;
 	
 	public AmountHolder(String key, Integer value){
-		this.key   = key;
+		this.key   = new CachedString(key);
 		this.value = value;
 	}
+
+	public AmountHolder(CachedString key, Integer value){
+		this.key   = key;
+		this.value = value;
+	}	
 	
 	@Override
 	public void writeToStream(ByteArrayDataOutput stream){
-		stream.writeUTF(this.key);
+		this.key.writeToStream(stream);
 		stream.writeInt(this.value);
 	}
 
 	public static AmountHolder readFromStream(ByteArrayDataInput istream){
-		String  key   = istream.readUTF();
-		Integer value = istream.readInt();
-		
-		return new AmountHolder(key, value);
+		return new AmountHolder(CachedString.readFromStream(istream), istream.readInt());
 	}
 }

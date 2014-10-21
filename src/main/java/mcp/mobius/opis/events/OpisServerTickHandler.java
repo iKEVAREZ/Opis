@@ -6,6 +6,7 @@ import java.util.HashMap;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.common.DimensionManager;
 import mcp.mobius.opis.modOpis;
+import mcp.mobius.opis.data.holders.basetypes.CoordinatesChunk;
 import mcp.mobius.opis.data.holders.basetypes.SerialInt;
 import mcp.mobius.opis.data.holders.basetypes.SerialLong;
 import mcp.mobius.opis.data.holders.newtypes.DataDimension;
@@ -64,25 +65,22 @@ public enum OpisServerTickHandler{
 			StringCache.INSTANCE.syncNewCache();		
 		
 			// One second timer
-			if (timer1000.isDone()){
+			if (timer1000.isDone() && PlayerTracker.INSTANCE.playersSwing.size() > 0){
 
-
-				// Summary panel
-				SerialLong amountUpload   = new SerialLong(((ProfilerPacket)ProfilerSection.PACKET_OUTBOUND.getProfiler()).dataAmount);
-				SerialLong amountDownload = new SerialLong(((ProfilerPacket)ProfilerSection.PACKET_INBOUND.getProfiler()).dataAmount);
-				SerialInt  chunkForced    = new SerialInt(ChunkManager.INSTANCE.getForcedChunkAmount());
-				SerialInt  chunkLoaded    = new SerialInt(ChunkManager.INSTANCE.getLoadedChunkAmount());
-				DataTiming timingTick     = new DataTiming(((ProfilerTick)ProfilerSection.TICK.getProfiler()).data.getGeometricMean());
-				SerialInt  amountTileEnts = new SerialInt(TileEntityManager.INSTANCE.getAmountTileEntities());
-				SerialInt  amountEntities = new SerialInt(EntityManager.INSTANCE.getAmountEntities());
-				SerialInt  amountPlayers  = new SerialInt(FMLCommonHandler.instance().getMinecraftServerInstance().getCurrentPlayerCount());
-				
 				PacketManager.sendPacketToAllSwing(new NetDataValue(Message.NEXUS_DATA,
-						new NexusData(amountUpload, amountDownload, chunkForced, chunkLoaded, 
-								timingTick, amountTileEnts, amountEntities, amountPlayers)
-						));				
+								new NexusData(
+									new SerialLong(((ProfilerPacket)ProfilerSection.PACKET_OUTBOUND.getProfiler()).dataAmount),
+									new SerialLong(((ProfilerPacket)ProfilerSection.PACKET_INBOUND.getProfiler()).dataAmount),
+									new SerialInt(ChunkManager.INSTANCE.getForcedChunkAmount()),
+									new SerialInt(ChunkManager.INSTANCE.getLoadedChunkAmount()),
+									new DataTiming(((ProfilerTick)ProfilerSection.TICK.getProfiler()).data.getGeometricMean()),
+									new SerialInt(TileEntityManager.INSTANCE.getAmountTileEntities()),
+									new SerialInt(EntityManager.INSTANCE.getAmountEntities()),
+									new SerialInt(FMLCommonHandler.instance().getMinecraftServerInstance().getCurrentPlayerCount())
+								)));				
 				// End of summary update
 				
+			
 				for (EntityPlayerMP player : PlayerTracker.INSTANCE.playersSwing){
 					if (!cachedAccess.containsKey(player) || cachedAccess.get(player) != PlayerTracker.INSTANCE.getPlayerAccessLevel(player)){
 						PacketManager.validateAndSend(new NetDataValue(Message.STATUS_ACCESS_LEVEL, new SerialInt(PlayerTracker.INSTANCE.getPlayerAccessLevel(player).ordinal())), player);
@@ -114,12 +112,15 @@ public enum OpisServerTickHandler{
 			}
 			
 			// Two second timer
-			if (timer2000.isDone()){
+			if (timer2000.isDone() && PlayerTracker.INSTANCE.playersSwing.size() > 0){
 				PacketManager.sendPacketToAllSwing(new NetDataList(Message.LIST_PLAYERS, EntityManager.INSTANCE.getAllPlayers()));				
 			}
 			
 			// Five second timer
-			if (timer5000.isDone()){
+			if (timer5000.isDone() && PlayerTracker.INSTANCE.playersSwing.size() > 0){
+				PacketManager.sendPacketToAllSwing(new NetDataList(Message.LIST_AMOUNT_ENTITIES,  EntityManager.INSTANCE.getCumulativeEntities(false)));
+				PacketManager.sendPacketToAllSwing(new NetDataList(Message.LIST_AMOUNT_TILEENTS,  TileEntityManager.INSTANCE.getCumulativeAmountTileEntities()));
+				
 				updatePlayers();
 				
 				PacketManager.sendPacketToAllSwing(new NetDataList(Message.LIST_PACKETS_OUTBOUND, new ArrayList<DataPacket>( ((ProfilerPacket)ProfilerSection.PACKET_OUTBOUND.getProfiler()).data.values())));

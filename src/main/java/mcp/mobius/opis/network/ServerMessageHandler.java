@@ -127,7 +127,7 @@ public class ServerMessageHandler {
 		
 		else if (maintype == Message.LIST_AMOUNT_TILEENTS){
 			PacketManager.validateAndSend(new NetDataList(Message.LIST_AMOUNT_TILEENTS,  TileEntityManager.INSTANCE.getCumulativeAmountTileEntities()), player);
-		}		
+		}
 		
 		else if (maintype == Message.COMMAND_FILTERING_TRUE){
 			PlayerTracker.INSTANCE.filteredAmount.put(name, true);

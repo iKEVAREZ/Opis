@@ -1,8 +1,8 @@
 package mcp.mobius.opis.network.rcon.nexus;
 
-import io.netty.buffer.ByteBuf;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.handler.codec.ByteToMessageDecoder;
+import io.nettyopis.buffer.ByteBuf;
+import io.nettyopis.channel.ChannelHandlerContext;
+import io.nettyopis.handler.codec.ByteToMessageDecoder;
 
 import java.util.List;
 

@@ -7,9 +7,9 @@ import com.google.common.io.ByteStreams;
 import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.network.PacketBase;
 import mcp.mobius.opis.network.rcon.RConHandler;
-import io.netty.buffer.ByteBuf;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.handler.codec.ByteToMessageDecoder;
+import io.nettyopis.buffer.ByteBuf;
+import io.nettyopis.channel.ChannelHandlerContext;
+import io.nettyopis.handler.codec.ByteToMessageDecoder;
 
 public class RConMsgDecoder extends ByteToMessageDecoder {
 

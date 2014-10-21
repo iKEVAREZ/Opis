@@ -29,7 +29,7 @@ public class ActionAmountEntities implements ActionListener, ItemListener {
 		AmountHolder data       = (AmountHolder)table.getTableData().get(indexData);
 		
 		if (e.getSource() == panel.getBtnKillAll()){
-			PacketManager.sendToServer(new PacketReqData(Message.COMMAND_KILLALL, new SerialString(data.key)));
+			PacketManager.sendToServer(new PacketReqData(Message.COMMAND_KILLALL, new SerialString(data.key.str)));
             PacketManager.sendToServer(new PacketReqData(Message.LIST_AMOUNT_ENTITIES));			
 		}				
 		

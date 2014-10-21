@@ -1,7 +1,7 @@
 package mcp.mobius.opis.network.rcon;
 
-import io.netty.buffer.ByteBuf;
-import io.netty.channel.ChannelHandlerContext;
+import io.nettyopis.buffer.ByteBuf;
+import io.nettyopis.channel.ChannelHandlerContext;
 import net.minecraftforge.common.util.FakePlayer;
 import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.network.PacketBase;
