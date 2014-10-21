@@ -9,7 +9,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
 import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.data.holders.basetypes.SerialLong;
-import mcp.mobius.opis.data.holders.newtypes.PlayerLogging;
+import mcp.mobius.opis.data.holders.newtypes.PlayerStatus;
 import mcp.mobius.opis.data.managers.StringCache;
 import mcp.mobius.opis.gui.overlay.OverlayStatus;
 import mcp.mobius.opis.network.PacketManager;
@@ -106,7 +106,9 @@ public enum PlayerTracker{
 		this.playerDimension.remove(event.player);
 		//this.playersOpis.remove(player);
 		this.playersSwing.remove(event.player);
-		PacketManager.sendPacketToAllSwing(new NetDataValue(Message.PLAYER_ONLINE_CHANGED, new PlayerLogging(event.player.getGameProfile().getName(), false)));
+		PacketManager.sendPacketToAllSwing(new NetDataValue(Message.PLAYER_STATUS_UPDATE, 
+				new PlayerStatus(event.player.getGameProfile().getName(), false, 
+						          event.player.worldObj.provider.dimensionId, (int)event.player.posX, (int)event.player.posY, (int)event.player.posZ)));
 	}
 	
 	@SubscribeEvent
@@ -121,6 +123,8 @@ public enum PlayerTracker{
 		*/
 		
 		StringCache.INSTANCE.syncCache((EntityPlayerMP)event.player);
-		PacketManager.sendPacketToAllSwing(new NetDataValue(Message.PLAYER_ONLINE_CHANGED, new PlayerLogging(event.player.getGameProfile().getName(), true)));		
+		PacketManager.sendPacketToAllSwing(new NetDataValue(Message.PLAYER_STATUS_UPDATE, 
+				new PlayerStatus(event.player.getGameProfile().getName(), true, 
+						          event.player.worldObj.provider.dimensionId, (int)event.player.posX, (int)event.player.posY, (int)event.player.posZ)));
 	}
 }
