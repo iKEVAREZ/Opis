@@ -153,9 +153,6 @@ public enum OpisServerTickHandler{
 				for (EntityPlayerMP player : PlayerTracker.INSTANCE.playersSwing){
 					PacketManager.sendFullUpdate(player);
 				}
-				
-
-				
 			}			
 	}
 

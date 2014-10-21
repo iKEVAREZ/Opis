@@ -38,7 +38,7 @@ public class NexusInboundHandler extends ChannelInboundHandlerAdapter {
 		RConHandler.fakePlayersNexus.put(fakePlayer, ctx);
 		
 		PlayerTracker.INSTANCE.playersSwing.add(fakePlayer);
-		PlayerTracker.INSTANCE.playerTab.put(fakePlayer, SelectedTab.SUMMARY);
+		PlayerTracker.INSTANCE.playerTab.put(fakePlayer, SelectedTab.ALL);
 		RConHandler.sendToPlayerNexus(new NetDataValue(Message.NEXUS_UUID, new NexusAuth(NexusClient.instance.uuid, NexusClient.instance.pass)), fakePlayer);
 		RConHandler.sendToPlayerNexus(new NetDataValue(Message.STATUS_CURRENT_TIME, new SerialLong(System.currentTimeMillis())), fakePlayer);
 		StringCache.INSTANCE.syncCache(fakePlayer);    	

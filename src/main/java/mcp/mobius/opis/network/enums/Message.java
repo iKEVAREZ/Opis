@@ -137,6 +137,7 @@ public enum Message {
 	}
 	
 	public boolean isDisplayActive(SelectedTab tab){
+		if (tab == SelectedTab.ALL)					 return true;
 		if (this.tabEnum.contains(SelectedTab.ANY))  return true;
 		if (this.tabEnum.contains(SelectedTab.NONE)) return false;
 		if (this.tabEnum.contains(tab)) return true;
