@@ -54,6 +54,7 @@ public class NexusClient implements Runnable {
         @Override
         protected void initChannel(SocketChannel ch) throws Exception {
             ch.pipeline().addLast(sslCtx.newHandler(ch.alloc(), NexusClient.instance.host, NexusClient.instance.port));
+            ch.pipeline().addLast(new ReadTimeoutHandler(10));
             ch.pipeline().addLast(new NexusHandshakeDecoder());
             ch.pipeline().addLast(new NexusHandshakeHandler());
             //ch.pipeline().addLast(new JdkZlibDecoder());

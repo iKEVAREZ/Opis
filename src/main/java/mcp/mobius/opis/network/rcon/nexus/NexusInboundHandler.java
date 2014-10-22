@@ -27,6 +27,7 @@ import io.nettyopis.buffer.ByteBuf;
 import io.nettyopis.channel.ChannelHandlerContext;
 import io.nettyopis.channel.ChannelInboundHandlerAdapter;
 import io.nettyopis.handler.codec.ByteToMessageDecoder;
+import io.nettyopis.util.ReferenceCountUtil;
 
 public class NexusInboundHandler extends ChannelInboundHandlerAdapter {
 
@@ -39,19 +40,31 @@ public class NexusInboundHandler extends ChannelInboundHandlerAdapter {
 		
 		PlayerTracker.INSTANCE.playersSwing.add(fakePlayer);
 		PlayerTracker.INSTANCE.playerTab.put(fakePlayer, SelectedTab.ALL);
-		RConHandler.sendToPlayerNexus(new NetDataValue(Message.NEXUS_UUID, new NexusAuth(NexusClient.instance.uuid, NexusClient.instance.pass)), fakePlayer);
+		RConHandler.sendToPlayerNexus(new NetDataValue(Message.NEXUS_UUID, new NexusAuth(NexusClient.instance.uuid, NexusClient.instance.pass, false)), fakePlayer);
 		RConHandler.sendToPlayerNexus(new NetDataValue(Message.STATUS_CURRENT_TIME, new SerialLong(System.currentTimeMillis())), fakePlayer);
 		StringCache.INSTANCE.syncCache(fakePlayer);    	
 
 		modOpis.log.info(String.format("FakePlayer %s with uuid %s created.", ctx.name(), fakeUUID));     	
     }
 	
-    
+    @Override
+    public void channelRead(ChannelHandlerContext ctx, Object msg) {
+        try {
+        	FakePlayer fakePlayer = RConHandler.fakePlayersNexus.inverse().get(ctx);
+        	PacketBase packet     = (PacketBase) msg;
+        	packet.actionServer(null, fakePlayer);
+        } finally {
+            ReferenceCountUtil.release(msg);
+        }    	
+    }    
     
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
         cause.printStackTrace();
+        FakePlayer fakePlayer = RConHandler.fakePlayersNexus.inverse().get(ctx);
+        RConHandler.fakePlayersNexus.remove(fakePlayer);
+        PlayerTracker.INSTANCE.playersSwing.remove(fakePlayer);
+        modOpis.log.info(String.format("Lost connection from %s", fakePlayer.getDisplayName()));
         ctx.close();
     }
-	
 }

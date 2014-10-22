@@ -54,7 +54,7 @@ public class RConHandler {
     }
     
     public static void sendToContext(PacketBase packet, ChannelHandlerContext ctx){
-    	modOpis.log.info(String.format("%s", packet.msg));
+    	//modOpis.log.info(String.format("%s", packet.msg));
     	
     	ByteArrayDataOutput output = ByteStreams.newDataOutput();    	
     	packet.encode(output);

@@ -7,6 +7,7 @@ import io.nettyopis.handler.codec.ByteToMessageDecoder;
 import java.util.List;
 
 import mcp.mobius.opis.network.PacketBase;
+import mcp.mobius.opis.network.packets.client.PacketReqData;
 import mcp.mobius.opis.network.rcon.RConHandler;
 
 import com.google.common.io.ByteStreams;
