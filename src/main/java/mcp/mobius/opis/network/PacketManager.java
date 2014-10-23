@@ -9,6 +9,7 @@ import io.netty.channel.SimpleChannelInboundHandler;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.EnumMap;
 
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
@@ -257,12 +258,20 @@ public class PacketManager
 		channels.get(SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.ALL);
 		channels.get(SERVER).writeAndFlush(packet);
 		
-		for (FakePlayer fakePlayer : RConHandler.fakePlayersRcon.keySet()){
-			RConHandler.sendToPlayerRCon(packet, fakePlayer);
-		}	
+		try{
+			for (FakePlayer fakePlayer : RConHandler.fakePlayersRcon.keySet()){
+				RConHandler.sendToPlayerRCon(packet, fakePlayer);
+			}
+		} catch (ConcurrentModificationException e){
+			
+		}
 		
-		for (FakePlayer fakePlayer : RConHandler.fakePlayersNexus.keySet()){
-			RConHandler.sendToPlayerNexus(packet, fakePlayer);
+		try{
+			for (FakePlayer fakePlayer : RConHandler.fakePlayersNexus.keySet()){
+				RConHandler.sendToPlayerNexus(packet, fakePlayer);
+			}
+		} catch (ConcurrentModificationException e){
+			
 		}		
     }
     

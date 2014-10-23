@@ -18,7 +18,7 @@ public class NexusData  implements ISerializable {
 	public SerialInt  amountTileEnts;
 	public SerialInt  amountEntities;
 	public SerialInt  amountPlayers;
-	
+	long              timestamp;
 		
 	
 	public NexusData(SerialLong Packet_Outbound, SerialLong Packet_Inbound, SerialInt Chunk_Forced, SerialInt Chunk_Loaded,
@@ -32,6 +32,7 @@ public class NexusData  implements ISerializable {
 		this.amountTileEnts = Amount_TileEnts;
 		this.amountEntities = Amount_Entities;
 		this.amountPlayers  = Amount_Players;
+		this.timestamp      = System.currentTimeMillis();
 	}
 	
 	
@@ -45,6 +46,7 @@ public class NexusData  implements ISerializable {
 		this.amountTileEnts.writeToStream(stream);
 		this.amountEntities.writeToStream(stream);
 		this.amountPlayers.writeToStream(stream);
+		stream.writeLong(this.timestamp);
 	}
 
 	public static  NexusData readFromStream(ByteArrayDataInput stream){

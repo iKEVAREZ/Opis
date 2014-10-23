@@ -13,17 +13,20 @@ public class NexusAuth implements ISerializable {
 	SerialString uuid;
 	SerialString passphrase;
 	boolean      reconnect;
+	long         timestamp;
 	
 	public NexusAuth(String uuid, String passphrase, boolean reconnect){
 		this.uuid        = new SerialString(uuid);
 		this.passphrase  = new SerialString(passphrase);
 		this.reconnect   = reconnect;
+		this.timestamp   = System.currentTimeMillis();
 	}
 	
 	public NexusAuth(SerialString uuid, SerialString passphrase, boolean reconnect){
 		this.uuid        = uuid;
 		this.passphrase  = passphrase;
-		this.reconnect   = reconnect;		
+		this.reconnect   = reconnect;
+		this.timestamp   = System.currentTimeMillis();
 	}
 	
 	
@@ -32,6 +35,7 @@ public class NexusAuth implements ISerializable {
 		this.uuid.writeToStream(stream);
 		this.passphrase.writeToStream(stream);
 		stream.writeBoolean(reconnect);
+		stream.writeLong(this.timestamp);
 	}
  
 	public static  NexusAuth readFromStream(ByteArrayDataInput stream){
