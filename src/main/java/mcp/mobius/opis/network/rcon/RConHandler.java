@@ -1,5 +1,7 @@
 package mcp.mobius.opis.network.rcon;
 
+import java.lang.ref.WeakReference;
+
 import javax.net.ssl.SSLException;
 
 import io.nettyopis.buffer.ByteBuf;
@@ -28,6 +30,9 @@ public class RConHandler {
 	public static BiMap<Byte, Class> packetTypes = HashBiMap.create();
 	public static BiMap<FakePlayer, ChannelHandlerContext> fakePlayersRcon  = HashBiMap.create();
 	public static BiMap<FakePlayer, ChannelHandlerContext> fakePlayersNexus = HashBiMap.create();
+	
+	public static String lastError = null;
+	public static WeakReference<ChannelHandlerContext> lastContext = null; 
 	
 	static {
 		packetTypes.put((byte)0, PacketReqChunks.class);
@@ -90,6 +95,12 @@ public class RConHandler {
     }
     
     public static void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
+    	if (cause.getMessage().equals(RConHandler.lastError) && ctx.equals(RConHandler.lastContext.get()))
+    		return;
+    	
+    	RConHandler.lastError   = cause.getMessage();
+    	RConHandler.lastContext = new WeakReference<ChannelHandlerContext>(ctx); 
+    	
         cause.printStackTrace();
         
         FakePlayer fakePlayer = null;
