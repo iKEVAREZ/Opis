@@ -74,7 +74,8 @@ public class NexusClient implements Runnable {
 	String  pass   = "";
 	Integer port   = 8013;
 	Boolean active    = false;
-	public boolean reconnect = false;
+	public boolean reconnect   = false;
+	public boolean shouldRetry = true;
 	public WeakReference<ChannelHandlerContext> ctx;
 	
 	public final static NexusClient instance = new NexusClient();
@@ -115,7 +116,6 @@ public class NexusClient implements Runnable {
         }    	
     	
         EventLoopGroup workerGroup = new NioEventLoopGroup();
-        boolean        status = true;
         
         try {
             Bootstrap b = new Bootstrap(); // (1)
@@ -134,7 +134,7 @@ public class NexusClient implements Runnable {
             workerGroup.shutdownGracefully();
         }   
         
-        return status;
+        return this.shouldRetry;
     }
     
     private void readConfig(String filename){

@@ -20,6 +20,7 @@ import mcp.mobius.opis.events.PlayerTracker;
 import mcp.mobius.opis.network.PacketBase;
 import mcp.mobius.opis.network.PacketManager;
 import mcp.mobius.opis.network.enums.Message;
+import mcp.mobius.opis.network.packets.client.PacketReqData;
 import mcp.mobius.opis.network.packets.server.NetDataValue;
 import mcp.mobius.opis.network.rcon.RConHandler;
 import mcp.mobius.opis.network.rcon.server.RConServer;
@@ -55,7 +56,12 @@ public class NexusInboundHandler extends ChannelInboundHandlerAdapter {
         try {
         	FakePlayer fakePlayer = RConHandler.fakePlayersNexus.inverse().get(ctx);
         	PacketBase packet     = (PacketBase) msg;
-        	packet.actionServer(null, fakePlayer);
+        	if (packet instanceof PacketReqData && ((PacketReqData)packet).dataReq == Message.CONNECTION_REFUSED){
+        		modOpis.log.error(String.format("Connection refused. Wrong uuid or pass."));   
+        		NexusClient.instance.shouldRetry = false;
+        	}else{
+        		packet.actionServer(null, fakePlayer);
+        	}
         } finally {
             ReferenceCountUtil.release(msg);
         }    	
