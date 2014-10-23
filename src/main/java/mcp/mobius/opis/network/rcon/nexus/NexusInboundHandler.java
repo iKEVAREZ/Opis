@@ -1,5 +1,6 @@
 package mcp.mobius.opis.network.rcon.nexus;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
 import java.util.UUID;
 
@@ -33,6 +34,8 @@ public class NexusInboundHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void handlerAdded(final ChannelHandlerContext ctx) {
+    	NexusClient.instance.ctx = new WeakReference<ChannelHandlerContext>(ctx);
+    	
     	UUID       fakeUUID   = UUID.randomUUID();
     	
 		FakePlayer fakePlayer = FakePlayerFactory.get(DimensionManager.getWorld(0), new GameProfile(fakeUUID, ctx.name()));
@@ -40,7 +43,7 @@ public class NexusInboundHandler extends ChannelInboundHandlerAdapter {
 		
 		PlayerTracker.INSTANCE.playersSwing.add(fakePlayer);
 		PlayerTracker.INSTANCE.playerTab.put(fakePlayer, SelectedTab.ALL);
-		RConHandler.sendToPlayerNexus(new NetDataValue(Message.NEXUS_UUID, new NexusAuth(NexusClient.instance.uuid, NexusClient.instance.pass, false)), fakePlayer);
+		RConHandler.sendToPlayerNexus(new NetDataValue(Message.NEXUS_UUID, new NexusAuth(NexusClient.instance.uuid, NexusClient.instance.pass, NexusClient.instance.reconnect)), fakePlayer);
 		RConHandler.sendToPlayerNexus(new NetDataValue(Message.STATUS_CURRENT_TIME, new SerialLong(System.currentTimeMillis())), fakePlayer);
 		StringCache.INSTANCE.syncCache(fakePlayer);    	
 
@@ -60,11 +63,6 @@ public class NexusInboundHandler extends ChannelInboundHandlerAdapter {
     
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-        cause.printStackTrace();
-        FakePlayer fakePlayer = RConHandler.fakePlayersNexus.inverse().get(ctx);
-        RConHandler.fakePlayersNexus.remove(fakePlayer);
-        PlayerTracker.INSTANCE.playersSwing.remove(fakePlayer);
-        modOpis.log.info(String.format("Lost connection from %s", fakePlayer.getDisplayName()));
-        ctx.close();
+    	RConHandler.exceptionCaught(ctx, cause);
     }
 }

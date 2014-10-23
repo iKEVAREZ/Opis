@@ -24,6 +24,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.ref.WeakReference;
 import java.security.cert.CertificateException;
 import java.util.Properties;
 
@@ -54,7 +55,7 @@ public class NexusClient implements Runnable {
         @Override
         protected void initChannel(SocketChannel ch) throws Exception {
             ch.pipeline().addLast(sslCtx.newHandler(ch.alloc(), NexusClient.instance.host, NexusClient.instance.port));
-            ch.pipeline().addLast(new ReadTimeoutHandler(10));
+            //ch.pipeline().addLast(new ReadTimeoutHandler(10));
             ch.pipeline().addLast(new NexusHandshakeDecoder());
             ch.pipeline().addLast(new NexusHandshakeHandler());
             //ch.pipeline().addLast(new JdkZlibDecoder());
@@ -72,7 +73,9 @@ public class NexusClient implements Runnable {
 	String  uuid   = "";
 	String  pass   = "";
 	Integer port   = 8013;
-	Boolean active = false;
+	Boolean active    = false;
+	public boolean reconnect = false;
+	public WeakReference<ChannelHandlerContext> ctx;
 	
 	public final static NexusClient instance = new NexusClient();
 	
@@ -87,7 +90,22 @@ public class NexusClient implements Runnable {
     		return;
     	}
     	
-    	modOpis.log.info(String.format("Connecting to OpixNexus %s:%s", this.host, this.port));
+    	while (this.connect()){
+    		try {
+				Thread.sleep(10000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+    	};
+    	
+    	
+    }   	
+
+    private boolean connect(){
+    	if (this.reconnect)
+    		modOpis.log.info(String.format("Reconnecting to OpixNexus %s:%s", this.host, this.port));
+    	else
+    		modOpis.log.info(String.format("Connecting to OpixNexus %s:%s", this.host, this.port));
     	
         SslContext sslCtx = null;
         try {
@@ -97,7 +115,8 @@ public class NexusClient implements Runnable {
         }    	
     	
         EventLoopGroup workerGroup = new NioEventLoopGroup();
-
+        boolean        status = true;
+        
         try {
             Bootstrap b = new Bootstrap(); // (1)
             b.group(workerGroup); // (2)
@@ -110,14 +129,14 @@ public class NexusClient implements Runnable {
             f.channel().closeFuture().sync();
         } catch (Exception e){
         	modOpis.log.error("Error while connecting to Nexus Server");
-			e.printStackTrace();            
+			e.printStackTrace();
         } finally {
             workerGroup.shutdownGracefully();
-        }    	
-    	
-    	
-    }   	
-
+        }   
+        
+        return status;
+    }
+    
     private void readConfig(String filename){
         if (!new File(filename).exists())
             writeConfig(filename);

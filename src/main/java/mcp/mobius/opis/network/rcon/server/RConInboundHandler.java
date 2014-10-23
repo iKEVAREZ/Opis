@@ -59,12 +59,7 @@ class RConInboundHandler extends ChannelInboundHandlerAdapter{
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-        cause.printStackTrace();
-        FakePlayer fakePlayer = RConHandler.fakePlayersRcon.inverse().get(ctx);
-        RConHandler.fakePlayersRcon.remove(fakePlayer);
-        PlayerTracker.INSTANCE.playersSwing.remove(fakePlayer);
-        modOpis.log.info(String.format("Lost connection from %s", fakePlayer.getDisplayName()));
-        ctx.close();
+    	RConHandler.exceptionCaught(ctx, cause);
     }		
 }
 

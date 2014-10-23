@@ -1,9 +1,14 @@
 package mcp.mobius.opis.network.rcon;
 
+import javax.net.ssl.SSLException;
+
 import io.nettyopis.buffer.ByteBuf;
+import io.nettyopis.channel.ChannelFuture;
+import io.nettyopis.channel.ChannelFutureListener;
 import io.nettyopis.channel.ChannelHandlerContext;
 import net.minecraftforge.common.util.FakePlayer;
 import mcp.mobius.opis.modOpis;
+import mcp.mobius.opis.events.PlayerTracker;
 import mcp.mobius.opis.network.PacketBase;
 import mcp.mobius.opis.network.packets.client.PacketReqChunks;
 import mcp.mobius.opis.network.packets.client.PacketReqData;
@@ -11,6 +16,8 @@ import mcp.mobius.opis.network.packets.server.NetDataCommand;
 import mcp.mobius.opis.network.packets.server.NetDataList;
 import mcp.mobius.opis.network.packets.server.NetDataValue;
 import mcp.mobius.opis.network.packets.server.PacketChunks;
+import mcp.mobius.opis.network.rcon.nexus.NexusClient;
+import mcp.mobius.opis.network.rcon.nexus.NexusInboundHandler;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
@@ -53,8 +60,9 @@ public class RConHandler {
     	sendToContext(packet, ctx);
     }
     
-    public static void sendToContext(PacketBase packet, ChannelHandlerContext ctx){
+    public static void sendToContext(PacketBase packet, final ChannelHandlerContext ctx){
     	//modOpis.log.info(String.format("%s", packet.msg));
+    	
     	
     	ByteArrayDataOutput output = ByteStreams.newDataOutput();    	
     	packet.encode(output);
@@ -64,8 +72,15 @@ public class RConHandler {
     	buf.writeInt(data.length);
     	buf.writeByte(RConHandler.packetTypes.inverse().get(packet.getClass()));
     	buf.writeBytes(data);
-    	ctx.write(buf);
-    	ctx.flush();
+    	ChannelFuture f = ctx.writeAndFlush(buf);
+    	f.addListener(new ChannelFutureListener(){
+			@Override
+			public void operationComplete(ChannelFuture arg0) throws Exception {
+				if (arg0.cause() != null){
+					RConHandler.exceptionCaught(ctx, arg0.cause());
+				}
+			}
+    	});
     	
     	//modOpis.log.info(String.format("%s", packet.msg));
     } 	
@@ -73,5 +88,34 @@ public class RConHandler {
     public static boolean isPriviledge(FakePlayer player){
     	return fakePlayersRcon.containsKey(player) || fakePlayersNexus.containsKey(player);
     }
+    
+    public static void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
+        cause.printStackTrace();
+        
+        FakePlayer fakePlayer = null;
+        
+        if (RConHandler.fakePlayersNexus.inverse().containsKey(ctx)){
+	        fakePlayer = RConHandler.fakePlayersNexus.inverse().get(ctx);
+	        RConHandler.fakePlayersNexus.remove(fakePlayer);
+        }
+        
+        if (RConHandler.fakePlayersRcon.inverse().containsKey(ctx)){
+	        fakePlayer = RConHandler.fakePlayersRcon.inverse().get(ctx);
+	        RConHandler.fakePlayersRcon.remove(fakePlayer);
+        }        
+        
+        if (fakePlayer != null){
+        	PlayerTracker.INSTANCE.playersSwing.remove(fakePlayer);
+        	modOpis.log.info(String.format("Lost connection from %s", fakePlayer.getDisplayName()));
+        } else {
+        	modOpis.log.info(String.format("Lost connection"));
+        }
+        
+        if (NexusClient.instance.ctx.get().equals(ctx)){
+        	NexusClient.instance.reconnect = true;
+        }
+        
+        ctx.close();
+    }    
     
 }
