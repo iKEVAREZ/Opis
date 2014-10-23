@@ -258,21 +258,13 @@ public class PacketManager
 		channels.get(SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.ALL);
 		channels.get(SERVER).writeAndFlush(packet);
 		
-		try{
-			for (FakePlayer fakePlayer : RConHandler.fakePlayersRcon.keySet()){
-				RConHandler.sendToPlayerRCon(packet, fakePlayer);
-			}
-		} catch (ConcurrentModificationException e){
-			
+		for (Object fakePlayer : RConHandler.fakePlayersRcon.keySet().toArray()){
+			RConHandler.sendToPlayerRCon(packet, (FakePlayer)fakePlayer);
 		}
 		
-		try{
-			for (FakePlayer fakePlayer : RConHandler.fakePlayersNexus.keySet()){
-				RConHandler.sendToPlayerNexus(packet, fakePlayer);
-			}
-		} catch (ConcurrentModificationException e){
-			
-		}		
+		for (Object fakePlayer : RConHandler.fakePlayersNexus.keySet().toArray()){
+			RConHandler.sendToPlayerNexus(packet, (FakePlayer)fakePlayer);
+		}
     }
     
     public static Packet toMcPacket(PacketBase packet)
