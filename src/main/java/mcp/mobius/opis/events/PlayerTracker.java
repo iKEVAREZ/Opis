@@ -15,6 +15,7 @@ import mcp.mobius.opis.gui.overlay.OverlayStatus;
 import mcp.mobius.opis.network.PacketManager;
 import mcp.mobius.opis.network.enums.AccessLevel;
 import mcp.mobius.opis.network.enums.Message;
+import mcp.mobius.opis.network.enums.PlayerEv;
 import mcp.mobius.opis.network.packets.server.NetDataValue;
 import mcp.mobius.opis.network.rcon.RConHandler;
 import mcp.mobius.opis.network.rcon.server.RConServer;
@@ -107,7 +108,7 @@ public enum PlayerTracker{
 		//this.playersOpis.remove(player);
 		this.playersSwing.remove(event.player);
 		PacketManager.sendPacketToAllSwing(new NetDataValue(Message.PLAYER_STATUS_UPDATE, 
-				new PlayerStatus(event.player.getGameProfile().getName(), false, 
+				new PlayerStatus(event.player.getGameProfile().getName(), PlayerEv.LOGOUT, 
 						          event.player.worldObj.provider.dimensionId, (int)event.player.posX, (int)event.player.posY, (int)event.player.posZ)));
 	}
 	
@@ -124,7 +125,7 @@ public enum PlayerTracker{
 		
 		StringCache.INSTANCE.syncCache((EntityPlayerMP)event.player);
 		PacketManager.sendPacketToAllSwing(new NetDataValue(Message.PLAYER_STATUS_UPDATE, 
-				new PlayerStatus(event.player.getGameProfile().getName(), true, 
+				new PlayerStatus(event.player.getGameProfile().getName(), PlayerEv.LOGIN, 
 						          event.player.worldObj.provider.dimensionId, (int)event.player.posX, (int)event.player.posY, (int)event.player.posZ)));
 	}
 }

@@ -2,6 +2,7 @@ package mcp.mobius.opis.swing.panels.tracking;
 
 import mcp.mobius.opis.api.ITabPanel;
 import mcp.mobius.opis.data.holders.newtypes.DataEntity;
+import mcp.mobius.opis.data.holders.newtypes.PlayerStatus;
 import mcp.mobius.opis.network.PacketBase;
 import mcp.mobius.opis.network.enums.AccessLevel;
 import mcp.mobius.opis.network.enums.Message;
@@ -73,11 +74,11 @@ public class PanelPlayers extends JPanelMsgHandler implements ITabPanel{
 			int               row   = this.getTable().clearTable(DataEntity.class);
 
 			for (Object o : rawdata.array){
-				DataEntity player = (DataEntity)o;
+				PlayerStatus player = (PlayerStatus)o;
 				model.addRow(new Object[]  {
 					player.name,
-					player.pos.dim,
-					String.format("[ %4d %4d %4d ]", 	player.pos.x, player.pos.y, player.pos.z),  
+					player.dim,
+					String.format("[ %4d %4d %4d ]", 	player.x, player.y, player.z),  
 					 });
 			}
 			

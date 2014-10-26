@@ -88,12 +88,6 @@ public enum OpisServerTickHandler{
 					}
 				}
 				
-				ArrayList<DataThread> threads = new ArrayList<DataThread>();
-				for (Thread t : Thread.getAllStackTraces().keySet()){
-					threads.add(new DataThread().fill(t));
-				}
-				PacketManager.sendPacketToAllSwing(new NetDataList(Message.LIST_THREADS, threads));
-				
 				// Dimension data update.
 				ArrayList<DataDimension> dimData = new ArrayList<DataDimension>();
 				for (int dim : DimensionManager.getIDs()){
@@ -113,6 +107,12 @@ public enum OpisServerTickHandler{
 			
 			// Two second timer
 			if (timer2000.isDone() && PlayerTracker.INSTANCE.playersSwing.size() > 0){
+				ArrayList<DataThread> threads = new ArrayList<DataThread>();
+				for (Thread t : Thread.getAllStackTraces().keySet()){
+					threads.add(new DataThread().fill(t));
+				}
+				PacketManager.sendPacketToAllSwing(new NetDataList(Message.LIST_THREADS, threads));				
+				
 				PacketManager.sendPacketToAllSwing(new NetDataList(Message.LIST_PLAYERS, EntityManager.INSTANCE.getAllPlayers()));				
 			}
 			

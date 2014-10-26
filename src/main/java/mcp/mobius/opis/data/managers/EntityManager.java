@@ -20,9 +20,11 @@ import mcp.mobius.opis.data.holders.basetypes.CoordinatesChunk;
 import mcp.mobius.opis.data.holders.newtypes.DataEntity;
 import mcp.mobius.opis.data.holders.newtypes.DataEntityPerClass;
 import mcp.mobius.opis.data.holders.newtypes.DataTiming;
+import mcp.mobius.opis.data.holders.newtypes.PlayerStatus;
 import mcp.mobius.opis.data.profilers.ProfilerEntityUpdate;
 import mcp.mobius.opis.helpers.Teleport;
 import mcp.mobius.opis.network.PacketManager;
+import mcp.mobius.opis.network.enums.PlayerEv;
 
 public enum EntityManager {
 	INSTANCE;
@@ -268,14 +270,18 @@ public enum EntityManager {
 		return nkilled;		
 	}
 	
-	public ArrayList<DataEntity> getAllPlayers(){
+	public ArrayList<PlayerStatus> getAllPlayers(){
 		//List players = MinecraftServer.getServerConfigurationManager(MinecraftServer.getServer()).playerEntityList;
 		List players = MinecraftServer.getServer().getConfigurationManager().playerEntityList;
 		
-		ArrayList<DataEntity> outList = new ArrayList<DataEntity>();
+		ArrayList<PlayerStatus> outList = new ArrayList<PlayerStatus>();
 		
-		for (Object p : players)
-			outList.add(new DataEntity().fill((EntityPlayer) p));
+		for (Object o : players){
+			//outList.add(new DataEntity().fill((EntityPlayer) p));
+			EntityPlayer p = (EntityPlayer) o;
+			outList.add(new PlayerStatus(p.getGameProfile().getName(), PlayerEv.NONE, 
+			          p.worldObj.provider.dimensionId, (int)p.posX, (int)p.posY, (int)p.posZ));
+		}
 		
 		return outList;
 	}
