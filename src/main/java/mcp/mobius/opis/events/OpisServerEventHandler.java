@@ -1,7 +1,14 @@
 package mcp.mobius.opis.events;
 
+import mcp.mobius.opis.data.holders.newtypes.PlayerStatus;
+import mcp.mobius.opis.network.PacketManager;
+import mcp.mobius.opis.network.enums.Message;
+import mcp.mobius.opis.network.enums.PlayerEv;
+import mcp.mobius.opis.network.packets.server.NetDataValue;
 import mcp.mobius.opis.network.rcon.nexus.NexusClient;
 import mcp.mobius.opis.network.rcon.server.RConServer;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
@@ -33,6 +40,15 @@ public class OpisServerEventHandler {
 		
 	}
 	
+	@SubscribeEvent
+	public void onPlayerDeath(LivingDeathEvent event){
+		if (event.entityLiving instanceof EntityPlayer){
+			EntityPlayer p = (EntityPlayer)event.entityLiving;
+			PacketManager.sendPacketToAllSwing(new NetDataValue(Message.PLAYER_STATUS_UPDATE, 
+					new PlayerStatus(p.getGameProfile().getName(), PlayerEv.DEATH, 
+							          p.worldObj.provider.dimensionId, (int)p.posX, (int)p.posY, (int)p.posZ)));			
+		}
+	}	
 	
 	/*
 	@SubscribeEvent

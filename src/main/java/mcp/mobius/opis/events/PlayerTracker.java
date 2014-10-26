@@ -20,9 +20,11 @@ import mcp.mobius.opis.network.packets.server.NetDataValue;
 import mcp.mobius.opis.network.rcon.RConHandler;
 import mcp.mobius.opis.network.rcon.server.RConServer;
 import mcp.mobius.opis.swing.SelectedTab;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.util.FakePlayer;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
 
 //public class PlayerTracker implements IPlayerTracker{
 public enum PlayerTracker{
@@ -128,4 +130,5 @@ public enum PlayerTracker{
 				new PlayerStatus(event.player.getGameProfile().getName(), PlayerEv.LOGIN, 
 						          event.player.worldObj.provider.dimensionId, (int)event.player.posX, (int)event.player.posY, (int)event.player.posZ)));
 	}
+
 }
