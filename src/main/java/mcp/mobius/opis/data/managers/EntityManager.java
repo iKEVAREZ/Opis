@@ -135,7 +135,7 @@ public enum EntityManager {
 			Map<String, Integer> count = ((MonitoredEntityList)world.loadedEntityList).getCount();
 			for (String key : count.keySet())
 				if (count.get(key) > 0)
-					cumData.add(new AmountHolder(key, count.get(key)));
+					cumData.add(new AmountHolder(key, count.get(key), "Plop"));
 		}
 		return cumData;
 	}

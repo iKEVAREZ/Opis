@@ -140,15 +140,6 @@ public enum OpisServerTickHandler{
 					System.out.printf("[ %d ] %d %d\n", data.id, data.amount, data.size);
 				}
 				*/
-				
-				for (int dim : DimensionManager.getIDs()){
-					World world = DimensionManager.getWorld(dim);
-					if (world == null) continue;
-
-					((MonitoredEntityList)(world.loadedEntityList)).printCount();
-					((MonitoredTileList)(world.loadedTileEntityList)).printCount();
-				}
-				modOpis.log.info("---");
 			}
 			
 			profilerUpdateTickCounter++;

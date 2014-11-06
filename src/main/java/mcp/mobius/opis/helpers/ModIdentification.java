@@ -72,15 +72,7 @@ public class ModIdentification {
 	}
 
     public static String getStackName(int id, int meta){
-		ItemStack is;
-		String name  = String.format("te.%d.%d", id, meta);
-		
-		try{
-			is = new ItemStack(Block.getBlockById(id), 1, meta);
-			name  = is.getDisplayName();
-		}  catch (Exception e) {	}
-		
-		return name;
+    	return getStackName(Block.getBlockById(id), meta);
     }
     
     public static String getStackName(Block block, int meta){
@@ -96,14 +88,20 @@ public class ModIdentification {
     }    
     
     public static String getModStackName(int id, int meta){
+    	return getModStackName(Block.getBlockById(id), meta);
+    }  
+    
+    public static String getModStackName(Block block, int meta){
 		ItemStack is;
 		String modID = "<UNKNOWN>";
 		
 		try{
-			is = new ItemStack(Block.getBlockById(id), 1, meta);
+			is = new ItemStack(block, 1, meta);
 			modID = nameFromStack(is);
 		}  catch (Exception e) {	}
 		
 		return modID;
-    }  
+    }      
+    
+    
 }

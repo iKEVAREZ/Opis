@@ -8,6 +8,8 @@ import java.util.HashSet;
 import java.util.Map;
 
 import com.google.common.collect.HashBasedTable;
+import com.google.common.collect.Table;
+import com.google.common.collect.Table.Cell;
 
 import mcp.mobius.mobiuscore.monitors.MonitoredEntityList;
 import mcp.mobius.mobiuscore.monitors.MonitoredTileList;
@@ -22,6 +24,7 @@ import mcp.mobius.opis.data.holders.newtypes.DataTileEntity;
 import mcp.mobius.opis.data.holders.newtypes.DataTiming;
 import mcp.mobius.opis.data.holders.stats.StatsChunk;
 import mcp.mobius.opis.data.profilers.ProfilerTileEntityUpdate;
+import mcp.mobius.opis.helpers.ModIdentification;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
@@ -170,10 +173,26 @@ public enum TileEntityManager {
 			World world = DimensionManager.getWorld(dim);
 			if (world == null) continue;		
 		
-			Map<String, Integer> count = ((MonitoredTileList)world.loadedTileEntityList).getCount();
-			for (String key : count.keySet())
-				if (count.get(key) > 0)
-					cumData.add(new AmountHolder(key, count.get(key)));
+			Table<Block, Integer, Integer> count = ((MonitoredTileList)world.loadedTileEntityList).getCount();
+			Table<String, String, Integer> reducedCount = HashBasedTable.create();
+			
+			for (Cell<Block, Integer, Integer> c : count.cellSet()){
+				if (c.getValue() > 0){
+					String stackName = ModIdentification.getStackName(c.getRowKey(), c.getColumnKey());
+					String modName   = ModIdentification.getModStackName(c.getRowKey(), c.getColumnKey());
+
+					try{
+						reducedCount.put(stackName, modName, reducedCount.get(stackName, modName) + c.getValue());
+					} catch (Exception e){
+						reducedCount.put(stackName, modName, c.getValue());
+					}
+				}
+			}
+			
+			for (Cell<String, String, Integer> c : reducedCount.cellSet()){
+				cumData.add(new AmountHolder(c.getRowKey(), c.getValue(), c.getColumnKey()));
+			}
+			
 		}
 		return cumData;		
 	}

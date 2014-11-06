@@ -61,7 +61,7 @@ public class PanelAmountTileEnts extends JPanelMsgHandler implements ITabPanel{
 
 			for (Object o : rawdata.array){
 				AmountHolder entity = (AmountHolder)o;
-				model.addRow(new Object[] {entity.key, "Unknown", entity.value});
+				model.addRow(new Object[] {entity.key, entity.data, entity.value});
 			}			
 			
 			this.getTable().dataUpdated(row);
