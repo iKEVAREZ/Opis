@@ -83,6 +83,18 @@ public class ModIdentification {
 		return name;
     }
     
+    public static String getStackName(Block block, int meta){
+		ItemStack is;
+		String name  = String.format("te.%s.%d", block, meta);
+		
+		try{
+			is = new ItemStack(block, 1, meta);
+			name  = is.getDisplayName();
+		}  catch (Exception e) {	}
+		
+		return name;
+    }    
+    
     public static String getModStackName(int id, int meta){
 		ItemStack is;
 		String modID = "<UNKNOWN>";

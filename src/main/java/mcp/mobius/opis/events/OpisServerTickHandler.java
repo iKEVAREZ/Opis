@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesChunk;
@@ -34,6 +35,8 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
+import mcp.mobius.mobiuscore.monitors.MonitoredEntityList;
+import mcp.mobius.mobiuscore.monitors.MonitoredTileList;
 import mcp.mobius.mobiuscore.profiler.ProfilerSection;
 
 public enum OpisServerTickHandler{
@@ -137,6 +140,15 @@ public enum OpisServerTickHandler{
 					System.out.printf("[ %d ] %d %d\n", data.id, data.amount, data.size);
 				}
 				*/
+				
+				for (int dim : DimensionManager.getIDs()){
+					World world = DimensionManager.getWorld(dim);
+					if (world == null) continue;
+
+					((MonitoredEntityList)(world.loadedEntityList)).printCount();
+					((MonitoredTileList)(world.loadedTileEntityList)).printCount();
+				}
+				modOpis.log.info("---");
 			}
 			
 			profilerUpdateTickCounter++;

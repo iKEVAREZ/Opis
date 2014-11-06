@@ -3,6 +3,7 @@ package mcp.mobius.opis.swing.panels.tracking;
 import java.util.HashMap;
 
 import mcp.mobius.opis.api.ITabPanel;
+import mcp.mobius.opis.data.holders.basetypes.AmountHolder;
 import mcp.mobius.opis.data.holders.newtypes.DataBlockTileEntityPerClass;
 import mcp.mobius.opis.helpers.ModIdentification;
 import mcp.mobius.opis.network.PacketBase;
@@ -55,29 +56,15 @@ public class PanelAmountTileEnts extends JPanelMsgHandler implements ITabPanel{
 			
 			this.getTable().setTableData(rawdata.array);
 			
-			DefaultTableModel model = table.getModel();
-			int               row   = this.getTable().clearTable(DataBlockTileEntityPerClass.class);	
-			
-			HashMap<String, DataBlockTileEntityPerClass> cumData = new HashMap<String, DataBlockTileEntityPerClass>();
+			DefaultTableModel model = this.getTable().getModel();
+			int               row   = this.getTable().clearTable(AmountHolder.class);	
 
 			for (Object o : rawdata.array){
-				DataBlockTileEntityPerClass data = (DataBlockTileEntityPerClass)o;
-				String name  = ModIdentification.getStackName(data.id, data.meta);
-				
-				if (!cumData.containsKey(name))
-					cumData.put(name, new DataBlockTileEntityPerClass(data.id, data.meta));
-				
-				cumData.get(name).add(data.amount, data.update.timing);
-			}
+				AmountHolder entity = (AmountHolder)o;
+				model.addRow(new Object[] {entity.key, "Unknown", entity.value});
+			}			
 			
-			for (String s : cumData.keySet()){
-				String name  = s;
-				String modID = ModIdentification.getModStackName(cumData.get(s).id, cumData.get(s).meta);				
-				model.addRow(new Object[] {name, modID, cumData.get(s).amount});
-			}
-
-			this.getTable().dataUpdated(row);			
-			
+			this.getTable().dataUpdated(row);
 			break;
 		}
 		default:

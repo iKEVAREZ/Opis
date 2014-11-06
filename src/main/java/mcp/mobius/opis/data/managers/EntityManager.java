@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
@@ -25,6 +26,7 @@ import mcp.mobius.opis.data.profilers.ProfilerEntityUpdate;
 import mcp.mobius.opis.helpers.Teleport;
 import mcp.mobius.opis.network.PacketManager;
 import mcp.mobius.opis.network.enums.PlayerEv;
+import mcp.mobius.mobiuscore.monitors.MonitoredEntityList;
 
 public enum EntityManager {
 	INSTANCE;
@@ -125,27 +127,16 @@ public enum EntityManager {
 	/* Returns a hashmap with the entity name and amount of it on the server */
 	public ArrayList<AmountHolder> getCumulativeEntities(boolean filtered){
 		ArrayList<AmountHolder>  cumData  = new ArrayList<AmountHolder>();
-		HashMap<String, Integer> entities = new HashMap<String, Integer>();
-		
+
 		for (int dim : DimensionManager.getIDs()){
 			World world = DimensionManager.getWorld(dim);
-			if (world == null) continue;
-			
-			for (Object o : world.loadedEntityList.toArray()){
-				Entity ent = (Entity)o;
-				//String name = ent.getClass().getName();
-				String name = getEntityName(ent, filtered);
-				
-				if (!entities.containsKey(name))
-					entities.put(name, 0);
-				
-				entities.put(name, entities.get(name) + 1);
-			}
-		}		
+			if (world == null) continue;		
 		
-		for (String key : entities.keySet())
-			cumData.add(new AmountHolder(key, entities.get(key)));
-		
+			Map<String, Integer> count = ((MonitoredEntityList)world.loadedEntityList).getCount();
+			for (String key : count.keySet())
+				if (count.get(key) > 0)
+					cumData.add(new AmountHolder(key, count.get(key)));
+		}
 		return cumData;
 	}
 	

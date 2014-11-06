@@ -5,11 +5,15 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 
 import com.google.common.collect.HashBasedTable;
 
+import mcp.mobius.mobiuscore.monitors.MonitoredEntityList;
+import mcp.mobius.mobiuscore.monitors.MonitoredTileList;
 import mcp.mobius.mobiuscore.profiler.ProfilerSection;
 import mcp.mobius.opis.modOpis;
+import mcp.mobius.opis.data.holders.basetypes.AmountHolder;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesBlock;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesChunk;
 import mcp.mobius.opis.data.holders.newtypes.DataBlockTileEntity;
@@ -159,24 +163,19 @@ public enum TileEntityManager {
 		return orphans;
 	}
 	
-	public ArrayList<DataBlockTileEntityPerClass> getCumulativeAmountTileEntities(){
-		HashBasedTable<Integer, Integer, DataBlockTileEntityPerClass> data = HashBasedTable.create();
+	public ArrayList<AmountHolder> getCumulativeAmountTileEntities(){
+		ArrayList<AmountHolder>  cumData  = new ArrayList<AmountHolder>();
+
+		for (int dim : DimensionManager.getIDs()){
+			World world = DimensionManager.getWorld(dim);
+			if (world == null) continue;		
 		
-		for (WorldServer world : DimensionManager.getWorlds()){
-			for (Object o : world.loadedTileEntityList.toArray()){
-				TileEntity tileEntity = (TileEntity)o;
-				if (tileEntity == null) continue;
-				int id   = Block.getIdFromBlock(world.getBlock(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord));
-				int meta = world.getBlockMetadata(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord);
-				
-				if (!data.contains(id, meta))
-					data.put(id, meta, new DataBlockTileEntityPerClass(id, meta));
-				
-				data.get(id, meta).add();
-			}
+			Map<String, Integer> count = ((MonitoredTileList)world.loadedTileEntityList).getCount();
+			for (String key : count.keySet())
+				if (count.get(key) > 0)
+					cumData.add(new AmountHolder(key, count.get(key)));
 		}
-		
-		return new ArrayList<DataBlockTileEntityPerClass>(data.values());
+		return cumData;		
 	}
 	
 	public ArrayList<DataBlockTileEntityPerClass> getCumulativeTimingTileEntities(){
