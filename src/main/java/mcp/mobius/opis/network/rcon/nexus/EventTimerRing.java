@@ -15,6 +15,10 @@ public class EventTimerRing {
     Map<Message, EventTimer> ring = new HashMap<Message, EventTimer>();
     Properties prop;
 
+    public EventTimerRing(){
+    	ring.put(Message.NEXUS_UUID, new EventTimer(0));
+    }
+    
     public EventTimerRing(String config){
         this.prop = readConfig(config);
 

@@ -36,6 +36,8 @@ import io.nettyopis.util.ReferenceCountUtil;
 
 public class NexusInboundHandler extends ChannelInboundHandlerAdapter {
 
+	public EventTimerRing timers = new EventTimerRing();
+	
     @Override
     public void handlerAdded(final ChannelHandlerContext ctx) {
     	NexusClient.instance.ctx = new WeakReference<ChannelHandlerContext>(ctx);
@@ -66,8 +68,7 @@ public class NexusInboundHandler extends ChannelInboundHandlerAdapter {
             		modOpis.log.error(String.format("Connection refused. Wrong uuid or pass."));   
             		NexusClient.instance.shouldRetry = false;        			
         		} else if (status == 1){
-        			Properties prop = ((ConnectionProperties)pck.param2).prop;
-        			RConHandler.timersNexus.put(fakePlayer, new EventTimerRing(prop));
+        			this.timers = new EventTimerRing(((ConnectionProperties)pck.param2).prop);
         		}
         		
 

@@ -32,7 +32,6 @@ public class RConHandler {
 	public static BiMap<Byte, Class> packetTypes = HashBiMap.create();
 	public static BiMap<FakePlayer, ChannelHandlerContext> fakePlayersRcon  = HashBiMap.create();
 	public static BiMap<FakePlayer, ChannelHandlerContext> fakePlayersNexus = HashBiMap.create();
-	public static BiMap<FakePlayer, EventTimerRing>        timersNexus      = HashBiMap.create();
 	
 	public static String lastError = null;
 	public static WeakReference<ChannelHandlerContext> lastContext = null; 
@@ -59,13 +58,11 @@ public class RConHandler {
     public static void sendToPlayerNexus(PacketBase packet, FakePlayer player)
     {
     	ChannelHandlerContext ctx  = RConHandler.fakePlayersNexus.get(player);
+    	NexusInboundHandler hnd = ctx.pipeline().get(NexusInboundHandler.class);
 
-    	try{
-    		if (RConHandler.timersNexus.get(player).isDone(packet.msg))
-    			sendToContext(packet, ctx);
-    	} catch (Exception e){
+    	if (hnd.timers.isDone(packet.msg))
     		sendToContext(packet, ctx);
-    	}
+
     } 		
 	
     public static void sendToPlayerRCon(PacketBase packet, FakePlayer player)
