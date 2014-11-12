@@ -12,12 +12,14 @@ import net.minecraftforge.common.util.FakePlayer;
 import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.events.PlayerTracker;
 import mcp.mobius.opis.network.PacketBase;
+import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.packets.client.PacketReqChunks;
 import mcp.mobius.opis.network.packets.client.PacketReqData;
 import mcp.mobius.opis.network.packets.server.NetDataCommand;
 import mcp.mobius.opis.network.packets.server.NetDataList;
 import mcp.mobius.opis.network.packets.server.NetDataValue;
 import mcp.mobius.opis.network.packets.server.PacketChunks;
+import mcp.mobius.opis.network.rcon.nexus.EventTimerRing;
 import mcp.mobius.opis.network.rcon.nexus.NexusClient;
 import mcp.mobius.opis.network.rcon.nexus.NexusInboundHandler;
 
@@ -30,6 +32,7 @@ public class RConHandler {
 	public static BiMap<Byte, Class> packetTypes = HashBiMap.create();
 	public static BiMap<FakePlayer, ChannelHandlerContext> fakePlayersRcon  = HashBiMap.create();
 	public static BiMap<FakePlayer, ChannelHandlerContext> fakePlayersNexus = HashBiMap.create();
+	public static BiMap<FakePlayer, EventTimerRing>        timersNexus      = HashBiMap.create();
 	
 	public static String lastError = null;
 	public static WeakReference<ChannelHandlerContext> lastContext = null; 
@@ -56,7 +59,13 @@ public class RConHandler {
     public static void sendToPlayerNexus(PacketBase packet, FakePlayer player)
     {
     	ChannelHandlerContext ctx  = RConHandler.fakePlayersNexus.get(player);
-    	sendToContext(packet, ctx);
+
+    	try{
+    		if (RConHandler.timersNexus.get(player).isDone(packet.msg))
+    			sendToContext(packet, ctx);
+    	} catch (Exception e){
+    		sendToContext(packet, ctx);
+    	}
     } 		
 	
     public static void sendToPlayerRCon(PacketBase packet, FakePlayer player)

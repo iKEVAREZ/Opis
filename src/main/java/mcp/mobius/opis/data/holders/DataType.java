@@ -15,6 +15,7 @@ import mcp.mobius.opis.data.holders.basetypes.SerialString;
 import mcp.mobius.opis.data.holders.basetypes.TargetEntity;
 import mcp.mobius.opis.data.holders.basetypes.TicketData;
 import mcp.mobius.opis.data.holders.newtypes.CachedString;
+import mcp.mobius.opis.data.holders.newtypes.ConnectionProperties;
 import mcp.mobius.opis.data.holders.newtypes.DataAmountRate;
 import mcp.mobius.opis.data.holders.newtypes.DataBlockTileEntityPerClass;
 import mcp.mobius.opis.data.holders.newtypes.DataByteRate;
@@ -86,7 +87,8 @@ public enum DataType {
 	STATSCHUNK      			(StatsChunk.class),
 	NEXUSDATA                   (NexusData.class),
 	NEXUSAUTH					(NexusAuth.class),
-	PLAYERLOGGING				(PlayerStatus.class);
+	PLAYERLOGGING				(PlayerStatus.class),
+    CONNECTIONPROPERTIES        (ConnectionProperties.class);
  
 	private Class clazz;
 	private static HashBiMap<DataType, Class> bimap = HashBiMap.create(50);

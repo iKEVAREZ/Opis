@@ -100,7 +100,7 @@ public enum Message {
 	NEXUS_UUID,								// Login data for the nexus system
 	NEXUS_DATA,								// Data blob with everything needed to update the summary screen in realtime
 	PLAYER_STATUS_UPDATE,					// Update for the players (name, position, offline/online, etc)
-	CONNECTION_REFUSED;
+	CONNECTION_STATUS;
 	
 	private AccessLevel accessLevel = AccessLevel.NONE;
 	private EnumSet<SelectedTab>  tabEnum;

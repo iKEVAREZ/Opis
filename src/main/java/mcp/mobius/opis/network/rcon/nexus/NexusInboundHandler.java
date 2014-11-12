@@ -2,6 +2,7 @@ package mcp.mobius.opis.network.rcon.nexus;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
+import java.util.Properties;
 import java.util.UUID;
 
 import net.minecraftforge.common.DimensionManager;
@@ -12,8 +13,10 @@ import com.google.common.io.ByteStreams;
 import com.mojang.authlib.GameProfile;
 
 import mcp.mobius.opis.modOpis;
+import mcp.mobius.opis.data.holders.basetypes.SerialInt;
 import mcp.mobius.opis.data.holders.basetypes.SerialLong;
 import mcp.mobius.opis.data.holders.basetypes.SerialString;
+import mcp.mobius.opis.data.holders.newtypes.ConnectionProperties;
 import mcp.mobius.opis.data.holders.newtypes.NexusAuth;
 import mcp.mobius.opis.data.managers.StringCache;
 import mcp.mobius.opis.events.PlayerTracker;
@@ -56,9 +59,18 @@ public class NexusInboundHandler extends ChannelInboundHandlerAdapter {
         try {
         	FakePlayer fakePlayer = RConHandler.fakePlayersNexus.inverse().get(ctx);
         	PacketBase packet     = (PacketBase) msg;
-        	if (packet instanceof PacketReqData && ((PacketReqData)packet).dataReq == Message.CONNECTION_REFUSED){
-        		modOpis.log.error(String.format("Connection refused. Wrong uuid or pass."));   
-        		NexusClient.instance.shouldRetry = false;
+        	if (packet instanceof PacketReqData && ((PacketReqData)packet).dataReq == Message.CONNECTION_STATUS){
+        		PacketReqData pck = (PacketReqData)packet;
+        		int status = ((SerialInt)pck.param1).value;
+        		if (status == 0){
+            		modOpis.log.error(String.format("Connection refused. Wrong uuid or pass."));   
+            		NexusClient.instance.shouldRetry = false;        			
+        		} else if (status == 1){
+        			Properties prop = ((ConnectionProperties)pck.param2).prop;
+        			RConHandler.timersNexus.put(fakePlayer, new EventTimerRing(prop));
+        		}
+        		
+
         	}else{
         		packet.actionServer(null, fakePlayer);
         	}

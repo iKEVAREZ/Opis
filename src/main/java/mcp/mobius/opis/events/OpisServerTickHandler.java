@@ -69,18 +69,21 @@ public enum OpisServerTickHandler{
 		
 			// One second timer
 			if (timer1000.isDone() && PlayerTracker.INSTANCE.playersSwing.size() > 0){
-
-				PacketManager.sendPacketToAllSwing(new NetDataValue(Message.NEXUS_DATA,
-								new NexusData(
-									new SerialLong(((ProfilerPacket)ProfilerSection.PACKET_OUTBOUND.getProfiler()).dataAmount),
-									new SerialLong(((ProfilerPacket)ProfilerSection.PACKET_INBOUND.getProfiler()).dataAmount),
-									new SerialInt(ChunkManager.INSTANCE.getForcedChunkAmount()),
-									new SerialInt(ChunkManager.INSTANCE.getLoadedChunkAmount()),
-									new DataTiming(((ProfilerTick)ProfilerSection.TICK.getProfiler()).data.getGeometricMean()),
-									new SerialInt(TileEntityManager.INSTANCE.getAmountTileEntities()),
-									new SerialInt(EntityManager.INSTANCE.getAmountEntities()),
-									new SerialInt(FMLCommonHandler.instance().getMinecraftServerInstance().getCurrentPlayerCount())
-								)));				
+				
+				DataTiming tickTiming = new DataTiming(((ProfilerTick)ProfilerSection.TICK.getProfiler()).data.getGeometricMean());
+				if (!tickTiming.timing.isNaN()){
+					PacketManager.sendPacketToAllSwing(new NetDataValue(Message.NEXUS_DATA,
+									new NexusData(
+										new SerialLong(((ProfilerPacket)ProfilerSection.PACKET_OUTBOUND.getProfiler()).dataAmount),
+										new SerialLong(((ProfilerPacket)ProfilerSection.PACKET_INBOUND.getProfiler()).dataAmount),
+										new SerialInt(ChunkManager.INSTANCE.getForcedChunkAmount()),
+										new SerialInt(ChunkManager.INSTANCE.getLoadedChunkAmount()),
+										new DataTiming(((ProfilerTick)ProfilerSection.TICK.getProfiler()).data.getGeometricMean()),
+										new SerialInt(TileEntityManager.INSTANCE.getAmountTileEntities()),
+										new SerialInt(EntityManager.INSTANCE.getAmountEntities()),
+										new SerialInt(FMLCommonHandler.instance().getMinecraftServerInstance().getCurrentPlayerCount())
+									)));			
+				}
 				// End of summary update
 				
 			
