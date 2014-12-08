@@ -41,19 +41,7 @@ public class NexusInboundHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void handlerAdded(final ChannelHandlerContext ctx) {
     	NexusClient.instance.ctx = new WeakReference<ChannelHandlerContext>(ctx);
-    	
-    	UUID       fakeUUID   = UUID.randomUUID();
-    	
-		FakePlayer fakePlayer = FakePlayerFactory.get(DimensionManager.getWorld(0), new GameProfile(fakeUUID, ctx.name()));
-		RConHandler.fakePlayersNexus.put(fakePlayer, ctx);
-		
-		PlayerTracker.INSTANCE.playersSwing.add(fakePlayer);
-		PlayerTracker.INSTANCE.playerTab.put(fakePlayer, SelectedTab.ALL);
-		RConHandler.sendToPlayerNexus(new NetDataValue(Message.NEXUS_UUID, new NexusAuth(NexusClient.instance.uuid, NexusClient.instance.pass, NexusClient.instance.reconnect)), fakePlayer);
-		RConHandler.sendToPlayerNexus(new NetDataValue(Message.STATUS_CURRENT_TIME, new SerialLong(System.currentTimeMillis())), fakePlayer);
-		StringCache.INSTANCE.syncCache(fakePlayer);    	
-
-		modOpis.log.info(String.format("FakePlayer %s with uuid %s created.", ctx.name(), fakeUUID));     	
+		RConHandler.sendToContext(new NetDataValue(Message.NEXUS_UUID, new NexusAuth(NexusClient.instance.uuid, NexusClient.instance.pass, NexusClient.instance.reconnect)), ctx);    	
     }
 	
     @Override
@@ -68,6 +56,7 @@ public class NexusInboundHandler extends ChannelInboundHandlerAdapter {
             		modOpis.log.error(String.format("Connection refused. Wrong uuid or pass."));   
             		NexusClient.instance.shouldRetry = false;        			
         		} else if (status == 1){
+        			this.registerFakePlayer(ctx);
         			this.timers = new EventTimerRing(((ConnectionProperties)pck.param2).prop);
         		}
         		
@@ -84,4 +73,29 @@ public class NexusInboundHandler extends ChannelInboundHandlerAdapter {
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
     	RConHandler.exceptionCaught(ctx, cause);
     }
+    
+    private void registerFakePlayer(ChannelHandlerContext ctx){
+    	UUID       fakeUUID   = UUID.randomUUID();
+    	
+		FakePlayer fakePlayer = FakePlayerFactory.get(DimensionManager.getWorld(0), new GameProfile(fakeUUID, ctx.name()));
+		RConHandler.fakePlayersNexus.put(fakePlayer, ctx);
+		
+		PlayerTracker.INSTANCE.playersSwing.add(fakePlayer);
+		PlayerTracker.INSTANCE.playerTab.put(fakePlayer, SelectedTab.ALL);
+		RConHandler.sendToContext(new NetDataValue(Message.STATUS_CURRENT_TIME, new SerialLong(System.currentTimeMillis())), ctx);
+		StringCache.INSTANCE.syncCache(fakePlayer);    	
+
+		modOpis.log.info(String.format("FakePlayer %s with uuid %s registered.", ctx.name(), fakeUUID));    	
+    }
+
+    /*
+    private void unregisterFakePlayer(ChannelHandlerContext ctx){
+    	FakePlayer fakePlayer = RConHandler.fakePlayersNexus.inverse().get(ctx);
+    	RConHandler.fakePlayersNexus.remove(fakePlayer);
+		PlayerTracker.INSTANCE.playersSwing.remove(fakePlayer);
+		PlayerTracker.INSTANCE.playerTab.remove(fakePlayer);
+		modOpis.log.info(String.format("FakePlayer %s unregistered.", fakePlayer));		
+    }
+    */
+
 }

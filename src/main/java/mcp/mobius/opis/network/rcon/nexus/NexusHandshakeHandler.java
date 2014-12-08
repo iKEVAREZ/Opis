@@ -1,6 +1,7 @@
 package mcp.mobius.opis.network.rcon.nexus;
 
 import mcp.mobius.opis.modOpis;
+import mcp.mobius.opis.network.rcon.RConHandler;
 import io.nettyopis.buffer.ByteBuf;
 import io.nettyopis.channel.ChannelHandlerContext;
 import io.nettyopis.channel.ChannelInboundHandlerAdapter;
@@ -43,8 +44,7 @@ public class NexusHandshakeHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-        cause.printStackTrace();
-        ctx.close();
+    	RConHandler.exceptionCaught(ctx, cause);    	
     }
 
 }

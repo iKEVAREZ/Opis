@@ -20,7 +20,7 @@ apply plugin: 'java'
 apply plugin: 'maven'
 apply plugin: 'forge'
 
-version = "1.3.0_dev9_1.7.10"
+version = "1.3.0_dev11_1.7.10"
 group= "mcp.mobius.opis" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "Opis"
 

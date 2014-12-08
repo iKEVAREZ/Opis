@@ -1,6 +1,8 @@
 package mcp.mobius.opis.network.rcon;
 
+import java.io.IOException;
 import java.lang.ref.WeakReference;
+import java.net.ConnectException;
 
 import javax.net.ssl.SSLException;
 
@@ -60,9 +62,9 @@ public class RConHandler {
     	ChannelHandlerContext ctx  = RConHandler.fakePlayersNexus.get(player);
     	NexusInboundHandler hnd = ctx.pipeline().get(NexusInboundHandler.class);
 
-    	if (hnd.timers.isDone(packet.msg))
+    	//TODO : Crash here with NPE : https://gist.github.com/ace5852/bcaf4c8780400e93f3e3
+    	if (hnd != null && hnd.timers.isDone(packet.msg))
     		sendToContext(packet, ctx);
-
     } 		
 	
     public static void sendToPlayerRCon(PacketBase packet, FakePlayer player)
@@ -107,7 +109,14 @@ public class RConHandler {
     	RConHandler.lastError   = cause.getMessage();
     	RConHandler.lastContext = new WeakReference<ChannelHandlerContext>(ctx); 
     	
-        cause.printStackTrace();
+    	if (cause instanceof IOException && cause.getMessage().contains("Connection reset by peer")){
+    		modOpis.log.warn("HydraOpis : Connection reset by peer");
+    	} else if (cause instanceof ConnectException && cause.getMessage().contains("Connection refused")){
+    		modOpis.log.warn("HydraOpis : Connection refused by remote server. Server is down ?");
+    	} else {
+    		modOpis.log.info(String.format("%s | %s", cause.getClass().getCanonicalName(), cause.getMessage()));
+    		cause.printStackTrace();    		
+    	}
         
         FakePlayer fakePlayer = null;
         

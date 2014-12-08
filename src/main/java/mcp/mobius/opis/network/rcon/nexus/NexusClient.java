@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.ref.WeakReference;
+import java.net.ConnectException;
 import java.security.cert.CertificateException;
 import java.util.Properties;
 
@@ -104,15 +105,15 @@ public class NexusClient implements Runnable {
 
     private boolean connect(){
     	if (this.reconnect)
-    		modOpis.log.info(String.format("Reconnecting to OpixNexus %s:%s", this.host, this.port));
+    		modOpis.log.info(String.format("Reconnecting to HydraOpis %s:%s", this.host, this.port));
     	else
-    		modOpis.log.info(String.format("Connecting to OpixNexus %s:%s", this.host, this.port));
+    		modOpis.log.info(String.format("Connecting to HydraOpis %s:%s", this.host, this.port));
     	
         SslContext sslCtx = null;
         try {
              sslCtx = SslContext.newClientContext(InsecureTrustManagerFactory.INSTANCE);
         } catch (SSLException e) {
-            e.printStackTrace();
+        	this.handleException(e);
         }    	
     	
         EventLoopGroup workerGroup = new NioEventLoopGroup();
@@ -128,13 +129,21 @@ public class NexusClient implements Runnable {
             // Wait until the connection is closed.
             f.channel().closeFuture().sync();
         } catch (Exception e){
-        	modOpis.log.error("Error while connecting to Nexus Server");
-			e.printStackTrace();
+        	this.handleException(e);
         } finally {
             workerGroup.shutdownGracefully();
         }   
         
         return this.shouldRetry;
+    }
+    
+    private void handleException(Throwable cause){
+    	if (cause instanceof ConnectException && cause.getMessage().contains("Connection refused")){
+    		modOpis.log.warn("HydraOpis : Connection refused by remote server. Server is down ?");
+    	} else {        	
+    		modOpis.log.error("Error while connecting to Nexus Server");
+    		cause.printStackTrace();
+    	}    	
     }
     
     private void readConfig(String filename){
