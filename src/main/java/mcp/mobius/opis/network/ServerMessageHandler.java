@@ -30,6 +30,7 @@ import mcp.mobius.opis.data.holders.stats.StatsChunk;
 import mcp.mobius.opis.data.managers.ChunkManager;
 import mcp.mobius.opis.data.managers.EntityManager;
 import mcp.mobius.opis.data.managers.MetaManager;
+import mcp.mobius.opis.data.managers.StringCache;
 import mcp.mobius.opis.data.managers.TileEntityManager;
 import mcp.mobius.opis.events.PlayerTracker;
 import mcp.mobius.opis.gui.overlay.OverlayStatus;
@@ -177,6 +178,11 @@ public class ServerMessageHandler {
 			EntityManager.INSTANCE.killAll(((SerialString)param1).value);
 			//this.handle(Message.LIST_AMOUNT_ENTITIES, null, null, player);
 		}			
+
+		else if (maintype == Message.COMMAND_KILLALL_BYCACHEID){
+			String entname = StringCache.INSTANCE.getString(((SerialInt)param1).value);
+			EntityManager.INSTANCE.killAll(entname);
+		}		
 		
 		else if(maintype == Message.COMMAND_UNREGISTER_SWING){
 			PlayerTracker.INSTANCE.playersSwing.remove(player);

@@ -81,5 +81,7 @@ public class PacketReqData extends PacketBase{
 		} else {
 			logmsg += "Rejected";
 		}
+		
+		//modOpis.log.info(logmsg);
 	}
 }

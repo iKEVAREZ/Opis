@@ -62,7 +62,6 @@ public class RConHandler {
     	ChannelHandlerContext ctx  = RConHandler.fakePlayersNexus.get(player);
     	NexusInboundHandler hnd = ctx.pipeline().get(NexusInboundHandler.class);
 
-    	//TODO : Crash here with NPE : https://gist.github.com/ace5852/bcaf4c8780400e93f3e3
     	if (hnd != null && hnd.timers.isDone(packet.msg))
     		sendToContext(packet, ctx);
     } 		
