@@ -1,13 +1,17 @@
 package mcp.mobius.opis.events;
 
+import mcp.mobius.opis.modOpis;
+import mcp.mobius.opis.data.holders.newtypes.ChatMsg;
 import mcp.mobius.opis.data.holders.newtypes.PlayerStatus;
 import mcp.mobius.opis.network.PacketManager;
 import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.enums.PlayerEv;
 import mcp.mobius.opis.network.packets.server.NetDataValue;
+import mcp.mobius.opis.network.rcon.RConHandler;
 import mcp.mobius.opis.network.rcon.nexus.NexusClient;
 import mcp.mobius.opis.network.rcon.server.RConServer;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -49,6 +53,11 @@ public class OpisServerEventHandler {
 							          p.worldObj.provider.dimensionId, (int)p.posX, (int)p.posY, (int)p.posZ)));			
 		}
 	}	
+	
+	@SubscribeEvent
+	public void onChatMessage(ServerChatEvent event){
+		RConHandler.sendToAllNexus(new NetDataValue(Message.CHAT_MSG, new ChatMsg(event.username, event.message)));
+	}
 	
 	/*
 	@SubscribeEvent
