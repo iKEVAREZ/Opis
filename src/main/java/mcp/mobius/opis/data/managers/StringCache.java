@@ -32,6 +32,10 @@ public enum StringCache implements IMessageHandler {
 	private ConcurrentLinkedQueue<DataStringUpdate> fullsync = new ConcurrentLinkedQueue<DataStringUpdate>();
 	private ConcurrentLinkedQueue<DataStringUpdate> unsynced = new ConcurrentLinkedQueue<DataStringUpdate>();	// This is the current list of unsynced
 	
+	private StringCache(){
+		this.getIndex("Server");
+	}
+	
 	public String getString(int index){
 		synchronized(cache){	
 			String retVal = this.cache.get(index);

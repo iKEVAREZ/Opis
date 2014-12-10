@@ -5,5 +5,7 @@ public enum PlayerEv {
 	LOGIN,
 	DEATH,
 	ONLINE,
+    SERVERSTART,
+    SERVERSTOP,	
 	NONE;
 }
