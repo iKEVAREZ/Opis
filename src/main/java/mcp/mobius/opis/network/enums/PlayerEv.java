@@ -4,5 +4,6 @@ public enum PlayerEv {
 	LOGOUT,
 	LOGIN,
 	DEATH,
+	ONLINE,
 	NONE;
 }

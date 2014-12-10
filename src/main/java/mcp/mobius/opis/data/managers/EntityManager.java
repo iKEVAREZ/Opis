@@ -270,7 +270,7 @@ public enum EntityManager {
 		for (Object o : players){
 			//outList.add(new DataEntity().fill((EntityPlayer) p));
 			EntityPlayer p = (EntityPlayer) o;
-			outList.add(new PlayerStatus(p.getGameProfile().getName(), PlayerEv.NONE, 
+			outList.add(new PlayerStatus(p.getGameProfile().getName(), PlayerEv.ONLINE, 
 			          p.worldObj.provider.dimensionId, (int)p.posX, (int)p.posY, (int)p.posZ));
 		}
 		
