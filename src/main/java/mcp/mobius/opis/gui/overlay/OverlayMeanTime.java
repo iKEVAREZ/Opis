@@ -158,9 +158,9 @@ public enum OverlayMeanTime implements IMwDataProvider, IMessageHandler{
 		
 		if (ChunkManager.INSTANCE.getChunkMeanTime().containsKey(chunkCoord))
 			if (modOpis.microseconds)
-				return String.format("%.3f \u00B5s", ChunkManager.INSTANCE.getChunkMeanTime().get(chunkCoord).getDataSum());
+				return String.format(" | %.3f \u00B5s", ChunkManager.INSTANCE.getChunkMeanTime().get(chunkCoord).getDataSum()/1000.0);
 			else
-				return String.format(", %.5f ms", ChunkManager.INSTANCE.getChunkMeanTime().get(chunkCoord).getDataSum()/1000.0);
+				return String.format(", %.5f ms", ChunkManager.INSTANCE.getChunkMeanTime().get(chunkCoord).getDataSum()/1000.0/1000.0);
 
 		else
 			return "";
