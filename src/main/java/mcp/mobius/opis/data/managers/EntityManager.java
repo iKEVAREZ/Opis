@@ -15,6 +15,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
 import mcp.mobius.mobiuscore.profiler.ProfilerSection;
+import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.data.holders.basetypes.AmountHolder;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesBlock;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesChunk;
@@ -132,6 +133,14 @@ public enum EntityManager {
 			World world = DimensionManager.getWorld(dim);
 			if (world == null) continue;		
 		
+			if (!(world.loadedEntityList instanceof MonitoredEntityList)){
+				modOpis.log.info("Improper type detected for entity list in world " + dim + ". Regenerating tracking list.");
+				List<Entity> newList = new MonitoredEntityList<Entity>();
+				for (Object o : world.loadedEntityList)
+					newList.add((Entity)o);
+				world.loadedEntityList = newList;
+			}
+			
 			Map<String, Integer> count = ((MonitoredEntityList)world.loadedEntityList).getCount();
 			for (String key : count.keySet())
 				if (count.get(key) > 0)

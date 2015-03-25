@@ -49,10 +49,12 @@ public class ProfilerEvent extends ProfilerAbstract {
 				String name = (String)pkg + "|" + handler.getClass().getSimpleName();
 				data.get(event.getClass(), name).addValue(clock.getDelta());
 			} catch (Exception e) {
-				String name = (String)pkg + "|" + handler.getClass().getSimpleName();
-				data.put(event.getClass(), name, new DescriptiveStatistics(250));
-				dataMod.put(event.getClass(), name, ((ModContainer)mod).getName());
-				data.get(event.getClass(), name).addValue(clock.getDelta());
+				try{
+					String name = (String)pkg + "|" + handler.getClass().getSimpleName();
+					data.put(event.getClass(), name, new DescriptiveStatistics(250));
+					dataMod.put(event.getClass(), name, ((ModContainer)mod).getName());
+					data.get(event.getClass(), name).addValue(clock.getDelta());
+				} catch (Exception f){}
 			}
 			
 		}

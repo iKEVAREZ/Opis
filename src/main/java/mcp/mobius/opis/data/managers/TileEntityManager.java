@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 
 import com.google.common.collect.HashBasedTable;
@@ -26,6 +27,7 @@ import mcp.mobius.opis.data.holders.stats.StatsChunk;
 import mcp.mobius.opis.data.profilers.ProfilerTileEntityUpdate;
 import mcp.mobius.opis.helpers.ModIdentification;
 import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -173,6 +175,14 @@ public enum TileEntityManager {
 			World world = DimensionManager.getWorld(dim);
 			if (world == null) continue;		
 		
+			if (!(world.loadedTileEntityList instanceof MonitoredTileList)){
+				modOpis.log.info("Improper type detected for tile entity list in world " + dim + ". Regenerating tracking list.");
+				List<TileEntity> newList = new MonitoredTileList<TileEntity>();
+				for (Object o : world.loadedTileEntityList)
+					newList.add((TileEntity)o);
+				world.loadedTileEntityList = newList;
+			}			
+			
 			Table<Block, Integer, Integer> count = ((MonitoredTileList)world.loadedTileEntityList).getCount();
 			Table<String, String, Integer> reducedCount = HashBasedTable.create();
 			

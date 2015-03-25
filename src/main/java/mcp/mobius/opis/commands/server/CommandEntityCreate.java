@@ -19,7 +19,7 @@ public class CommandEntityCreate extends CommandBase {
 	@Override
 	public String getCommandUsage(ICommandSender icommandsender) {
 		// TODO Auto-generated method stub
-		return null;
+		return "";
 	}
 
 	@Override
@@ -45,10 +45,13 @@ public class CommandEntityCreate extends CommandBase {
 	@Override
     public boolean canCommandSenderUseCommand(ICommandSender sender)
     {
-		if (sender  instanceof DedicatedServer) return true;
-		//if ((sender instanceof EntityPlayerMP) && ((EntityPlayerMP)sender).playerNetServerHandler.netManager instanceof MemoryConnection) return true;
+		if (sender instanceof EntityPlayerMP)
+			return PlayerTracker.INSTANCE.isPrivileged((EntityPlayerMP)sender);			
+		
+		if (sender   instanceof DedicatedServer) return true;
 		if (!(sender instanceof DedicatedServer) && !(sender instanceof EntityPlayerMP)) return true;
-		return PlayerTracker.INSTANCE.isPrivileged((EntityPlayerMP)sender);
+
+		return false;
     }	
 	
 }

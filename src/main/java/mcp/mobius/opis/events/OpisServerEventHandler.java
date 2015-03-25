@@ -29,6 +29,7 @@ public class OpisServerEventHandler {
     @SideOnly(Side.SERVER)
     public void onWorldLoad(WorldEvent.Load event) {
 		
+		/*
 		if (!firstLoad && event.world.provider.dimensionId == 0){
 			firstLoad = true;
 			
@@ -41,6 +42,7 @@ public class OpisServerEventHandler {
 			nexusclient.start();			
 			
 		}
+		*/
 		
 	}
 	
