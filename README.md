@@ -5,7 +5,7 @@ The main changes of this fork are:
 * Removal of the integrated [MapWriter](minecraft.curseforge.com/projects/mapwriter-2) mod
 * Removal of overlays that required MapWriter
 * Integration of MobiusCore as opposed to building it as an external mod
-* Fix for client profiling data "<ERROR>" strings
+* Fix for client profiling data "\<ERROR\>" strings
  
 # Rationale
 
@@ -37,14 +37,24 @@ wrapper or distribution.
 
 ## Simple build
 
-Execute `gradle setupCIWorkspace` in the root directory of this repository. Then execute
-`gradle build`. If subsequent builds cause problems, do `gradle clean`.
+*Estimated time on a dedicated server: 3 minutes*
+
+1. Clone repository with `--recursive` argument, e.g. 
+`git clone --recursive https://github.com/Gamealition/Opis.git`
+2. Execute `gradle setupCIWorkspace` inside the repository
+3. Execute `gradle build`
+    * If subsequent builds cause problems, execute `gradle clean`
+4. Check the `output` directory for the built jar
 
 ## IntelliJ
 
-* Open `build.gradle` as a project
-* Execute the `setupDecompWorkspace` task
-* Click the refresh button in the "Gradle" tab
-* Execute the `genIntellijRuns` task
-* For both the "Minecraft Client" and "Minecraft Server" run configurations, add the JVM
+*Estimated time on a home connection: 5-15 minutes*
+
+1. Clone repository with `--recursive` argument, e.g. 
+`git clone --recursive https://github.com/Gamealition/Opis.git`
+2. Open `build.gradle` as a project
+3. Execute the `setupDecompWorkspace` task
+4. Click the refresh button in the "Gradle" tab
+5. Execute the `genIntellijRuns` task
+6. For both the "Minecraft Client" and "Minecraft Server" run configurations, add the JVM
 option `-Dfml.coreMods.load=mcp.mobius.mobiuscore.asm.CoreDescription`
