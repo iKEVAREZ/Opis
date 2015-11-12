@@ -1,51 +1,19 @@
 package mcp.mobius.opis.network.rcon.nexus;
 
 import io.nettyopis.bootstrap.Bootstrap;
-import io.nettyopis.bootstrap.ServerBootstrap;
-import io.nettyopis.channel.ChannelFuture;
-import io.nettyopis.channel.ChannelHandlerContext;
-import io.nettyopis.channel.ChannelInitializer;
-import io.nettyopis.channel.ChannelOption;
-import io.nettyopis.channel.EventLoopGroup;
+import io.nettyopis.channel.*;
 import io.nettyopis.channel.nio.NioEventLoopGroup;
 import io.nettyopis.channel.socket.SocketChannel;
-import io.nettyopis.channel.socket.nio.NioServerSocketChannel;
 import io.nettyopis.channel.socket.nio.NioSocketChannel;
 import io.nettyopis.handler.ssl.SslContext;
 import io.nettyopis.handler.ssl.util.InsecureTrustManagerFactory;
-import io.nettyopis.handler.ssl.util.SelfSignedCertificate;
-import io.nettyopis.handler.timeout.ReadTimeoutHandler;
-import io.nettyopis.handler.timeout.WriteTimeoutHandler;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.lang.ref.WeakReference;
-import java.net.ConnectException;
-import java.security.cert.CertificateException;
-import java.util.Properties;
+import mcp.mobius.opis.modOpis;
 
 import javax.net.ssl.SSLException;
-
-import net.minecraftforge.common.util.FakePlayer;
-
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
-
-import mcp.mobius.opis.modOpis;
-import mcp.mobius.opis.network.packets.client.PacketReqChunks;
-import mcp.mobius.opis.network.packets.client.PacketReqData;
-import mcp.mobius.opis.network.packets.server.NetDataCommand;
-import mcp.mobius.opis.network.packets.server.NetDataList;
-import mcp.mobius.opis.network.packets.server.NetDataValue;
-import mcp.mobius.opis.network.packets.server.PacketChunks;
-import mcp.mobius.opis.network.rcon.server.RConHandshakeDecoder;
-import mcp.mobius.opis.network.rcon.server.RConHandshakeHandler;
-import mcp.mobius.opis.network.rcon.server.RConServer;
+import java.io.*;
+import java.lang.ref.WeakReference;
+import java.net.ConnectException;
+import java.util.Properties;
 
 public class NexusClient implements Runnable {
 

@@ -1,57 +1,5 @@
 package mcp.mobius.opis;
 
-import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.config.Configuration;
-import mcp.mobius.mobiuscore.profiler.ProfilerSection;
-import mcp.mobius.opis.commands.client.CommandOpis;
-import mcp.mobius.opis.commands.server.CommandAddPrivileged;
-import mcp.mobius.opis.commands.server.CommandAmountEntities;
-import mcp.mobius.opis.commands.server.CommandChunkList;
-import mcp.mobius.opis.commands.server.CommandEntityCreate;
-import mcp.mobius.opis.commands.server.CommandFrequency;
-import mcp.mobius.opis.commands.server.CommandHelp;
-import mcp.mobius.opis.commands.server.CommandKill;
-import mcp.mobius.opis.commands.server.CommandKillAll;
-import mcp.mobius.opis.commands.server.CommandReset;
-import mcp.mobius.opis.commands.server.CommandRmPrivileged;
-import mcp.mobius.opis.commands.server.CommandStart;
-import mcp.mobius.opis.commands.server.CommandStop;
-import mcp.mobius.opis.commands.server.CommandTicks;
-import mcp.mobius.opis.commands.server.CommandTimingEntities;
-import mcp.mobius.opis.commands.server.CommandTimingTileEntities;
-import mcp.mobius.opis.data.holders.basetypes.CoordinatesBlock;
-import mcp.mobius.opis.data.profilers.ProfilerDimBlockTick;
-import mcp.mobius.opis.data.profilers.ProfilerDimTick;
-import mcp.mobius.opis.data.profilers.ProfilerEntityUpdate;
-import mcp.mobius.opis.data.profilers.ProfilerEvent;
-import mcp.mobius.opis.data.profilers.ProfilerNetworkTick;
-import mcp.mobius.opis.data.profilers.ProfilerPacket;
-import mcp.mobius.opis.data.profilers.ProfilerRenderBlock;
-import mcp.mobius.opis.data.profilers.ProfilerRenderEntity;
-import mcp.mobius.opis.data.profilers.ProfilerRenderTileEntity;
-import mcp.mobius.opis.data.profilers.ProfilerTick;
-import mcp.mobius.opis.data.profilers.ProfilerTileEntityUpdate;
-import mcp.mobius.opis.events.OpisClientEventHandler;
-import mcp.mobius.opis.events.OpisClientTickHandler;
-import mcp.mobius.opis.events.OpisServerEventHandler;
-import mcp.mobius.opis.events.OpisServerTickHandler;
-import mcp.mobius.opis.events.PlayerTracker;
-import mcp.mobius.opis.helpers.ModIdentification;
-import mcp.mobius.opis.network.PacketManager;
-import mcp.mobius.opis.network.enums.AccessLevel;
-import mcp.mobius.opis.network.enums.Message;
-import mcp.mobius.opis.proxy.ProxyServer;
-import mcp.mobius.opis.tools.BlockDebug;
-import mcp.mobius.opis.tools.BlockLag;
-import mcp.mobius.opis.tools.TileDebug;
-import mcp.mobius.opis.tools.TileLag;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -62,6 +10,27 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
+import mcp.mobius.mobiuscore.profiler.ProfilerSection;
+import mcp.mobius.opis.commands.client.CommandOpis;
+import mcp.mobius.opis.commands.server.*;
+import mcp.mobius.opis.data.holders.basetypes.CoordinatesBlock;
+import mcp.mobius.opis.data.profilers.*;
+import mcp.mobius.opis.events.*;
+import mcp.mobius.opis.helpers.ModIdentification;
+import mcp.mobius.opis.network.PacketManager;
+import mcp.mobius.opis.network.enums.AccessLevel;
+import mcp.mobius.opis.network.enums.Message;
+import mcp.mobius.opis.proxy.ProxyServer;
+import mcp.mobius.opis.tools.BlockDebug;
+import mcp.mobius.opis.tools.BlockLag;
+import mcp.mobius.opis.tools.TileDebug;
+import mcp.mobius.opis.tools.TileLag;
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.config.Configuration;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 @Mod(modid="Opis", name="Opis", version="1.2.4", dependencies="required-after:MobiusCore@[1.2.4]", acceptableRemoteVersions="*")
 //@Mod(modid="Opis", name="Opis", version="1.3.0", dependencies="required-after:MobiusCore@[1.2.4]", acceptableRemoteVersions="*")
@@ -118,7 +87,6 @@ public class modOpis {
 		try{ minOverlays = AccessLevel.valueOf(config.get("ACCESS_RIGHTS", "overlays", "NONE", commentOverlays).getString()); } catch (IllegalArgumentException e){}
 
 		Message.setTablesMinimumLevel(minTables);
-		Message.setOverlaysMinimumLevel(minOverlays);
 		Message.setOpisMinimumLevel(openOpis);
 		
 		for (String s : users)

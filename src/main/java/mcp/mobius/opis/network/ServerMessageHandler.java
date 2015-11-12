@@ -1,45 +1,30 @@
 package mcp.mobius.opis.network;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
-import org.apache.logging.log4j.Level;
-
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.world.World;
-import net.minecraftforge.common.DimensionManager;
 import cpw.mods.fml.relauncher.Side;
 import mcp.mobius.mobiuscore.profiler.ProfilerSection;
-import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.data.holders.ISerializable;
-import mcp.mobius.opis.data.holders.basetypes.AmountHolder;
-import mcp.mobius.opis.data.holders.basetypes.CoordinatesBlock;
-import mcp.mobius.opis.data.holders.basetypes.CoordinatesChunk;
-import mcp.mobius.opis.data.holders.basetypes.SerialInt;
-import mcp.mobius.opis.data.holders.basetypes.SerialLong;
-import mcp.mobius.opis.data.holders.basetypes.SerialString;
-import mcp.mobius.opis.data.holders.basetypes.TargetEntity;
+import mcp.mobius.opis.data.holders.basetypes.*;
 import mcp.mobius.opis.data.holders.newtypes.DataBlockTick;
-import mcp.mobius.opis.data.holders.newtypes.DataChunkEntities;
-import mcp.mobius.opis.data.holders.newtypes.DataEntity;
 import mcp.mobius.opis.data.holders.newtypes.DataBlockTileEntity;
+import mcp.mobius.opis.data.holders.newtypes.DataEntity;
 import mcp.mobius.opis.data.holders.newtypes.DataTiming;
 import mcp.mobius.opis.data.holders.stats.StatsChunk;
-import mcp.mobius.opis.data.managers.ChunkManager;
-import mcp.mobius.opis.data.managers.EntityManager;
-import mcp.mobius.opis.data.managers.MetaManager;
-import mcp.mobius.opis.data.managers.StringCache;
-import mcp.mobius.opis.data.managers.TileEntityManager;
+import mcp.mobius.opis.data.managers.*;
 import mcp.mobius.opis.events.PlayerTracker;
-import mcp.mobius.opis.gui.overlay.OverlayStatus;
+import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.packets.server.NetDataCommand;
 import mcp.mobius.opis.network.packets.server.NetDataList;
 import mcp.mobius.opis.network.packets.server.NetDataValue;
 import mcp.mobius.opis.swing.SelectedTab;
-import mcp.mobius.opis.data.holders.basetypes.TicketData;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.world.World;
+import net.minecraftforge.common.DimensionManager;
+import org.apache.logging.log4j.Level;
+
+import java.util.ArrayList;
 
 public class ServerMessageHandler {
 
@@ -54,35 +39,12 @@ public class ServerMessageHandler {
 
 	public void handle(Message maintype, ISerializable param1, ISerializable param2, EntityPlayerMP player){
 		String   name  = player.getGameProfile().getName();
-		
-		if (maintype == Message.OVERLAY_CHUNK_ENTITIES){
-			this.handleOverlayChunkEntities((CoordinatesChunk)param1, player);
-		}
-		
-		else if (maintype == Message.OVERLAY_CHUNK_TIMING){
-			ArrayList<StatsChunk> timingChunks = ChunkManager.INSTANCE.getTopChunks(100);
-			PacketManager.validateAndSend(new NetDataList(Message.LIST_TIMING_CHUNK,  timingChunks), player);
-		}		
-		
-		else if (maintype == Message.LIST_CHUNK_TILEENTS){
-			PacketManager.validateAndSend(new NetDataList(Message.LIST_CHUNK_TILEENTS, TileEntityManager.INSTANCE.getTileEntitiesInChunk((CoordinatesChunk)param1)), player);
-		}		
-		
-		else if (maintype == Message.LIST_CHUNK_ENTITIES){
-			PacketManager.validateAndSend(new NetDataList(Message.LIST_CHUNK_ENTITIES,  EntityManager.INSTANCE.getEntitiesInChunk((CoordinatesChunk)param1)), player);
-		}
 
-		else if (maintype == Message.LIST_CHUNK_LOADED){
-			PlayerTracker.INSTANCE.playerOverlayStatus.put(player, OverlayStatus.CHUNKSTATUS);
+		if (maintype == Message.LIST_CHUNK_LOADED){
 			PlayerTracker.INSTANCE.playerDimension.put(player, ((SerialInt)param1).value);
 			PacketManager.validateAndSend(new NetDataCommand(Message.LIST_CHUNK_LOADED_CLEAR), player);
 			PacketManager.splitAndSend(Message.LIST_CHUNK_LOADED, ChunkManager.INSTANCE.getLoadedChunks(((SerialInt)param1).value), player);
-		}		
-
-		else if (maintype == Message.LIST_CHUNK_TICKETS){
-			//PacketManager.sendToPlayer(new PacketTickets(ChunkManager.INSTANCE.getTickets()), player);
-			PacketManager.validateAndSend(new NetDataList(Message.LIST_CHUNK_TICKETS, new ArrayList<TicketData>(ChunkManager.INSTANCE.getTickets())), player);
-		}		
+		}
 		
 		else if (maintype == Message.LIST_TIMING_TILEENTS){
 			ArrayList<DataBlockTileEntity>  timingTileEnts = TileEntityManager.INSTANCE.getWorses(100);
@@ -139,7 +101,6 @@ public class ServerMessageHandler {
 		}		
 		
 		else if (maintype == Message.COMMAND_UNREGISTER){
-			PlayerTracker.INSTANCE.playerOverlayStatus.remove(player);
 			PlayerTracker.INSTANCE.playerDimension.remove(player);
 		}		
 
@@ -236,18 +197,6 @@ public class ServerMessageHandler {
 		else{
 			modOpis.log.log(Level.WARN, String.format("Unknown data request : %s ", maintype));
 		}
-	}
-	
-	public void handleOverlayChunkEntities(CoordinatesChunk coord, EntityPlayerMP player){
-		
-		HashMap<CoordinatesChunk, ArrayList<DataEntity>> entities = EntityManager.INSTANCE.getAllEntitiesPerChunk();
-		//HashMap<CoordinatesChunk, Integer> perChunk = new HashMap<CoordinatesChunk, Integer>();
-		ArrayList<DataChunkEntities> perChunk = new ArrayList<DataChunkEntities>(); 
-		
-		for (CoordinatesChunk chunk : entities.keySet())
-			perChunk.add(new DataChunkEntities(chunk, entities.get(chunk).size()));
-
-		PacketManager.validateAndSend(new NetDataList(Message.OVERLAY_CHUNK_ENTITIES, perChunk), player);
 	}
 	
 }

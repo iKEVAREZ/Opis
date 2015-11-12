@@ -1,33 +1,17 @@
 package mcp.mobius.opis.proxy;
 
-import java.awt.Font;
-import java.util.ArrayList;
-import java.util.HashMap;
-
-import org.apache.logging.log4j.Level;
-
 import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.util.ResourceLocation;
-import mapwriter.api.MwAPI;
 import mcp.mobius.mobiuscore.profiler.ProfilerSection;
-import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.api.IMessageHandler;
 import mcp.mobius.opis.api.MessageHandlerRegistrar;
 import mcp.mobius.opis.api.TabPanelRegistrar;
 import mcp.mobius.opis.data.client.DataCache;
-import mcp.mobius.opis.data.holders.basetypes.SerialLong;
-import mcp.mobius.opis.data.holders.newtypes.DataTiming;
-import mcp.mobius.opis.data.holders.stats.StatsChunk;
 import mcp.mobius.opis.data.managers.ChunkManager;
 import mcp.mobius.opis.data.managers.MetaManager;
 import mcp.mobius.opis.data.managers.StringCache;
 import mcp.mobius.opis.gui.font.Fonts;
 import mcp.mobius.opis.gui.font.TrueTypeFont;
-import mcp.mobius.opis.gui.overlay.OverlayLoadedChunks;
-import mcp.mobius.opis.gui.overlay.OverlayMeanTime;
-import mcp.mobius.opis.gui.overlay.entperchunk.OverlayEntityPerChunk;
-import mcp.mobius.opis.gui.screens.ScreenBase;
+import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.network.PacketBase;
 import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.swing.SwingUI;
@@ -42,17 +26,13 @@ import mcp.mobius.opis.swing.panels.timingclient.PanelEventClient;
 import mcp.mobius.opis.swing.panels.timingclient.PanelRenderEntities;
 import mcp.mobius.opis.swing.panels.timingclient.PanelRenderHandlers;
 import mcp.mobius.opis.swing.panels.timingclient.PanelRenderTileEnts;
-import mcp.mobius.opis.swing.panels.timingserver.PanelTimingChunks;
-import mcp.mobius.opis.swing.panels.timingserver.PanelTimingEntities;
-import mcp.mobius.opis.swing.panels.timingserver.PanelTimingEntitiesPerClass;
-import mcp.mobius.opis.swing.panels.timingserver.PanelTimingEvents;
-import mcp.mobius.opis.swing.panels.timingserver.PanelTimingHandlers;
-import mcp.mobius.opis.swing.panels.timingserver.PanelTimingTileEnts;
-import mcp.mobius.opis.swing.panels.timingserver.PanelTimingTileEntsPerClass;
+import mcp.mobius.opis.swing.panels.timingserver.*;
 import mcp.mobius.opis.swing.panels.tracking.PanelAmountEntities;
 import mcp.mobius.opis.swing.panels.tracking.PanelAmountTileEnts;
 import mcp.mobius.opis.swing.panels.tracking.PanelDimensions;
 import mcp.mobius.opis.swing.panels.tracking.PanelPlayers;
+import net.minecraft.util.ResourceLocation;
+import org.apache.logging.log4j.Level;
 
 public class ProxyClient extends ProxyServer implements IMessageHandler{
 	
@@ -60,19 +40,6 @@ public class ProxyClient extends ProxyServer implements IMessageHandler{
 	
 	@Override
 	public void init(){
-		//MwAPI.registerDataProvider("Loaded chunks", OverlayLoadedChunks.instance);
-		MwAPI.registerDataProvider("Loaded chunks", OverlayLoadedChunks.INSTANCE);
-		MwAPI.registerDataProvider("Mean time",     OverlayMeanTime.INSTANCE);
-		MwAPI.registerDataProvider("Ent per chunk", OverlayEntityPerChunk.INSTANCE);
-		
-		//fontMC12 = Fonts.createFont(new ResourceLocation("opis", "fonts/Minecraftia.ttf"), 12, false);
-		//fontMC24 = Fonts.createFont(new ResourceLocation("opis", "fonts/Minecraftia.ttf"), 24, false);
-		//fontMC8  = Fonts.createFont(new ResourceLocation("opis", "fonts/Minecraftia.ttf"),  8, true);
-		//fontMC12 = Fonts.createFont(new ResourceLocation("opis", "fonts/Minecraftia.ttf"), 12, true);
-		//fontMC16 = Fonts.createFont(new ResourceLocation("opis", "fonts/Minecraftia.ttf"), 16, true);		
-		//fontMC18 = Fonts.createFont(new ResourceLocation("opis", "fonts/Minecraftia.ttf"), 18, true);		
-		//fontMC24 = Fonts.createFont(new ResourceLocation("opis", "fonts/Minecraftia.ttf"), 24, true);
-		//fontMC8 = Fonts.loadSystemFont("Monospace", 12, true, Font.TRUETYPE_FONT | Font.BOLD);
 		fontMC8 = Fonts.createFont(new ResourceLocation("opis", "fonts/LiberationMono-Bold.ttf"), 14, true);
 
 		IMessageHandler panelSummary        = (IMessageHandler)TabPanelRegistrar.INSTANCE.registerTab(new PanelSummary(), "Summary");				
@@ -186,11 +153,6 @@ public class ProxyClient extends ProxyServer implements IMessageHandler{
 		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.CLIENT_CLEAR_SELECTION,  modOpis.proxy);
 		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.CLIENT_START_PROFILING,  modOpis.proxy);
 		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.CLIENT_SHOW_RENDER_TICK, modOpis.proxy);
-
-		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.OVERLAY_CHUNK_ENTITIES, OverlayEntityPerChunk.INSTANCE);
-		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.LIST_CHUNK_ENTITIES,    OverlayEntityPerChunk.INSTANCE);
-		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.LIST_CHUNK_TICKETS,  OverlayLoadedChunks.INSTANCE);
-		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.LIST_CHUNK_TILEENTS, OverlayMeanTime.INSTANCE);
 		
 		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.LIST_TIMING_CHUNK, ChunkManager.INSTANCE);
 		MessageHandlerRegistrar.INSTANCE.registerHandler(Message.LIST_CHUNK_LOADED, ChunkManager.INSTANCE);

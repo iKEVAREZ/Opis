@@ -1,34 +1,28 @@
 package mcp.mobius.opis.network.rcon;
 
-import java.io.IOException;
-import java.lang.ref.WeakReference;
-import java.net.ConnectException;
-
-import javax.net.ssl.SSLException;
-
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
+import com.google.common.io.ByteArrayDataOutput;
+import com.google.common.io.ByteStreams;
 import io.nettyopis.buffer.ByteBuf;
 import io.nettyopis.channel.ChannelFuture;
 import io.nettyopis.channel.ChannelFutureListener;
 import io.nettyopis.channel.ChannelHandlerContext;
-import net.minecraftforge.common.util.FakePlayer;
-import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.events.PlayerTracker;
+import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.network.PacketBase;
-import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.packets.client.PacketReqChunks;
 import mcp.mobius.opis.network.packets.client.PacketReqData;
 import mcp.mobius.opis.network.packets.server.NetDataCommand;
 import mcp.mobius.opis.network.packets.server.NetDataList;
 import mcp.mobius.opis.network.packets.server.NetDataValue;
-import mcp.mobius.opis.network.packets.server.PacketChunks;
-import mcp.mobius.opis.network.rcon.nexus.EventTimerRing;
 import mcp.mobius.opis.network.rcon.nexus.NexusClient;
 import mcp.mobius.opis.network.rcon.nexus.NexusInboundHandler;
+import net.minecraftforge.common.util.FakePlayer;
 
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
-import com.google.common.io.ByteArrayDataOutput;
-import com.google.common.io.ByteStreams;
+import java.io.IOException;
+import java.lang.ref.WeakReference;
+import java.net.ConnectException;
 
 public class RConHandler {
 	public static BiMap<Byte, Class> packetTypes = HashBiMap.create();
@@ -44,7 +38,6 @@ public class RConHandler {
 		packetTypes.put((byte)2, NetDataCommand.class);
 		packetTypes.put((byte)3, NetDataList.class);
 		packetTypes.put((byte)4, NetDataValue.class);
-		packetTypes.put((byte)5, PacketChunks.class);
 	}
 
 	public static void sendToAllNexus(PacketBase packet){

@@ -2,9 +2,6 @@ package mcp.mobius.opis.swing.actions;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import mapwriter.Mw;
-import mapwriter.api.MwAPI;
-import mapwriter.gui.MwGui;
 import mcp.mobius.opis.network.PacketManager;
 import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.packets.client.PacketReqData;
@@ -14,8 +11,6 @@ import mcp.mobius.opis.swing.widgets.JTableStats;
 
 import mcp.mobius.opis.api.TabPanelRegistrar;
 import mcp.mobius.opis.data.holders.stats.StatsChunk;
-import mcp.mobius.opis.gui.overlay.OverlayMeanTime;
-import net.minecraft.client.Minecraft;
 
 public class ActionTimingChunks implements ActionListener {
 
@@ -27,12 +22,6 @@ public class ActionTimingChunks implements ActionListener {
 		if (table == null || table.getSelectedRow() == -1) return;
 		int indexData           = table.convertRowIndexToModel(table.getSelectedRow());
 		StatsChunk data         = (StatsChunk)table.getTableData().get(indexData);
-
-		if (e.getSource() == panel.getBtnCenter()){
-            OverlayMeanTime.INSTANCE.setSelectedChunk(data.getChunk().dim, data.getChunk().chunkX, data.getChunk().chunkZ);
-            MwAPI.setCurrentDataProvider(OverlayMeanTime.INSTANCE);
-            Minecraft.getMinecraft().displayGuiScreen(new MwGui(Mw.instance, data.getChunk().dim, data.getChunk().x + 8, data.getChunk().z + 8));   			
-		}				
 		
 		if (e.getSource() == panel.getBtnTeleport()){
 			PacketManager.sendToServer(new PacketReqData(Message.COMMAND_TELEPORT_CHUNK, data.getChunk()));

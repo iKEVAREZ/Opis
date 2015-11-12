@@ -23,25 +23,20 @@ public class PanelTimingEntities extends JPanelMsgHandler implements ITabPanel{
 	private JButtonAccess btnRun;
 	private JButtonAccess btnPull;
 	private JButtonAccess btnTeleport;
-	private JButtonAccess btnCenter;
 	private JLabel lblSummary;
 
 	/**
 	 * Create the panel.
 	 */
 	public PanelTimingEntities() {
-		setLayout(new MigLayout("", "[][][][grow][]", "[][grow][]"));
-		
-		btnCenter = new JButtonAccess("Center Map", AccessLevel.NONE);
-		add(btnCenter, "cell 0 0");
-		btnCenter.addActionListener(new ActionTimingEntities());
+		setLayout(new MigLayout("", "[][][grow][]", "[][grow][]"));
 		
 		btnTeleport = new JButtonAccess("Teleport", AccessLevel.PRIVILEGED);
-		add(btnTeleport, "cell 1 0");
+		add(btnTeleport, "cell 0 0");
 		btnTeleport.addActionListener(new ActionTimingEntities());
 		
 		btnPull = new JButtonAccess("Pull", AccessLevel.PRIVILEGED);
-		add(btnPull, "cell 2 0");
+		add(btnPull, "cell 1 0");
 		btnPull.addActionListener(new ActionTimingEntities());
 		
 		btnRun = new JButtonAccess("Run Opis", AccessLevel.PRIVILEGED);
@@ -64,7 +59,6 @@ public class PanelTimingEntities extends JPanelMsgHandler implements ITabPanel{
 	public JButton getBtnRun()      {return btnRun;}
 	public JButton getBtnPull()     {return btnPull;}
 	public JButton getBtnTeleport() {return btnTeleport;}
-	public JButton getBtnCenter()   {return btnCenter;}
 	public JLabel  getLblSummary()  {return lblSummary;}
 
 	@Override

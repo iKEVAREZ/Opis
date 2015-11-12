@@ -1,43 +1,30 @@
 package mcp.mobius.opis.events;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.world.World;
-import net.minecraftforge.common.DimensionManager;
-import mcp.mobius.opis.modOpis;
-import mcp.mobius.opis.data.holders.basetypes.CoordinatesChunk;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent;
+import cpw.mods.fml.relauncher.Side;
+import mcp.mobius.mobiuscore.profiler.ProfilerSection;
 import mcp.mobius.opis.data.holders.basetypes.SerialInt;
 import mcp.mobius.opis.data.holders.basetypes.SerialLong;
-import mcp.mobius.opis.data.holders.newtypes.DataDimension;
-import mcp.mobius.opis.data.holders.newtypes.DataPacket;
-import mcp.mobius.opis.data.holders.newtypes.DataPacket250;
-import mcp.mobius.opis.data.holders.newtypes.DataThread;
-import mcp.mobius.opis.data.holders.newtypes.DataTiming;
-import mcp.mobius.opis.data.holders.newtypes.NexusData;
-import mcp.mobius.opis.data.holders.stats.StatsChunk;
+import mcp.mobius.opis.data.holders.newtypes.*;
 import mcp.mobius.opis.data.managers.ChunkManager;
 import mcp.mobius.opis.data.managers.EntityManager;
 import mcp.mobius.opis.data.managers.StringCache;
 import mcp.mobius.opis.data.managers.TileEntityManager;
 import mcp.mobius.opis.data.profilers.ProfilerPacket;
 import mcp.mobius.opis.data.profilers.ProfilerTick;
-import mcp.mobius.opis.gui.overlay.OverlayStatus;
+import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.network.PacketManager;
 import mcp.mobius.opis.network.enums.AccessLevel;
 import mcp.mobius.opis.network.enums.Message;
-import mcp.mobius.opis.network.packets.server.NetDataCommand;
 import mcp.mobius.opis.network.packets.server.NetDataList;
 import mcp.mobius.opis.network.packets.server.NetDataValue;
-import mcp.mobius.opis.network.rcon.RConHandler;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent;
-import cpw.mods.fml.relauncher.Side;
-import mcp.mobius.mobiuscore.monitors.MonitoredEntityList;
-import mcp.mobius.mobiuscore.monitors.MonitoredTileList;
-import mcp.mobius.mobiuscore.profiler.ProfilerSection;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraftforge.common.DimensionManager;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public enum OpisServerTickHandler{
 	INSTANCE;
@@ -54,16 +41,6 @@ public enum OpisServerTickHandler{
 	
 	@SubscribeEvent
 	public void tickEnd(TickEvent.ServerTickEvent event) {
-
-			/*
-			if (System.nanoTime() - timer500 >  500000000){
-				timer500 = System.nanoTime();
-				
-				for (Player player : PlayerTracker.instance().playersSwing){
-					PacketDispatcher.sendPacketToPlayer(Packet_DataValue.create(DataReq.VALUE_TIMING_TICK,     TickProfiler.instance().stats), player);					
-				}
-			}
-			*/
 				
 			StringCache.INSTANCE.syncNewCache();		
 		
@@ -126,9 +103,7 @@ public enum OpisServerTickHandler{
 			if (timer5000.isDone() && PlayerTracker.INSTANCE.playersSwing.size() > 0){
 				PacketManager.sendPacketToAllSwing(new NetDataList(Message.LIST_AMOUNT_ENTITIES,  EntityManager.INSTANCE.getCumulativeEntities(false)));
 				PacketManager.sendPacketToAllSwing(new NetDataList(Message.LIST_AMOUNT_TILEENTS,  TileEntityManager.INSTANCE.getCumulativeAmountTileEntities()));
-				
-				updatePlayers();
-				
+
 				PacketManager.sendPacketToAllSwing(new NetDataList(Message.LIST_PACKETS_OUTBOUND, new ArrayList<DataPacket>( ((ProfilerPacket)ProfilerSection.PACKET_OUTBOUND.getProfiler()).data.values())));
 				PacketManager.sendPacketToAllSwing(new NetDataList(Message.LIST_PACKETS_INBOUND,  new ArrayList<DataPacket>( ((ProfilerPacket)ProfilerSection.PACKET_INBOUND.getProfiler()).data.values())));
 				
@@ -160,22 +135,6 @@ public enum OpisServerTickHandler{
 					PacketManager.sendFullUpdate(player);
 				}
 			}			
-	}
-
-	private void updatePlayers(){
-		for (EntityPlayerMP player : PlayerTracker.INSTANCE.playerOverlayStatus.keySet()){
-			
-			if (PlayerTracker.INSTANCE.playerOverlayStatus.get(player) == OverlayStatus.CHUNKSTATUS){
-				PacketManager.validateAndSend(new NetDataCommand(Message.LIST_CHUNK_LOADED_CLEAR), player);
-				PacketManager.splitAndSend(Message.LIST_CHUNK_LOADED, ChunkManager.INSTANCE.getLoadedChunks(PlayerTracker.INSTANCE.playerDimension.get(player)), player);				
-			}
-			
-			if (PlayerTracker.INSTANCE.playerOverlayStatus.get(player) == OverlayStatus.MEANTIME){
-				ArrayList<StatsChunk> timingChunks = ChunkManager.INSTANCE.getTopChunks(100);
-				//OpisPacketHandler.validateAndSend(Packet_DataList.create(DataReq.LIST_TIMING_CHUNK, timingChunks), player);
-				PacketManager.validateAndSend(new NetDataList(Message.LIST_TIMING_CHUNK, timingChunks), player);
-			}
-		}
 	}
 	
 }

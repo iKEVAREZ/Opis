@@ -21,20 +21,15 @@ import javax.swing.table.DefaultTableModel;
 public class PanelTimingChunks extends JPanelMsgHandler implements ITabPanel{
 	private JButtonAccess btnRun;
 	private JButtonAccess btnTeleport;
-	private JButtonAccess btnCenter;
 
 	/**
 	 * Create the panel.
 	 */
 	public PanelTimingChunks() {
-		setLayout(new MigLayout("", "[][][grow][]", "[][grow]"));
-		
-		btnCenter = new JButtonAccess("Center Map", AccessLevel.NONE);
-		add(btnCenter, "cell 0 0");
-		btnCenter.addActionListener(new ActionTimingChunks());
+		setLayout(new MigLayout("", "[][grow][]", "[][grow]"));
 		
 		btnTeleport = new JButtonAccess("Teleport", AccessLevel.PRIVILEGED);
-		add(btnTeleport, "cell 1 0");
+		add(btnTeleport, "cell 0 0");
 		btnTeleport.addActionListener(new ActionTimingChunks());
 		
 		btnRun = new JButtonAccess("Run Opis", AccessLevel.PRIVILEGED);
@@ -53,7 +48,6 @@ public class PanelTimingChunks extends JPanelMsgHandler implements ITabPanel{
 
 	public JButton getBtnRun() {return btnRun;}
 	public JButton getBtnTeleport() {return btnTeleport;}
-	public JButton getBtnCenter()   {return btnCenter;}
 
 	@Override
 	public boolean handleMessage(Message msg, PacketBase rawdata) {

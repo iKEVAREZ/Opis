@@ -23,7 +23,6 @@ import javax.swing.JLabel;
 import javax.swing.table.DefaultTableModel;
 
 public class PanelTimingTileEnts extends JPanelMsgHandler implements ITabPanel{
-	private JButtonAccess btnCenter;
 	private JButtonAccess btnTeleport;
 	private JButtonAccess btnReset;
 	private JButtonAccess btnRun;
@@ -33,19 +32,15 @@ public class PanelTimingTileEnts extends JPanelMsgHandler implements ITabPanel{
 	 * Create the panel.
 	 */
 	public PanelTimingTileEnts() {
-		setLayout(new MigLayout("", "[][][][grow][]", "[][grow][]"));
-		
-		btnCenter = new JButtonAccess("Center Map", AccessLevel.NONE);
-		add(btnCenter, "cell 0 0");
-		btnCenter.addActionListener(new ActionTimingTileEnts());
+		setLayout(new MigLayout("", "[][][grow][]", "[][grow][]"));
 		
 		btnTeleport = new JButtonAccess("Teleport", AccessLevel.PRIVILEGED);
-		add(btnTeleport, "cell 1 0");
+		add(btnTeleport, "cell 0 0");
 		btnTeleport.addActionListener(new ActionTimingTileEnts());
 		
 		btnReset = new JButtonAccess("Reset Highlight", AccessLevel.PRIVILEGED);
 		btnReset.setEnabled(false);
-		add(btnReset, "cell 2 0");
+		add(btnReset, "cell 1 0");
 		btnReset.addActionListener(new ActionTimingTileEnts());
 		
 		btnRun = new JButtonAccess("Run Opis", AccessLevel.PRIVILEGED);
@@ -65,7 +60,6 @@ public class PanelTimingTileEnts extends JPanelMsgHandler implements ITabPanel{
 		add(lblSummary, "cell 0 2 5 1,alignx center");
 	}
 
-	public JButton getBtnCenter()  {return btnCenter;}
 	public JButton getBtnTeleport(){return btnTeleport;}
 	public JButton getBtnReset()   {return btnReset;}
 	public JButton getBtnRun()     {return btnRun;}

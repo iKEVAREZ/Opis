@@ -1,20 +1,17 @@
 package mcp.mobius.opis.network.enums;
 
-import static mcp.mobius.opis.network.enums.AccessLevel.*;
+import mcp.mobius.opis.events.PlayerTracker;
+import mcp.mobius.opis.swing.SelectedTab;
+import net.minecraft.entity.player.EntityPlayerMP;
 
 import java.util.EnumSet;
 
-import net.minecraft.entity.player.EntityPlayerMP;
-import mcp.mobius.opis.events.PlayerTracker;
-import mcp.mobius.opis.swing.SelectedTab;
+import static mcp.mobius.opis.network.enums.AccessLevel.PRIVILEGED;
 
 public enum Message {
-	
-	LIST_CHUNK_TILEENTS,
-	LIST_CHUNK_ENTITIES,
+
 	LIST_CHUNK_LOADED,
 	LIST_CHUNK_LOADED_CLEAR,
-	LIST_CHUNK_TICKETS,
 	LIST_TIMING_TILEENTS,
 	LIST_TIMING_TILEENTS_PER_CLASS,
 	LIST_TIMING_ENTITIES,
@@ -40,19 +37,6 @@ public enum Message {
 	VALUE_TIMING_WORLDTICK,
 	VALUE_TIMING_ENTUPDATE,
 	VALUE_TIMING_NETWORK,
-	/*
-	VALUE_TIMING_TICK,										//OUTDATED
-
-	
-	VALUE_AMOUNT_TILEENTS(EnumSet.of(SelectedTab.SUMMARY)),	//OUTDATED
-	VALUE_AMOUNT_ENTITIES(EnumSet.of(SelectedTab.SUMMARY)),	//OUTDATED
-	VALUE_AMOUNT_HANDLERS(EnumSet.of(SelectedTab.SUMMARY)),
-	VALUE_AMOUNT_UPLOAD  (EnumSet.of(SelectedTab.SUMMARY)),	//OUTDATED
-	VALUE_AMOUNT_DOWNLOAD(EnumSet.of(SelectedTab.SUMMARY)),	//OUTDATED
-	
-	VALUE_CHUNK_FORCED   (EnumSet.of(SelectedTab.SUMMARY)),	//OUTDATED
-	VALUE_CHUNK_LOADED   (EnumSet.of(SelectedTab.SUMMARY)),	//OUTDATED
-	*/
 	
 	STATUS_START,
 	STATUS_STOP,
@@ -85,9 +69,6 @@ public enum Message {
 	COMMAND_PURGE_CHUNKS_ALL(PRIVILEGED),	// This will purge the chunks in all dimensions
 	COMMAND_KILL_STACKS_DIM(PRIVILEGED),	// This will kill all stacks in the dim given as argument
 	COMMAND_KILL_STACKS_ALL(PRIVILEGED),	// This will kill all stacks in all the dimensions
-	
-	OVERLAY_CHUNK_ENTITIES,
-	OVERLAY_CHUNK_TIMING,
 	
 	CLIENT_START_PROFILING,
 	CLIENT_STOP_PROFILING,
@@ -149,8 +130,7 @@ public enum Message {
 	}
 	
 	public static void setTablesMinimumLevel(AccessLevel level){
-		Message.LIST_CHUNK_TILEENTS.setAccessLevel(level);
-		Message.LIST_CHUNK_ENTITIES.setAccessLevel(level);
+		Message.LIST_CHUNK_LOADED.setAccessLevel(level);
 		Message.LIST_TIMING_TILEENTS.setAccessLevel(level);
 		Message.LIST_TIMING_ENTITIES.setAccessLevel(level);
 		Message.LIST_TIMING_HANDLERS.setAccessLevel(level);
@@ -170,14 +150,7 @@ public enum Message {
 		Message.LIST_ORPHAN_TILEENTS.setAccessLevel(level);
 		Message.LIST_THREADS.setAccessLevel(level);
 	}
-	
-	public static void setOverlaysMinimumLevel(AccessLevel level){
-		Message.OVERLAY_CHUNK_ENTITIES.setAccessLevel(level);
-		Message.OVERLAY_CHUNK_TIMING.setAccessLevel(level);
-		Message.LIST_CHUNK_LOADED.setAccessLevel(level);
-		Message.LIST_CHUNK_TICKETS.setAccessLevel(level);		
-	}	
-	
+
 	public static void setOpisMinimumLevel(AccessLevel level){
 		Message.COMMAND_OPEN_SWING.setAccessLevel(level);
 	}

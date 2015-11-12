@@ -2,9 +2,6 @@ package mcp.mobius.opis.swing.actions;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import mapwriter.Mw;
-import mapwriter.api.MwAPI;
-import mapwriter.gui.MwGui;
 import mcp.mobius.opis.network.PacketManager;
 import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.packets.client.PacketReqData;
@@ -13,10 +10,8 @@ import mcp.mobius.opis.swing.panels.timingserver.PanelTimingEntities;
 import mcp.mobius.opis.swing.widgets.JTableStats;
 
 import mcp.mobius.opis.api.TabPanelRegistrar;
-import mcp.mobius.opis.data.holders.basetypes.CoordinatesBlock;
 import mcp.mobius.opis.data.holders.basetypes.TargetEntity;
 import mcp.mobius.opis.data.holders.newtypes.DataEntity;
-import mcp.mobius.opis.gui.overlay.entperchunk.OverlayEntityPerChunk;
 import net.minecraft.client.Minecraft;
 
 public class ActionTimingEntities implements ActionListener {
@@ -30,15 +25,6 @@ public class ActionTimingEntities implements ActionListener {
 		int indexData           = table.convertRowIndexToModel(table.getSelectedRow());
 		DataEntity data        = (DataEntity)table.getTableData().get(indexData);
 
-		if (e.getSource() == panel.getBtnCenter()){
-            CoordinatesBlock coord = data.pos;
-            PacketManager.sendToServer(new PacketReqData(Message.OVERLAY_CHUNK_ENTITIES));
-            PacketManager.sendToServer(new PacketReqData(Message.LIST_CHUNK_ENTITIES, data.pos.asCoordinatesChunk()));           
-            MwAPI.setCurrentDataProvider(OverlayEntityPerChunk.INSTANCE);
-            OverlayEntityPerChunk.INSTANCE.selectedChunk = coord.asCoordinatesChunk();
-            Minecraft.getMinecraft().displayGuiScreen(new MwGui(Mw.instance, coord.dim, coord.x, coord.z));              			
-		}				
-		
 		if (e.getSource() == panel.getBtnTeleport()){
             int eid = data.eid;
             int dim = data.pos.dim;

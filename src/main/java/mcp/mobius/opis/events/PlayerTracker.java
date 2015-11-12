@@ -1,30 +1,25 @@
 package mcp.mobius.opis.events;
 
-import java.util.HashMap;
-import java.util.HashSet;
-
 import com.mojang.authlib.GameProfile;
-
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
-import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.data.holders.basetypes.SerialLong;
 import mcp.mobius.opis.data.holders.newtypes.PlayerStatus;
 import mcp.mobius.opis.data.managers.StringCache;
-import mcp.mobius.opis.gui.overlay.OverlayStatus;
+import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.network.PacketManager;
 import mcp.mobius.opis.network.enums.AccessLevel;
 import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.enums.PlayerEv;
 import mcp.mobius.opis.network.packets.server.NetDataValue;
 import mcp.mobius.opis.network.rcon.RConHandler;
-import mcp.mobius.opis.network.rcon.server.RConServer;
 import mcp.mobius.opis.swing.SelectedTab;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.util.FakePlayer;
-import net.minecraftforge.event.entity.living.LivingDeathEvent;
+
+import java.util.HashMap;
+import java.util.HashSet;
 
 //public class PlayerTracker implements IPlayerTracker{
 public enum PlayerTracker{
@@ -35,7 +30,6 @@ public enum PlayerTracker{
 	public HashSet<EntityPlayerMP> playersSwing = new HashSet<EntityPlayerMP>();		 //This is the list of players who have opened the UI
 	//public HashSet<Player> playersOpis  = new HashSet<Player>();		 //This is the list of players who have opened the UI or used the command line
 	public HashMap<String, Boolean>       filteredAmount      = new HashMap<String, Boolean>(); //Should the entity amount be filtered or not
-	public HashMap<EntityPlayerMP, OverlayStatus> playerOverlayStatus = new HashMap<EntityPlayerMP, OverlayStatus>();
 	public HashMap<EntityPlayerMP, Integer>       playerDimension     = new HashMap<EntityPlayerMP, Integer>();
 	public HashMap<EntityPlayerMP, SelectedTab>   playerTab           = new HashMap<EntityPlayerMP, SelectedTab>();
 	private HashSet<String> playerPrivileged = new HashSet<String>();
@@ -105,7 +99,6 @@ public enum PlayerTracker{
 	
 	@SubscribeEvent
 	public void onPlayerLogout(PlayerEvent.PlayerLoggedOutEvent event){
-		this.playerOverlayStatus.remove(event.player);
 		this.playerDimension.remove(event.player);
 		//this.playersOpis.remove(player);
 		this.playersSwing.remove(event.player);

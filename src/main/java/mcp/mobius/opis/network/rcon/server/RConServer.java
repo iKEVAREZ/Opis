@@ -1,53 +1,20 @@
 package mcp.mobius.opis.network.rcon.server;
 
-import static cpw.mods.fml.relauncher.Side.SERVER;
-
-import java.security.cert.CertificateException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Timer;
-
-import javax.net.ssl.SSLException;
-
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
-import com.google.common.io.ByteArrayDataOutput;
-import com.google.common.io.ByteStreams;
-
-import cpw.mods.fml.common.network.FMLOutboundHandler;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraftforge.common.util.FakePlayer;
-import mcp.mobius.opis.modOpis;
-import mcp.mobius.opis.network.PacketBase;
-import mcp.mobius.opis.network.packets.client.PacketReqChunks;
-import mcp.mobius.opis.network.packets.client.PacketReqData;
-import mcp.mobius.opis.network.packets.server.NetDataCommand;
-import mcp.mobius.opis.network.packets.server.NetDataList;
-import mcp.mobius.opis.network.packets.server.NetDataValue;
-import mcp.mobius.opis.network.packets.server.PacketChunks;
-import mcp.mobius.opis.network.rcon.RConHandler;
 import io.nettyopis.bootstrap.ServerBootstrap;
-import io.nettyopis.buffer.ByteBuf;
-import io.nettyopis.channel.Channel;
 import io.nettyopis.channel.ChannelFuture;
-import io.nettyopis.channel.ChannelHandlerContext;
-import io.nettyopis.channel.ChannelInboundHandlerAdapter;
 import io.nettyopis.channel.ChannelInitializer;
 import io.nettyopis.channel.ChannelOption;
 import io.nettyopis.channel.EventLoopGroup;
 import io.nettyopis.channel.nio.NioEventLoopGroup;
 import io.nettyopis.channel.socket.SocketChannel;
 import io.nettyopis.channel.socket.nio.NioServerSocketChannel;
-import io.nettyopis.handler.codec.compression.JdkZlibDecoder;
-import io.nettyopis.handler.codec.compression.JdkZlibEncoder;
-import io.nettyopis.handler.codec.compression.ZlibCodecFactory;
-import io.nettyopis.handler.codec.compression.ZlibDecoder;
-import io.nettyopis.handler.codec.compression.ZlibWrapper;
 import io.nettyopis.handler.ssl.SslContext;
 import io.nettyopis.handler.ssl.util.SelfSignedCertificate;
-import io.nettyopis.handler.timeout.IdleStateHandler;
 import io.nettyopis.handler.timeout.ReadTimeoutHandler;
-import io.nettyopis.util.ReferenceCountUtil;
+import mcp.mobius.opis.modOpis;
+
+import javax.net.ssl.SSLException;
+import java.security.cert.CertificateException;
 
 public class RConServer implements Runnable {
 

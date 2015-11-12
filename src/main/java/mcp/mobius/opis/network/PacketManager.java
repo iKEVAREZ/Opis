@@ -1,41 +1,28 @@
 package mcp.mobius.opis.network;
 
-import static cpw.mods.fml.relauncher.Side.CLIENT;
-import static cpw.mods.fml.relauncher.Side.SERVER;
-import io.netty.buffer.ByteBuf;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelHandler.Sharable;
-import io.netty.channel.SimpleChannelInboundHandler;
-
-import java.lang.reflect.Constructor;
-import java.util.ArrayList;
-import java.util.ConcurrentModificationException;
-import java.util.EnumMap;
-
-import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Table.Cell;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
-
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.network.FMLEmbeddedChannel;
+import cpw.mods.fml.common.network.FMLIndexedMessageToMessageCodec;
+import cpw.mods.fml.common.network.FMLOutboundHandler;
+import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import io.netty.buffer.ByteBuf;
+import io.netty.channel.ChannelHandler.Sharable;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.SimpleChannelInboundHandler;
 import mcp.mobius.mobiuscore.profiler.ProfilerSection;
 import mcp.mobius.opis.data.holders.ISerializable;
 import mcp.mobius.opis.data.holders.basetypes.AmountHolder;
 import mcp.mobius.opis.data.holders.basetypes.SerialInt;
 import mcp.mobius.opis.data.holders.basetypes.SerialLong;
-import mcp.mobius.opis.data.holders.newtypes.DataBlockTick;
-import mcp.mobius.opis.data.holders.newtypes.DataBlockTileEntity;
-import mcp.mobius.opis.data.holders.newtypes.DataBlockTileEntityPerClass;
-import mcp.mobius.opis.data.holders.newtypes.DataEntity;
-import mcp.mobius.opis.data.holders.newtypes.DataEntityPerClass;
-import mcp.mobius.opis.data.holders.newtypes.DataEvent;
-import mcp.mobius.opis.data.holders.newtypes.DataNetworkTick;
-import mcp.mobius.opis.data.holders.newtypes.DataTiming;
+import mcp.mobius.opis.data.holders.newtypes.*;
 import mcp.mobius.opis.data.holders.stats.StatsChunk;
 import mcp.mobius.opis.data.managers.ChunkManager;
 import mcp.mobius.opis.data.managers.EntityManager;
@@ -48,24 +35,25 @@ import mcp.mobius.opis.network.packets.client.PacketReqData;
 import mcp.mobius.opis.network.packets.server.NetDataCommand;
 import mcp.mobius.opis.network.packets.server.NetDataList;
 import mcp.mobius.opis.network.packets.server.NetDataValue;
-import mcp.mobius.opis.network.packets.server.PacketChunks;
 import mcp.mobius.opis.network.rcon.RConHandler;
-import mcp.mobius.opis.network.rcon.server.RConServer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.network.FMLEmbeddedChannel;
-import cpw.mods.fml.common.network.FMLIndexedMessageToMessageCodec;
-import cpw.mods.fml.common.network.FMLOutboundHandler;
-import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S02PacketChat;
 import net.minecraft.util.ChatComponentText;
 import net.minecraftforge.common.util.FakePlayer;
+import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+
+import java.lang.reflect.Constructor;
+import java.util.ArrayList;
+import java.util.EnumMap;
+
+import static cpw.mods.fml.relauncher.Side.CLIENT;
+import static cpw.mods.fml.relauncher.Side.SERVER;
 
 @Sharable
 //public class PacketManager extends FMLIndexedMessageToMessageCodec<PacketBase>
@@ -87,7 +75,6 @@ public class PacketManager
         codec.addDiscriminator(2, NetDataCommand.class);
         codec.addDiscriminator(3, NetDataList.class);
         codec.addDiscriminator(4, NetDataValue.class);
-        codec.addDiscriminator(5, PacketChunks.class);
 
         channels.putAll(NetworkRegistry.INSTANCE.newChannel("Opis", codec));
         
