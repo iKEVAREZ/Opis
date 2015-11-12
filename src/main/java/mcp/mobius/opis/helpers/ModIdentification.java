@@ -3,11 +3,12 @@ package mcp.mobius.opis.helpers;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.HashMap;
+
+import cpw.mods.fml.common.registry.*;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
-import cpw.mods.fml.common.registry.GameData;
 
 public class ModIdentification {
 	
@@ -60,9 +61,9 @@ public class ModIdentification {
 	
 	public static String nameFromStack(ItemStack stack){
 		try{
-			//String modID = itemMap.get(itemstack.itemID);
-			//ModContainer mod = ModIdentification.findModContainer(modID);
-			ModContainer mod = GameData.findModOwner(GameData.itemRegistry.getNameForObject(stack.getItem()));
+			String name = GameData.getItemRegistry().getNameForObject(stack.getItem());
+			GameRegistry.UniqueIdentifier ui = new GameRegistry.UniqueIdentifier(name);
+			ModContainer mod = Loader.instance().getIndexedModList().get(ui.modId);
 			String modname = mod == null ? "Minecraft" : mod.getName();		
 			return modname;
 		} catch (NullPointerException e){

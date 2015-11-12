@@ -2,6 +2,8 @@ This mod is licensed under [Creative Commons Attribution-NonCommercial-ShareAlik
 
 This mod was created by [ProfMobius](http://www.mobiusstrip.eu/), with license determined from the mod's [CurseForge page](http://minecraft.curseforge.com/projects/opis).
 
+For any commercial usage, please contact ProfMobius at profmobius@mobiusstrip.eu
+
 -----
 
 *This is a human-readable summary of (and not a substitute for) the [license](https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode).*
