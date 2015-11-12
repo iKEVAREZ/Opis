@@ -61,7 +61,6 @@ public class modOpis {
 	public  Configuration config = null;	
 	
 	public static String commentTables     = "Minimum access level to be able to view tables in /opis command. Valid values : NONE, PRIVILEGED, ADMIN";
-	public static String commentOverlays   = "Minimum access level to be able to show overlays in MapWriter. Valid values : NONE, PRIVILEGED, ADMIN";
 	public static String commentOpis       = "Minimum access level to be open Opis interface. Valid values : NONE, PRIVILEGED, ADMIN";
 	public static String commentPrivileged = "List of players with PRIVILEGED access level.";
 	
@@ -80,11 +79,9 @@ public class modOpis {
 		
 		String[] users   = config.get("ACCESS_RIGHTS", "privileged", new String[]{}, commentPrivileged).getStringList();
 		AccessLevel minTables   = AccessLevel.PRIVILEGED;
-		AccessLevel minOverlays = AccessLevel.PRIVILEGED;
 		AccessLevel openOpis    = AccessLevel.PRIVILEGED;
 		try{ openOpis    = AccessLevel.valueOf(config.get("ACCESS_RIGHTS", "opis",     "NONE", commentTables).getString()); }   catch (IllegalArgumentException e){}
 		try{ minTables   = AccessLevel.valueOf(config.get("ACCESS_RIGHTS", "tables",   "NONE", commentTables).getString()); }   catch (IllegalArgumentException e){}
-		try{ minOverlays = AccessLevel.valueOf(config.get("ACCESS_RIGHTS", "overlays", "NONE", commentOverlays).getString()); } catch (IllegalArgumentException e){}
 
 		Message.setTablesMinimumLevel(minTables);
 		Message.setOpisMinimumLevel(openOpis);
@@ -99,16 +96,13 @@ public class modOpis {
 		FMLCommonHandler.instance().bus().register(OpisClientTickHandler.INSTANCE);
 		FMLCommonHandler.instance().bus().register(OpisServerTickHandler.INSTANCE);
 		FMLCommonHandler.instance().bus().register(PlayerTracker.INSTANCE);
-		//Packet.addIdClassMapping(251, true, true, Packet251Extended.class);
-		
+
 		PacketManager.init();
 	}	
 	
 	@EventHandler
 	public void load(FMLInitializationEvent event) {
-		//TickRegistry.registerTickHandler(OpisServerTickHandler.INSTANCE, Side.SERVER);
-		//TickRegistry.registerTickHandler(OpisClientTickHandler.INSTANCE, Side.CLIENT);
-		
+
 		if (lagGenID != -1){
 			Block blockDemo = new BlockLag(Material.wood);
 			GameRegistry.registerBlock(blockDemo, "opis.laggen");
@@ -122,8 +116,6 @@ public class modOpis {
 		ProfilerSection.RENDER_TILEENTITY  .setProfiler(new ProfilerRenderTileEntity());
 		ProfilerSection.RENDER_ENTITY      .setProfiler(new ProfilerRenderEntity());
 		ProfilerSection.RENDER_BLOCK       .setProfiler(new ProfilerRenderBlock());
-		//ProfilerSection.HANDLER_TICKSTART  .setProfiler(new ProfilerHandler());
-		//ProfilerSection.HANDLER_TICKSTOP   .setProfiler(new ProfilerHandler());
 		ProfilerSection.EVENT_INVOKE       .setProfiler(new ProfilerEvent());		
 	}
 	
