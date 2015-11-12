@@ -32,7 +32,7 @@ import net.minecraftforge.common.config.Configuration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-@Mod(modid="Opis", name="Opis", version="1.2.4", dependencies="required-after:MobiusCore@[1.2.4]", acceptableRemoteVersions="*")
+@Mod(modid="Opis", name="Opis", version="@MOD_VERSION@", acceptableRemoteVersions="*")
 //@Mod(modid="Opis", name="Opis", version="1.3.0", dependencies="required-after:MobiusCore@[1.2.4]", acceptableRemoteVersions="*")
 
 

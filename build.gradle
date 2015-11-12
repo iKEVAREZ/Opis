@@ -22,13 +22,19 @@ buildscript {
 apply plugin: 'forge'
 
 // Gradle project metadata
-version = "1.2.5_1.7.10"
+version = "1.3.0-MAPLESS_1.7.10"
 group   = "mcp.mobius.opis"
 
 minecraft {
     // Forge version
     version = "1.7.10-10.13.1.1217"
     runDir  = "debug"
+
+    // Replace MOD_VERSION token with one specified in Gradle
+    // From https://github.com/GoryMoon/MoarSigns/blob/master/build.gradle#L46
+    replaceIn "CoreContainer.java"
+    replaceIn "modOpis.java"
+    replace "@MOD_VERSION@", project.version
 
     // Shading - https://forgegradle.readthedocs.org/en/latest/user-guide/shading/
     // math3 is shaded in case another mod decides to use a differing version
