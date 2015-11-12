@@ -117,6 +117,10 @@ task devJar(type: Jar) {
 // Fixes issues with debugging in IntelliJ
 idea.module.inheritOutputDirs = true
 
+// Fixes issues with µ character in source files
+// From http://mrhaki.blogspot.co.uk/2012/06/gradle-goodness-set-java-compiler.html
+compileJava.options.encoding = 'UTF-8'
+
 artifacts {
     archives sourceJar, devJar
 }
