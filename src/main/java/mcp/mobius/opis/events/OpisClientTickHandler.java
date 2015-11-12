@@ -1,39 +1,38 @@
 package mcp.mobius.opis.events;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
-
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table.Cell;
-
-import net.minecraft.entity.Entity;
-import net.minecraft.tileentity.TileEntity;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import mcp.mobius.mobiuscore.profiler.ProfilerSection;
-import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.api.TabPanelRegistrar;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesBlock;
 import mcp.mobius.opis.data.holders.basetypes.SerialLong;
-import mcp.mobius.opis.data.holders.newtypes.DataBlockRender;
-import mcp.mobius.opis.data.holders.newtypes.DataEntityRender;
-import mcp.mobius.opis.data.holders.newtypes.DataEvent;
+import mcp.mobius.opis.data.holders.clienttypes.DataRenderEvent;
+import mcp.mobius.opis.data.holders.clienttypes.DataBlockRender;
+import mcp.mobius.opis.data.holders.clienttypes.DataEntityRender;
 import mcp.mobius.opis.data.holders.newtypes.DataTileEntityRender;
 import mcp.mobius.opis.data.profilers.ProfilerEvent;
 import mcp.mobius.opis.data.profilers.ProfilerRenderBlock;
 import mcp.mobius.opis.data.profilers.ProfilerRenderEntity;
 import mcp.mobius.opis.data.profilers.ProfilerRenderTileEntity;
+import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.network.PacketManager;
 import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.network.packets.client.PacketReqData;
 import mcp.mobius.opis.swing.SelectedTab;
+import mcp.mobius.opis.swing.panels.timingclient.PanelEventClient;
 import mcp.mobius.opis.swing.panels.timingclient.PanelRenderEntities;
 import mcp.mobius.opis.swing.panels.timingclient.PanelRenderHandlers;
 import mcp.mobius.opis.swing.panels.timingclient.PanelRenderTileEnts;
-import mcp.mobius.opis.swing.panels.timingclient.PanelEventClient;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.entity.Entity;
+import net.minecraft.tileentity.TileEntity;
+import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
+
+import java.util.ArrayList;
+import java.util.Collections;
 
 public enum OpisClientTickHandler{
 	INSTANCE;
@@ -134,11 +133,11 @@ public enum OpisClientTickHandler{
 		
 		//====================================================================================			
 		
-		ArrayList<DataEvent> timingEvents = new ArrayList<DataEvent>();
+		ArrayList<DataRenderEvent> timingEvents = new ArrayList<DataRenderEvent>();
 		HashBasedTable<Class, String, DescriptiveStatistics> eventData = ((ProfilerEvent)ProfilerSection.EVENT_INVOKE.getProfiler()).data;
 		HashBasedTable<Class, String, String>                eventMod  = ((ProfilerEvent)ProfilerSection.EVENT_INVOKE.getProfiler()).dataMod;
 		for (Cell<Class, String, DescriptiveStatistics> cell : eventData.cellSet()){
-			timingEvents.add(new DataEvent().fill(cell, eventMod.get(cell.getRowKey(), cell.getColumnKey())));
+			timingEvents.add(new DataRenderEvent().fill(cell, eventMod.get(cell.getRowKey(), cell.getColumnKey())));
 		}		
 		((PanelEventClient)(TabPanelRegistrar.INSTANCE.getTab(SelectedTab.CLIENTEVENTS))).setTable(timingEvents);
 		

@@ -1,18 +1,9 @@
 package mcp.mobius.opis.swing.panels.timingclient;
 
 
-import java.util.ArrayList;
-
-import javax.swing.JButton;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.SwingConstants;
-import javax.swing.table.DefaultTableModel;
-
-import net.miginfocom.swing.MigLayout;
 import mcp.mobius.opis.api.IMessageHandler;
 import mcp.mobius.opis.api.ITabPanel;
+import mcp.mobius.opis.data.holders.clienttypes.DataRenderEvent;
 import mcp.mobius.opis.data.holders.newtypes.CachedString;
 import mcp.mobius.opis.data.holders.newtypes.DataEvent;
 import mcp.mobius.opis.data.holders.newtypes.DataTiming;
@@ -21,6 +12,11 @@ import mcp.mobius.opis.network.enums.Message;
 import mcp.mobius.opis.swing.SelectedTab;
 import mcp.mobius.opis.swing.actions.ActionRunOpisClient;
 import mcp.mobius.opis.swing.widgets.JTableStats;
+import net.miginfocom.swing.MigLayout;
+
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.util.ArrayList;
 
 public class PanelEventClient extends JPanel implements ITabPanel, IMessageHandler{
 	private JTableStats table;
@@ -48,12 +44,12 @@ public class PanelEventClient extends JPanel implements ITabPanel, IMessageHandl
 		scrollPane.setViewportView(table);
 	}
 
-	public void setTable(ArrayList<DataEvent> data){
+	public void setTable(ArrayList<DataRenderEvent> data){
 		
 		DefaultTableModel model = table.getModel();
 		int               row   = this.updateData(table, model, DataEvent.class);		
 		
-		for (DataEvent o : data){
+		for (DataRenderEvent o : data){
 			model.addRow(new Object[] {o.event, o.mod, o.package_, o.handler, o.nCalls, o.update});
 		}
 

@@ -1,7 +1,5 @@
 package mcp.mobius.opis.data.holders;
 
-import java.util.EnumSet;
-
 import mcp.mobius.opis.modOpis;
 import mcp.mobius.opis.data.holders.basetypes.AmountHolder;
 import mcp.mobius.opis.data.holders.basetypes.CoordinatesBlock;
@@ -10,7 +8,6 @@ import mcp.mobius.opis.data.holders.basetypes.SerialDouble;
 import mcp.mobius.opis.data.holders.basetypes.SerialFloat;
 import mcp.mobius.opis.data.holders.basetypes.SerialInt;
 import mcp.mobius.opis.data.holders.basetypes.SerialLong;
-import mcp.mobius.opis.data.holders.basetypes.SerialNumeral;
 import mcp.mobius.opis.data.holders.basetypes.SerialString;
 import mcp.mobius.opis.data.holders.basetypes.TargetEntity;
 import mcp.mobius.opis.data.holders.basetypes.TicketData;
@@ -21,14 +18,14 @@ import mcp.mobius.opis.data.holders.newtypes.DataAmountRate;
 import mcp.mobius.opis.data.holders.newtypes.DataBlockTileEntityPerClass;
 import mcp.mobius.opis.data.holders.newtypes.DataByteRate;
 import mcp.mobius.opis.data.holders.newtypes.DataByteSize;
-import mcp.mobius.opis.data.holders.newtypes.DataBlockRender;
+import mcp.mobius.opis.data.holders.clienttypes.DataBlockRender;
 import mcp.mobius.opis.data.holders.newtypes.DataBlockTick;
 import mcp.mobius.opis.data.holders.newtypes.DataChunk;
 import mcp.mobius.opis.data.holders.newtypes.DataChunkEntities;
 import mcp.mobius.opis.data.holders.newtypes.DataDimension;
 import mcp.mobius.opis.data.holders.newtypes.DataEntity;
 import mcp.mobius.opis.data.holders.newtypes.DataEntityPerClass;
-import mcp.mobius.opis.data.holders.newtypes.DataEntityRender;
+import mcp.mobius.opis.data.holders.clienttypes.DataEntityRender;
 import mcp.mobius.opis.data.holders.newtypes.DataEvent;
 import mcp.mobius.opis.data.holders.newtypes.DataNetworkTick;
 import mcp.mobius.opis.data.holders.newtypes.DataPacket;
