@@ -54,9 +54,16 @@ repositories {
         name "Mobius Repo"
         url "http://mobiusstrip.eu/maven"
     }
+    maven {
+        name 'prok'
+        url 'https://repo.prok.pw'
+    }
 }
 
 dependencies {
+    // Required for KCauldron fixes support
+    compile 'pw.prok:KCauldron:1.7.10-1492.159'
+
     // Custom-built Netty for Opis
     shade 'io.netty-opis:Netty-opis:4.0.23'
 
